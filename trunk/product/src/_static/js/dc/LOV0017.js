@@ -1,0 +1,44 @@
+/* N21 eBusiness Suite
+ * Copyright: Nan21 Electronics srl
+ * Generated content.
+ * LOV0017: Products
+ */
+
+  Ext.ns("N21.DataComp");
+  N21.DataComp.LOV0017 = Ext.extend(N21.Base.Lov, {
+     displayField:"NAME"
+    ,initComponent:function() {
+       Ext.apply(this, {
+           lovTitle:"Products (LOV0017)"
+          ,view: new Ext.grid.GridPanel({
+             store: new Ext.data.JsonStore({
+               id:"storeLOV0017"
+              ,root:"records"
+              ,url:"frmMain.php?_p_form=LOV0017&_p_action=fetch&_p_data_format=json"
+              ,remoteSort:true
+              ,fields:[{name:"CODE",type:"string"},{name:"EXPENSE_ACCOUNT",type:"string"},{name:"ID",type:"float"},{name:"NAME",type:"string"},{name:"REVENUE_ACCOUNT",type:"string"},{name:"UOM_CODE",type:"string"}]
+             })
+             ,columns: [new Ext.grid.RowNumberer(),
+               {id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,hidden :true,dataIndex:'ID',sortable:true,align:'right'}
+              ,{id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',sortable:true}
+              ,{id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:200,dataIndex:'NAME',sortable:true}
+              ,{id:"REVENUE_ACCOUNT",header:this.resourceBundle.FieldLabel.REVENUE_ACCOUNT||"Exp. acct.",width:80,dataIndex:'REVENUE_ACCOUNT',sortable:true}
+              ,{id:"EXPENSE_ACCOUNT",header:this.resourceBundle.FieldLabel.EXPENSE_ACCOUNT||"Rev. acct.",width:80,dataIndex:'EXPENSE_ACCOUNT',sortable:true}
+              ,{id:"UOM_CODE",header:this.resourceBundle.FieldLabel.UOM_CODE||"Uom",width:100,dataIndex:'UOM_CODE',sortable:true}
+             ]
+           })
+          ,dataComponentName:"LOV0017"
+          ,displayField:this.displayField
+          ,lovWidth:600
+          ,lovHeight:300
+        });
+       N21.DataComp.LOV0017.superclass.initComponent.apply(this, arguments);
+     }
+    ,onRender:function() {
+       N21.DataComp.LOV0017.superclass.onRender.apply(this, arguments);
+     }
+  });
+  Ext.reg("LOV0017", N21.DataComp.LOV0017);
+
+
+
