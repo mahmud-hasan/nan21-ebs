@@ -1,0 +1,30 @@
+create table BP_PHONE
+(
+  ID          NUMBER(10) not null,
+  BPARTNER_ID NUMBER(10) not null,
+  CMNCT_TYPE  VARCHAR2(16) not null,
+  CMNCT_VALUE VARCHAR2(100) not null,
+  CREATEDON   DATE not null,
+  CREATEDBY   VARCHAR2(16) not null,
+  MODIFIEDON  DATE not null,
+  MODIFIEDBY  VARCHAR2(16) not null,
+  NOTES       VARCHAR2(100)
+)
+;
+comment on table BP_PHONE
+  is 'Communication methods with a business partner (Code: BPPHONE)';
+comment on column BP_PHONE.CMNCT_TYPE
+  is 'Type of communication for ex: phone';
+comment on column BP_PHONE.CMNCT_VALUE
+  is 'phone number';
+comment on column BP_PHONE.NOTES
+  is 'Notes regarding this communication ';
+alter table BP_PHONE
+  add constraint PK_BPPHONE primary key (ID);
+alter table BP_PHONE
+  add constraint FK_BPPHONE_BPARTNER foreign key (BPARTNER_ID)
+  references BPARTNER (ID);
+alter table BP_PHONE
+  add constraint FK_BPPHONE_CMNCTYP foreign key (CMNCT_TYPE)
+  references COMMUNIC_TYPE (CODE);
+

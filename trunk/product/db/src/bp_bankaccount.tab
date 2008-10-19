@@ -1,0 +1,23 @@
+create table BP_BANKACCOUNT
+(
+  ID          NUMBER(10) not null,
+  BANK_CODE   VARCHAR2(16) not null,
+  IBAN        VARCHAR2(32) not null,
+  CURRENCY    VARCHAR2(4) not null,
+  CREATEDON   DATE not null,
+  CREATEDBY   VARCHAR2(16) not null,
+  MODIFIEDON  DATE not null,
+  MODIFIEDBY  VARCHAR2(16) not null,
+  BPARTNER_ID NUMBER(10) not null,
+  BANKAG_CODE VARCHAR2(16)
+)
+;
+comment on table BP_BANKACCOUNT
+  is 'Business partners bank accounts. (Code: BPBANKACCT)';
+alter table BP_BANKACCOUNT
+  add constraint PK_BPBANKACCT primary key (ID);
+alter table BP_BANKACCOUNT
+  add constraint FK_BPBANKACCT_BPARTNER foreign key (BPARTNER_ID)
+  references BPARTNER (ID) on delete cascade;
+create unique index PK_BANKACCT on BP_BANKACCOUNT (ID);
+

@@ -1,0 +1,31 @@
+create table ACCOUNTING_YEAR
+(
+  ID             NUMBER(10) not null,
+  CLIENT_ID      NUMBER(10) not null,
+  NAME           VARCHAR2(32) not null,
+  STARTDATE      DATE not null,
+  ENDDATE        DATE not null,
+  PREV_YEAR_NAME VARCHAR2(32),
+  NEXT_YEAR_NAME VARCHAR2(32),
+  CREATEDON      DATE default sysdate not null,
+  CREATEDBY      VARCHAR2(16) default user not null,
+  MODIFIEDON     DATE default sysdate not null,
+  MODIFIEDBY     VARCHAR2(16) default user not null,
+  NOTES          VARCHAR2(255),
+  CLOSED         CHAR(1) default 'N',
+  OPENED         CHAR(1) default 'N'
+)
+;
+comment on table ACCOUNTING_YEAR
+  is 'Fiscal year definition. Might be different as calendaristic year (Code: ACCYEAR)';
+alter table ACCOUNTING_YEAR
+  add constraint PK_ACCYEAR primary key (ID);
+alter table ACCOUNTING_YEAR
+  add constraint UK_ACCYEAR unique (CLIENT_ID, NAME);
+alter table ACCOUNTING_YEAR
+  add constraint CHK_ACCYEAR_CLOSED
+  check (CLOSED IN ('Y','N'));
+alter table ACCOUNTING_YEAR
+  add constraint CHK_ACCYEAR_OPENED
+  check (OPENED IN ('Y','N'));
+

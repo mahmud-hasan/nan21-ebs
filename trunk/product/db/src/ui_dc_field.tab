@@ -1,0 +1,22 @@
+create table UI_DC_FIELD
+(
+  ID          NUMBER(10) not null,
+  UIDC_CODE   VARCHAR2(16) not null,
+  FIELD_NAME  VARCHAR2(64) not null,
+  DESCRIPTION VARCHAR2(400),
+  CREATEDON   DATE default sysdate not null,
+  CREATEDBY   VARCHAR2(16) default user not null,
+  MODIFIEDON  DATE default sysdate not null,
+  MODIFIEDBY  VARCHAR2(16) default user not null
+)
+;
+comment on table UI_DC_FIELD
+  is 'Datacontrol fields (Code: UIDCFIELD)';
+alter table UI_DC_FIELD
+  add constraint PK_UIDCFIELD primary key (ID);
+alter table UI_DC_FIELD
+  add constraint UK_UIDCFIELD unique (UIDC_CODE, FIELD_NAME);
+alter table UI_DC_FIELD
+  add constraint FK_UIDCFIELD_UIDC foreign key (UIDC_CODE)
+  references UI_DC (CODE);
+

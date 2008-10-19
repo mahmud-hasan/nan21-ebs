@@ -1,0 +1,21 @@
+create table UI_DICTIONARY_TRL
+(
+  ID            NUMBER(10) not null,
+  UIDICT_ID     NUMBER(10) not null,
+  LANGUAGE_CODE VARCHAR2(16) not null,
+  TRANSLATION   VARCHAR2(1000),
+  MODIFIEDON    DATE not null,
+  MODIFIEDBY    VARCHAR2(16) not null
+)
+;
+comment on table UI_DICTIONARY_TRL
+  is 'Translation of the dictionary entries (Code: UIDICTTRL)';
+alter table UI_DICTIONARY_TRL
+  add constraint PK_UIDICTTRL primary key (ID);
+alter table UI_DICTIONARY_TRL
+  add constraint FK_UIDICTTRL_LANG foreign key (LANGUAGE_CODE)
+  references LANGUAGES (CODE);
+alter table UI_DICTIONARY_TRL
+  add constraint FK_UIDICTTRL_UIDICT foreign key (UIDICT_ID)
+  references UI_DICTIONARY (ID) on delete cascade;
+

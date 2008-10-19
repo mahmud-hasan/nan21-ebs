@@ -1,0 +1,22 @@
+create table CREDIT_CLASS
+(
+  CODE                  VARCHAR2(16) not null,
+  NAME                  VARCHAR2(64) not null,
+  CLIENT_ID             NUMBER(10),
+  CREDIT_LIMIT          NUMBER(22,6),
+  CREDIT_LIMIT_CURRENCY VARCHAR2(4),
+  NOTES                 VARCHAR2(255),
+  CREATEDON             DATE not null,
+  CREATEDBY             VARCHAR2(16) not null,
+  MODIFIEDON            DATE not null,
+  MODIFIEDBY            VARCHAR2(16) not null,
+  ACTIVE                CHAR(1) default 'N' not null
+)
+;
+comment on table CREDIT_CLASS
+  is 'Possible credit class definition (Code: CREDCLASS)';
+comment on column CREDIT_CLASS.CREDIT_LIMIT
+  is 'Maximum credit limit.';
+comment on column CREDIT_CLASS.CREDIT_LIMIT_CURRENCY
+  is 'Credit limit currency';
+

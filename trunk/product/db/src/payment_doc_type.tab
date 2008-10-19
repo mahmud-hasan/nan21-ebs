@@ -1,0 +1,30 @@
+create table PAYMENT_DOC_TYPE
+(
+  ID           NUMBER(10) not null,
+  CODE         VARCHAR2(16) not null,
+  NAME         VARCHAR2(32) not null,
+  COMPENSATION CHAR(1) not null,
+  PAYABLE      CHAR(1) not null,
+  RECEIVABLE   CHAR(1) not null,
+  PRINT_REPORT VARCHAR2(16),
+  CREATEDON    DATE default sysdate not null,
+  CREATEDBY    VARCHAR2(16) default user not null,
+  MODIFIEDON   DATE default sysdate not null,
+  MODIFIEDBY   VARCHAR2(16) default user not null,
+  CLIENT_ID    NUMBER(10) not null
+)
+;
+comment on table PAYMENT_DOC_TYPE
+  is 'Payment document types (Code: PAYDOCTYPE)';
+alter table PAYMENT_DOC_TYPE
+  add constraint PK_PAYDOCTYPE primary key (ID);
+alter table PAYMENT_DOC_TYPE
+  add constraint CHK_PAYDOCTYPE_COMP
+  check (COMPENSATION IN ('Y','N'));
+alter table PAYMENT_DOC_TYPE
+  add constraint CHK_PAYDOCTYPE_PAYABLE
+  check (PAYABLE IN ('Y','N'));
+alter table PAYMENT_DOC_TYPE
+  add constraint CHK_PAYDOCTYPE_RECEIVABLE
+  check (RECEIVABLE IN ('Y','N'));
+

@@ -1,0 +1,17 @@
+create or replace package pk_session is
+
+  usr varchar2(16);
+  lang varchar2(16) := 'en';
+  date_format varchar2(10) := 'DD.MM.YYYY';
+  function getUser return varchar2;
+  procedure setUser(p_user in varchar2);
+  
+  procedure setDateFormat(p_value in varchar2);
+  function getDateFormat return varchar2 ;
+  
+  function getLang return varchar2;
+  procedure setLang(p_lang in varchar2);
+  function translateErrorMessage(p_message in varchar2, p_lang in varchar2) return varchar2;
+end;
+/
+

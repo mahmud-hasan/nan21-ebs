@@ -1,0 +1,24 @@
+create table TAX
+(
+  ID                NUMBER(10) not null,
+  CLIENT_ID         NUMBER(10) not null,
+  TAXTYPE_CODE      VARCHAR2(16) not null,
+  VALUE_TYPE        CHAR(16),
+  VALUE             NUMBER(22,6) not null,
+  ACTIVE            CHAR(1) default 'N' not null,
+  DEFAULT_VALUE     CHAR(1),
+  NAME              VARCHAR2(32) not null,
+  PAYED_REFUND_ACCT VARCHAR2(16),
+  COLLECT_ACCT      VARCHAR2(16)
+)
+;
+comment on table TAX
+  is 'Possible tax definition (Code: TAX)';
+comment on column TAX.VALUE_TYPE
+  is 'RATE, PERCENT';
+alter table TAX
+  add constraint PK_TAX primary key (ID);
+alter table TAX
+  add constraint FK_TAX_TAXTYPE foreign key (TAXTYPE_CODE)
+  references TAX_TYPE (CODE) on delete cascade;
+

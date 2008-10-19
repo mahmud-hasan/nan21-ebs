@@ -1,0 +1,15 @@
+create table BP_BALANCE
+(
+  ID          NUMBER(10) not null,
+  CLIENT_ID   NUMBER(10),
+  BPARTNER_ID NUMBER(10),
+  IINV_ID     NUMBER(10),
+  RINV_ID     NUMBER(10),
+  PAYMENT_ID  NUMBER(10)
+)
+;
+comment on table BP_BALANCE
+  is 'Business partner balance created by validating income/expense documents (Code: BPBALANCE)';
+alter table BP_BALANCE
+  add constraint PK_BPBALANCE primary key (ID);
+

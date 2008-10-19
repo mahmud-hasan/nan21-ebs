@@ -1,0 +1,13 @@
+create table CURRENCY_AVG_RATE
+(
+  ID            NUMBER(10) not null,
+  CRNCYEXCH_ID  NUMBER(10) not null,
+  EXCHANGE_RATE NUMBER(22,6) not null,
+  PERIOD_ID     NUMBER(10) not null
+)
+;
+comment on table CURRENCY_AVG_RATE
+  is 'Exchange rates averages for various periods (Code: CRNCYAVGRATE)';
+alter table CURRENCY_AVG_RATE
+  add constraint PK_CRNCYAVGRATE primary key (ID);
+

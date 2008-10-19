@@ -1,0 +1,9 @@
+create or replace package x_imp as
+
+  procedure exec_UiGui;
+  procedure exec_UiDc;
+  procedure exec_UiDc_field;
+  
+end;
+/
+

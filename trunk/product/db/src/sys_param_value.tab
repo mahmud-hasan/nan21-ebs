@@ -1,0 +1,23 @@
+create table SYS_PARAM_VALUE
+(
+  ID          NUMBER(10) not null,
+  CLIENT_ID   NUMBER(10) not null,
+  PARAM_CODE  VARCHAR2(32) not null,
+  PARAM_VALUE VARCHAR2(400),
+  MODIFIEDON  DATE not null,
+  MODIFIEDBY  VARCHAR2(16) not null
+)
+;
+comment on table SYS_PARAM_VALUE
+  is 'Actual values for the system parameters. These values are applied per client. (Code: SYSPRMVAL)';
+alter table SYS_PARAM_VALUE
+  add constraint PK_SYSPRMVAL primary key (ID);
+alter table SYS_PARAM_VALUE
+  add constraint UK_SYSPRMVAL unique (CLIENT_ID, PARAM_CODE);
+alter table SYS_PARAM_VALUE
+  add constraint FK_SYSPRMVAL_CLIENT foreign key (CLIENT_ID)
+  references CLIENT (ID);
+alter table SYS_PARAM_VALUE
+  add constraint FK_SYSPRMVAL_SYSPARAM foreign key (PARAM_CODE)
+  references SYS_PARAM (CODE);
+

@@ -1,0 +1,29 @@
+create table CITY
+(
+  ID           NUMBER(10) not null,
+  COUNTRY_CODE VARCHAR2(16) not null,
+  REGION_CODE  VARCHAR2(16) not null,
+  NAME         VARCHAR2(64) not null,
+  AREA_CODE    VARCHAR2(32),
+  POSTAL_CODE  VARCHAR2(32),
+  ACTIVE       CHAR(1) default 'Y' not null,
+  CREATEDON    DATE not null,
+  CREATEDBY    VARCHAR2(16) not null,
+  MODIFIEDON   DATE not null,
+  MODIFIEDBY   VARCHAR2(16) not null,
+  CODE         VARCHAR2(32) not null
+)
+;
+comment on table CITY
+  is 'Geographical base data definition, cities (Code: CITY)';
+alter table CITY
+  add constraint PK_CITY primary key (ID);
+alter table CITY
+  add constraint UK_CITY unique (COUNTRY_CODE, REGION_CODE, CODE);
+alter table CITY
+  add constraint FK_CITY_COUNTRY foreign key (COUNTRY_CODE)
+  references COUNTRY (CODE);
+alter table CITY
+  add constraint FK_CITY_REGION foreign key (COUNTRY_CODE, REGION_CODE)
+  references REGION (COUNTRY_CODE, CODE);
+

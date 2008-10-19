@@ -1,0 +1,11 @@
+create table SYS_PARAM_GROUP
+(
+  CODE VARCHAR2(16) not null,
+  NAME VARCHAR2(64) not null
+)
+;
+comment on table SYS_PARAM_GROUP
+  is 'System parameter groups (Code: SYSPARAMGRP)';
+alter table SYS_PARAM_GROUP
+  add constraint UK_SYSPARAMGRP primary key (CODE);
+

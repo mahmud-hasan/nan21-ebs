@@ -1,0 +1,20 @@
+create table SYS_PARAM
+(
+  ID               NUMBER(10) not null,
+  CODE             VARCHAR2(32) not null,
+  NAME             VARCHAR2(128) not null,
+  DESCRIPTION      VARCHAR2(4000) not null,
+  SYSPARAMGRP_CODE VARCHAR2(16) not null,
+  CREATEDON        DATE not null,
+  CREATEDBY        VARCHAR2(16) not null,
+  MODIFIEDON       DATE not null,
+  MODIFIEDBY       VARCHAR2(16) not null
+)
+;
+comment on table SYS_PARAM
+  is 'System parameters (Code: SYSPARAM)';
+alter table SYS_PARAM
+  add constraint PK_SYSPARAM primary key (ID);
+alter table SYS_PARAM
+  add constraint UK_SYSPARAM unique (CODE);
+

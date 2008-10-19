@@ -1,0 +1,11 @@
+create table EXPENSESHEET
+(
+  ID        NUMBER(10) not null,
+  CLIENT_ID NUMBER(10) not null
+)
+;
+comment on table EXPENSESHEET
+  is 'Expense sheet (Code: EXPSHEET)';
+alter table EXPENSESHEET
+  add constraint PK_EXPSHEET primary key (ID);
+

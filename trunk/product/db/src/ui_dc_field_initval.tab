@@ -1,0 +1,32 @@
+create table UI_DC_FIELD_INITVAL
+(
+  ID            NUMBER(10) not null,
+  UIDC_CODE     VARCHAR2(16) not null,
+  FIELD_NAME    VARCHAR2(64) not null,
+  FIELD_VALUE   VARCHAR2(255) not null,
+  VALUE_TYPE    VARCHAR2(16) not null,
+  CREATEDON     DATE default sysdate not null,
+  CREATEDBY     VARCHAR2(16) default user not null,
+  MODIFIEDON    DATE default sysdate not null,
+  MODIFIEDBY    VARCHAR2(16) default user not null,
+  ACTIVE        CHAR(1) default 'N' not null,
+  APPLY_TO_USER VARCHAR2(16)
+)
+;
+comment on table UI_DC_FIELD_INITVAL
+  is 'Default initial values for data-control fields (Code: UIFLDINITVAL)';
+comment on column UI_DC_FIELD_INITVAL.VALUE_TYPE
+  is 'Specifies how to evaluate the FIELD_VALUE: ''SQL'' - sql statement; ''VALUE'' - direct value';
+comment on column UI_DC_FIELD_INITVAL.APPLY_TO_USER
+  is 'If set , this default value applies only for this user';
+alter table UI_DC_FIELD_INITVAL
+  add constraint PK_UIFLDINITVAL primary key (ID);
+alter table UI_DC_FIELD_INITVAL
+  add constraint UK_UIFLDINITVAL unique (UIDC_CODE, FIELD_NAME);
+alter table UI_DC_FIELD_INITVAL
+  add constraint FK_UIFLDINITVAL_UIDC foreign key (UIDC_CODE)
+  references UI_DC (CODE);
+alter table UI_DC_FIELD_INITVAL
+  add constraint CHK_UIFLDINITVAL_ACTIVE
+  check (ACTIVE IN ('Y','N'));
+

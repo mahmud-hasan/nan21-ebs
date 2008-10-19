@@ -1,0 +1,20 @@
+create table BANK
+(
+  ID          NUMBER(10) not null,
+  CODE        VARCHAR2(16) not null,
+  NAME        VARCHAR2(255) not null,
+  SWIFTCODE   VARCHAR2(32),
+  LOCATION_ID NUMBER(10),
+  CREATEDON   DATE not null,
+  CREATEDBY   VARCHAR2(16) not null,
+  MODIFIEDON  DATE not null,
+  MODIFIEDBY  VARCHAR2(16) not null
+)
+;
+comment on table BANK
+  is 'Banks (Code: BANK)';
+alter table BANK
+  add constraint PK_BANK primary key (ID);
+alter table BANK
+  add constraint UK_BANK unique (CODE);
+

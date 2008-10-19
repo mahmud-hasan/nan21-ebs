@@ -1,0 +1,23 @@
+create table PROJECT_ISSUE_CMP_ASSOC
+(
+  ID               NUMBER(10) not null,
+  PROJECT_ISSUE_ID NUMBER(10) not null,
+  CMP_NAME         VARCHAR2(255) not null,
+  CMP_LOCATION     VARCHAR2(255),
+  CMP_VERSION      VARCHAR2(16)
+)
+;
+comment on table PROJECT_ISSUE_CMP_ASSOC
+  is 'Project issues, component association. Stores the new or changed components (Code: PRJISSCMPASC) ';
+comment on column PROJECT_ISSUE_CMP_ASSOC.CMP_NAME
+  is 'Component name (file name)';
+comment on column PROJECT_ISSUE_CMP_ASSOC.CMP_LOCATION
+  is 'Component location, svn, storage etc';
+comment on column PROJECT_ISSUE_CMP_ASSOC.CMP_VERSION
+  is 'Component version number';
+alter table PROJECT_ISSUE_CMP_ASSOC
+  add constraint PK_PRJISSCMPASC primary key (ID);
+alter table PROJECT_ISSUE_CMP_ASSOC
+  add constraint FK_PRJISSCMPASC_PRJISS foreign key (PROJECT_ISSUE_ID)
+  references PROJECT_ISSUE (ID);
+

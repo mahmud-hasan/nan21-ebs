@@ -1,0 +1,15 @@
+create table PROJECT_CMP_TYPE
+(
+  ID         NUMBER(10) not null,
+  PROJECT_ID NUMBER(10) not null,
+  CODE       VARCHAR2(16) not null,
+  NAME       VARCHAR2(32) not null
+)
+;
+comment on table PROJECT_CMP_TYPE
+  is 'Project component types (Code: PRJCMPTYP)';
+alter table PROJECT_CMP_TYPE
+  add constraint PK_PRJCMPTYP primary key (ID);
+alter table PROJECT_CMP_TYPE
+  add constraint UK_PRJCMPTYP unique (PROJECT_ID, CODE);
+

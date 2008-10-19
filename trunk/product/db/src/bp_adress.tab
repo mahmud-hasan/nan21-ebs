@@ -1,0 +1,39 @@
+create table BP_ADRESS
+(
+  ID           NUMBER(10) not null,
+  BPARTNER_ID  NUMBER(10) not null,
+  COUNTRY_CODE VARCHAR2(16),
+  REGION_CODE  VARCHAR2(16),
+  CITY         VARCHAR2(255),
+  CITY_ID      NUMBER(10),
+  STREET       VARCHAR2(255),
+  STREET_ID    NUMBER(10),
+  NO           VARCHAR2(32),
+  BUILDING     VARCHAR2(32),
+  FLOOR        VARCHAR2(32),
+  APT          VARCHAR2(32),
+  ADRESS_TYPE  VARCHAR2(16),
+  NOTES        VARCHAR2(255),
+  ENTRANCE     VARCHAR2(32),
+  IS_BILLING   CHAR(1),
+  IS_DELIVERY  CHAR(1),
+  NAME         VARCHAR2(32) not null,
+  CREATEDON    DATE default sysdate,
+  CREATEDBY    VARCHAR2(16),
+  MODIFIEDON   DATE,
+  MODIFIEDBY   VARCHAR2(16),
+  ZIP          VARCHAR2(16),
+  ADRESS       VARCHAR2(255),
+  IS_DETAILED  CHAR(1) default 'N'
+)
+;
+comment on table BP_ADRESS
+  is 'Business partner adress info (Code: BPADR)';
+comment on column BP_ADRESS.ADRESS_TYPE
+  is 'Adress types: D (default), B (billing), S (shipping), M (mailing), O(other) ';
+alter table BP_ADRESS
+  add constraint PK_BPADR primary key (ID);
+alter table BP_ADRESS
+  add constraint FK_BPADR_BP foreign key (BPARTNER_ID)
+  references BPARTNER (ID) on delete cascade;
+

@@ -1,0 +1,11 @@
+create table PERSON
+(
+  ID          NUMBER(10) not null,
+  BPARTNER_ID NUMBER(10)
+)
+;
+comment on table PERSON
+  is 'Contact persons (Code: PERS) ';
+alter table PERSON
+  add constraint PK_PERS_ID primary key (ID);
+

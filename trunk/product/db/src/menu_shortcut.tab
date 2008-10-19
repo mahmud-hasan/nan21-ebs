@@ -1,0 +1,26 @@
+create table MENU_SHORTCUT
+(
+  ID           NUMBER(10) not null,
+  OWNER        VARCHAR2(16) not null,
+  TITLE        VARCHAR2(64) not null,
+  LINK         VARCHAR2(32),
+  MENUITEM_ID  NUMBER(10),
+  MENUSHRCT_ID NUMBER(10),
+  POSITION     NUMBER(10) default 1 not null,
+  CREATEDON    DATE not null,
+  CREATEDBY    VARCHAR2(16) not null,
+  MODIFIEDON   DATE not null,
+  MODIFIEDBY   VARCHAR2(16) not null
+)
+;
+comment on table MENU_SHORTCUT
+  is 'Menu shortcuts created by user. Can be links or folders  (Code: MENUSHRCT)';
+comment on column MENU_SHORTCUT.OWNER
+  is 'User code, owner of this shortcut';
+comment on column MENU_SHORTCUT.LINK
+  is 'Code of the UI component, if not set this is a folder';
+comment on column MENU_SHORTCUT.MENUSHRCT_ID
+  is 'Parent folder';
+alter table MENU_SHORTCUT
+  add constraint PK_MENUSHRCT primary key (ID);
+

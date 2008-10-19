@@ -1,0 +1,21 @@
+create table UI_DICTIONARY
+(
+  ID            NUMBER(10) not null,
+  UIDC_CODE     VARCHAR2(16),
+  MSG_TYPE      VARCHAR2(16),
+  MSG_CODE      VARCHAR2(64),
+  MAINTAINED_BY VARCHAR2(16),
+  CREATEDON     DATE,
+  CREATEDBY     VARCHAR2(16),
+  MODIFIEDON    DATE,
+  MODIFIEDBY    VARCHAR2(16),
+  DEFAULT_VALUE VARCHAR2(400)
+)
+;
+comment on table UI_DICTIONARY
+  is 'Dictionary for ui elements translations (Code: UIDICT)';
+comment on column UI_DICTIONARY.DEFAULT_VALUE
+  is 'Default translation coming from development system. ';
+alter table UI_DICTIONARY
+  add constraint PK_UIDICT primary key (ID);
+

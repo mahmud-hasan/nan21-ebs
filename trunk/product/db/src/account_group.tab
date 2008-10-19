@@ -1,0 +1,18 @@
+create table ACCOUNT_GROUP
+(
+  ID           NUMBER(10) not null,
+  ACCSCHEMA_ID NUMBER(10) not null,
+  CODE         VARCHAR2(4) not null,
+  NAME         VARCHAR2(32) not null
+)
+;
+comment on table ACCOUNT_GROUP
+  is 'Account groups (Code: ACCTGRP)';
+alter table ACCOUNT_GROUP
+  add constraint PK_ACCTGRP primary key (ID);
+alter table ACCOUNT_GROUP
+  add constraint UK_ACCTGRP unique (ACCSCHEMA_ID, CODE);
+alter table ACCOUNT_GROUP
+  add constraint FK_ACCTGRP_ACCSCHEMA foreign key (ACCSCHEMA_ID)
+  references ACC_SCHEMA (ID);
+

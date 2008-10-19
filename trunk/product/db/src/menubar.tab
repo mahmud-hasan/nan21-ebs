@@ -1,0 +1,13 @@
+create table MENUBAR
+(
+  CODE       VARCHAR2(16) not null,
+  NAME       VARCHAR2(32) not null,
+  IS_DEFAULT CHAR(1),
+  POSITION   NUMBER(2)
+)
+;
+comment on table MENUBAR
+  is 'Menubars  (Code: MENUBAR)';
+alter table MENUBAR
+  add constraint PK_MENUBAR primary key (CODE);
+

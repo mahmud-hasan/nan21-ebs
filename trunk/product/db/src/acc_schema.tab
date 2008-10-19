@@ -1,0 +1,20 @@
+create table ACC_SCHEMA
+(
+  ID         NUMBER(10) not null,
+  NAME       VARCHAR2(32) not null,
+  CLIENT_ID  NUMBER(10) not null,
+  CREATEDON  DATE not null,
+  CREATEDBY  VARCHAR2(16) not null,
+  MODIFIEDON DATE not null,
+  MODIFIEDBY VARCHAR2(16) not null,
+  IS_DEFAULT CHAR(1) default 'N' not null
+)
+;
+comment on table ACC_SCHEMA
+  is 'Accounting schema (Code: ACCSCHEMA)';
+alter table ACC_SCHEMA
+  add constraint PK_ACCSCHEMA primary key (ID);
+alter table ACC_SCHEMA
+  add constraint CHK_ACCSCHEMA_DEFAULT
+  check (IS_DEFAULT IN ('Y','N'));
+

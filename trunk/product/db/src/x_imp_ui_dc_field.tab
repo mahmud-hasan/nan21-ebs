@@ -1,0 +1,8 @@
+create table X_IMP_UI_DC_FIELD
+(
+  UIDC_CODE   VARCHAR2(16),
+  NAME        VARCHAR2(32),
+  DESCRIPTION VARCHAR2(400)
+)
+;
+

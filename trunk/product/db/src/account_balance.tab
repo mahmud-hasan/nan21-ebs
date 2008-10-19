@@ -1,0 +1,18 @@
+create table ACCOUNT_BALANCE
+(
+  ID            NUMBER(10) not null,
+  CLIENT_ID     NUMBER(10) not null,
+  ACCSCHEMA_ID  NUMBER(10) not null,
+  ACCPERIOD_ID  NUMBER(10) not null,
+  ACCOUNT       VARCHAR2(32) not null,
+  OPEN_BALANCE  NUMBER(22,6) not null,
+  CLOSE_BALANCE NUMBER(22,6) not null,
+  TOTAL_CR      NUMBER(22,6) not null,
+  TOTAL_DB      NUMBER(22,6) not null
+)
+;
+comment on table ACCOUNT_BALANCE
+  is 'Account balance (Code: ACCTBAL)';
+alter table ACCOUNT_BALANCE
+  add constraint PK_ACCTBAL primary key (ID);
+

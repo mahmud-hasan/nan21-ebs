@@ -1,0 +1,31 @@
+create table UI_DC
+(
+  ID           NUMBER(10) not null,
+  CODE         VARCHAR2(16) not null,
+  NAME         VARCHAR2(64) not null,
+  NBS_STANDARD CHAR(1) default 'N',
+  USER_BUILD   CHAR(1) default 'N',
+  DEPRECATED   CHAR(1) default 'N',
+  DESCRIPTION  VARCHAR2(400),
+  CREATEDON    DATE default sysdate,
+  CREATEDBY    VARCHAR2(16) default user,
+  MODIFIEDON   DATE default sysdate,
+  MODIFIEDBY   VARCHAR2(16) default user
+)
+;
+comment on table UI_DC
+  is 'Basic data components used in user interfaces (Code: UIDC) ';
+alter table UI_DC
+  add constraint PK_UIDC primary key (ID);
+alter table UI_DC
+  add constraint UK_UIDC unique (CODE);
+alter table UI_DC
+  add constraint CHK_UIDC_DEPRECATED
+  check (DEPRECATED IN ('Y','N'));
+alter table UI_DC
+  add constraint CHK_UIDC_NBS_STANDARD
+  check (NBS_STANDARD IN ('Y','N'));
+alter table UI_DC
+  add constraint CHK_UIDC_USER_BUILD
+  check (USER_BUILD IN ('Y','N'));
+

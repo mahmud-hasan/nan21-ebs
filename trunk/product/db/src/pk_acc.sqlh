@@ -1,0 +1,59 @@
+create or replace package pk_acc is
+
+  type accdoc_t is record (  
+     id accounting_doc.id%type
+    ,client_id accounting_doc.client_id%type 
+    ,client_code client.code%type                                         
+    ,accperiod_name accounting_doc.accperiod_name%type
+    ,doc_no accounting_doc.doc_no%type
+    ,doc_date accounting_doc.doc_date%type
+    ,basedoc_type accounting_doc.basedoc_type%type
+    ,basedoc_no accounting_doc.basedoc_no%type
+    ,basedoc_date accounting_doc.basedoc_date%type
+    ,basedoc_id accounting_doc.basedoc_id%type
+    ,notes accounting_doc.notes%type
+    ,is_generated accounting_doc.is_generated%type
+    ,is_inserted accounting_doc.is_inserted%type
+    ,is_posted accounting_doc.is_posted%type
+    ,createdon accounting_doc.createdon%type
+    ,createdby accounting_doc.createdby%type
+    ,modifiedon accounting_doc.modifiedon%type
+    ,modifiedby accounting_doc.modifiedby%type
+    ,postedon accounting_doc.postedon%type
+    ,postedby accounting_doc.postedby%type                                                                                                   
+  );
+  type accdocitem_t is record (
+     id accounting_doc_line.id%type
+    ,accdoc_id accounting_doc_line.accdoc_id%type
+    ,client_id accounting_doc_line.client_id%type
+    ,db_acct accounting_doc_line.db_acct%type
+    ,cr_acct accounting_doc_line.cr_acct%type
+    ,cr_amount accounting_doc_line.cr_amount%type
+    ,db_amount accounting_doc_line.db_amount%type                                             
+    ,currency accounting_doc_line.currency%type
+    ,xrate accounting_doc_line.xrate%type
+    ,createdon accounting_doc_line.createdon%type
+    ,createdby accounting_doc_line.createdby%type
+    ,modifiedon accounting_doc_line.modifiedon%type
+    ,modifiedby accounting_doc_line.modifiedby%type
+    ,notes accounting_doc_line.notes%type
+    ,is_generated accounting_doc_line.is_generated%type
+    ,orig_amount accounting_doc_line.orig_amount%type
+    ,orig_currency accounting_doc_line.orig_currency%type 
+  );
+ 
+ function is_posted(p_accdoc_id in number) return boolean;
+ function get_accschema_prop_value(p_accschema_id in number, p_property_name in varchar2) return varchar2;
+ function get_refund_payed_tax_acct(p_id in number) return varchar2;
+  
+ procedure gen_accdoc(pr_accdoc in out accdoc_t);
+ procedure check_if_accperiod_valid(p_accperiod in varchar2, p_client_id in number, p_date in date); 
+ 
+ procedure gen_accdoc_item(pr_accdocitem in out accdocitem_t);
+ function get_def_accschema_id(p_client_id in number ) return number;
+ 
+ procedure post_accdoc(p_accdoc_id in number, p_posting_date in date);
+  
+end;
+/
+

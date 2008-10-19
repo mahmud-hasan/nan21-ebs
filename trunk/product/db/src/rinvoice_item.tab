@@ -1,0 +1,34 @@
+create table RINVOICE_ITEM
+(
+  ID             NUMBER(10) not null,
+  RINV_ID        NUMBER(10) not null,
+  PROD_ID        NUMBER(10),
+  QUANTITY       NUMBER(22,6),
+  QUANTITY_UNIT  VARCHAR2(16),
+  NET_AMOUNT     NUMBER(22,6) not null,
+  PRICE          NUMBER(22,6),
+  CREATEDON      DATE not null,
+  CREATEDBY      VARCHAR2(16) not null,
+  MODIFIEDON     DATE not null,
+  MODIFIEDBY     VARCHAR2(16) not null,
+  RINVITEM_ID    NUMBER(10),
+  NOTES          VARCHAR2(400),
+  TAX_ID         NUMBER(10),
+  TAX_RATE       NUMBER(22,6),
+  TAX_AMOUNT     NUMBER(22,6),
+  CURRENCY       VARCHAR2(4),
+  CURRENCY_XRATE NUMBER(22,6),
+  PURCHASE_ACCT  VARCHAR2(32) not null,
+  ORIG_AMOUNT    NUMBER(22,6),
+  ORIG_CURRENCY  VARCHAR2(4),
+  TAX_AMOUNT_NR  NUMBER(22,6)
+)
+;
+comment on table RINVOICE_ITEM
+  is 'Received invoice lines (Code: RINVITEM)';
+alter table RINVOICE_ITEM
+  add constraint PK_RINVITEM primary key (ID);
+alter table RINVOICE_ITEM
+  add constraint FK_RINVITEM_UOM foreign key (QUANTITY_UNIT)
+  references UOM (CODE);
+

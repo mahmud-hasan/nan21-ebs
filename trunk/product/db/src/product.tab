@@ -1,0 +1,34 @@
+create table PRODUCT
+(
+  ID              NUMBER(10) not null,
+  CLIENT_ID       NUMBER(10),
+  CODE            VARCHAR2(32) not null,
+  NAME            VARCHAR2(128) not null,
+  DESCRIPTION     VARCHAR2(4000),
+  PROD_TYPE       VARCHAR2(8),
+  SUMMARY         CHAR(1) not null,
+  STORABLE        CHAR(1) not null,
+  CREATEDON       DATE not null,
+  CREATEDBY       VARCHAR2(16) not null,
+  MODIFIEDON      DATE not null,
+  MODIFIEDBY      VARCHAR2(16) not null,
+  UOM_CODE        VARCHAR2(16) not null,
+  VOLUME          NUMBER(10),
+  WEIGHT          NUMBER(10),
+  PRODCATEG_ID    NUMBER(10) not null,
+  FOR_SALE        CHAR(1) default 'N',
+  EXPENSE_ACCOUNT VARCHAR2(16),
+  REVENUE_ACCOUNT VARCHAR2(16)
+)
+;
+comment on table PRODUCT
+  is 'Product master data (Code: PROD)';
+alter table PRODUCT
+  add constraint PK_PROD primary key (ID);
+alter table PRODUCT
+  add constraint CK_PROD_STORABLE
+  check (STORABLE IN ('Y','N'));
+alter table PRODUCT
+  add constraint CK_PROD_SUMMARY
+  check (SUMMARY IN ('Y','N'));
+

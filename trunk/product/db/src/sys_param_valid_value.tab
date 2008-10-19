@@ -1,0 +1,18 @@
+create table SYS_PARAM_VALID_VALUE
+(
+  ID         NUMBER(10) not null,
+  PARAM_CODE VARCHAR2(32) not null,
+  VALUE      VARCHAR2(255) not null,
+  NOTES      VARCHAR2(400) not null
+)
+;
+comment on table SYS_PARAM_VALID_VALUE
+  is 'Allowed valid values for system parameters (Code: PARAMVLDVAL)';
+alter table SYS_PARAM_VALID_VALUE
+  add constraint PK_PARAMVLDVAL primary key (ID);
+alter table SYS_PARAM_VALID_VALUE
+  add constraint UK_PARAMVLDVAL unique (PARAM_CODE, VALUE);
+alter table SYS_PARAM_VALID_VALUE
+  add constraint FK_PARAMVLDVAL_SYSPARAM foreign key (PARAM_CODE)
+  references SYS_PARAM (CODE);
+

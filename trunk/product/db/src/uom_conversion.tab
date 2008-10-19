@@ -1,0 +1,26 @@
+create table UOM_CONVERSION
+(
+  ID                NUMBER(10) not null,
+  UOM_FROM          VARCHAR2(16) not null,
+  UOM_TO            VARCHAR2(16) not null,
+  CONVERSION_FACTOR NUMBER(22) not null,
+  CREATEDON         DATE,
+  CREATEDBY         VARCHAR2(16),
+  MODIFIEDON        DATE,
+  MODIFIEDBY        VARCHAR2(16),
+  CONVERSION_TYPE   CHAR(1)
+)
+;
+comment on table UOM_CONVERSION
+  is 'Conversion table between measuring units (Code: UOMCONV)';
+alter table UOM_CONVERSION
+  add constraint PK_UOMCONV primary key (ID);
+alter table UOM_CONVERSION
+  add constraint UK_UOMCONV unique (UOM_FROM, UOM_TO);
+alter table UOM_CONVERSION
+  add constraint FK_UOM_CONVERSION_1 foreign key (UOM_FROM)
+  references UOM (CODE);
+alter table UOM_CONVERSION
+  add constraint FK_UOM_CONVERSION_2 foreign key (UOM_TO)
+  references UOM (CODE);
+

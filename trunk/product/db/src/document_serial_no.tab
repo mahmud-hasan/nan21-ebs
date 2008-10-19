@@ -1,0 +1,15 @@
+create table DOCUMENT_SERIAL_NO
+(
+  ID           NUMBER(10) not null,
+  CLIENT_ID    NUMBER(10) not null,
+  DOCSER_ID    NUMBER(10) not null,
+  DOCSERRNG_ID NUMBER(10) not null,
+  VALUE        NUMBER(10) not null,
+  IS_ALLOCATED CHAR(1) default 'N' not null
+)
+;
+comment on table DOCUMENT_SERIAL_NO
+  is 'Detailed document numbers for a certain serial (DOCSERNO)';
+alter table DOCUMENT_SERIAL_NO
+  add constraint PK_DOCSERNO primary key (ID);
+

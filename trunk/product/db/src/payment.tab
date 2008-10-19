@@ -1,0 +1,65 @@
+create table PAYMENT
+(
+  ID               NUMBER(10) not null,
+  CLIENT_ID        NUMBER(10) not null,
+  PAYDOCTYPE_CODE  VARCHAR2(16) not null,
+  DOC_NO           VARCHAR2(32),
+  DOC_DATE         DATE,
+  BPARTNER_FROM    NUMBER(10) not null,
+  BPARTNER_TO      NUMBER(10) not null,
+  IS_PAYABLE       CHAR(1) default 'N' not null,
+  IS_RECEIVABLE    CHAR(1) default 'N' not null,
+  AMOUNT           NUMBER(22,6),
+  CURRENCY         VARCHAR2(4),
+  NOTES            VARCHAR2(400),
+  CREATEDON        DATE default sysdate not null,
+  CREATEDBY        VARCHAR2(16) default user not null,
+  MODIFIEDON       DATE default sysdate not null,
+  MODIFIEDBY       VARCHAR2(16) default user not null,
+  PAYMNT_ACCT      VARCHAR2(16),
+  IS_INSERTED      CHAR(1) default 'N' not null,
+  IS_GENERATED     CHAR(1) default 'N' not null,
+  IS_APPROVED      CHAR(1) default 'N' not null,
+  IS_POSTED        CHAR(1) default 'N' not null,
+  ACCDOC_ID        NUMBER(10),
+  IS_PREPAYMENT    CHAR(1) default 'N' not null,
+  PREPAY_ACCT      VARCHAR2(16),
+  RINV_ID          NUMBER(10),
+  IS_MULTI_PAYMENT CHAR(1) default 'N',
+  IINV_ID          NUMBER(10),
+  POSTEDON         DATE,
+  POSTEDBY         VARCHAR2(16)
+)
+;
+comment on table PAYMENT
+  is 'Payment documents. Includes payables and receivables [Code: PAYMENT]';
+alter table PAYMENT
+  add constraint PK_PAYMENT primary key (ID);
+alter table PAYMENT
+  add constraint FK_PAYMENT_ACCOUNT_1 foreign key (CLIENT_ID, PAYMNT_ACCT)
+  references ACCOUNT (CLIENT_ID, ACCOUNT);
+alter table PAYMENT
+  add constraint FK_PAYMENT_ACCOUNT_2 foreign key (CLIENT_ID, PREPAY_ACCT)
+  references ACCOUNT (CLIENT_ID, ACCOUNT);
+alter table PAYMENT
+  add constraint FK_PAYMENT_CLIENT foreign key (CLIENT_ID)
+  references CLIENT (ID);
+alter table PAYMENT
+  add constraint FK_PAYMENT_IINV foreign key (IINV_ID)
+  references IINVOICE (ID);
+alter table PAYMENT
+  add constraint FK_PAYMENT_RINV foreign key (RINV_ID)
+  references RINVOICE (ID);
+alter table PAYMENT
+  add constraint CHK_PAYMENT_IS_MULTI_PAYMENT
+  check (IS_MULTI_PAYMENT IN ('Y','N'));
+alter table PAYMENT
+  add constraint CHK_PAYMENT_IS_PAYABLE
+  check (IS_PAYABLE IN ('Y','N'));
+alter table PAYMENT
+  add constraint CHK_PAYMENT_IS_PREPAYMENT
+  check (IS_PREPAYMENT IN ('Y','N'));
+alter table PAYMENT
+  add constraint CHK_PAYMENT_IS_RECEIVABLE
+  check (IS_RECEIVABLE IN ('Y','N'));
+

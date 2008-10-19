@@ -1,0 +1,24 @@
+create table ACC_SCHEMA_ACCT
+(
+  ID             NUMBER(10) not null,
+  ACCSCHEMA_ID   NUMBER(10) not null,
+  ACCOUNT        VARCHAR2(32) not null,
+  NAME           VARCHAR2(128) not null,
+  PARENT_ACCOUNT VARCHAR2(32),
+  ACCJOURNAL_ID  NUMBER(10) not null,
+  ACCGRP_ID      NUMBER(10) not null
+)
+;
+comment on table ACC_SCHEMA_ACCT
+  is 'Chart of account for a certain accounting schema (Code: ACCSCHACCT)';
+alter table ACC_SCHEMA_ACCT
+  add constraint PK_ACCSCHACCT primary key (ID);
+alter table ACC_SCHEMA_ACCT
+  add constraint UK_ACCSCHACCT unique (ACCSCHEMA_ID, ACCOUNT);
+alter table ACC_SCHEMA_ACCT
+  add constraint FK_ACCSCHACCT_ACCSCHACCT foreign key (ACCSCHEMA_ID, PARENT_ACCOUNT)
+  references ACC_SCHEMA_ACCT (ACCSCHEMA_ID, ACCOUNT);
+alter table ACC_SCHEMA_ACCT
+  add constraint FK_ACCSCHACCT_ACCSCHEMA foreign key (ACCSCHEMA_ID)
+  references ACC_SCHEMA (ID);
+

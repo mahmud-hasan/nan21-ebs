@@ -1,0 +1,19 @@
+create table CURRENCY_XRATE
+(
+  ID            NUMBER(10) not null,
+  CURRENCY_FROM VARCHAR2(4) not null,
+  XRATE         NUMBER(22,6) not null,
+  CREATEDON     DATE not null,
+  CREATEDBY     VARCHAR2(16) not null,
+  MODIFIEDON    DATE not null,
+  MODIFIEDBY    VARCHAR2(16) not null,
+  VALID_FROM    DATE not null,
+  VALID_TO      DATE,
+  CURRENCY_TO   VARCHAR2(4)
+)
+;
+comment on table CURRENCY_XRATE
+  is 'Exchange rates for the currency exchange pairs (Code: CRNCYXRATE)';
+alter table CURRENCY_XRATE
+  add constraint PK_CRNCYEXCHRATE primary key (ID);
+

@@ -1,0 +1,14 @@
+create table SYS_USER_LOGIN
+(
+  ID        NUMBER(10) not null,
+  USERNAME  VARCHAR2(16) not null,
+  LOGIN     DATE not null,
+  LOGOUT    DATE,
+  IP_ADRESS VARCHAR2(32) not null
+)
+;
+comment on table SYS_USER_LOGIN
+  is 'User acces to application. Is recorded when the user autenthicates (Code: USRLOG)';
+alter table SYS_USER_LOGIN
+  add constraint PK_USRLOG primary key (ID);
+

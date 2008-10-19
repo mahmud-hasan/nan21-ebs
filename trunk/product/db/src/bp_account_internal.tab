@@ -1,0 +1,21 @@
+create table BP_ACCOUNT_INTERNAL
+(
+  ID              NUMBER(10) not null,
+  CLIENT_ID       NUMBER(10) not null,
+  BPARTNER_ID     NUMBER(10) not null,
+  ACCSCHEMA_ID    NUMBER(10) not null,
+  CREATEDON       DATE not null,
+  CREATEDBY       VARCHAR2(16) not null,
+  MODIFIEDON      DATE not null,
+  MODIFIEDBY      VARCHAR2(16) not null,
+  ACCT_EXPENSE    VARCHAR2(32) not null,
+  ACCT_PREPAYMENT VARCHAR2(32) not null
+)
+;
+comment on table BP_ACCOUNT_INTERNAL
+  is 'Accounts for internal hierarchical units acting as business partner (Code: BPACCINT)';
+alter table BP_ACCOUNT_INTERNAL
+  add constraint PK_BPACCINT primary key (ID);
+alter table BP_ACCOUNT_INTERNAL
+  add constraint UK_BPACCINT unique (CLIENT_ID, BPARTNER_ID, ACCSCHEMA_ID);
+

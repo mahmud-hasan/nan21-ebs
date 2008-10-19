@@ -1,0 +1,47 @@
+create table PROJECT_ISSUE
+(
+  ID                       NUMBER(10) not null,
+  PROJECT_ID               NUMBER(10) not null,
+  TITLE                    VARCHAR2(255) not null,
+  ISSUE_TYPE_CODE          VARCHAR2(16) not null,
+  SEVERITY_CODE            VARCHAR2(16),
+  AFF_CMP_TYPE_CODE        VARCHAR2(16),
+  AFF_CMP                  VARCHAR2(64),
+  AFF_PROJECT_RELEASE_CODE VARCHAR2(16),
+  STATUS_CODE              VARCHAR2(16),
+  IS_CLOSED                CHAR(1) default 'N' not null,
+  DESCRIPTION              VARCHAR2(4000),
+  CREATEDON                DATE not null,
+  CREATEDBY                VARCHAR2(16) not null,
+  MODIFIEDON               DATE not null,
+  MODIFIEDBY               VARCHAR2(16) not null,
+  PRIORITY_CODE            VARCHAR2(16),
+  ASSIGNED_TO              VARCHAR2(16),
+  PLAN_STARTDATE           DATE,
+  PLAN_ENDDATE             DATE,
+  ACT_STARTDATE            DATE,
+  ACT_ENDDATE              DATE,
+  ESTIMATE_EFFORT          NUMBER(22,6),
+  ACTUAL_EFFORT            NUMBER(22,6),
+  EFFORT_UNIT              VARCHAR2(16)
+)
+;
+comment on table PROJECT_ISSUE
+  is '(Code: PRJISSUE)';
+comment on column PROJECT_ISSUE.PLAN_STARTDATE
+  is 'Planned start date';
+comment on column PROJECT_ISSUE.PLAN_ENDDATE
+  is 'Planned end date';
+comment on column PROJECT_ISSUE.ACT_STARTDATE
+  is 'Actual sart date';
+comment on column PROJECT_ISSUE.ACT_ENDDATE
+  is 'Actual end date';
+alter table PROJECT_ISSUE
+  add constraint PK_PRJISSUE primary key (ID);
+alter table PROJECT_ISSUE
+  add constraint FK_PRJISSUE_PROJECT foreign key (PROJECT_ID)
+  references PROJECT (ID);
+alter table PROJECT_ISSUE
+  add constraint CHK_PRJISSUE_IS_CLOSED
+  check (IS_CLOSED IN ('Y','N'));
+

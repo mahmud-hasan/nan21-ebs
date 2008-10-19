@@ -1,0 +1,24 @@
+create table PROJECT
+(
+  ID          NUMBER(10) not null,
+  NAME        VARCHAR2(64) not null,
+  CLIENT_ID   NUMBER(10) not null,
+  STATUS_CODE VARCHAR2(16) not null,
+  CREATEDON   DATE not null,
+  CREATEDBY   VARCHAR2(16) not null,
+  MODIFIEDON  DATE not null,
+  MODIFIEDBY  VARCHAR2(16) not null,
+  TYPE_CODE   VARCHAR2(16) not null
+)
+;
+comment on table PROJECT
+  is 'Projects (Code: PROJECT)';
+alter table PROJECT
+  add constraint PK_PROJECT primary key (ID);
+alter table PROJECT
+  add constraint FK_PROJECT_CLIENT foreign key (CLIENT_ID)
+  references CLIENT (ID);
+alter table PROJECT
+  add constraint FK_PROJECT_PRJSTS foreign key (STATUS_CODE)
+  references PROJECT_STATUS (CODE);
+

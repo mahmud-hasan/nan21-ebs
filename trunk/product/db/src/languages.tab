@@ -1,0 +1,18 @@
+create table LANGUAGES
+(
+  ID     NUMBER(10) not null,
+  CODE   VARCHAR2(16) not null,
+  NAME   VARCHAR2(32) not null,
+  ACTIVE CHAR(1) default 'N' not null
+)
+;
+comment on table LANGUAGES
+  is 'Languages definition (Code: LANG)';
+alter table LANGUAGES
+  add constraint PK_LANG primary key (ID);
+alter table LANGUAGES
+  add constraint UK_LANG unique (CODE);
+alter table LANGUAGES
+  add constraint CHK_LANG_ACTIVE
+  check (ACTIVE IN ('Y','N'));
+

@@ -1,0 +1,23 @@
+create table PRODUCT_CATEGORY_ACCOUNT
+(
+  ID            NUMBER(10) not null,
+  PRODCATEG_ID  NUMBER(10) not null,
+  CLIENT_ID     NUMBER(10) not null,
+  ACCSCHEMA_ID  NUMBER(10) not null,
+  ACCOUNT_NAME  VARCHAR2(32) not null,
+  ACCOUNT_VALUE VARCHAR2(32) not null,
+  CREATEDON     DATE not null,
+  CREATEDBY     VARCHAR2(16) not null,
+  MODIFIEDON    DATE not null,
+  MODIFIEDBY    VARCHAR2(16) not null,
+  ACTIVE        CHAR(1) not null
+)
+;
+comment on table PRODUCT_CATEGORY_ACCOUNT
+  is 'Product category accounts (Code: PRODCATEGACC)';
+alter table PRODUCT_CATEGORY_ACCOUNT
+  add constraint PK_PRODCATEGACC primary key (ID);
+alter table PRODUCT_CATEGORY_ACCOUNT
+  add constraint CK_PRODCATEGACC_ACTIVE
+  check (ACTIVE IN ('N','Y'));
+

@@ -1,0 +1,43 @@
+create table ACCOUNT
+(
+  ID             NUMBER(10) not null,
+  CLIENT_ID      NUMBER(10) default 1 not null,
+  ACCOUNT        VARCHAR2(32) not null,
+  NAME           VARCHAR2(128) not null,
+  SUMMARY        CHAR(1),
+  PARENT_ACCOUNT VARCHAR2(32),
+  CURRENCY       VARCHAR2(4),
+  DESCRIPTION    VARCHAR2(255),
+  ACTIVE         CHAR(1) default 'N' not null,
+  CREATEDON      DATE not null,
+  CREATEDBY      VARCHAR2(16) not null,
+  MODIFIEDON     DATE not null,
+  MODIFIEDBY     VARCHAR2(16) not null,
+  ACCJOURNAL_ID  NUMBER(10),
+  ACCGRP_ID      NUMBER(10),
+  ACCSCHEMA_ID   NUMBER(10) default 1 not null
+)
+;
+comment on table ACCOUNT
+  is 'Accounts chart (Code: ACCOUNT)';
+comment on column ACCOUNT.ACCOUNT
+  is 'Account code';
+comment on column ACCOUNT.NAME
+  is 'Account name';
+comment on column ACCOUNT.SUMMARY
+  is 'Indicates if this is a summary account (i.e. cannot have balances or be posted to) ';
+comment on column ACCOUNT.PARENT_ACCOUNT
+  is 'Parent account code';
+comment on column ACCOUNT.ACTIVE
+  is 'Is in use';
+alter table ACCOUNT
+  add constraint PK_ACCOUNT primary key (ID);
+alter table ACCOUNT
+  add constraint UK_ACCOUNT unique (CLIENT_ID, ACCOUNT);
+alter table ACCOUNT
+  add constraint FK_ACCOUNT_ACCSCHEMA foreign key (ACCSCHEMA_ID)
+  references ACC_SCHEMA (ID);
+alter table ACCOUNT
+  add constraint CK_ACCOUNT_SUMMARY
+  check (SUMMARY IN ('N','Y'));
+

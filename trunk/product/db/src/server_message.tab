@@ -1,0 +1,13 @@
+create table SERVER_MESSAGE
+(
+  ID   NUMBER(10) not null,
+  CODE VARCHAR2(64) not null
+)
+;
+comment on table SERVER_MESSAGE
+  is 'Server messages (Code: SRVMSG)';
+alter table SERVER_MESSAGE
+  add constraint PK_SRVMSG primary key (ID);
+alter table SERVER_MESSAGE
+  add constraint UK_SRVMSG unique (CODE);
+
