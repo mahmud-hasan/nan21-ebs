@@ -20,6 +20,10 @@ create table ACCOUNT
 ;
 comment on table ACCOUNT
   is 'Accounts chart (Code: ACCOUNT)';
+comment on column ACCOUNT.ID
+  is 'Unique account identifier';
+comment on column ACCOUNT.CLIENT_ID
+  is 'Client unique identifier';
 comment on column ACCOUNT.ACCOUNT
   is 'Account code';
 comment on column ACCOUNT.NAME
@@ -28,6 +32,8 @@ comment on column ACCOUNT.SUMMARY
   is 'Indicates if this is a summary account (i.e. cannot have balances or be posted to) ';
 comment on column ACCOUNT.PARENT_ACCOUNT
   is 'Parent account code';
+comment on column ACCOUNT.DESCRIPTION
+  is 'Notes aboutn account';
 comment on column ACCOUNT.ACTIVE
   is 'Is in use';
 alter table ACCOUNT
