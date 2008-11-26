@@ -1,0 +1,24 @@
+create table MENUITEM_ROLE
+(
+  ID          NUMBER(10) not null,
+  MENUITEM_ID NUMBER(10) not null,
+  ROLE_NAME   VARCHAR2(16) not null,
+  CREATEDON   DATE default sysdate not null,
+  CREATEDBY   VARCHAR2(16) not null,
+  MODIFIEDON  DATE default sysdate not null,
+  MODIFIEDBY  VARCHAR2(16) not null
+)
+;
+comment on table MENUITEM_ROLE
+  is 'Restricts access to a menuitems only for users having one of the specified  roles. If there is no role set for a certein menu item then it is visible for all users (Code: MENUITEMROLE)';
+alter table MENUITEM_ROLE
+  add constraint PK_MENUITEMROLE primary key (ID);
+alter table MENUITEM_ROLE
+  add constraint UK_MENUITEMROLE unique (MENUITEM_ID, ROLE_NAME);
+alter table MENUITEM_ROLE
+  add constraint FK_MENUITEMROLE_MENUITEM foreign key (MENUITEM_ID)
+  references MENUITEM (ID);
+alter table MENUITEM_ROLE
+  add constraint FK_MENUITEMROLE_ROLE foreign key (ROLE_NAME)
+  references SYS_ROLE (NAME);
+

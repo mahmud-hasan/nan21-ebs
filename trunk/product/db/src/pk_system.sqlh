@@ -1,0 +1,11 @@
+create or replace package pk_system is
+  
+  function has_user_dc_permission(p_dc in varchar2, p_action in varchar2, p_user in varchar2 default pk_session.getUser) return char;
+  procedure init_dc_role_for_role(p_role in varchar2, p_fetch char, p_insert char, p_update char, p_delete char );
+  procedure init_dc_role_for_role(p_role in varchar2 );
+  procedure init_dc_role_for_dc(p_dc in varchar2, p_fetch char, p_insert char, p_update char, p_delete char);
+  procedure init_dc_role_for_dc(p_dc in varchar2 );
+
+end;
+/
+

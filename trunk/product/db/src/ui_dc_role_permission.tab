@@ -1,0 +1,34 @@
+create table UI_DC_ROLE_PERMISSION
+(
+  ID             NUMBER(10) not null,
+  UI_DC          VARCHAR2(16) not null,
+  ROLE_NAME      VARCHAR2(16) not null,
+  FETCH_ALLOWED  CHAR(1) default 'N' not null,
+  INSERT_ALLOWED CHAR(1) default 'N' not null,
+  UPDATE_ALLOWED CHAR(1) default 'N' not null,
+  DELETE_ALLOWED CHAR(1) default 'N' not null,
+  CREATEDON      DATE default sysdate not null,
+  CREATEDBY      VARCHAR2(16) not null,
+  MODIFIEDON     DATE default sysdate not null,
+  MODIFIEDBY     VARCHAR2(16) not null
+)
+;
+comment on table UI_DC_ROLE_PERMISSION
+  is 'Specifies what basic actions is allowed to perform on a data-control a certain role. Any user with that role granted has the same permissions. Covers basic actions, i.e. fetch, insert, update, delete (Code: UIDCROLEPRMS) ';
+alter table UI_DC_ROLE_PERMISSION
+  add constraint PK_UIDCROLEPRMS primary key (ID);
+alter table UI_DC_ROLE_PERMISSION
+  add constraint UK_UIDCROLEPRMS unique (UI_DC, ROLE_NAME);
+alter table UI_DC_ROLE_PERMISSION
+  add constraint CHK_UIDCROLEPRMS_DELETE
+  check (DELETE_ALLOWED IN ('Y','N'));
+alter table UI_DC_ROLE_PERMISSION
+  add constraint CHK_UIDCROLEPRMS_FETCH
+  check (FETCH_ALLOWED IN ('Y','N'));
+alter table UI_DC_ROLE_PERMISSION
+  add constraint CHK_UIDCROLEPRMS_INSERT
+  check (INSERT_ALLOWED IN ('Y','N'));
+alter table UI_DC_ROLE_PERMISSION
+  add constraint CHK_UIDCROLEPRMS_UPDATE
+  check (UPDATE_ALLOWED IN ('Y','N'));
+

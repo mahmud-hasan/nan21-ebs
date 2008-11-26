@@ -1,0 +1,12 @@
+create table USR_DC_LAST_FILTER
+(
+  ID       NUMBER(10) not null,
+  USERNAME VARCHAR2(16) not null,
+  DC_CODE  VARCHAR2(16) not null
+)
+;
+comment on table USR_DC_LAST_FILTER
+  is 'Last filter set by user on a data-control. When reloading a page the filter specified here is applied automatically then called executeQuery  (Code: USRDCLSTFLTR)';
+alter table USR_DC_LAST_FILTER
+  add constraint PK_USRDCLSTFLTR primary key (ID);
+
