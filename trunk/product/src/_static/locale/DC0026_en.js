@@ -3,15 +3,15 @@ DcProperty:{
   Title:"Supplier invoices"
     }
 ,FieldLabel:{ 
-      ACCDOC_ID:"Accounting doc. ID"
-     ,ACCDOC_NAME:"Accdoc"
+      ACCDOC_ID:"Acc. doc id"
+     ,ACCDOC_NAME:"Acc. doc"
      ,ACCT:"Expense acct."
      ,CLIENT_ID:"Client ID"
      ,CLIENT_NAME:"Client"
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created on"
      ,DOC_CURRENCY:"Currency"
-     ,DOC_DATE:"Doc date"
+     ,DOC_DATE:"Date"
      ,DOC_NO:"Doc no"
      ,DOC_TYPE:"Doc type"
      ,DUE_DATE:"Due date"
@@ -38,8 +38,8 @@ DcProperty:{
      ,REF_RINVOICE_NAME:"Ref. doc."
      ,REGISTERED:"Registered"
      ,TOTAL_AMOUNT:"Total amount"
-     ,TOTAL_NET_AMOUNT:"Total net amount"
-     ,TOTAL_TAX_AMOUNT:"Total tax amount"
+     ,TOTAL_NET_AMOUNT:"Net amount"
+     ,TOTAL_TAX_AMOUNT:"Tax amount"
     }
 ,FieldsetTitle:{ 
       Amounts:"Amounts"

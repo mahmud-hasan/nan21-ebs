@@ -10,6 +10,4 @@ DcProperty:{
 ,FieldsetTitle:{ 
     }
   }
-N21.DataComp.DC0049G.prototype.resourceBundle = N21.DataComp.DC0049.prototype.resourceBundle;
-N21.DataComp.DC0049F.prototype.resourceBundle = N21.DataComp.DC0049.prototype.resourceBundle;
 

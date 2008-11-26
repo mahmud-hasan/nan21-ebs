@@ -15,15 +15,14 @@ class LOV0008 extends Controller {
       $sql = "select id, code from client order by 2 ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "CODE"
+      ,"ID"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " CODE:\"".$row["CODE"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

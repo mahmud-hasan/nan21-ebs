@@ -3,7 +3,7 @@ DcProperty:{
   Title:"Projects"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client_id"
+      CLIENT_ID:"Client id"
      ,CLIENT_NAME:"Client"
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created on"
@@ -12,7 +12,7 @@ DcProperty:{
      ,MODIFIEDON:"Modified on"
      ,NAME:"Name"
      ,STATUS_CODE:"Status"
-     ,TYPE_CODE:"Type_code"
+     ,TYPE_CODE:"Type"
     }
 ,FieldsetTitle:{ 
     }

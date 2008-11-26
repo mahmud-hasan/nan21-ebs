@@ -36,12 +36,38 @@
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:4 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ASSETGRP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ASSETGRP_ID",id:"DC0061_QRY_ASSETGRP_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_ID||"Assetgrp_id"})  );
+         this.queryFields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0061_QRY_PRODUCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0061_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0061_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",name:"QRY_CLIENT_CODE",id:"DC0061_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0061_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
+         this.queryFields.add("ASSETGRP_NAME", new N21.DataComp.LOV0040({xtype: "LOV0040",name:"QRY_ASSETGRP_NAME",id:"DC0061_QRY_ASSETGRP_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group"})  );
+         this.queryFields.add("SERIAL_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_SERIAL_NO",id:"DC0061_QRY_SERIAL_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.SERIAL_NO||"Serial_no"})  );
+         this.queryFields.add("IS_ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_ACTIVE",id:"DC0061_QRY_IS_ACTIVE",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_ACTIVE||"Active"})  );
+         this.queryFields.add("IS_DEPRECIATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DEPRECIATED",id:"DC0061_QRY_IS_DEPRECIATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DEPRECIATED||"Depreciated"})  );
+         this.queryFields.add("IS_DISPOSED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DISPOSED",id:"DC0061_QRY_IS_DISPOSED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DISPOSED||"Disposed"})  );
+         this.queryFields.add("IS_OWNED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_OWNED",id:"DC0061_QRY_IS_OWNED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_OWNED||"Owned"})  );
+         this.queryFields.add("IS_INPOSESSION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_INPOSESSION",id:"DC0061_QRY_IS_INPOSESSION",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_INPOSESSION||"In-posession"})  );
+         this.queryFields.add("WITH_DEPRECIATION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_WITH_DEPRECIATION",id:"DC0061_QRY_WITH_DEPRECIATION",width:100,fieldLabel: this.resourceBundle.FieldLabel.WITH_DEPRECIATION||"With_depreciation"})  );
+         this.queryFields.add("DEPREC_MONTHS", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DEPREC_MONTHS",id:"DC0061_QRY_DEPREC_MONTHS",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS||"Deprec. months",style: "text-align:right;"})  );
+         this.queryFields.add("DEPREC_MONTHS_REMAINED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DEPREC_MONTHS_REMAINED",id:"DC0061_QRY_DEPREC_MONTHS_REMAINED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS_REMAINED||"Deprec months remained",style: "text-align:right;"})  );
+         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0061_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
+         this.queryFields.add("INUSE_BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_INUSE_BPARTNER_ID",id:"DC0061_QRY_INUSE_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.INUSE_BPARTNER_ID||"Inuse_bpartner_id"})  );
+  
+       this.queryFieldsVisible = [  "CLIENT_CODE","NAME","ASSETGRP_NAME","SERIAL_NO","IS_ACTIVE","IS_DEPRECIATED","IS_DISPOSED","IS_OWNED","IS_INPOSESSION","WITH_DEPRECIATION","DEPREC_MONTHS","DEPREC_MONTHS_REMAINED" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0061"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0061"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0061"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -75,37 +101,6 @@
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Created by",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ASSETGRP_ID",id:"DC0061_QRY_ASSETGRP_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_ID||"Assetgrp_id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0061_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0061_QRY_PRODUCT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"}
-               ,{xtype: "hidden",name:"QRY_CLIORG_ID",id:"DC0061_QRY_CLIORG_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIORG_ID||"Cliorg_id"}
-               ,{xtype: "hidden",name:"QRY_ID",id:"DC0061_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "LOV0008",name:"QRY_CLIENT_CODE",id:"DC0061_QRY_CLIENT_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"}
-               ,{xtype: "textfield",name:"QRY_NAME",id:"DC0061_QRY_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"}
-               ,{xtype: "LOV0040",name:"QRY_ASSETGRP_NAME",id:"DC0061_QRY_ASSETGRP_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group"}
-               ,{xtype: "numberfield",name:"QRY_QUANTITY",id:"DC0061_QRY_QUANTITY",width:120,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",style: "text-align:right;"}
-               ,{xtype: "textfield",name:"QRY_SERIAL_NO",id:"DC0061_QRY_SERIAL_NO",width:120,fieldLabel: this.resourceBundle.FieldLabel.SERIAL_NO||"Serial_no"}
-               ,{xtype: "textarea",name:"QRY_NOTES",id:"DC0061_QRY_NOTES",width:120,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_ACTIVE",id:"DC0061_QRY_IS_ACTIVE",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_ACTIVE||"Active"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_DEPRECIATED",id:"DC0061_QRY_IS_DEPRECIATED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_DEPRECIATED||"Depreciated"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_DISPOSED",id:"DC0061_QRY_IS_DISPOSED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_DISPOSED||"Disposed"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_OWNED",id:"DC0061_QRY_IS_OWNED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_OWNED||"Owned"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_INPOSESSION",id:"DC0061_QRY_IS_INPOSESSION",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_INPOSESSION||"In-posession"}
-               ,{xtype: "datefield",name:"QRY_LAST_MAINTENANCE_DATE",id:"DC0061_QRY_LAST_MAINTENANCE_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.LAST_MAINTENANCE_DATE||"Last_maintenance_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "datefield",name:"QRY_NEXT_MAINTENENCE_DATE",id:"DC0061_QRY_NEXT_MAINTENENCE_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.NEXT_MAINTENENCE_DATE||"Next_maintenence_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "numberfield",name:"QRY_MAINTENANCE_PLAN_ID",id:"DC0061_QRY_MAINTENANCE_PLAN_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.MAINTENANCE_PLAN_ID||"Maintenance_plan_id",style: "text-align:right;"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_WITH_DEPRECIATION",id:"DC0061_QRY_WITH_DEPRECIATION",width:120,fieldLabel: this.resourceBundle.FieldLabel.WITH_DEPRECIATION||"With_depreciation"}
-               ,{xtype: "numberfield",name:"QRY_DEPREC_MONTHS",id:"DC0061_QRY_DEPREC_MONTHS",width:120,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS||"Deprec. months",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_DEPREC_BASE_VALUE",id:"DC0061_QRY_DEPREC_BASE_VALUE",width:120,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_BASE_VALUE||"Deprec base value",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_DEPREC_MONTHS_REMAINED",id:"DC0061_QRY_DEPREC_MONTHS_REMAINED",width:120,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS_REMAINED||"Deprec months remained",style: "text-align:right;"}
-               ,{xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0061_QRY_BPARTNER_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"}
-               ,{xtype: "hidden",name:"QRY_INUSE_BPARTNER_ID",id:"DC0061_QRY_INUSE_BPARTNER_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.INUSE_BPARTNER_ID||"Inuse_bpartner_id"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0061_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"Created on",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0061_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"Created by"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0061_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0061_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by"}
           ]
           ,dataComponentName:"DC0061G"
           ,queryArraySize:20
@@ -219,13 +214,13 @@
         });
 
         
-
        N21.DataComp.DC0061F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0061F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ASSETGRP_ID:""
@@ -262,8 +257,6 @@
 
   });
   Ext.reg("DC0061F", N21.DataComp.DC0061F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -307,6 +300,21 @@
              }
 
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0061.superclass.initComponent.apply(this, arguments);

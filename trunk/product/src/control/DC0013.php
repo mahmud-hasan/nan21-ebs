@@ -11,35 +11,35 @@ class DC0013 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
-    }
-    if (!empty($_REQUEST["QRY_CITY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CITY_ID like :CITY_ID";
-      $params["CITY_ID"] = $_REQUEST["QRY_CITY_ID"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_COUNTRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "COUNTRY_CODE like :COUNTRY_CODE";
       $params["COUNTRY_CODE"] = $_REQUEST["QRY_COUNTRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "REGION_CODE like :REGION_CODE";
+      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_CITY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CITY_ID like :CITY_ID";
+      $params["CITY_ID"] = $_REQUEST["QRY_CITY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "REGION_CODE like :REGION_CODE";
-      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -57,25 +57,25 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTIVE
-                ,CITY_ID
-                ,(select name from city where id=city_id) CITY_NAME
+                ID
                 ,COUNTRY_CODE
-                ,ID
-                ,NAME
                 ,REGION_CODE
+                ,CITY_ID
+                ,NAME
+                ,ACTIVE
+                ,(select name from city where id=city_id) CITY_NAME
             from STREET  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTIVE"
-      ,"CITY_ID"
-      ,"CITY_NAME"
+      "ID"
       ,"COUNTRY_CODE"
-      ,"ID"
-      ,"NAME"
       ,"REGION_CODE"
+      ,"CITY_ID"
+      ,"NAME"
+      ,"ACTIVE"
+      ,"CITY_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -172,19 +172,19 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["REGION_CODE"] = $this->getRequestParam("REGION_CODE");
     $sql = "insert into STREET(
-                 ACTIVE
-                ,CITY_ID
+                 ID
                 ,COUNTRY_CODE
-                ,ID
-                ,NAME
                 ,REGION_CODE
+                ,CITY_ID
+                ,NAME
+                ,ACTIVE
             ) values ( 
-                 :ACTIVE
-                ,:CITY_ID
+                 :ID
                 ,:COUNTRY_CODE
-                ,:ID
-                ,:NAME
                 ,:REGION_CODE
+                ,:CITY_ID
+                ,:NAME
+                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_STREET_ID.nextval seq_val from dual")->fetchRow();
@@ -217,12 +217,12 @@ public function doUpdate() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["REGION_CODE"] = $this->getRequestParam("REGION_CODE");
     $sql = "update STREET set 
-                 ACTIVE=:ACTIVE
-                ,CITY_ID=:CITY_ID
+                 ID=:ID
                 ,COUNTRY_CODE=:COUNTRY_CODE
-                ,ID=:ID
-                ,NAME=:NAME
                 ,REGION_CODE=:REGION_CODE
+                ,CITY_ID=:CITY_ID
+                ,NAME=:NAME
+                ,ACTIVE=:ACTIVE
     where 
            ID= :ID
     ";
@@ -276,13 +276,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTIVE
-                ,CITY_ID
-                ,(select name from city where id=city_id) CITY_NAME
+                ID
                 ,COUNTRY_CODE
-                ,ID
-                ,NAME
                 ,REGION_CODE
+                ,CITY_ID
+                ,NAME
+                ,ACTIVE
+                ,(select name from city where id=city_id) CITY_NAME
             from STREET 
          where 
            ID= :ID
@@ -293,13 +293,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CITY_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CITY_NAME" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"COUNTRY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"REGION_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CITY_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CITY_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

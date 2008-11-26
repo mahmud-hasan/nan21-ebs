@@ -15,19 +15,18 @@ class LOV0013 extends Controller {
       $sql = "select id, doc_no_full, doc_date,  receiver_name, total_amount, doc_currency from v_invoice_header ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "DOC_CURRENCY"
+      ,"DOC_DATE"
+      ,"DOC_NO_FULL"
+      ,"ID"
+      ,"RECEIVER_NAME"
+      ,"TOTAL_AMOUNT"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " DOC_CURRENCY:\"".$row["DOC_CURRENCY"]."\"";
-        $jsOn .= ",DOC_DATE:\"".$row["DOC_DATE"]."\"";
-        $jsOn .= ",DOC_NO_FULL:\"".$row["DOC_NO_FULL"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= ",RECEIVER_NAME:\"".$row["RECEIVER_NAME"]."\"";
-        $jsOn .= ",TOTAL_AMOUNT:\"".$row["TOTAL_AMOUNT"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

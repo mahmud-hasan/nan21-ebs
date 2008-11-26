@@ -11,45 +11,25 @@ class DC0028 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_COMPENSATION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "COMPENSATION like :COMPENSATION";
-      $params["COMPENSATION"] = $_REQUEST["QRY_COMPENSATION"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_PAYABLE"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "PAYABLE like :PAYABLE";
-      $params["PAYABLE"] = $_REQUEST["QRY_PAYABLE"];
-    }
-    if (!empty($_REQUEST["QRY_PRINT_REPORT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PRINT_REPORT like :PRINT_REPORT";
-      $params["PRINT_REPORT"] = $_REQUEST["QRY_PRINT_REPORT"];
-    }
-    if (!empty($_REQUEST["QRY_RECEIVABLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "RECEIVABLE like :RECEIVABLE";
-      $params["RECEIVABLE"] = $_REQUEST["QRY_RECEIVABLE"];
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
 }
 
@@ -67,29 +47,29 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                (select t.code from client t where t.id = client_id) CLIENT_CODE
-                ,CLIENT_ID
+                ID
                 ,CODE
-                ,COMPENSATION
-                ,ID
                 ,NAME
+                ,COMPENSATION
                 ,PAYABLE
-                ,PRINT_REPORT
                 ,RECEIVABLE
+                ,PRINT_REPORT
+                ,CLIENT_ID
+                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
             from PAYMENT_DOC_TYPE  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_CODE"
-      ,"CLIENT_ID"
+      "ID"
       ,"CODE"
-      ,"COMPENSATION"
-      ,"ID"
       ,"NAME"
+      ,"COMPENSATION"
       ,"PAYABLE"
-      ,"PRINT_REPORT"
       ,"RECEIVABLE"
+      ,"PRINT_REPORT"
+      ,"CLIENT_ID"
+      ,"CLIENT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -116,8 +96,8 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,CLIENT_ID
                 ,(select t.code from client t where t.id = client_id) CLIENT_CODE
+                ,CLIENT_ID
                 ,CODE
                 ,NAME
                 ,COMPENSATION
@@ -130,8 +110,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_CODE"
+     ,"CLIENT_ID"
      ,"CODE"
      ,"NAME"
      ,"COMPENSATION"
@@ -192,23 +172,23 @@ public function doInsert() {
     $RECORD["PRINT_REPORT"] = $this->getRequestParam("PRINT_REPORT");
     $RECORD["RECEIVABLE"] = $this->getRequestParamBoolean("RECEIVABLE");
     $sql = "insert into PAYMENT_DOC_TYPE(
-                 CLIENT_ID
+                 ID
                 ,CODE
-                ,COMPENSATION
-                ,ID
                 ,NAME
+                ,COMPENSATION
                 ,PAYABLE
-                ,PRINT_REPORT
                 ,RECEIVABLE
+                ,PRINT_REPORT
+                ,CLIENT_ID
             ) values ( 
-                 :CLIENT_ID
+                 :ID
                 ,:CODE
-                ,:COMPENSATION
-                ,:ID
                 ,:NAME
+                ,:COMPENSATION
                 ,:PAYABLE
-                ,:PRINT_REPORT
                 ,:RECEIVABLE
+                ,:PRINT_REPORT
+                ,:CLIENT_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PAYDOCTYPE_ID.nextval seq_val from dual")->fetchRow();
@@ -243,14 +223,14 @@ public function doUpdate() {
     $RECORD["PRINT_REPORT"] = $this->getRequestParam("PRINT_REPORT");
     $RECORD["RECEIVABLE"] = $this->getRequestParam("RECEIVABLE");
     $sql = "update PAYMENT_DOC_TYPE set 
-                 CLIENT_ID=:CLIENT_ID
+                 ID=:ID
                 ,CODE=:CODE
-                ,COMPENSATION=:COMPENSATION
-                ,ID=:ID
                 ,NAME=:NAME
+                ,COMPENSATION=:COMPENSATION
                 ,PAYABLE=:PAYABLE
-                ,PRINT_REPORT=:PRINT_REPORT
                 ,RECEIVABLE=:RECEIVABLE
+                ,PRINT_REPORT=:PRINT_REPORT
+                ,CLIENT_ID=:CLIENT_ID
     where 
            ID= :ID
     ";
@@ -306,15 +286,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                (select t.code from client t where t.id = client_id) CLIENT_CODE
-                ,CLIENT_ID
+                ID
                 ,CODE
-                ,COMPENSATION
-                ,ID
                 ,NAME
+                ,COMPENSATION
                 ,PAYABLE
-                ,PRINT_REPORT
                 ,RECEIVABLE
+                ,PRINT_REPORT
+                ,CLIENT_ID
+                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
             from PAYMENT_DOC_TYPE 
          where 
            ID= :ID
@@ -325,15 +305,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"COMPENSATION" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"COMPENSATION" => array("DATA_TYPE" => "BOOLEAN")
   ,"PAYABLE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"PRINT_REPORT" => array("DATA_TYPE" => "STRING")
   ,"RECEIVABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"PRINT_REPORT" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

@@ -11,30 +11,10 @@ class DC0011 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CONVERSION_FACTOR"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CONVERSION_FACTOR like :CONVERSION_FACTOR";
-      $params["CONVERSION_FACTOR"] = $_REQUEST["QRY_CONVERSION_FACTOR"];
-    }
-    if (!empty($_REQUEST["QRY_CONVERSION_TYPE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CONVERSION_TYPE like :CONVERSION_TYPE";
-      $params["CONVERSION_TYPE"] = $_REQUEST["QRY_CONVERSION_TYPE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
     }
     if (!empty($_REQUEST["QRY_UOM_FROM"])) {
       $where .= (!empty($where))?" and ":"";
@@ -45,6 +25,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "UOM_TO like :UOM_TO";
       $params["UOM_TO"] = $_REQUEST["QRY_UOM_TO"];
+    }
+    if (!empty($_REQUEST["QRY_CONVERSION_TYPE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CONVERSION_TYPE like :CONVERSION_TYPE";
+      $params["CONVERSION_TYPE"] = $_REQUEST["QRY_CONVERSION_TYPE"];
     }
 }
 
@@ -62,25 +47,25 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CONVERSION_FACTOR
-                ,CONVERSION_TYPE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ID
                 ,UOM_FROM
                 ,UOM_TO
+                ,CONVERSION_FACTOR
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,CONVERSION_TYPE
             from UOM_CONVERSION  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CONVERSION_FACTOR"
-      ,"CONVERSION_TYPE"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
+      "ID"
       ,"UOM_FROM"
       ,"UOM_TO"
+      ,"CONVERSION_FACTOR"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CONVERSION_TYPE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -175,19 +160,19 @@ public function doInsert() {
     $RECORD["UOM_FROM"] = $this->getRequestParam("UOM_FROM");
     $RECORD["UOM_TO"] = $this->getRequestParam("UOM_TO");
     $sql = "insert into UOM_CONVERSION(
-                 CONVERSION_FACTOR
-                ,CONVERSION_TYPE
-                ,ID
-                ,MODIFIEDBY
+                 ID
                 ,UOM_FROM
                 ,UOM_TO
+                ,CONVERSION_FACTOR
+                ,MODIFIEDBY
+                ,CONVERSION_TYPE
             ) values ( 
-                 :CONVERSION_FACTOR
-                ,:CONVERSION_TYPE
-                ,:ID
-                ,:MODIFIEDBY
+                 :ID
                 ,:UOM_FROM
                 ,:UOM_TO
+                ,:CONVERSION_FACTOR
+                ,:MODIFIEDBY
+                ,:CONVERSION_TYPE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_uomconv_id.nextval seq_val from dual")->fetchRow();
@@ -218,13 +203,13 @@ public function doUpdate() {
     $RECORD["UOM_FROM"] = $this->getRequestParam("UOM_FROM");
     $RECORD["UOM_TO"] = $this->getRequestParam("UOM_TO");
     $sql = "update UOM_CONVERSION set 
-                 CONVERSION_FACTOR=:CONVERSION_FACTOR
-                ,CONVERSION_TYPE=:CONVERSION_TYPE
-                ,ID=:ID
-                ,MODIFIEDBY=:MODIFIEDBY
-                ,MODIFIEDON=:MODIFIEDON
+                 ID=:ID
                 ,UOM_FROM=:UOM_FROM
                 ,UOM_TO=:UOM_TO
+                ,CONVERSION_FACTOR=:CONVERSION_FACTOR
+                ,MODIFIEDON=:MODIFIEDON
+                ,MODIFIEDBY=:MODIFIEDBY
+                ,CONVERSION_TYPE=:CONVERSION_TYPE
     where 
            ID= :ID
     ";
@@ -276,13 +261,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CONVERSION_FACTOR
-                ,CONVERSION_TYPE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ID
                 ,UOM_FROM
                 ,UOM_TO
+                ,CONVERSION_FACTOR
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,CONVERSION_TYPE
             from UOM_CONVERSION 
          where 
            ID= :ID
@@ -293,13 +278,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CONVERSION_FACTOR" => array("DATA_TYPE" => "NUMBER")
-  ,"CONVERSION_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"UOM_FROM" => array("DATA_TYPE" => "STRING")
   ,"UOM_TO" => array("DATA_TYPE" => "STRING")
+  ,"CONVERSION_FACTOR" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CONVERSION_TYPE" => array("DATA_TYPE" => "STRING")
 );
 
 

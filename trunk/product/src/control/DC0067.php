@@ -11,11 +11,6 @@ class DC0067 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_DESCRIPTION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "r.DESCRIPTION like :DESCRIPTION";
-      $params["DESCRIPTION"] = $_REQUEST["QRY_DESCRIPTION"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "r.ID like :ID";
@@ -42,17 +37,17 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                r.DESCRIPTION
-                ,r.ID
+                r.ID
                 ,r.NAME
+                ,r.DESCRIPTION
             from SYS_ROLE r $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "DESCRIPTION"
-      ,"ID"
+      "ID"
       ,"NAME"
+      ,"DESCRIPTION"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -137,13 +132,13 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into SYS_ROLE(
-                 DESCRIPTION
-                ,ID
+                 ID
                 ,NAME
+                ,DESCRIPTION
             ) values ( 
-                 :DESCRIPTION
-                ,:ID
+                 :ID
                 ,:NAME
+                ,:DESCRIPTION
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ROLE_ID.nextval seq_val from dual")->fetchRow();
@@ -172,9 +167,9 @@ public function doUpdate() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update SYS_ROLE set 
-                 DESCRIPTION=:DESCRIPTION
-                ,ID=:ID
+                 ID=:ID
                 ,NAME=:NAME
+                ,DESCRIPTION=:DESCRIPTION
     where 
            ID= :ID
     ";
@@ -224,9 +219,9 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                r.DESCRIPTION
-                ,r.ID
+                r.ID
                 ,r.NAME
+                ,r.DESCRIPTION
             from SYS_ROLE r
          where 
            r.ID= :ID
@@ -237,9 +232,9 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
 );
 
 

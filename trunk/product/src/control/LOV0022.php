@@ -17,19 +17,18 @@ class LOV0022 extends Controller {
       $sql = "select m.id, m.menubar_code, m.position,m.name, m.menuitem_id , (select t.name from menuitem t where t.id = m.menuitem_id) parent_name from menuitem m where m.menubar_code=:p_menubar ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "ID"
+      ,"MENUBAR_CODE"
+      ,"MENUITEM_ID"
+      ,"NAME"
+      ,"PARENT_NAME"
+      ,"POSITION"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " ID:\"".$row["ID"]."\"";
-        $jsOn .= ",MENUBAR_CODE:\"".$row["MENUBAR_CODE"]."\"";
-        $jsOn .= ",MENUITEM_ID:\"".$row["MENUITEM_ID"]."\"";
-        $jsOn .= ",NAME:\"".$row["NAME"]."\"";
-        $jsOn .= ",PARENT_NAME:\"".$row["PARENT_NAME"]."\"";
-        $jsOn .= ",POSITION:\"".$row["POSITION"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

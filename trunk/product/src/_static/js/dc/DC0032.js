@@ -24,12 +24,30 @@
          ,{name:"ACCGRP_ID", type:"float" }
          ,{name:"ACCSCHEMA_ID", type:"float" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:3 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0032_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0032_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",name:"QRY_CLIENT_NAME",id:"DC0032_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
+         this.queryFields.add("ACCOUNT", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ACCOUNT",id:"DC0032_QRY_ACCOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCOUNT||"Account"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0032_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
+         this.queryFields.add("PARENT_ACCOUNT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"QRY_PARENT_ACCOUNT",id:"DC0032_QRY_PARENT_ACCOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.PARENT_ACCOUNT||"Parent_account"})  );
+         this.queryFields.add("ACCJOURNAL_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ACCJOURNAL_ID",id:"DC0032_QRY_ACCJOURNAL_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCJOURNAL_ID||"Accjournal_id"})  );
+         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0032_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+         this.queryFields.add("ACCGRP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ACCGRP_ID",id:"DC0032_QRY_ACCGRP_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCGRP_ID||"Accgrp_id"})  );
+         this.queryFields.add("ACCSCHEMA_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ACCSCHEMA_ID",id:"DC0032_QRY_ACCSCHEMA_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_ID||"Accschema_id"})  );
+  
+       this.queryFieldsVisible = [  "CLIENT_NAME","ACCOUNT","NAME","PARENT_ACCOUNT","ACTIVE" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0032"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0032"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0032"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -51,25 +69,6 @@
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
               ,{ id:"ACCGRP_ID",header:this.resourceBundle.FieldLabel.ACCGRP_ID||"Accgrp_id",width:100,dataIndex:'ACCGRP_ID',hidden:true,sortable:true}
               ,{ id:"ACCSCHEMA_ID",header:this.resourceBundle.FieldLabel.ACCSCHEMA_ID||"Accschema_id",width:100,dataIndex:'ACCSCHEMA_ID',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0032_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0032_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "LOV0008",name:"QRY_CLIENT_NAME",id:"DC0032_QRY_CLIENT_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"}
-               ,{xtype: "textfield",name:"QRY_ACCOUNT",id:"DC0032_QRY_ACCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCOUNT||"Account"}
-               ,{xtype: "textfield",name:"QRY_NAME",id:"DC0032_QRY_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"}
-               ,{xtype: "LOV0025",selectOnFocus:true,name:"QRY_PARENT_ACCOUNT",id:"DC0032_QRY_PARENT_ACCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.PARENT_ACCOUNT||"Parent_account"}
-               ,{xtype: "LOV0001",name:"QRY_CURRENCY",id:"DC0032_QRY_CURRENCY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"}
-               ,{xtype: "textarea",name:"QRY_DESCRIPTION",id:"DC0032_QRY_DESCRIPTION",width:120,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description"}
-               ,{xtype: "LOV0026",displayColumn: "NAME",name:"QRY_ACCJOURNAL_NAME",id:"DC0032_QRY_ACCJOURNAL_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCJOURNAL_NAME||"Journal"}
-               ,{xtype: "hidden",name:"QRY_ACCJOURNAL_ID",id:"DC0032_QRY_ACCJOURNAL_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCJOURNAL_ID||"Accjournal_id"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0032_QRY_ACTIVE",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0032_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0032_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0032_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0032_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "hidden",name:"QRY_ACCGRP_ID",id:"DC0032_QRY_ACCGRP_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCGRP_ID||"Accgrp_id"}
-               ,{xtype: "hidden",name:"QRY_ACCSCHEMA_ID",id:"DC0032_QRY_ACCSCHEMA_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_ID||"Accschema_id"}
           ]
           ,dataComponentName:"DC0032G"
           ,queryArraySize:20
@@ -160,13 +159,13 @@
         });
 
         
-
        N21.DataComp.DC0032F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0032F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -192,10 +191,9 @@
     this.getField("ACCJOURNAL_NAME").setParamValue("p_client_id",newVal);
    }
 
+
   });
   Ext.reg("DC0032F", N21.DataComp.DC0032F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -219,6 +217,21 @@
               {xtype: "DC0032G",id: "DC0032G",region:"west"  ,split:true,width:"60%",minWidth:0}
              ,{xtype: "DC0032F",id: "DC0032F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0032.superclass.initComponent.apply(this, arguments);

@@ -17,19 +17,18 @@ class LOV0017 extends Controller {
  ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "CODE"
+      ,"EXPENSE_ACCOUNT"
+      ,"ID"
+      ,"NAME"
+      ,"REVENUE_ACCOUNT"
+      ,"UOM_CODE"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " CODE:\"".$row["CODE"]."\"";
-        $jsOn .= ",EXPENSE_ACCOUNT:\"".$row["EXPENSE_ACCOUNT"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= ",NAME:\"".$row["NAME"]."\"";
-        $jsOn .= ",REVENUE_ACCOUNT:\"".$row["REVENUE_ACCOUNT"]."\"";
-        $jsOn .= ",UOM_CODE:\"".$row["UOM_CODE"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

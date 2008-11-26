@@ -11,25 +11,15 @@ class DC0034 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_DESCRIPTION"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "DESCRIPTION like :DESCRIPTION";
-      $params["DESCRIPTION"] = $_REQUEST["QRY_DESCRIPTION"];
-    }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -47,19 +37,19 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTIVE
-                ,CODE
-                ,DESCRIPTION
+                CODE
                 ,NAME
+                ,DESCRIPTION
+                ,ACTIVE
             from CONTRACT_TYPE  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTIVE"
-      ,"CODE"
-      ,"DESCRIPTION"
+      "CODE"
       ,"NAME"
+      ,"DESCRIPTION"
+      ,"ACTIVE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -123,7 +113,7 @@ public function fetchRecord() {
     $RECORD = array();
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     if (empty($RECORD["CODE"])) { throw new Exception("Missing value for primary key field CODE in DC0034.fetchRecord().");}
-    $pkArray = array("ID" => $RECORD["ID"]);
+    $pkArray = array("CODE" => $RECORD["CODE"]);
     $this->findByPk($pkArray, $RECORD);
     print "{success:true, data:".json_encode($RECORD)."}";
   }catch(Exception  $e) {
@@ -143,15 +133,15 @@ public function doInsert() {
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into CONTRACT_TYPE(
-                 ACTIVE
-                ,CODE
-                ,DESCRIPTION
+                 CODE
                 ,NAME
+                ,DESCRIPTION
+                ,ACTIVE
             ) values ( 
-                 :ACTIVE
-                ,:CODE
-                ,:DESCRIPTION
+                 :CODE
                 ,:NAME
+                ,:DESCRIPTION
+                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $this->logger->debug("insert of RECORD: ".$this->logger->map2string($RECORD) );
@@ -175,10 +165,10 @@ public function doUpdate() {
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update CONTRACT_TYPE set 
-                 ACTIVE=:ACTIVE
-                ,CODE=:CODE
-                ,DESCRIPTION=:DESCRIPTION
+                 CODE=:CODE
                 ,NAME=:NAME
+                ,DESCRIPTION=:DESCRIPTION
+                ,ACTIVE=:ACTIVE
     where 
            CODE= :CODE
     ";
@@ -225,10 +215,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTIVE
-                ,CODE
-                ,DESCRIPTION
+                CODE
                 ,NAME
+                ,DESCRIPTION
+                ,ACTIVE
             from CONTRACT_TYPE 
          where 
            CODE= :CODE
@@ -239,10 +229,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  "CODE" => array("DATA_TYPE" => "STRING")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 

@@ -36,7 +36,7 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0009]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-350}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-450}
     ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-650}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0009.prototype.resourceBundle.DcProperty.Title||"Cities")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0005&gt;</div>"}
    ]

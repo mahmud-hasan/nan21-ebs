@@ -11,45 +11,30 @@ class DC0026 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.ACCDOC_ID like :ACCDOC_ID";
-      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.DOC_DATE like :DOC_DATE";
-      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+      $where .= "rinv.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "rinv.DOC_NO like :DOC_NO";
       $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
+    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "rinv.DOC_DATE like :DOC_DATE";
+      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+    }
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "rinv.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+    }
     if (!empty($_REQUEST["QRY_DOC_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "rinv.DOC_TYPE like :DOC_TYPE";
       $params["DOC_TYPE"] = $_REQUEST["QRY_DOC_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_INSERTEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.INSERTEDBY like :INSERTEDBY";
-      $params["INSERTEDBY"] = $_REQUEST["QRY_INSERTEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_INSERTEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "rinv.INSERTEDON like :INSERTEDON";
-      $params["INSERTEDON"] = $_REQUEST["QRY_INSERTEDON"];
     }
     if (!empty($_REQUEST["QRY_ISSUER_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -60,6 +45,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "rinv.RECEIVER_ID like :RECEIVER_ID";
       $params["RECEIVER_ID"] = $_REQUEST["QRY_RECEIVER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "rinv.ACCDOC_ID like :ACCDOC_ID";
+      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
     }
     if (!empty($_REQUEST["QRY_REF_RINVOICE_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -82,77 +72,77 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                rinv.ACCDOC_ID
-                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = rinv.accdoc_id ) ACCDOC_NAME
-                ,rinv.ACCT
-                ,rinv.CLIENT_ID
-                ,(select code from client where id=rinv.client_id) CLIENT_NAME
-                ,rinv.CREATEDBY
-                ,rinv.CREATEDON
-                ,rinv.DOC_CURRENCY
-                ,rinv.DOC_DATE
+                rinv.ID
                 ,rinv.DOC_NO
+                ,rinv.DOC_DATE
+                ,rinv.CLIENT_ID
                 ,rinv.DOC_TYPE
-                ,rinv.DUE_DATE
-                ,rinv.ID
-                ,rinv.INSERTEDBY
-                ,rinv.INSERTEDON
+                ,rinv.DOC_CURRENCY
+                ,rinv.TOTAL_NET_AMOUNT
+                ,rinv.TOTAL_TAX_AMOUNT
+                ,rinv.TOTAL_AMOUNT
+                ,rinv.CREATEDON
+                ,rinv.CREATEDBY
+                ,rinv.MODIFIEDON
+                ,rinv.MODIFIEDBY
                 ,rinv.ISSUER_ID
+                ,rinv.RECEIVER_ID
+                ,(select code from client where id=rinv.client_id) CLIENT_NAME
                 ,(select name from bpartner where id = rinv.issuer_id) ISSUER_NAME
+                ,(select name from bpartner where id = rinv.receiver_id) RECEIVER_NAME
+                ,rinv.DUE_DATE
                 ,rinv.IS_INSERTED
                 ,rinv.IS_PAYABLE
                 ,rinv.IS_PAYED
                 ,rinv.IS_POSTED
-                ,rinv.MODIFIEDBY
-                ,rinv.MODIFIEDON
-                ,rinv.NOTES
-                ,rinv.POSTEDBY
-                ,rinv.POSTEDON
-                ,rinv.RECEIVER_ID
-                ,(select name from bpartner where id = rinv.receiver_id) RECEIVER_NAME
+                ,rinv.INSERTEDBY
+                ,rinv.INSERTEDON
+                ,rinv.ACCDOC_ID
+                ,rinv.ACCT
+                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = rinv.accdoc_id ) ACCDOC_NAME
                 ,rinv.REF_RINVOICE_ID
                 ,(select r.doc_no||' / '||to_char(r.doc_date ,'DD.MM.YYYY') doc_name from rinvoice  r where r.id = rinv.ref_rinvoice_id) REF_RINVOICE_NAME
-                ,rinv.TOTAL_AMOUNT
-                ,rinv.TOTAL_NET_AMOUNT
-                ,rinv.TOTAL_TAX_AMOUNT
+                ,rinv.NOTES
+                ,rinv.POSTEDON
+                ,rinv.POSTEDBY
             from RINVOICE rinv $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCDOC_ID"
-      ,"ACCDOC_NAME"
-      ,"ACCT"
-      ,"CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DOC_CURRENCY"
-      ,"DOC_DATE"
+      "ID"
       ,"DOC_NO"
+      ,"DOC_DATE"
+      ,"CLIENT_ID"
       ,"DOC_TYPE"
-      ,"DUE_DATE"
-      ,"ID"
-      ,"INSERTEDBY"
-      ,"INSERTEDON"
+      ,"DOC_CURRENCY"
+      ,"TOTAL_NET_AMOUNT"
+      ,"TOTAL_TAX_AMOUNT"
+      ,"TOTAL_AMOUNT"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
       ,"ISSUER_ID"
+      ,"RECEIVER_ID"
+      ,"CLIENT_NAME"
       ,"ISSUER_NAME"
+      ,"RECEIVER_NAME"
+      ,"DUE_DATE"
       ,"IS_INSERTED"
       ,"IS_PAYABLE"
       ,"IS_PAYED"
       ,"IS_POSTED"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NOTES"
-      ,"POSTEDBY"
-      ,"POSTEDON"
-      ,"RECEIVER_ID"
-      ,"RECEIVER_NAME"
+      ,"INSERTEDBY"
+      ,"INSERTEDON"
+      ,"ACCDOC_ID"
+      ,"ACCT"
+      ,"ACCDOC_NAME"
       ,"REF_RINVOICE_ID"
       ,"REF_RINVOICE_NAME"
-      ,"TOTAL_AMOUNT"
-      ,"TOTAL_NET_AMOUNT"
-      ,"TOTAL_TAX_AMOUNT"
+      ,"NOTES"
+      ,"POSTEDON"
+      ,"POSTEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -320,47 +310,47 @@ public function doInsert() {
     $RECORD["TOTAL_NET_AMOUNT"] = $this->getRequestParam("TOTAL_NET_AMOUNT");
     $RECORD["TOTAL_TAX_AMOUNT"] = $this->getRequestParam("TOTAL_TAX_AMOUNT");
     $sql = "insert into RINVOICE(
-                 ACCDOC_ID
-                ,ACCT
-                ,CLIENT_ID
-                ,DOC_CURRENCY
-                ,DOC_DATE
+                 ID
                 ,DOC_NO
+                ,DOC_DATE
+                ,CLIENT_ID
                 ,DOC_TYPE
-                ,DUE_DATE
-                ,ID
+                ,DOC_CURRENCY
+                ,TOTAL_NET_AMOUNT
+                ,TOTAL_TAX_AMOUNT
+                ,TOTAL_AMOUNT
                 ,ISSUER_ID
+                ,RECEIVER_ID
+                ,DUE_DATE
                 ,IS_INSERTED
                 ,IS_PAYABLE
                 ,IS_PAYED
                 ,IS_POSTED
-                ,NOTES
-                ,RECEIVER_ID
+                ,ACCDOC_ID
+                ,ACCT
                 ,REF_RINVOICE_ID
-                ,TOTAL_AMOUNT
-                ,TOTAL_NET_AMOUNT
-                ,TOTAL_TAX_AMOUNT
+                ,NOTES
             ) values ( 
-                 :ACCDOC_ID
-                ,:ACCT
-                ,:CLIENT_ID
-                ,:DOC_CURRENCY
-                ,:DOC_DATE
+                 :ID
                 ,:DOC_NO
+                ,:DOC_DATE
+                ,:CLIENT_ID
                 ,:DOC_TYPE
-                ,:DUE_DATE
-                ,:ID
+                ,:DOC_CURRENCY
+                ,:TOTAL_NET_AMOUNT
+                ,:TOTAL_TAX_AMOUNT
+                ,:TOTAL_AMOUNT
                 ,:ISSUER_ID
+                ,:RECEIVER_ID
+                ,:DUE_DATE
                 ,:IS_INSERTED
                 ,:IS_PAYABLE
                 ,:IS_PAYED
                 ,:IS_POSTED
-                ,:NOTES
-                ,:RECEIVER_ID
+                ,:ACCDOC_ID
+                ,:ACCT
                 ,:REF_RINVOICE_ID
-                ,:TOTAL_AMOUNT
-                ,:TOTAL_NET_AMOUNT
-                ,:TOTAL_TAX_AMOUNT
+                ,:NOTES
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_rinv_id.nextval seq_val from dual")->fetchRow();
@@ -415,26 +405,26 @@ public function doUpdate() {
     $RECORD["TOTAL_TAX_AMOUNT"] = $this->getRequestParam("TOTAL_TAX_AMOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0026.doUpdate().");}
     $sql = "update RINVOICE set 
-                 ACCDOC_ID=:ACCDOC_ID
-                ,ACCT=:ACCT
-                ,CLIENT_ID=:CLIENT_ID
-                ,DOC_CURRENCY=:DOC_CURRENCY
-                ,DOC_DATE=:DOC_DATE
+                 ID=:ID
                 ,DOC_NO=:DOC_NO
+                ,DOC_DATE=:DOC_DATE
+                ,CLIENT_ID=:CLIENT_ID
                 ,DOC_TYPE=:DOC_TYPE
-                ,DUE_DATE=:DUE_DATE
-                ,ID=:ID
+                ,DOC_CURRENCY=:DOC_CURRENCY
+                ,TOTAL_NET_AMOUNT=:TOTAL_NET_AMOUNT
+                ,TOTAL_TAX_AMOUNT=:TOTAL_TAX_AMOUNT
+                ,TOTAL_AMOUNT=:TOTAL_AMOUNT
                 ,ISSUER_ID=:ISSUER_ID
+                ,RECEIVER_ID=:RECEIVER_ID
+                ,DUE_DATE=:DUE_DATE
                 ,IS_INSERTED=:IS_INSERTED
                 ,IS_PAYABLE=:IS_PAYABLE
                 ,IS_PAYED=:IS_PAYED
                 ,IS_POSTED=:IS_POSTED
-                ,NOTES=:NOTES
-                ,RECEIVER_ID=:RECEIVER_ID
+                ,ACCDOC_ID=:ACCDOC_ID
+                ,ACCT=:ACCT
                 ,REF_RINVOICE_ID=:REF_RINVOICE_ID
-                ,TOTAL_AMOUNT=:TOTAL_AMOUNT
-                ,TOTAL_NET_AMOUNT=:TOTAL_NET_AMOUNT
-                ,TOTAL_TAX_AMOUNT=:TOTAL_TAX_AMOUNT
+                ,NOTES=:NOTES
     where 
            ID= :ID
     ";
@@ -514,39 +504,39 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                rinv.ACCDOC_ID
-                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = rinv.accdoc_id ) ACCDOC_NAME
-                ,rinv.ACCT
-                ,rinv.CLIENT_ID
-                ,(select code from client where id=rinv.client_id) CLIENT_NAME
-                ,rinv.CREATEDBY
-                ,rinv.CREATEDON
-                ,rinv.DOC_CURRENCY
-                ,rinv.DOC_DATE
+                rinv.ID
                 ,rinv.DOC_NO
+                ,rinv.DOC_DATE
+                ,rinv.CLIENT_ID
                 ,rinv.DOC_TYPE
-                ,rinv.DUE_DATE
-                ,rinv.ID
-                ,rinv.INSERTEDBY
-                ,rinv.INSERTEDON
+                ,rinv.DOC_CURRENCY
+                ,rinv.TOTAL_NET_AMOUNT
+                ,rinv.TOTAL_TAX_AMOUNT
+                ,rinv.TOTAL_AMOUNT
+                ,rinv.CREATEDON
+                ,rinv.CREATEDBY
+                ,rinv.MODIFIEDON
+                ,rinv.MODIFIEDBY
                 ,rinv.ISSUER_ID
+                ,rinv.RECEIVER_ID
+                ,(select code from client where id=rinv.client_id) CLIENT_NAME
                 ,(select name from bpartner where id = rinv.issuer_id) ISSUER_NAME
+                ,(select name from bpartner where id = rinv.receiver_id) RECEIVER_NAME
+                ,rinv.DUE_DATE
                 ,rinv.IS_INSERTED
                 ,rinv.IS_PAYABLE
                 ,rinv.IS_PAYED
                 ,rinv.IS_POSTED
-                ,rinv.MODIFIEDBY
-                ,rinv.MODIFIEDON
-                ,rinv.NOTES
-                ,rinv.POSTEDBY
-                ,rinv.POSTEDON
-                ,rinv.RECEIVER_ID
-                ,(select name from bpartner where id = rinv.receiver_id) RECEIVER_NAME
+                ,rinv.INSERTEDBY
+                ,rinv.INSERTEDON
+                ,rinv.ACCDOC_ID
+                ,rinv.ACCT
+                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = rinv.accdoc_id ) ACCDOC_NAME
                 ,rinv.REF_RINVOICE_ID
                 ,(select r.doc_no||' / '||to_char(r.doc_date ,'DD.MM.YYYY') doc_name from rinvoice  r where r.id = rinv.ref_rinvoice_id) REF_RINVOICE_NAME
-                ,rinv.TOTAL_AMOUNT
-                ,rinv.TOTAL_NET_AMOUNT
-                ,rinv.TOTAL_TAX_AMOUNT
+                ,rinv.NOTES
+                ,rinv.POSTEDON
+                ,rinv.POSTEDBY
             from RINVOICE rinv
          where 
            rinv.ID= :ID
@@ -557,39 +547,39 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACCT" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"DOC_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"DUE_DATE" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"INSERTEDBY" => array("DATA_TYPE" => "STRING")
-  ,"INSERTEDON" => array("DATA_TYPE" => "DATE")
+  ,"DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"TOTAL_NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"TOTAL_TAX_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"ISSUER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"RECEIVER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
   ,"ISSUER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"RECEIVER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"DUE_DATE" => array("DATA_TYPE" => "DATE")
   ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_PAYABLE" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_PAYED" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_POSTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"POSTEDBY" => array("DATA_TYPE" => "STRING")
-  ,"POSTEDON" => array("DATA_TYPE" => "DATE")
-  ,"RECEIVER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"RECEIVER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"INSERTEDBY" => array("DATA_TYPE" => "STRING")
+  ,"INSERTEDON" => array("DATA_TYPE" => "DATE")
+  ,"ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCT" => array("DATA_TYPE" => "STRING")
+  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
   ,"REF_RINVOICE_ID" => array("DATA_TYPE" => "NUMBER")
   ,"REF_RINVOICE_NAME" => array("DATA_TYPE" => "STRING")
-  ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"TOTAL_NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"TOTAL_TAX_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"POSTEDON" => array("DATA_TYPE" => "DATE")
+  ,"POSTEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 

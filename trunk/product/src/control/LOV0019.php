@@ -18,19 +18,18 @@ class LOV0019 extends Controller {
    and c.supp_bpartner_id = supp.id ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "CUSTOMER"
+      ,"DOC_DATE"
+      ,"DOC_NO"
+      ,"DOC_NO_FULL"
+      ,"ID"
+      ,"SUPPLIER"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " CUSTOMER:\"".$row["CUSTOMER"]."\"";
-        $jsOn .= ",DOC_DATE:\"".$row["DOC_DATE"]."\"";
-        $jsOn .= ",DOC_NO:\"".$row["DOC_NO"]."\"";
-        $jsOn .= ",DOC_NO_FULL:\"".$row["DOC_NO_FULL"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= ",SUPPLIER:\"".$row["SUPPLIER"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

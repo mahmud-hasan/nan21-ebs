@@ -13,7 +13,7 @@ DcProperty:{
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created on"
      ,DESCRIPTION:""
-     ,EFFORT_UNIT:"Unit"
+     ,EFFORT_UNIT:"Effort unit"
      ,ESTIMATE_EFFORT:"Estimated effort"
      ,ID:"Id"
      ,ISSUE_TYPE_CODE:"Type"

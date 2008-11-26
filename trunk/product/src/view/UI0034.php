@@ -34,7 +34,7 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0028]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-350}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-400}
     ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-700}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0028.prototype.resourceBundle.DcProperty.Title||"Payment doc. types")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0034&gt;</div>"}
    ]

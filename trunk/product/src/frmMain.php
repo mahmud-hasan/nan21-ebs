@@ -1,6 +1,7 @@
 <?php
 
-  define("N21_APPLICATION","1");
+  define("N21_APPLICATION","1"); 
+  session_start();
   require_once("properties.php");
   require_once(PATH_CTRL_FRMWK."/System.php");
   require_once(PATH_LOGGER."/Logger.php");
@@ -8,7 +9,14 @@
   require_once(PATH_ADODB."/adodb-exceptions.inc.php");
   require_once(PATH_CTRL_FRMWK."/MainServlet.php");
   //require_once(INCLUDES."/UserContext.php");
-  session_start();
+  
+  if (!empty($_REQUEST["_p_client"]) && $_REQUEST["_p_client"] == "flex")  {
+   // session_id($_REQUEST["PHPSESSID"]);
+    session_id($_REQUEST["_p_sessionid"]);
+  }
+
+
+  
 
   $log = Logger::getInstance();
   $db = null;
@@ -17,7 +25,7 @@
     $guiId =  (!empty($_REQUEST["guiID"])) ? $_REQUEST["guiID"] : APPLICATION_ENTRY_UI;
   }
 
-
+  $log->debug($log->map2string($_REQUEST));
   try {
 
     $db=null;

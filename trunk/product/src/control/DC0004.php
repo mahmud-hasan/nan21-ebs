@@ -11,40 +11,20 @@ class DC0004 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACCDOC_ID like :ACCDOC_ID";
-      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DOC_CURRENCY like :DOC_CURRENCY";
-      $params["DOC_CURRENCY"] = $_REQUEST["QRY_DOC_CURRENCY"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_DOC_DATE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "DOC_DATE like :DOC_DATE";
       $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
     }
-    if (!empty($_REQUEST["QRY_DOC_NO"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "DOC_NO like :DOC_NO";
-      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_TYPE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DOC_TYPE like :DOC_TYPE";
-      $params["DOC_TYPE"] = $_REQUEST["QRY_DOC_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_ISSUER_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -56,20 +36,35 @@ private function preQuery(&$params, &$where) {
       $where .= "RECEIVER_ID like :RECEIVER_ID";
       $params["RECEIVER_ID"] = $_REQUEST["QRY_RECEIVER_ID"];
     }
-    if (!empty($_REQUEST["QRY_REF_IINV_DOC_NO"])) {
+    if (!empty($_REQUEST["QRY_DOC_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "REF_IINV_DOC_NO like :REF_IINV_DOC_NO";
-      $params["REF_IINV_DOC_NO"] = $_REQUEST["QRY_REF_IINV_DOC_NO"];
+      $where .= "DOC_TYPE like :DOC_TYPE";
+      $params["DOC_TYPE"] = $_REQUEST["QRY_DOC_TYPE"];
+    }
+    if (!empty($_REQUEST["QRY_DOC_CURRENCY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DOC_CURRENCY like :DOC_CURRENCY";
+      $params["DOC_CURRENCY"] = $_REQUEST["QRY_DOC_CURRENCY"];
     }
     if (!empty($_REQUEST["QRY_REF_IINV_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "REF_IINV_ID like :REF_IINV_ID";
       $params["REF_IINV_ID"] = $_REQUEST["QRY_REF_IINV_ID"];
     }
-    if (!empty($_REQUEST["QRY_TOTAL_AMOUNT"])) {
+    if (!empty($_REQUEST["QRY_REF_IINV_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "TOTAL_AMOUNT like :TOTAL_AMOUNT";
-      $params["TOTAL_AMOUNT"] = $_REQUEST["QRY_TOTAL_AMOUNT"];
+      $where .= "REF_IINV_DOC_NO like :REF_IINV_DOC_NO";
+      $params["REF_IINV_DOC_NO"] = $_REQUEST["QRY_REF_IINV_DOC_NO"];
+    }
+    if (!empty($_REQUEST["QRY_DOC_NO"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DOC_NO like :DOC_NO";
+      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
+    }
+    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACCDOC_ID like :ACCDOC_ID";
+      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
     }
 }
 
@@ -87,77 +82,77 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACCDOC_ID
-                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = accdoc_id ) ACCDOC_NAME
-                ,ACCT
-                ,CLIENT_ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY_XRATE
-                ,DOC_CURRENCY
+                ID
                 ,DOC_DATE
-                ,DOC_NO
                 ,doc_no_serial||doc_no DOC_NO_FULL
-                ,DOC_NO_SERIAL
-                ,DOC_TYPE
-                ,DUE_DATE
-                ,ID
+                ,CLIENT_ID
                 ,ISSUER_ID
-                ,(select t1.name from bpartner t1 where t1.id = issuer_id) ISSUER_NAME
-                ,IS_INSERTED
-                ,IS_POSTED
-                ,IS_PRINTED
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NOTES
-                ,POSTEDBY
-                ,POSTEDON
                 ,RECEIVER_ID
-                ,(select name from bpartner where id = receiver_id) RECEIVER_NAME
-                ,REF_IINV_DOC_NO
+                ,DOC_TYPE
+                ,DOC_CURRENCY
+                ,DUE_DATE
                 ,REF_IINV_ID
-                ,TOTAL_AMOUNT
+                ,REF_IINV_DOC_NO
                 ,TOTAL_NET_AMOUNT
                 ,TOTAL_TAX_AMOUNT
+                ,TOTAL_AMOUNT
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,IS_PRINTED
+                ,NOTES
+                ,CURRENCY_XRATE
+                ,DOC_NO_SERIAL
+                ,IS_POSTED
+                ,DOC_NO
+                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
+                ,(select t1.name from bpartner t1 where t1.id = issuer_id) ISSUER_NAME
+                ,(select name from bpartner where id = receiver_id) RECEIVER_NAME
+                ,IS_INSERTED
+                ,ACCT
+                ,POSTEDON
+                ,POSTEDBY
+                ,ACCDOC_ID
+                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = accdoc_id ) ACCDOC_NAME
             from IINVOICE  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCDOC_ID"
-      ,"ACCDOC_NAME"
-      ,"ACCT"
-      ,"CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"CURRENCY_XRATE"
-      ,"DOC_CURRENCY"
+      "ID"
       ,"DOC_DATE"
-      ,"DOC_NO"
       ,"DOC_NO_FULL"
-      ,"DOC_NO_SERIAL"
-      ,"DOC_TYPE"
-      ,"DUE_DATE"
-      ,"ID"
+      ,"CLIENT_ID"
       ,"ISSUER_ID"
-      ,"ISSUER_NAME"
-      ,"IS_INSERTED"
-      ,"IS_POSTED"
-      ,"IS_PRINTED"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NOTES"
-      ,"POSTEDBY"
-      ,"POSTEDON"
       ,"RECEIVER_ID"
-      ,"RECEIVER_NAME"
-      ,"REF_IINV_DOC_NO"
+      ,"DOC_TYPE"
+      ,"DOC_CURRENCY"
+      ,"DUE_DATE"
       ,"REF_IINV_ID"
-      ,"TOTAL_AMOUNT"
+      ,"REF_IINV_DOC_NO"
       ,"TOTAL_NET_AMOUNT"
       ,"TOTAL_TAX_AMOUNT"
+      ,"TOTAL_AMOUNT"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"IS_PRINTED"
+      ,"NOTES"
+      ,"CURRENCY_XRATE"
+      ,"DOC_NO_SERIAL"
+      ,"IS_POSTED"
+      ,"DOC_NO"
+      ,"CLIENT_NAME"
+      ,"ISSUER_NAME"
+      ,"RECEIVER_NAME"
+      ,"IS_INSERTED"
+      ,"ACCT"
+      ,"POSTEDON"
+      ,"POSTEDBY"
+      ,"ACCDOC_ID"
+      ,"ACCDOC_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -184,10 +179,10 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,CLIENT_ID
                 ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,ISSUER_ID
+                ,CLIENT_ID
                 ,(select t1.name from bpartner t1 where t1.id = issuer_id) ISSUER_NAME
+                ,ISSUER_ID
                 ,DOC_DATE
                 ,DOC_TYPE
                 ,DOC_CURRENCY
@@ -203,8 +198,8 @@ public function doExport() {
                 ,TOTAL_NET_AMOUNT
                 ,TOTAL_TAX_AMOUNT
                 ,CURRENCY_XRATE
-                ,REF_IINV_ID
                 ,REF_IINV_DOC_NO
+                ,REF_IINV_ID
                 ,IS_INSERTED
                 ,IS_PRINTED
                 ,IS_POSTED
@@ -222,10 +217,10 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_NAME"
-     ,"ISSUER_ID"
+     ,"CLIENT_ID"
      ,"ISSUER_NAME"
+     ,"ISSUER_ID"
      ,"DOC_DATE"
      ,"DOC_TYPE"
      ,"DOC_CURRENCY"
@@ -241,8 +236,8 @@ public function doExport() {
      ,"TOTAL_NET_AMOUNT"
      ,"TOTAL_TAX_AMOUNT"
      ,"CURRENCY_XRATE"
-     ,"REF_IINV_ID"
      ,"REF_IINV_DOC_NO"
+     ,"REF_IINV_ID"
      ,"IS_INSERTED"
      ,"IS_PRINTED"
      ,"IS_POSTED"
@@ -332,45 +327,45 @@ public function doInsert() {
     $RECORD["TRANSTYPE_CODE"] = $this->getRequestParam("TRANSTYPE_CODE");
     $RECORD["VAT_RATE"] = $this->getRequestParam("VAT_RATE");
     $sql = "insert into IINVOICE(
-                 ACCDOC_ID
-                ,ACCT
-                ,CLIENT_ID
-                ,CURRENCY_XRATE
-                ,DOC_CURRENCY
+                 ID
                 ,DOC_DATE
-                ,DOC_NO
-                ,DOC_NO_SERIAL
-                ,DOC_TYPE
-                ,DUE_DATE
-                ,ID
+                ,CLIENT_ID
                 ,ISSUER_ID
-                ,IS_INSERTED
-                ,IS_POSTED
+                ,RECEIVER_ID
+                ,DOC_TYPE
+                ,DOC_CURRENCY
+                ,DUE_DATE
+                ,REF_IINV_ID
+                ,REF_IINV_DOC_NO
                 ,IS_PRINTED
                 ,NOTES
-                ,RECEIVER_ID
-                ,REF_IINV_DOC_NO
-                ,REF_IINV_ID
+                ,CURRENCY_XRATE
+                ,DOC_NO_SERIAL
+                ,IS_POSTED
+                ,DOC_NO
+                ,IS_INSERTED
+                ,ACCT
+                ,ACCDOC_ID
             ) values ( 
-                 :ACCDOC_ID
-                ,:ACCT
-                ,:CLIENT_ID
-                ,:CURRENCY_XRATE
-                ,:DOC_CURRENCY
+                 :ID
                 ,:DOC_DATE
-                ,:DOC_NO
-                ,:DOC_NO_SERIAL
-                ,:DOC_TYPE
-                ,:DUE_DATE
-                ,:ID
+                ,:CLIENT_ID
                 ,:ISSUER_ID
-                ,:IS_INSERTED
-                ,:IS_POSTED
+                ,:RECEIVER_ID
+                ,:DOC_TYPE
+                ,:DOC_CURRENCY
+                ,:DUE_DATE
+                ,:REF_IINV_ID
+                ,:REF_IINV_DOC_NO
                 ,:IS_PRINTED
                 ,:NOTES
-                ,:RECEIVER_ID
-                ,:REF_IINV_DOC_NO
-                ,:REF_IINV_ID
+                ,:CURRENCY_XRATE
+                ,:DOC_NO_SERIAL
+                ,:IS_POSTED
+                ,:DOC_NO
+                ,:IS_INSERTED
+                ,:ACCT
+                ,:ACCDOC_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_iinv_id.nextval seq_val from dual")->fetchRow();
@@ -425,25 +420,25 @@ public function doUpdate() {
     $RECORD["TOTAL_TAX_AMOUNT"] = $this->getRequestParam("TOTAL_TAX_AMOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0004.doUpdate().");}
     $sql = "update IINVOICE set 
-                 ACCDOC_ID=:ACCDOC_ID
-                ,ACCT=:ACCT
-                ,CLIENT_ID=:CLIENT_ID
-                ,CURRENCY_XRATE=:CURRENCY_XRATE
-                ,DOC_CURRENCY=:DOC_CURRENCY
+                 ID=:ID
                 ,DOC_DATE=:DOC_DATE
-                ,DOC_NO=:DOC_NO
-                ,DOC_NO_SERIAL=:DOC_NO_SERIAL
-                ,DOC_TYPE=:DOC_TYPE
-                ,DUE_DATE=:DUE_DATE
-                ,ID=:ID
+                ,CLIENT_ID=:CLIENT_ID
                 ,ISSUER_ID=:ISSUER_ID
-                ,IS_INSERTED=:IS_INSERTED
-                ,IS_POSTED=:IS_POSTED
+                ,RECEIVER_ID=:RECEIVER_ID
+                ,DOC_TYPE=:DOC_TYPE
+                ,DOC_CURRENCY=:DOC_CURRENCY
+                ,DUE_DATE=:DUE_DATE
+                ,REF_IINV_ID=:REF_IINV_ID
+                ,REF_IINV_DOC_NO=:REF_IINV_DOC_NO
                 ,IS_PRINTED=:IS_PRINTED
                 ,NOTES=:NOTES
-                ,RECEIVER_ID=:RECEIVER_ID
-                ,REF_IINV_DOC_NO=:REF_IINV_DOC_NO
-                ,REF_IINV_ID=:REF_IINV_ID
+                ,CURRENCY_XRATE=:CURRENCY_XRATE
+                ,DOC_NO_SERIAL=:DOC_NO_SERIAL
+                ,IS_POSTED=:IS_POSTED
+                ,DOC_NO=:DOC_NO
+                ,IS_INSERTED=:IS_INSERTED
+                ,ACCT=:ACCT
+                ,ACCDOC_ID=:ACCDOC_ID
     where 
            ID= :ID
     ";
@@ -529,39 +524,39 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACCDOC_ID
-                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = accdoc_id ) ACCDOC_NAME
-                ,ACCT
-                ,CLIENT_ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY_XRATE
-                ,DOC_CURRENCY
+                ID
                 ,DOC_DATE
-                ,DOC_NO
                 ,doc_no_serial||doc_no DOC_NO_FULL
-                ,DOC_NO_SERIAL
-                ,DOC_TYPE
-                ,DUE_DATE
-                ,ID
+                ,CLIENT_ID
                 ,ISSUER_ID
-                ,(select t1.name from bpartner t1 where t1.id = issuer_id) ISSUER_NAME
-                ,IS_INSERTED
-                ,IS_POSTED
-                ,IS_PRINTED
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NOTES
-                ,POSTEDBY
-                ,POSTEDON
                 ,RECEIVER_ID
-                ,(select name from bpartner where id = receiver_id) RECEIVER_NAME
-                ,REF_IINV_DOC_NO
+                ,DOC_TYPE
+                ,DOC_CURRENCY
+                ,DUE_DATE
                 ,REF_IINV_ID
-                ,TOTAL_AMOUNT
+                ,REF_IINV_DOC_NO
                 ,TOTAL_NET_AMOUNT
                 ,TOTAL_TAX_AMOUNT
+                ,TOTAL_AMOUNT
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,IS_PRINTED
+                ,NOTES
+                ,CURRENCY_XRATE
+                ,DOC_NO_SERIAL
+                ,IS_POSTED
+                ,DOC_NO
+                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
+                ,(select t1.name from bpartner t1 where t1.id = issuer_id) ISSUER_NAME
+                ,(select name from bpartner where id = receiver_id) RECEIVER_NAME
+                ,IS_INSERTED
+                ,ACCT
+                ,POSTEDON
+                ,POSTEDBY
+                ,ACCDOC_ID
+                ,(select accdoc.doc_no||'/'||to_char(accdoc.doc_date,'DD.MM.YYYY') from accounting_doc accdoc where accdoc.id = accdoc_id ) ACCDOC_NAME
             from IINVOICE 
          where 
            ID= :ID
@@ -572,39 +567,39 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACCT" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY_XRATE" => array("DATA_TYPE" => "NUMBER")
-  ,"DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
-  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
   ,"DOC_NO_FULL" => array("DATA_TYPE" => "STRING")
-  ,"DOC_NO_SERIAL" => array("DATA_TYPE" => "STRING")
-  ,"DOC_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"DUE_DATE" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"ISSUER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ISSUER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_POSTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_PRINTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"POSTEDBY" => array("DATA_TYPE" => "STRING")
-  ,"POSTEDON" => array("DATA_TYPE" => "DATE")
   ,"RECEIVER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"RECEIVER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"REF_IINV_DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"DOC_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"DUE_DATE" => array("DATA_TYPE" => "DATE")
   ,"REF_IINV_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"REF_IINV_DOC_NO" => array("DATA_TYPE" => "STRING")
   ,"TOTAL_NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
   ,"TOTAL_TAX_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"IS_PRINTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"CURRENCY_XRATE" => array("DATA_TYPE" => "NUMBER")
+  ,"DOC_NO_SERIAL" => array("DATA_TYPE" => "STRING")
+  ,"IS_POSTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ISSUER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"RECEIVER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ACCT" => array("DATA_TYPE" => "STRING")
+  ,"POSTEDON" => array("DATA_TYPE" => "DATE")
+  ,"POSTEDBY" => array("DATA_TYPE" => "STRING")
+  ,"ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

@@ -30,7 +30,7 @@
  <link rel="stylesheet" type="text/css" href="<?php print PATH_EXTJS?>/resources/css/xtheme-nbs<?php print $css;?>.css" />
  <!--  include in Ext.js DATE_FORMAT : "d.m.Y",  -->
 <script type="text/javascript" src="<?php print PATH_EXTJS;?>/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="<?php print PATH_EXTJS;?>/ext-all-debug.js"></script>
+<script type="text/javascript" src="<?php print PATH_EXTJS;?>/ext-all.js"></script>
 <script type="text/javascript" src="<?php print PATH_EXTJS;?>/build/locale/ext-lang-<?php print $_SESSION["user"]["language"]?>.js"></script>
 
 

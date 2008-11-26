@@ -10,7 +10,7 @@ DcProperty:{
      ,ID:"Id"
      ,LINK:"Link"
      ,MENUBAR_CODE:"Menubar"
-     ,MENUITEM_ID:"Menuitem ID"
+     ,MENUITEM_ID:"Parent menu id"
      ,MODIFIEDBY:"Modified by"
      ,MODIFIEDON:"Modified on"
      ,NAME:"Title"

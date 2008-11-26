@@ -28,12 +28,29 @@
          ,{name:"MODIFIEDBY", type:"string" }
          ,{name:"FOR_SALE", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:3 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0039_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0039_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",name:"QRY_CLIENT_NAME",id:"DC0039_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
+         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0039_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0039_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
+         this.queryFields.add("PRODCATEG_CODE", new N21.DataComp.LOV0014({xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039_QRY_PRODCATEG_ID"}],selectOnFocus:true,name:"QRY_PRODCATEG_CODE",id:"DC0039_QRY_PRODCATEG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category"})  );
+         this.queryFields.add("PRODCATEG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODCATEG_ID",id:"DC0039_QRY_PRODCATEG_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id"})  );
+         this.queryFields.add("PROD_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_PROD_TYPE",id:"DC0039_QRY_PROD_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_TYPE||"Prod_type"})  );
+         this.queryFields.add("SUMMARY", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_SUMMARY",id:"DC0039_QRY_SUMMARY",width:100,fieldLabel: this.resourceBundle.FieldLabel.SUMMARY||"Summary"})  );
+  
+       this.queryFieldsVisible = [  "CLIENT_NAME","CODE","NAME","PRODCATEG_CODE","PROD_TYPE","SUMMARY" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0039"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0039"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0039"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -59,29 +76,6 @@
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
               ,{ id:"FOR_SALE",header:this.resourceBundle.FieldLabel.FOR_SALE||"For_sale",width:50,dataIndex:'FOR_SALE',sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0039_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0039_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "LOV0008",displayColumn: "CODE",name:"QRY_CLIENT_NAME",id:"DC0039_QRY_CLIENT_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"}
-               ,{xtype: "textfield",name:"QRY_CODE",id:"DC0039_QRY_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"}
-               ,{xtype: "textfield",name:"QRY_NAME",id:"DC0039_QRY_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"}
-               ,{xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039_QRY_PRODCATEG_ID"}],selectOnFocus:true,name:"QRY_PRODCATEG_CODE",id:"DC0039_QRY_PRODCATEG_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category"}
-               ,{xtype: "hidden",name:"QRY_PRODCATEG_ID",id:"DC0039_QRY_PRODCATEG_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_STORABLE",id:"DC0039_QRY_STORABLE",width:120,fieldLabel: this.resourceBundle.FieldLabel.STORABLE||"Storable"}
-               ,{xtype: "LOV0002",name:"QRY_UOM_CODE",id:"DC0039_QRY_UOM_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"UoM"}
-               ,{xtype: "textarea",name:"QRY_DESCRIPTION",id:"DC0039_QRY_DESCRIPTION",width:120,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description"}
-               ,{xtype: "LOV0025",selectOnFocus:true,name:"QRY_EXPENSE_ACCOUNT",id:"DC0039_QRY_EXPENSE_ACCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.EXPENSE_ACCOUNT||"Expense_account"}
-               ,{xtype: "LOV0025",selectOnFocus:true,name:"QRY_REVENUE_ACCOUNT",id:"DC0039_QRY_REVENUE_ACCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.REVENUE_ACCOUNT||"Revenue_account"}
-               ,{xtype: "textfield",name:"QRY_PROD_TYPE",id:"DC0039_QRY_PROD_TYPE",width:120,fieldLabel: this.resourceBundle.FieldLabel.PROD_TYPE||"Prod_type"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_SUMMARY",id:"DC0039_QRY_SUMMARY",width:120,fieldLabel: this.resourceBundle.FieldLabel.SUMMARY||"Summary"}
-               ,{xtype: "numberfield",name:"QRY_VOLUME",id:"DC0039_QRY_VOLUME",width:120,fieldLabel: this.resourceBundle.FieldLabel.VOLUME||"Volume",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_WEIGHT",id:"DC0039_QRY_WEIGHT",width:120,fieldLabel: this.resourceBundle.FieldLabel.WEIGHT||"Weight",style: "text-align:right;"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0039_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0039_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0039_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0039_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_FOR_SALE",id:"DC0039_QRY_FOR_SALE",width:120,fieldLabel: this.resourceBundle.FieldLabel.FOR_SALE||"For_sale"}
           ]
           ,dataComponentName:"DC0039G"
           ,queryArraySize:20
@@ -174,13 +168,13 @@
         });
 
         
-
        N21.DataComp.DC0039F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0039F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -210,8 +204,6 @@
   });
   Ext.reg("DC0039F", N21.DataComp.DC0039F);
 
-
-
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0039
@@ -228,24 +220,23 @@
           ,dataComponentName:"DC0039"
           ,masterName:"DC0039G"
           ,detailName:"DC0039F"
-          ,mdLayout:"tab"
+          ,mdLayout:"card"
           ,border: false
           ,items: [
               {
-                xtype:"tabpanel"
+                xtype:"panel"
+               ,layout:"card"
                ,id:"MDTab"
                ,region:"center"
                ,defaults:{layout:"fit"}
                ,activeItem:0
                ,tabPosition: "bottom"
                ,items: [{
-                            title:"List"
-                           ,xtype: "DC0039G"
+                            xtype: "DC0039G"
                            ,id: "DC0039G"
                            ,height:350
                        },{
-                           title:"Edit Record"
-                          ,xtype:"DC0039F"
+                           xtype:"DC0039F"
                           ,id:"DC0039F"
                           ,height:350
                           ,frame:true
@@ -255,6 +246,21 @@
              }
 
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0039.superclass.initComponent.apply(this, arguments);

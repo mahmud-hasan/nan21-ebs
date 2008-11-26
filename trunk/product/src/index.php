@@ -1,6 +1,8 @@
 <?php
 
-  define("N21_APPLICATION","1");
+  define("N21_APPLICATION","1"); 
+  session_start();
+
   require_once("properties.php");
   require_once(PATH_CTRL_FRMWK."/System.php");
   require_once(PATH_LOGGER."/Logger.php");
@@ -8,7 +10,7 @@
   require_once(PATH_ADODB."/adodb-exceptions.inc.php");
   require_once(PATH_CTRL_FRMWK."/MainServlet.php");
 
-  session_start();
+  
 
   $error = "";
   $logger = Logger::getInstance();
@@ -151,7 +153,14 @@
             			 </tr>
             			 <tr>
               			  <td align="left" nowrap><font face="arial" size="-1">Instance:</font></td>
-              			  <td><input name="_p_sid" type="text" value='NAN21' size="20" maxlength="32" readonly=true></td>
+              			  <td><select name="_p_sid"  value='NAN21'   maxlength="32" >
+                                        <?php
+                                          foreach($_n21_tns_ as $k=>$v) {
+                                            print "<option value='".$k."'>".$k."</option>";
+                                          }
+                                        ?>
+                                      </select>
+                                  </td>
             			 </tr>
 
             		   <tr>

@@ -11,65 +11,25 @@ class DC0019 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ASSIGNED_TO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ASSIGNED_TO like :ASSIGNED_TO";
-      $params["ASSIGNED_TO"] = $_REQUEST["QRY_ASSIGNED_TO"];
-    }
     if (!empty($_REQUEST["QRY_CLOSED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CLOSED like :CLOSED";
       $params["CLOSED"] = $_REQUEST["QRY_CLOSED"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_FINISH_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "FINISH_DATE like :FINISH_DATE";
-      $params["FINISH_DATE"] = $_REQUEST["QRY_FINISH_DATE"];
     }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+    if (!empty($_REQUEST["QRY_TITLE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_START_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "START_DATE like :START_DATE";
-      $params["START_DATE"] = $_REQUEST["QRY_START_DATE"];
+      $where .= "TITLE like :TITLE";
+      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
     }
     if (!empty($_REQUEST["QRY_STATUS"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "STATUS like :STATUS";
       $params["STATUS"] = $_REQUEST["QRY_STATUS"];
-    }
-    if (!empty($_REQUEST["QRY_TITLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "TITLE like :TITLE";
-      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
     }
 }
 
@@ -87,35 +47,35 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ASSIGNED_TO
-                ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,FINISH_DATE
+                CLOSED
                 ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NOTES
+                ,TITLE
+                ,FINISH_DATE
                 ,START_DATE
                 ,STATUS
-                ,TITLE
+                ,ASSIGNED_TO
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,NOTES
             from TASKS  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ASSIGNED_TO"
-      ,"CLOSED"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"FINISH_DATE"
+      "CLOSED"
       ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NOTES"
+      ,"TITLE"
+      ,"FINISH_DATE"
       ,"START_DATE"
       ,"STATUS"
-      ,"TITLE"
+      ,"ASSIGNED_TO"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"NOTES"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -221,27 +181,27 @@ public function doInsert() {
     $RECORD["STATUS"] = $this->getRequestParam("STATUS");
     $RECORD["TITLE"] = $this->getRequestParam("TITLE");
     $sql = "insert into TASKS(
-                 ASSIGNED_TO
-                ,CLOSED
-                ,CREATEDBY
-                ,FINISH_DATE
+                 CLOSED
                 ,ID
-                ,MODIFIEDBY
-                ,NOTES
+                ,TITLE
+                ,FINISH_DATE
                 ,START_DATE
                 ,STATUS
-                ,TITLE
+                ,ASSIGNED_TO
+                ,CREATEDBY
+                ,MODIFIEDBY
+                ,NOTES
             ) values ( 
-                 :ASSIGNED_TO
-                ,:CLOSED
-                ,:CREATEDBY
-                ,:FINISH_DATE
+                 :CLOSED
                 ,:ID
-                ,:MODIFIEDBY
-                ,:NOTES
+                ,:TITLE
+                ,:FINISH_DATE
                 ,:START_DATE
                 ,:STATUS
-                ,:TITLE
+                ,:ASSIGNED_TO
+                ,:CREATEDBY
+                ,:MODIFIEDBY
+                ,:NOTES
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_task_id.nextval seq_val from dual")->fetchRow();
@@ -272,14 +232,14 @@ public function doUpdate() {
     $RECORD["TITLE"] = $this->getRequestParam("TITLE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0019.doUpdate().");}
     $sql = "update TASKS set 
-                 ASSIGNED_TO=:ASSIGNED_TO
-                ,CLOSED=:CLOSED
-                ,FINISH_DATE=:FINISH_DATE
+                 CLOSED=:CLOSED
                 ,ID=:ID
-                ,NOTES=:NOTES
+                ,TITLE=:TITLE
+                ,FINISH_DATE=:FINISH_DATE
                 ,START_DATE=:START_DATE
                 ,STATUS=:STATUS
-                ,TITLE=:TITLE
+                ,ASSIGNED_TO=:ASSIGNED_TO
+                ,NOTES=:NOTES
     where 
            ID= :ID
     ";
@@ -338,18 +298,18 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ASSIGNED_TO
-                ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,FINISH_DATE
+                CLOSED
                 ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NOTES
+                ,TITLE
+                ,FINISH_DATE
                 ,START_DATE
                 ,STATUS
-                ,TITLE
+                ,ASSIGNED_TO
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,NOTES
             from TASKS 
          where 
            ID= :ID
@@ -360,18 +320,18 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ASSIGNED_TO" => array("DATA_TYPE" => "STRING")
-  ,"CLOSED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"FINISH_DATE" => array("DATA_TYPE" => "DATE")
+  "CLOSED" => array("DATA_TYPE" => "BOOLEAN")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"TITLE" => array("DATA_TYPE" => "STRING")
+  ,"FINISH_DATE" => array("DATA_TYPE" => "DATE")
   ,"START_DATE" => array("DATA_TYPE" => "DATE")
   ,"STATUS" => array("DATA_TYPE" => "STRING")
-  ,"TITLE" => array("DATA_TYPE" => "STRING")
+  ,"ASSIGNED_TO" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
 );
 
 

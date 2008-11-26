@@ -11,35 +11,10 @@ class DC0020 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.CURRENCY like :CURRENCY";
-      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY_XRATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.CURRENCY_XRATE like :CURRENCY_XRATE";
-      $params["CURRENCY_XRATE"] = $_REQUEST["QRY_CURRENCY_XRATE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "iii.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_IINVITEM_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.IINVITEM_ID like :IINVITEM_ID";
-      $params["IINVITEM_ID"] = $_REQUEST["QRY_IINVITEM_ID"];
     }
     if (!empty($_REQUEST["QRY_IINV_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -50,41 +25,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "iii.LINE_NO like :LINE_NO";
       $params["LINE_NO"] = $_REQUEST["QRY_LINE_NO"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_NET_AMOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.NET_AMOUNT like :NET_AMOUNT";
-      $params["NET_AMOUNT"] = $_REQUEST["QRY_NET_AMOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_ORIG_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.ORIG_CURRENCY like :ORIG_CURRENCY";
-      $params["ORIG_CURRENCY"] = $_REQUEST["QRY_ORIG_CURRENCY"];
-    }
-    if (!empty($_REQUEST["QRY_ORIG_PRICE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.ORIG_PRICE like :ORIG_PRICE";
-      $params["ORIG_PRICE"] = $_REQUEST["QRY_ORIG_PRICE"];
-    }
-    if (!empty($_REQUEST["QRY_PRICE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.PRICE like :PRICE";
-      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
     }
     if (!empty($_REQUEST["QRY_PROD_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -101,25 +41,85 @@ private function preQuery(&$params, &$where) {
       $where .= "iii.QUANTITY_UNIT like :QUANTITY_UNIT";
       $params["QUANTITY_UNIT"] = $_REQUEST["QRY_QUANTITY_UNIT"];
     }
-    if (!empty($_REQUEST["QRY_SALES_ACCT"])) {
+    if (!empty($_REQUEST["QRY_ORIG_PRICE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "iii.SALES_ACCT like :SALES_ACCT";
-      $params["SALES_ACCT"] = $_REQUEST["QRY_SALES_ACCT"];
+      $where .= "iii.ORIG_PRICE like :ORIG_PRICE";
+      $params["ORIG_PRICE"] = $_REQUEST["QRY_ORIG_PRICE"];
+    }
+    if (!empty($_REQUEST["QRY_NET_AMOUNT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.NET_AMOUNT like :NET_AMOUNT";
+      $params["NET_AMOUNT"] = $_REQUEST["QRY_NET_AMOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_ORIG_CURRENCY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.ORIG_CURRENCY like :ORIG_CURRENCY";
+      $params["ORIG_CURRENCY"] = $_REQUEST["QRY_ORIG_CURRENCY"];
+    }
+    if (!empty($_REQUEST["QRY_PRICE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.PRICE like :PRICE";
+      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
+    }
+    if (!empty($_REQUEST["QRY_CURRENCY_XRATE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.CURRENCY_XRATE like :CURRENCY_XRATE";
+      $params["CURRENCY_XRATE"] = $_REQUEST["QRY_CURRENCY_XRATE"];
+    }
+    if (!empty($_REQUEST["QRY_CREATEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.CREATEDON like :CREATEDON";
+      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
+    }
+    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.CREATEDBY like :CREATEDBY";
+      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.MODIFIEDON like :MODIFIEDON";
+      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.MODIFIEDBY like :MODIFIEDBY";
+      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_IINVITEM_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.IINVITEM_ID like :IINVITEM_ID";
+      $params["IINVITEM_ID"] = $_REQUEST["QRY_IINVITEM_ID"];
+    }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+    }
+    if (!empty($_REQUEST["QRY_TAX_RATE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.TAX_RATE like :TAX_RATE";
+      $params["TAX_RATE"] = $_REQUEST["QRY_TAX_RATE"];
     }
     if (!empty($_REQUEST["QRY_TAX_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "iii.TAX_AMOUNT like :TAX_AMOUNT";
       $params["TAX_AMOUNT"] = $_REQUEST["QRY_TAX_AMOUNT"];
     }
+    if (!empty($_REQUEST["QRY_CURRENCY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.CURRENCY like :CURRENCY";
+      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
+    }
+    if (!empty($_REQUEST["QRY_SALES_ACCT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "iii.SALES_ACCT like :SALES_ACCT";
+      $params["SALES_ACCT"] = $_REQUEST["QRY_SALES_ACCT"];
+    }
     if (!empty($_REQUEST["QRY_TAX_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "iii.TAX_ID like :TAX_ID";
       $params["TAX_ID"] = $_REQUEST["QRY_TAX_ID"];
-    }
-    if (!empty($_REQUEST["QRY_TAX_RATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "iii.TAX_RATE like :TAX_RATE";
-      $params["TAX_RATE"] = $_REQUEST["QRY_TAX_RATE"];
     }
 }
 
@@ -137,61 +137,61 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                iii.CREATEDBY
-                ,iii.CREATEDON
-                ,iii.CURRENCY
-                ,iii.CURRENCY_XRATE
-                ,iii.ID
-                ,iii.IINVITEM_ID
+                iii.ID
                 ,iii.IINV_ID
                 ,iii.LINE_NO
-                ,iii.MODIFIEDBY
-                ,iii.MODIFIEDON
-                ,iii.NET_AMOUNT
-                ,iii.NOTES
-                ,iii.ORIG_CURRENCY
-                ,iii.ORIG_PRICE
-                ,iii.PRICE
-                ,(select code from product where id = iii.prod_id) PROD_CODE
                 ,iii.PROD_ID
-                ,(select name from product where id = iii.prod_id) PROD_NAME
                 ,iii.QUANTITY
                 ,iii.QUANTITY_UNIT
-                ,iii.SALES_ACCT
+                ,iii.ORIG_PRICE
+                ,iii.NET_AMOUNT
+                ,iii.ORIG_CURRENCY
+                ,iii.PRICE
+                ,iii.CURRENCY_XRATE
+                ,iii.CREATEDON
+                ,iii.CREATEDBY
+                ,iii.MODIFIEDON
+                ,iii.MODIFIEDBY
+                ,iii.IINVITEM_ID
+                ,iii.NOTES
+                ,iii.TAX_RATE
                 ,iii.TAX_AMOUNT
+                ,(select code from product where id = iii.prod_id) PROD_CODE
+                ,(select name from product where id = iii.prod_id) PROD_NAME
+                ,iii.CURRENCY
+                ,iii.SALES_ACCT
                 ,iii.TAX_ID
                 ,(select t.name from tax t where t.id = iii.tax_id) TAX_NAME
-                ,iii.TAX_RATE
             from IINVOICE_ITEM iii $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDBY"
-      ,"CREATEDON"
-      ,"CURRENCY"
-      ,"CURRENCY_XRATE"
-      ,"ID"
-      ,"IINVITEM_ID"
+      "ID"
       ,"IINV_ID"
       ,"LINE_NO"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NET_AMOUNT"
-      ,"NOTES"
-      ,"ORIG_CURRENCY"
-      ,"ORIG_PRICE"
-      ,"PRICE"
-      ,"PROD_CODE"
       ,"PROD_ID"
-      ,"PROD_NAME"
       ,"QUANTITY"
       ,"QUANTITY_UNIT"
-      ,"SALES_ACCT"
+      ,"ORIG_PRICE"
+      ,"NET_AMOUNT"
+      ,"ORIG_CURRENCY"
+      ,"PRICE"
+      ,"CURRENCY_XRATE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"IINVITEM_ID"
+      ,"NOTES"
+      ,"TAX_RATE"
       ,"TAX_AMOUNT"
+      ,"PROD_CODE"
+      ,"PROD_NAME"
+      ,"CURRENCY"
+      ,"SALES_ACCT"
       ,"TAX_ID"
       ,"TAX_NAME"
-      ,"TAX_RATE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -217,10 +217,10 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                iii.IINV_ID
-                ,iii.ID
-                ,(select code from product where id = iii.prod_id) PROD_CODE
+                iii.ID
+                ,iii.IINV_ID
                 ,iii.PROD_ID
+                ,(select code from product where id = iii.prod_id) PROD_CODE
                 ,(select name from product where id = iii.prod_id) PROD_NAME
                 ,iii.SALES_ACCT
                 ,iii.QUANTITY
@@ -231,9 +231,9 @@ public function doExport() {
                 ,iii.PRICE
                 ,iii.CURRENCY
                 ,iii.NET_AMOUNT
+                ,iii.TAX_ID
                 ,(select t.name from tax t where t.id = iii.tax_id) TAX_NAME
                 ,iii.TAX_RATE
-                ,iii.TAX_ID
                 ,iii.TAX_AMOUNT
                 ,iii.NOTES
                 ,iii.LINE_NO
@@ -247,10 +247,10 @@ public function doExport() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-     "IINV_ID"
-     ,"ID"
-     ,"PROD_CODE"
+     "ID"
+     ,"IINV_ID"
      ,"PROD_ID"
+     ,"PROD_CODE"
      ,"PROD_NAME"
      ,"SALES_ACCT"
      ,"QUANTITY"
@@ -261,9 +261,9 @@ public function doExport() {
      ,"PRICE"
      ,"CURRENCY"
      ,"NET_AMOUNT"
+     ,"TAX_ID"
      ,"TAX_NAME"
      ,"TAX_RATE"
-     ,"TAX_ID"
      ,"TAX_AMOUNT"
      ,"NOTES"
      ,"LINE_NO"
@@ -336,49 +336,49 @@ public function doInsert() {
     $RECORD["TAX_NAME"] = $this->getRequestParam("TAX_NAME");
     $RECORD["TAX_RATE"] = $this->getRequestParam("TAX_RATE");
     $sql = "insert into IINVOICE_ITEM(
-                 CREATEDBY
-                ,CREATEDON
-                ,CURRENCY
-                ,CURRENCY_XRATE
-                ,ID
-                ,IINVITEM_ID
+                 ID
                 ,IINV_ID
                 ,LINE_NO
-                ,MODIFIEDBY
-                ,NET_AMOUNT
-                ,NOTES
-                ,ORIG_CURRENCY
-                ,ORIG_PRICE
-                ,PRICE
                 ,PROD_ID
                 ,QUANTITY
                 ,QUANTITY_UNIT
-                ,SALES_ACCT
-                ,TAX_AMOUNT
-                ,TAX_ID
+                ,ORIG_PRICE
+                ,NET_AMOUNT
+                ,ORIG_CURRENCY
+                ,PRICE
+                ,CURRENCY_XRATE
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDBY
+                ,IINVITEM_ID
+                ,NOTES
                 ,TAX_RATE
+                ,TAX_AMOUNT
+                ,CURRENCY
+                ,SALES_ACCT
+                ,TAX_ID
             ) values ( 
-                 :CREATEDBY
-                ,:CREATEDON
-                ,:CURRENCY
-                ,:CURRENCY_XRATE
-                ,:ID
-                ,:IINVITEM_ID
+                 :ID
                 ,:IINV_ID
                 ,:LINE_NO
-                ,:MODIFIEDBY
-                ,:NET_AMOUNT
-                ,:NOTES
-                ,:ORIG_CURRENCY
-                ,:ORIG_PRICE
-                ,:PRICE
                 ,:PROD_ID
                 ,:QUANTITY
                 ,:QUANTITY_UNIT
-                ,:SALES_ACCT
-                ,:TAX_AMOUNT
-                ,:TAX_ID
+                ,:ORIG_PRICE
+                ,:NET_AMOUNT
+                ,:ORIG_CURRENCY
+                ,:PRICE
+                ,:CURRENCY_XRATE
+                ,:CREATEDON
+                ,:CREATEDBY
+                ,:MODIFIEDBY
+                ,:IINVITEM_ID
+                ,:NOTES
                 ,:TAX_RATE
+                ,:TAX_AMOUNT
+                ,:CURRENCY
+                ,:SALES_ACCT
+                ,:TAX_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_iinvitem_id.nextval seq_val from dual")->fetchRow();
@@ -422,24 +422,24 @@ public function doUpdate() {
     $RECORD["TAX_RATE"] = $this->getRequestParam("TAX_RATE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0020.doUpdate().");}
     $sql = "update IINVOICE_ITEM set 
-                 CURRENCY=:CURRENCY
-                ,CURRENCY_XRATE=:CURRENCY_XRATE
-                ,ID=:ID
-                ,IINVITEM_ID=:IINVITEM_ID
+                 ID=:ID
                 ,IINV_ID=:IINV_ID
                 ,LINE_NO=:LINE_NO
-                ,NET_AMOUNT=:NET_AMOUNT
-                ,NOTES=:NOTES
-                ,ORIG_CURRENCY=:ORIG_CURRENCY
-                ,ORIG_PRICE=:ORIG_PRICE
-                ,PRICE=:PRICE
                 ,PROD_ID=:PROD_ID
                 ,QUANTITY=:QUANTITY
                 ,QUANTITY_UNIT=:QUANTITY_UNIT
-                ,SALES_ACCT=:SALES_ACCT
-                ,TAX_AMOUNT=:TAX_AMOUNT
-                ,TAX_ID=:TAX_ID
+                ,ORIG_PRICE=:ORIG_PRICE
+                ,NET_AMOUNT=:NET_AMOUNT
+                ,ORIG_CURRENCY=:ORIG_CURRENCY
+                ,PRICE=:PRICE
+                ,CURRENCY_XRATE=:CURRENCY_XRATE
+                ,IINVITEM_ID=:IINVITEM_ID
+                ,NOTES=:NOTES
                 ,TAX_RATE=:TAX_RATE
+                ,TAX_AMOUNT=:TAX_AMOUNT
+                ,CURRENCY=:CURRENCY
+                ,SALES_ACCT=:SALES_ACCT
+                ,TAX_ID=:TAX_ID
     where 
            ID= :ID
     ";
@@ -511,31 +511,31 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                iii.CREATEDBY
-                ,iii.CREATEDON
-                ,iii.CURRENCY
-                ,iii.CURRENCY_XRATE
-                ,iii.ID
-                ,iii.IINVITEM_ID
+                iii.ID
                 ,iii.IINV_ID
                 ,iii.LINE_NO
-                ,iii.MODIFIEDBY
-                ,iii.MODIFIEDON
-                ,iii.NET_AMOUNT
-                ,iii.NOTES
-                ,iii.ORIG_CURRENCY
-                ,iii.ORIG_PRICE
-                ,iii.PRICE
-                ,(select code from product where id = iii.prod_id) PROD_CODE
                 ,iii.PROD_ID
-                ,(select name from product where id = iii.prod_id) PROD_NAME
                 ,iii.QUANTITY
                 ,iii.QUANTITY_UNIT
-                ,iii.SALES_ACCT
+                ,iii.ORIG_PRICE
+                ,iii.NET_AMOUNT
+                ,iii.ORIG_CURRENCY
+                ,iii.PRICE
+                ,iii.CURRENCY_XRATE
+                ,iii.CREATEDON
+                ,iii.CREATEDBY
+                ,iii.MODIFIEDON
+                ,iii.MODIFIEDBY
+                ,iii.IINVITEM_ID
+                ,iii.NOTES
+                ,iii.TAX_RATE
                 ,iii.TAX_AMOUNT
+                ,(select code from product where id = iii.prod_id) PROD_CODE
+                ,(select name from product where id = iii.prod_id) PROD_NAME
+                ,iii.CURRENCY
+                ,iii.SALES_ACCT
                 ,iii.TAX_ID
                 ,(select t.name from tax t where t.id = iii.tax_id) TAX_NAME
-                ,iii.TAX_RATE
             from IINVOICE_ITEM iii
          where 
            iii.ID= :ID
@@ -546,31 +546,31 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"CURRENCY_XRATE" => array("DATA_TYPE" => "NUMBER")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"IINVITEM_ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"IINV_ID" => array("DATA_TYPE" => "NUMBER")
   ,"LINE_NO" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"ORIG_CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"ORIG_PRICE" => array("DATA_TYPE" => "NUMBER")
-  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
-  ,"PROD_CODE" => array("DATA_TYPE" => "STRING")
   ,"PROD_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PROD_NAME" => array("DATA_TYPE" => "STRING")
   ,"QUANTITY" => array("DATA_TYPE" => "NUMBER")
   ,"QUANTITY_UNIT" => array("DATA_TYPE" => "STRING")
-  ,"SALES_ACCT" => array("DATA_TYPE" => "STRING")
+  ,"ORIG_PRICE" => array("DATA_TYPE" => "NUMBER")
+  ,"NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"ORIG_CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
+  ,"CURRENCY_XRATE" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"IINVITEM_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"TAX_RATE" => array("DATA_TYPE" => "NUMBER")
   ,"TAX_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"PROD_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PROD_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"SALES_ACCT" => array("DATA_TYPE" => "STRING")
   ,"TAX_ID" => array("DATA_TYPE" => "NUMBER")
   ,"TAX_NAME" => array("DATA_TYPE" => "STRING")
-  ,"TAX_RATE" => array("DATA_TYPE" => "NUMBER")
 );
 
 

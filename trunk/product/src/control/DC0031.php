@@ -11,31 +11,6 @@ class DC0031 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCOUNT_EXPIRED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCOUNT_EXPIRED like :ACCOUNT_EXPIRED";
-      $params["ACCOUNT_EXPIRED"] = $_REQUEST["QRY_ACCOUNT_EXPIRED"];
-    }
-    if (!empty($_REQUEST["QRY_ACCOUNT_LOCKED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCOUNT_LOCKED like :ACCOUNT_LOCKED";
-      $params["ACCOUNT_LOCKED"] = $_REQUEST["QRY_ACCOUNT_LOCKED"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_DBUSER"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DBUSER like :DBUSER";
-      $params["DBUSER"] = $_REQUEST["QRY_DBUSER"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
@@ -45,21 +20,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "LOGIN_CODE like :LOGIN_CODE";
       $params["LOGIN_CODE"] = $_REQUEST["QRY_LOGIN_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_PERSON_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PERSON_ID like :PERSON_ID";
-      $params["PERSON_ID"] = $_REQUEST["QRY_PERSON_ID"];
     }
 }
 
@@ -77,31 +37,31 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACCOUNT_EXPIRED
-                ,ACCOUNT_LOCKED
-                ,CREATEDBY
-                ,CREATEDON
-                ,DBUSER
-                ,ID
+                ID
                 ,LOGIN_CODE
-                ,MODIFIEDBY
-                ,MODIFIEDON
                 ,PERSON_ID
+                ,ACCOUNT_LOCKED
+                ,ACCOUNT_EXPIRED
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,DBUSER
             from SYS_USER  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCOUNT_EXPIRED"
-      ,"ACCOUNT_LOCKED"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DBUSER"
-      ,"ID"
+      "ID"
       ,"LOGIN_CODE"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
       ,"PERSON_ID"
+      ,"ACCOUNT_LOCKED"
+      ,"ACCOUNT_EXPIRED"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"DBUSER"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -202,19 +162,19 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["PERSON_ID"] = $this->getRequestParam("PERSON_ID");
     $sql = "insert into SYS_USER(
-                 ACCOUNT_EXPIRED
-                ,ACCOUNT_LOCKED
-                ,DBUSER
-                ,ID
+                 ID
                 ,LOGIN_CODE
                 ,PERSON_ID
+                ,ACCOUNT_LOCKED
+                ,ACCOUNT_EXPIRED
+                ,DBUSER
             ) values ( 
-                 :ACCOUNT_EXPIRED
-                ,:ACCOUNT_LOCKED
-                ,:DBUSER
-                ,:ID
+                 :ID
                 ,:LOGIN_CODE
                 ,:PERSON_ID
+                ,:ACCOUNT_LOCKED
+                ,:ACCOUNT_EXPIRED
+                ,:DBUSER
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_USER_ID.nextval seq_val from dual")->fetchRow();
@@ -246,11 +206,11 @@ public function doUpdate() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0031.doUpdate().");}
     $sql = "update SYS_USER set 
-                 ACCOUNT_EXPIRED=:ACCOUNT_EXPIRED
-                ,ACCOUNT_LOCKED=:ACCOUNT_LOCKED
-                ,DBUSER=:DBUSER
-                ,ID=:ID
+                 ID=:ID
                 ,LOGIN_CODE=:LOGIN_CODE
+                ,ACCOUNT_LOCKED=:ACCOUNT_LOCKED
+                ,ACCOUNT_EXPIRED=:ACCOUNT_EXPIRED
+                ,DBUSER=:DBUSER
     where 
            ID= :ID
     ";
@@ -308,16 +268,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACCOUNT_EXPIRED
-                ,ACCOUNT_LOCKED
-                ,CREATEDBY
-                ,CREATEDON
-                ,DBUSER
-                ,ID
+                ID
                 ,LOGIN_CODE
-                ,MODIFIEDBY
-                ,MODIFIEDON
                 ,PERSON_ID
+                ,ACCOUNT_LOCKED
+                ,ACCOUNT_EXPIRED
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,DBUSER
             from SYS_USER 
          where 
            ID= :ID
@@ -328,16 +288,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCOUNT_EXPIRED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ACCOUNT_LOCKED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DBUSER" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"LOGIN_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"PERSON_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCOUNT_LOCKED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ACCOUNT_EXPIRED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"DBUSER" => array("DATA_TYPE" => "STRING")
 );
 
 

@@ -11,6 +11,11 @@ class DC0039 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "p.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.CLIENT_ID like :CLIENT_ID";
@@ -21,90 +26,25 @@ private function preQuery(&$params, &$where) {
       $where .= "p.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_DESCRIPTION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.DESCRIPTION like :DESCRIPTION";
-      $params["DESCRIPTION"] = $_REQUEST["QRY_DESCRIPTION"];
-    }
-    if (!empty($_REQUEST["QRY_EXPENSE_ACCOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.EXPENSE_ACCOUNT like :EXPENSE_ACCOUNT";
-      $params["EXPENSE_ACCOUNT"] = $_REQUEST["QRY_EXPENSE_ACCOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_FOR_SALE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.FOR_SALE like :FOR_SALE";
-      $params["FOR_SALE"] = $_REQUEST["QRY_FOR_SALE"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_PRODCATEG_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.PRODCATEG_ID like :PRODCATEG_ID";
-      $params["PRODCATEG_ID"] = $_REQUEST["QRY_PRODCATEG_ID"];
     }
     if (!empty($_REQUEST["QRY_PROD_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.PROD_TYPE like :PROD_TYPE";
       $params["PROD_TYPE"] = $_REQUEST["QRY_PROD_TYPE"];
     }
-    if (!empty($_REQUEST["QRY_REVENUE_ACCOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.REVENUE_ACCOUNT like :REVENUE_ACCOUNT";
-      $params["REVENUE_ACCOUNT"] = $_REQUEST["QRY_REVENUE_ACCOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_STORABLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.STORABLE like :STORABLE";
-      $params["STORABLE"] = $_REQUEST["QRY_STORABLE"];
-    }
     if (!empty($_REQUEST["QRY_SUMMARY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.SUMMARY like :SUMMARY";
       $params["SUMMARY"] = $_REQUEST["QRY_SUMMARY"];
     }
-    if (!empty($_REQUEST["QRY_UOM_CODE"])) {
+    if (!empty($_REQUEST["QRY_PRODCATEG_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "p.UOM_CODE like :UOM_CODE";
-      $params["UOM_CODE"] = $_REQUEST["QRY_UOM_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_VOLUME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.VOLUME like :VOLUME";
-      $params["VOLUME"] = $_REQUEST["QRY_VOLUME"];
-    }
-    if (!empty($_REQUEST["QRY_WEIGHT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.WEIGHT like :WEIGHT";
-      $params["WEIGHT"] = $_REQUEST["QRY_WEIGHT"];
+      $where .= "p.PRODCATEG_ID like :PRODCATEG_ID";
+      $params["PRODCATEG_ID"] = $_REQUEST["QRY_PRODCATEG_ID"];
     }
 }
 
@@ -122,53 +62,53 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                p.CLIENT_ID
-                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
-                ,p.CODE
-                ,p.CREATEDBY
-                ,p.CREATEDON
-                ,p.DESCRIPTION
+                p.FOR_SALE
                 ,p.EXPENSE_ACCOUNT
-                ,p.FOR_SALE
-                ,p.ID
-                ,p.MODIFIEDBY
-                ,p.MODIFIEDON
-                ,p.NAME
-                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
-                ,p.PRODCATEG_ID
-                ,p.PROD_TYPE
                 ,p.REVENUE_ACCOUNT
-                ,p.STORABLE
+                ,p.ID
+                ,p.CLIENT_ID
+                ,p.CODE
+                ,p.NAME
+                ,p.DESCRIPTION
+                ,p.PROD_TYPE
                 ,p.SUMMARY
+                ,p.STORABLE
+                ,p.CREATEDON
+                ,p.CREATEDBY
+                ,p.MODIFIEDON
+                ,p.MODIFIEDBY
                 ,p.UOM_CODE
                 ,p.VOLUME
                 ,p.WEIGHT
+                ,p.PRODCATEG_ID
+                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
+                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
             from PRODUCT p $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CODE"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DESCRIPTION"
+      "FOR_SALE"
       ,"EXPENSE_ACCOUNT"
-      ,"FOR_SALE"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
-      ,"PRODCATEG_CODE"
-      ,"PRODCATEG_ID"
-      ,"PROD_TYPE"
       ,"REVENUE_ACCOUNT"
-      ,"STORABLE"
+      ,"ID"
+      ,"CLIENT_ID"
+      ,"CODE"
+      ,"NAME"
+      ,"DESCRIPTION"
+      ,"PROD_TYPE"
       ,"SUMMARY"
+      ,"STORABLE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
       ,"UOM_CODE"
       ,"VOLUME"
       ,"WEIGHT"
+      ,"PRODCATEG_ID"
+      ,"PRODCATEG_CODE"
+      ,"CLIENT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -195,8 +135,8 @@ public function doExport() {
     }
     $sql = "select 
                 p.ID
-                ,p.CLIENT_ID
                 ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
+                ,p.CLIENT_ID
                 ,p.CODE
                 ,p.NAME
                 ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
@@ -221,8 +161,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_NAME"
+     ,"CLIENT_ID"
      ,"CODE"
      ,"NAME"
      ,"PRODCATEG_CODE"
@@ -301,41 +241,41 @@ public function doInsert() {
     $RECORD["VOLUME"] = $this->getRequestParam("VOLUME");
     $RECORD["WEIGHT"] = $this->getRequestParam("WEIGHT");
     $sql = "insert into PRODUCT(
-                 CLIENT_ID
-                ,CODE
-                ,CREATEDBY
-                ,DESCRIPTION
+                 FOR_SALE
                 ,EXPENSE_ACCOUNT
-                ,FOR_SALE
-                ,ID
-                ,MODIFIEDBY
-                ,NAME
-                ,PRODCATEG_ID
-                ,PROD_TYPE
                 ,REVENUE_ACCOUNT
-                ,STORABLE
+                ,ID
+                ,CLIENT_ID
+                ,CODE
+                ,NAME
+                ,DESCRIPTION
+                ,PROD_TYPE
                 ,SUMMARY
+                ,STORABLE
+                ,CREATEDBY
+                ,MODIFIEDBY
                 ,UOM_CODE
                 ,VOLUME
                 ,WEIGHT
+                ,PRODCATEG_ID
             ) values ( 
-                 :CLIENT_ID
-                ,:CODE
-                ,:CREATEDBY
-                ,:DESCRIPTION
+                 :FOR_SALE
                 ,:EXPENSE_ACCOUNT
-                ,:FOR_SALE
-                ,:ID
-                ,:MODIFIEDBY
-                ,:NAME
-                ,:PRODCATEG_ID
-                ,:PROD_TYPE
                 ,:REVENUE_ACCOUNT
-                ,:STORABLE
+                ,:ID
+                ,:CLIENT_ID
+                ,:CODE
+                ,:NAME
+                ,:DESCRIPTION
+                ,:PROD_TYPE
                 ,:SUMMARY
+                ,:STORABLE
+                ,:CREATEDBY
+                ,:MODIFIEDBY
                 ,:UOM_CODE
                 ,:VOLUME
                 ,:WEIGHT
+                ,:PRODCATEG_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PROD_ID.nextval seq_val from dual")->fetchRow();
@@ -372,18 +312,18 @@ public function doUpdate() {
     $RECORD["UOM_CODE"] = $this->getRequestParam("UOM_CODE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0039.doUpdate().");}
     $sql = "update PRODUCT set 
-                 CLIENT_ID=:CLIENT_ID
-                ,CODE=:CODE
-                ,DESCRIPTION=:DESCRIPTION
-                ,EXPENSE_ACCOUNT=:EXPENSE_ACCOUNT
-                ,ID=:ID
-                ,NAME=:NAME
-                ,PRODCATEG_ID=:PRODCATEG_ID
-                ,PROD_TYPE=:PROD_TYPE
+                 EXPENSE_ACCOUNT=:EXPENSE_ACCOUNT
                 ,REVENUE_ACCOUNT=:REVENUE_ACCOUNT
-                ,STORABLE=:STORABLE
+                ,ID=:ID
+                ,CLIENT_ID=:CLIENT_ID
+                ,CODE=:CODE
+                ,NAME=:NAME
+                ,DESCRIPTION=:DESCRIPTION
+                ,PROD_TYPE=:PROD_TYPE
                 ,SUMMARY=:SUMMARY
+                ,STORABLE=:STORABLE
                 ,UOM_CODE=:UOM_CODE
+                ,PRODCATEG_ID=:PRODCATEG_ID
     where 
            ID= :ID
     ";
@@ -451,27 +391,27 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                p.CLIENT_ID
-                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
-                ,p.CODE
-                ,p.CREATEDBY
-                ,p.CREATEDON
-                ,p.DESCRIPTION
+                p.FOR_SALE
                 ,p.EXPENSE_ACCOUNT
-                ,p.FOR_SALE
-                ,p.ID
-                ,p.MODIFIEDBY
-                ,p.MODIFIEDON
-                ,p.NAME
-                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
-                ,p.PRODCATEG_ID
-                ,p.PROD_TYPE
                 ,p.REVENUE_ACCOUNT
-                ,p.STORABLE
+                ,p.ID
+                ,p.CLIENT_ID
+                ,p.CODE
+                ,p.NAME
+                ,p.DESCRIPTION
+                ,p.PROD_TYPE
                 ,p.SUMMARY
+                ,p.STORABLE
+                ,p.CREATEDON
+                ,p.CREATEDBY
+                ,p.MODIFIEDON
+                ,p.MODIFIEDBY
                 ,p.UOM_CODE
                 ,p.VOLUME
                 ,p.WEIGHT
+                ,p.PRODCATEG_ID
+                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
+                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
             from PRODUCT p
          where 
            p.ID= :ID
@@ -482,27 +422,27 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  "FOR_SALE" => array("DATA_TYPE" => "BOOLEAN")
   ,"EXPENSE_ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"FOR_SALE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"PRODCATEG_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PRODCATEG_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PROD_TYPE" => array("DATA_TYPE" => "STRING")
   ,"REVENUE_ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"STORABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"PROD_TYPE" => array("DATA_TYPE" => "STRING")
   ,"SUMMARY" => array("DATA_TYPE" => "BOOLEAN")
+  ,"STORABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"UOM_CODE" => array("DATA_TYPE" => "STRING")
   ,"VOLUME" => array("DATA_TYPE" => "NUMBER")
   ,"WEIGHT" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODCATEG_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODCATEG_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

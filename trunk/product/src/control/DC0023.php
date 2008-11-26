@@ -11,70 +11,25 @@ class DC0023 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLOSED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLOSED like :CLOSED";
-      $params["CLOSED"] = $_REQUEST["QRY_CLOSED"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_ENDDATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ENDDATE like :ENDDATE";
-      $params["ENDDATE"] = $_REQUEST["QRY_ENDDATE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_NEXT_YEAR_NAME"])) {
+    if (!empty($_REQUEST["QRY_CLOSED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "NEXT_YEAR_NAME like :NEXT_YEAR_NAME";
-      $params["NEXT_YEAR_NAME"] = $_REQUEST["QRY_NEXT_YEAR_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_PREV_YEAR_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PREV_YEAR_NAME like :PREV_YEAR_NAME";
-      $params["PREV_YEAR_NAME"] = $_REQUEST["QRY_PREV_YEAR_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_STARTDATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "STARTDATE like :STARTDATE";
-      $params["STARTDATE"] = $_REQUEST["QRY_STARTDATE"];
+      $where .= "CLOSED like :CLOSED";
+      $params["CLOSED"] = $_REQUEST["QRY_CLOSED"];
     }
 }
 
@@ -92,39 +47,39 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CLIENT_ID
+                ID
+                ,CLIENT_ID
+                ,NAME
+                ,STARTDATE
+                ,ENDDATE
+                ,PREV_YEAR_NAME
+                ,NEXT_YEAR_NAME
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,NOTES
                 ,(select code from client where id = client_id) CLIENT_NAME
                 ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NAME
-                ,NEXT_YEAR_NAME
-                ,NOTES
-                ,PREV_YEAR_NAME
-                ,STARTDATE
             from ACCOUNTING_YEAR  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_ID"
+      "ID"
+      ,"CLIENT_ID"
+      ,"NAME"
+      ,"STARTDATE"
+      ,"ENDDATE"
+      ,"PREV_YEAR_NAME"
+      ,"NEXT_YEAR_NAME"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"NOTES"
       ,"CLIENT_NAME"
       ,"CLOSED"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"ENDDATE"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
-      ,"NEXT_YEAR_NAME"
-      ,"NOTES"
-      ,"PREV_YEAR_NAME"
-      ,"STARTDATE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -236,29 +191,29 @@ public function doInsert() {
     $RECORD["PREV_YEAR_NAME"] = $this->getRequestParam("PREV_YEAR_NAME");
     $RECORD["STARTDATE"] = $this->getRequestParam("STARTDATE");
     $sql = "insert into ACCOUNTING_YEAR(
-                 CLIENT_ID
-                ,CLOSED
-                ,CREATEDBY
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
+                 ID
+                ,CLIENT_ID
                 ,NAME
-                ,NEXT_YEAR_NAME
-                ,NOTES
-                ,PREV_YEAR_NAME
                 ,STARTDATE
+                ,ENDDATE
+                ,PREV_YEAR_NAME
+                ,NEXT_YEAR_NAME
+                ,CREATEDBY
+                ,MODIFIEDBY
+                ,NOTES
+                ,CLOSED
             ) values ( 
-                 :CLIENT_ID
-                ,:CLOSED
-                ,:CREATEDBY
-                ,:ENDDATE
-                ,:ID
-                ,:MODIFIEDBY
+                 :ID
+                ,:CLIENT_ID
                 ,:NAME
-                ,:NEXT_YEAR_NAME
-                ,:NOTES
-                ,:PREV_YEAR_NAME
                 ,:STARTDATE
+                ,:ENDDATE
+                ,:PREV_YEAR_NAME
+                ,:NEXT_YEAR_NAME
+                ,:CREATEDBY
+                ,:MODIFIEDBY
+                ,:NOTES
+                ,:CLOSED
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ACCYEAR_ID.nextval seq_val from dual")->fetchRow();
@@ -292,13 +247,13 @@ public function doUpdate() {
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0023.doUpdate().");}
     $sql = "update ACCOUNTING_YEAR set 
                  CLIENT_ID=:CLIENT_ID
-                ,CLOSED=:CLOSED
-                ,ENDDATE=:ENDDATE
                 ,NAME=:NAME
+                ,STARTDATE=:STARTDATE
+                ,ENDDATE=:ENDDATE
+                ,PREV_YEAR_NAME=:PREV_YEAR_NAME
                 ,NEXT_YEAR_NAME=:NEXT_YEAR_NAME
                 ,NOTES=:NOTES
-                ,PREV_YEAR_NAME=:PREV_YEAR_NAME
-                ,STARTDATE=:STARTDATE
+                ,CLOSED=:CLOSED
     where 
            ID= :ID
     ";
@@ -359,20 +314,20 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CLIENT_ID
+                ID
+                ,CLIENT_ID
+                ,NAME
+                ,STARTDATE
+                ,ENDDATE
+                ,PREV_YEAR_NAME
+                ,NEXT_YEAR_NAME
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,NOTES
                 ,(select code from client where id = client_id) CLIENT_NAME
                 ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NAME
-                ,NEXT_YEAR_NAME
-                ,NOTES
-                ,PREV_YEAR_NAME
-                ,STARTDATE
             from ACCOUNTING_YEAR 
          where 
            ID= :ID
@@ -383,20 +338,20 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"STARTDATE" => array("DATA_TYPE" => "DATE")
+  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
+  ,"PREV_YEAR_NAME" => array("DATA_TYPE" => "STRING")
+  ,"NEXT_YEAR_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
   ,"CLOSED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"NEXT_YEAR_NAME" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"PREV_YEAR_NAME" => array("DATA_TYPE" => "STRING")
-  ,"STARTDATE" => array("DATA_TYPE" => "DATE")
 );
 
 

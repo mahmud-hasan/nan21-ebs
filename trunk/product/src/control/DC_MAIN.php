@@ -32,6 +32,14 @@ class DC_MAIN extends Controller {
                and m.menuitem_id is null
                and m.active = 'Y'
                and mt.lang = '".$lang."'
+               and not exists (
+                 select 1 
+                   from menuitem_role mr 
+                  where mr. menuitem_id = m.id 
+                    and mr.role_name not in (select ur.role_name 
+                                               from sys_user_role ur 
+                                              where ur.user_id = (select u.id from sys_user u where u.login_code ='".$user["userName"]."')  )
+               )
              order by m.position";
     } else {
       $sql = "select m.*, mt.translation menu_title
@@ -41,6 +49,14 @@ class DC_MAIN extends Controller {
                and m.active = 'Y'
                and m.menuitem_id = '".$node."'
                and mt.lang = '".$lang."'
+               and not exists (
+                 select 1 
+                   from menuitem_role mr 
+                  where mr. menuitem_id = m.id 
+                    and mr.role_name not in (select ur.role_name 
+                                               from sys_user_role ur 
+                                              where ur.user_id = (select u.id from sys_user u where u.login_code ='".$user["userName"]."')  )
+               )
              order by m.position";
     }
     $rs = $this->db->Execute($sql);

@@ -16,30 +16,20 @@ private function preQuery(&$params, &$where) {
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
+    if (!empty($_REQUEST["QRY_UIDICT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "UIDICT_ID like :UIDICT_ID";
+      $params["UIDICT_ID"] = $_REQUEST["QRY_UIDICT_ID"];
+    }
     if (!empty($_REQUEST["QRY_LANGUAGE_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "LANGUAGE_CODE like :LANGUAGE_CODE";
       $params["LANGUAGE_CODE"] = $_REQUEST["QRY_LANGUAGE_CODE"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
     if (!empty($_REQUEST["QRY_TRANSLATION"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "TRANSLATION like :TRANSLATION";
       $params["TRANSLATION"] = $_REQUEST["QRY_TRANSLATION"];
-    }
-    if (!empty($_REQUEST["QRY_UIDICT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "UIDICT_ID like :UIDICT_ID";
-      $params["UIDICT_ID"] = $_REQUEST["QRY_UIDICT_ID"];
     }
 }
 
@@ -58,26 +48,26 @@ public function doQuery() {
     }
     $sql = "select 
                 ID
-                ,LANGUAGE_CODE
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
-                ,TRANSLATION
-                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
                 ,UIDICT_ID
+                ,LANGUAGE_CODE
+                ,TRANSLATION
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
             from UI_DICTIONARY_TRL  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"LANGUAGE_CODE"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"MSG_CODE"
-      ,"TRANSLATION"
-      ,"UIDC_CODE"
       ,"UIDICT_ID"
+      ,"LANGUAGE_CODE"
+      ,"TRANSLATION"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"UIDC_CODE"
+      ,"MSG_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -218,13 +208,13 @@ public function initNewRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 ID
-                ,LANGUAGE_CODE
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
-                ,TRANSLATION
-                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
                 ,UIDICT_ID
+                ,LANGUAGE_CODE
+                ,TRANSLATION
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
             from UI_DICTIONARY_TRL 
          where 
            ID= :ID
@@ -236,13 +226,13 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"LANGUAGE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MSG_CODE" => array("DATA_TYPE" => "STRING")
-  ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
-  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
   ,"UIDICT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"LANGUAGE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
+  ,"MSG_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

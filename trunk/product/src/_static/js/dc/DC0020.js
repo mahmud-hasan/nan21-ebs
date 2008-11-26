@@ -32,7 +32,39 @@
          ,{name:"MODIFIEDBY", type:"string" }
          ,{name:"IINVITEM_ID", type:"float" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:0 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("IINV_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_IINV_ID",id:"DC0020_QRY_IINV_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.IINV_ID||"Inv_id"})  );
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0020_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("PROD_CODE", new N21.DataComp.LOV0017({xtype: "LOV0017",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0020_QRY_PROD_ID"},{column:"NAME",field:"DC0020_QRY_PROD_NAME"}],selectOnFocus:true,name:"QRY_PROD_CODE",id:"DC0020_QRY_PROD_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod. Code"})  );
+         this.queryFields.add("PROD_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PROD_ID",id:"DC0020_QRY_PROD_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id"})  );
+         this.queryFields.add("PROD_NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_PROD_NAME",id:"DC0020_QRY_PROD_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_NAME||"Prod. Name"})  );
+         this.queryFields.add("SALES_ACCT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"QRY_SALES_ACCT",id:"DC0020_QRY_SALES_ACCT",width:100,fieldLabel: this.resourceBundle.FieldLabel.SALES_ACCT||"Sales_acct"})  );
+         this.queryFields.add("QUANTITY", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QUANTITY",id:"DC0020_QRY_QUANTITY",width:100,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",style: "text-align:right;"})  );
+         this.queryFields.add("QUANTITY_UNIT", new N21.DataComp.LOV0002({xtype: "LOV0002",displayColumn: "CODE",name:"QRY_QUANTITY_UNIT",id:"DC0020_QRY_QUANTITY_UNIT",width:100,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"Quantity_unit"})  );
+         this.queryFields.add("ORIG_PRICE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_ORIG_PRICE",id:"DC0020_QRY_ORIG_PRICE",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_PRICE||"Orig_price",style: "text-align:right;"})  );
+         this.queryFields.add("ORIG_CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_ORIG_CURRENCY",id:"DC0020_QRY_ORIG_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_price_currency"})  );
+         this.queryFields.add("CURRENCY_XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_CURRENCY_XRATE",id:"DC0020_QRY_CURRENCY_XRATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",style: "text-align:right;"})  );
+         this.queryFields.add("PRICE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_PRICE",id:"DC0020_QRY_PRICE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Unit Price",style: "text-align:right;"})  );
+         this.queryFields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_CURRENCY",id:"DC0020_QRY_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"})  );
+         this.queryFields.add("NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_NET_AMOUNT",id:"DC0020_QRY_NET_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",style: "text-align:right;"})  );
+         this.queryFields.add("TAX_NAME", new N21.DataComp.LOV0024({xtype: "LOV0024",displayColumn: "NAME",name:"QRY_TAX_NAME",id:"DC0020_QRY_TAX_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"Tax"})  );
+         this.queryFields.add("TAX_RATE", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_TAX_RATE",id:"DC0020_QRY_TAX_RATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Vat_rate"})  );
+         this.queryFields.add("TAX_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_TAX_ID",id:"DC0020_QRY_TAX_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id"})  );
+         this.queryFields.add("TAX_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_TAX_AMOUNT",id:"DC0020_QRY_TAX_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Vat_amount",style: "text-align:right;"})  );
+         this.queryFields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"QRY_NOTES",id:"DC0020_QRY_NOTES",width:100,fieldLabel: "N/A"})  );
+         this.queryFields.add("LINE_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_LINE_NO",id:"DC0020_QRY_LINE_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.LINE_NO||"Line_no"})  );
+         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0020_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0020_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
+         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0020_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0020_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
+         this.queryFields.add("IINVITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_IINVITEM_ID",id:"DC0020_QRY_IINVITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.IINVITEM_ID||"Invitem_id"})  );
+  
+       this.queryFieldsVisible = [  "PROD_CODE","PROD_NAME","SALES_ACCT","QUANTITY","QUANTITY_UNIT","ORIG_PRICE","ORIG_CURRENCY","CURRENCY_XRATE","PRICE","CURRENCY","NET_AMOUNT","TAX_NAME","TAX_AMOUNT","NOTES","LINE_NO","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0020"
@@ -67,33 +99,6 @@
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
               ,{ id:"IINVITEM_ID",header:this.resourceBundle.FieldLabel.IINVITEM_ID||"Invitem_id",width:100,dataIndex:'IINVITEM_ID',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_IINV_ID",id:"DC0020_QRY_IINV_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.IINV_ID||"Inv_id"}
-               ,{xtype: "hidden",name:"QRY_ID",id:"DC0020_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "LOV0017",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0020_QRY_PROD_ID"},{column:"NAME",field:"DC0020_QRY_PROD_NAME"}],selectOnFocus:true,name:"QRY_PROD_CODE",id:"DC0020_QRY_PROD_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod. Code"}
-               ,{xtype: "hidden",name:"QRY_PROD_ID",id:"DC0020_QRY_PROD_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id"}
-               ,{xtype: "textfield",name:"QRY_PROD_NAME",id:"DC0020_QRY_PROD_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.PROD_NAME||"Prod. Name"}
-               ,{xtype: "LOV0025",selectOnFocus:true,name:"QRY_SALES_ACCT",id:"DC0020_QRY_SALES_ACCT",width:120,fieldLabel: this.resourceBundle.FieldLabel.SALES_ACCT||"Sales_acct"}
-               ,{xtype: "numberfield",name:"QRY_QUANTITY",id:"DC0020_QRY_QUANTITY",width:120,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",style: "text-align:right;"}
-               ,{xtype: "LOV0002",displayColumn: "CODE",name:"QRY_QUANTITY_UNIT",id:"DC0020_QRY_QUANTITY_UNIT",width:120,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"Quantity_unit"}
-               ,{xtype: "numberfield",name:"QRY_ORIG_PRICE",id:"DC0020_QRY_ORIG_PRICE",width:120,fieldLabel: this.resourceBundle.FieldLabel.ORIG_PRICE||"Orig_price",style: "text-align:right;"}
-               ,{xtype: "LOV0001",name:"QRY_ORIG_CURRENCY",id:"DC0020_QRY_ORIG_CURRENCY",width:120,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_price_currency"}
-               ,{xtype: "numberfield",name:"QRY_CURRENCY_XRATE",id:"DC0020_QRY_CURRENCY_XRATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_PRICE",id:"DC0020_QRY_PRICE",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Unit Price",style: "text-align:right;"}
-               ,{xtype: "LOV0001",name:"QRY_CURRENCY",id:"DC0020_QRY_CURRENCY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"}
-               ,{xtype: "numberfield",name:"QRY_NET_AMOUNT",id:"DC0020_QRY_NET_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",style: "text-align:right;"}
-               ,{xtype: "LOV0024",displayColumn: "NAME",name:"QRY_TAX_NAME",id:"DC0020_QRY_TAX_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"Tax"}
-               ,{xtype: "hidden",name:"QRY_TAX_RATE",id:"DC0020_QRY_TAX_RATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Vat_rate"}
-               ,{xtype: "hidden",name:"QRY_TAX_ID",id:"DC0020_QRY_TAX_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id"}
-               ,{xtype: "numberfield",name:"QRY_TAX_AMOUNT",id:"DC0020_QRY_TAX_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Vat_amount",style: "text-align:right;"}
-               ,{xtype: "textarea",name:"QRY_NOTES",id:"DC0020_QRY_NOTES",width:120,fieldLabel: "N/A"}
-               ,{xtype: "textfield",name:"QRY_LINE_NO",id:"DC0020_QRY_LINE_NO",width:120,fieldLabel: this.resourceBundle.FieldLabel.LINE_NO||"Line_no"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0020_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0020_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0020_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0020_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "hidden",name:"QRY_IINVITEM_ID",id:"DC0020_QRY_IINVITEM_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.IINVITEM_ID||"Invitem_id"}
           ]
           ,dataComponentName:"DC0020G"
           ,queryArraySize:20
@@ -193,13 +198,13 @@
         });
 
         
-
        N21.DataComp.DC0020F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0020F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,IINV_ID:""
@@ -234,6 +239,7 @@
       this.setFieldValue("PRICE", this.getFieldValue("ORIG_PRICE") * newVal );
  }
    }
+
   ,change_NET_AMOUNT:function(fld, newVal, oldVal) {
     if ( !Ext.isEmpty(newVal) &&  !Ext.isEmpty(this.getFieldValue("TAX_RATE"))   ) {
       this.setFieldValue("TAX_AMOUNT", this.getFieldValue("NET_AMOUNT") *  this.getFieldValue("TAX_RATE"));
@@ -241,16 +247,19 @@
   this.setFieldValue("TAX_AMOUNT", "" );      
  }
    }
+
   ,change_PRICE:function(fld, newVal, oldVal) {
     if ( !Ext.isEmpty(newVal) &&  !Ext.isEmpty(this.getFieldValue("QUANTITY"))   ) {
       this.setFieldValue("NET_AMOUNT", this.getFieldValue("PRICE") *  this.getFieldValue("QUANTITY"));
  }
    }
+
   ,change_QUANTITY:function(fld, newVal, oldVal) {
     if ( !Ext.isEmpty(newVal) &&  !Ext.isEmpty(this.getFieldValue("PRICE"))   ) {
       this.setFieldValue("NET_AMOUNT", this.getFieldValue("PRICE") *  this.getFieldValue("QUANTITY"));
  }
    }
+
   ,change_TAX_RATE:function(fld, newVal, oldVal) {
     if ( !Ext.isEmpty(this.getFieldValue("TAX_RATE")) ) {
    if ( !Ext.isEmpty(this.getFieldValue("NET_AMOUNT")) ) {
@@ -261,10 +270,9 @@
  }
    }
 
+
   });
   Ext.reg("DC0020F", N21.DataComp.DC0020F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -282,12 +290,47 @@
           ,dataComponentName:"DC0020"
           ,masterName:"DC0020G"
           ,detailName:"DC0020F"
-          ,mdLayout:"column"
+          ,mdLayout:"card"
           ,border: false
           ,items: [
-              {xtype: "DC0020G",id: "DC0020G",region:"north" ,split:true,height:180,minHeight:0}
-             ,{xtype: "DC0020F",id: "DC0020F",region:"center",split:true,autoScroll:true}
+              {
+                xtype:"panel"
+               ,layout:"card"
+               ,id:"MDTab"
+               ,region:"center"
+               ,defaults:{layout:"fit"}
+               ,activeItem:0
+               ,tabPosition: "bottom"
+               ,items: [{
+                            xtype: "DC0020G"
+                           ,id: "DC0020G"
+                           ,height:180
+                       },{
+                           xtype:"DC0020F"
+                          ,id:"DC0020F"
+                          ,height:180
+                          ,frame:true
+                          ,autoScroll:true
+                          ,layout:"form"
+                       }]
+             }
+
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0020.superclass.initComponent.apply(this, arguments);

@@ -11,32 +11,30 @@ class DC0054 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CODE like :CODE";
-      $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
     if (!empty($_REQUEST["QRY_PROJECT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "PROJECT_ID like :PROJECT_ID";
       $params["PROJECT_ID"] = $_REQUEST["QRY_PROJECT_ID"];
     }
+    if (!empty($_REQUEST["QRY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CODE like :CODE";
+      $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "NAME like :NAME";
+      $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
 }
 
 public function doQuery() {
   try {
-    $start = nvl($this->getRequestParam("start"), 0);
-    $limit = nvl($this->getRequestParam("limit"),20);
     $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"";
     $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
     $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
@@ -47,20 +45,20 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CODE
-                ,ID
-                ,NAME
+                ID
                 ,PROJECT_ID
+                ,CODE
+                ,NAME
                 ,(select name from project where id = project_id) PROJECT_NAME
             from PROJECT_CMP_TYPE  $where $orderByClause ";
-    $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
+    $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CODE"
-      ,"ID"
-      ,"NAME"
+      "ID"
       ,"PROJECT_ID"
+      ,"CODE"
+      ,"NAME"
       ,"PROJECT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -75,7 +73,7 @@ public function doQuery() {
 public function doExport() {
   try {
     $start = nvl($this->getRequestParam("start"), 0);
-    $limit = nvl($this->getRequestParam("limit"),20);
+    $limit = nvl($this->getRequestParam("limit"),-1);
     $groupBy = (!empty($_REQUEST["groupBy"]))?$_REQUEST["groupBy"]:"";
     $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"";
     $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
@@ -140,21 +138,23 @@ public function doInsert() {
   $this->logger->debug("start: ".$this->dcName.".doInsert");
   try {
     $RECORD = array();
+    $RECORD["_p_record_status"] = $this->getRequestParam("_p_record_status");
+    $RECORD["_p_store_recId"] = $this->getRequestParam("_p_store_recId");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PROJECT_ID"] = $this->getRequestParam("PROJECT_ID");
     $RECORD["PROJECT_NAME"] = $this->getRequestParam("PROJECT_NAME");
     $sql = "insert into PROJECT_CMP_TYPE(
-                 CODE
-                ,ID
-                ,NAME
+                 ID
                 ,PROJECT_ID
+                ,CODE
+                ,NAME
             ) values ( 
-                 :CODE
-                ,:ID
-                ,:NAME
+                 :ID
                 ,:PROJECT_ID
+                ,:CODE
+                ,:NAME
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_prjcmptyp_id.nextval seq_val from dual")->fetchRow();
@@ -172,30 +172,25 @@ public function doInsert() {
 
 
 public function doUpdate() {
-  $this->logger->debug("Start: ".$this->dcName.".doUpdate");
   try {
-    $RECORD = array();
+    $RECORD["_p_record_status"] = $this->getRequestParam("_p_record_status");
+    $RECORD["_p_store_recId"] = $this->getRequestParam("_p_store_recId");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PROJECT_ID"] = $this->getRequestParam("PROJECT_ID");
     $RECORD["PROJECT_NAME"] = $this->getRequestParam("PROJECT_NAME");
-    if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0054.doUpdate().");}
     $sql = "update PROJECT_CMP_TYPE set 
-                 CODE=:CODE
-                ,ID=:ID
-                ,NAME=:NAME
+                 ID=:ID
                 ,PROJECT_ID=:PROJECT_ID
+                ,CODE=:CODE
+                ,NAME=:NAME
     where 
            ID= :ID
     ";
     $stmt = $this->db->prepare($sql);
-    $this->logger->debug("update of RECORD: ".$this->logger->map2string($RECORD) );
     $this->db->Execute($stmt, $RECORD);
-    $pkArray = array("ID" => $RECORD["ID"]);
-    $this->findByPk($pkArray, $RECORD);
     print "{success:true, data:".json_encode($RECORD)."}";
-    $this->logger->debug("End: ".$this->dcName.".doUpdate");
   }catch(Exception  $e) {
     System::sendActionErrorJson( $e->getMessage());
   }
@@ -237,10 +232,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CODE
-                ,ID
-                ,NAME
+                ID
                 ,PROJECT_ID
+                ,CODE
+                ,NAME
                 ,(select name from project where id = project_id) PROJECT_NAME
             from PROJECT_CMP_TYPE 
          where 
@@ -252,10 +247,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CODE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"PROJECT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"PROJECT_NAME" => array("DATA_TYPE" => "STRING")
 );
 

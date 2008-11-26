@@ -11,45 +11,25 @@ class DC0069 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "c.BPARTNER_ID like :BPARTNER_ID";
       $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_EMAIL"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.EMAIL like :EMAIL";
-      $params["EMAIL"] = $_REQUEST["QRY_EMAIL"];
-    }
-    if (!empty($_REQUEST["QRY_FAX"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.FAX like :FAX";
-      $params["FAX"] = $_REQUEST["QRY_FAX"];
     }
     if (!empty($_REQUEST["QRY_FIRSTNAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "c.FIRSTNAME like :FIRSTNAME";
       $params["FIRSTNAME"] = $_REQUEST["QRY_FIRSTNAME"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_LASTNAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "c.LASTNAME like :LASTNAME";
       $params["LASTNAME"] = $_REQUEST["QRY_LASTNAME"];
-    }
-    if (!empty($_REQUEST["QRY_MOBILE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.MOBILE like :MOBILE";
-      $params["MOBILE"] = $_REQUEST["QRY_MOBILE"];
-    }
-    if (!empty($_REQUEST["QRY_PHONE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.PHONE like :PHONE";
-      $params["PHONE"] = $_REQUEST["QRY_PHONE"];
     }
 }
 
@@ -67,41 +47,41 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                c.BPARTNER_ID
-                ,(select bp.name from bpartner bp where bp.id = c.bpartner_id) BPARTNER_NAME
-                ,c.CREATEDBY
-                ,c.CREATEDON
+                c.ID
+                ,c.BPARTNER_ID
+                ,c.NAME
+                ,c.FIRSTNAME
+                ,c.LASTNAME
+                ,c.PHONE
                 ,c.EMAIL
                 ,c.FAX
-                ,c.FIRSTNAME
-                ,c.ID
-                ,c.LASTNAME
-                ,c.MOBILE
-                ,c.MODIFIEDBY
-                ,c.MODIFIEDON
-                ,c.NAME
                 ,c.NOTES
-                ,c.PHONE
+                ,c.MOBILE
+                ,c.CREATEDON
+                ,c.CREATEDBY
+                ,c.MODIFIEDON
+                ,c.MODIFIEDBY
+                ,(select bp.name from bpartner bp where bp.id = c.bpartner_id) BPARTNER_NAME
             from BP_CONTACT c $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "BPARTNER_ID"
-      ,"BPARTNER_NAME"
-      ,"CREATEDBY"
-      ,"CREATEDON"
+      "ID"
+      ,"BPARTNER_ID"
+      ,"NAME"
+      ,"FIRSTNAME"
+      ,"LASTNAME"
+      ,"PHONE"
       ,"EMAIL"
       ,"FAX"
-      ,"FIRSTNAME"
-      ,"ID"
-      ,"LASTNAME"
-      ,"MOBILE"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
       ,"NOTES"
-      ,"PHONE"
+      ,"MOBILE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"BPARTNER_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -216,27 +196,27 @@ public function doInsert() {
     $RECORD["NOTES"] = $this->getRequestParam("NOTES");
     $RECORD["PHONE"] = $this->getRequestParam("PHONE");
     $sql = "insert into BP_CONTACT(
-                 BPARTNER_ID
+                 ID
+                ,BPARTNER_ID
+                ,NAME
+                ,FIRSTNAME
+                ,LASTNAME
+                ,PHONE
                 ,EMAIL
                 ,FAX
-                ,FIRSTNAME
-                ,ID
-                ,LASTNAME
-                ,MOBILE
-                ,NAME
                 ,NOTES
-                ,PHONE
+                ,MOBILE
             ) values ( 
-                 :BPARTNER_ID
+                 :ID
+                ,:BPARTNER_ID
+                ,:NAME
+                ,:FIRSTNAME
+                ,:LASTNAME
+                ,:PHONE
                 ,:EMAIL
                 ,:FAX
-                ,:FIRSTNAME
-                ,:ID
-                ,:LASTNAME
-                ,:MOBILE
-                ,:NAME
                 ,:NOTES
-                ,:PHONE
+                ,:MOBILE
     )";
     $stmt = $this->db->prepare($sql);
     $this->logger->debug("insert of RECORD: ".$this->logger->map2string($RECORD) );
@@ -267,15 +247,15 @@ public function doUpdate() {
     $RECORD["PHONE"] = $this->getRequestParam("PHONE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0069.doUpdate().");}
     $sql = "update BP_CONTACT set 
-                 BPARTNER_ID=:BPARTNER_ID
+                 ID=:ID
+                ,BPARTNER_ID=:BPARTNER_ID
+                ,FIRSTNAME=:FIRSTNAME
+                ,LASTNAME=:LASTNAME
+                ,PHONE=:PHONE
                 ,EMAIL=:EMAIL
                 ,FAX=:FAX
-                ,FIRSTNAME=:FIRSTNAME
-                ,ID=:ID
-                ,LASTNAME=:LASTNAME
-                ,MOBILE=:MOBILE
                 ,NOTES=:NOTES
-                ,PHONE=:PHONE
+                ,MOBILE=:MOBILE
     where 
            ID= :ID
     ";
@@ -337,21 +317,21 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                c.BPARTNER_ID
-                ,(select bp.name from bpartner bp where bp.id = c.bpartner_id) BPARTNER_NAME
-                ,c.CREATEDBY
-                ,c.CREATEDON
+                c.ID
+                ,c.BPARTNER_ID
+                ,c.NAME
+                ,c.FIRSTNAME
+                ,c.LASTNAME
+                ,c.PHONE
                 ,c.EMAIL
                 ,c.FAX
-                ,c.FIRSTNAME
-                ,c.ID
-                ,c.LASTNAME
-                ,c.MOBILE
-                ,c.MODIFIEDBY
-                ,c.MODIFIEDON
-                ,c.NAME
                 ,c.NOTES
-                ,c.PHONE
+                ,c.MOBILE
+                ,c.CREATEDON
+                ,c.CREATEDBY
+                ,c.MODIFIEDON
+                ,c.MODIFIEDBY
+                ,(select bp.name from bpartner bp where bp.id = c.bpartner_id) BPARTNER_NAME
             from BP_CONTACT c
          where 
            c.ID= :ID
@@ -362,21 +342,21 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"FIRSTNAME" => array("DATA_TYPE" => "STRING")
+  ,"LASTNAME" => array("DATA_TYPE" => "STRING")
+  ,"PHONE" => array("DATA_TYPE" => "STRING")
   ,"EMAIL" => array("DATA_TYPE" => "STRING")
   ,"FAX" => array("DATA_TYPE" => "STRING")
-  ,"FIRSTNAME" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"LASTNAME" => array("DATA_TYPE" => "STRING")
-  ,"MOBILE" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"PHONE" => array("DATA_TYPE" => "STRING")
+  ,"MOBILE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

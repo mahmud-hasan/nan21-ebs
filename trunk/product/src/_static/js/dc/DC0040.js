@@ -29,12 +29,33 @@
          ,{name:"POSTEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"POSTEDBY", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:4 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0040_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",name:"QRY_CLIENT_NAME",id:"DC0040_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0040_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("ACCPERIOD_NAME", new N21.DataComp.LOV0023({xtype: "LOV0023",name:"QRY_ACCPERIOD_NAME",id:"DC0040_QRY_ACCPERIOD_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCPERIOD_NAME||"Accounting_period"})  );
+         this.queryFields.add("DOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DOC_NO",id:"DC0040_QRY_DOC_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Doc_no"})  );
+         this.queryFields.add("DOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DOC_DATE",id:"DC0040_QRY_DOC_DATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Doc_date",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("BASEDOC_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_BASEDOC_TYPE",id:"DC0040_QRY_BASEDOC_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_TYPE||"Basedoc_type"})  );
+         this.queryFields.add("BASEDOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_BASEDOC_NO",id:"DC0040_QRY_BASEDOC_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_NO||"Basedoc_no"})  );
+         this.queryFields.add("BASEDOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"QRY_BASEDOC_DATE",id:"DC0040_QRY_BASEDOC_DATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_DATE||"Basedoc_date",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("BASEDOC_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_BASEDOC_ID",id:"DC0040_QRY_BASEDOC_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_ID||"Basedoc_id",style: "text-align:right;"})  );
+         this.queryFields.add("IS_GENERATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_GENERATED",id:"DC0040_QRY_IS_GENERATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_GENERATED||"Is_generated"})  );
+         this.queryFields.add("IS_INSERTED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_INSERTED",id:"DC0040_QRY_IS_INSERTED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted"})  );
+         this.queryFields.add("IS_POSTED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_POSTED",id:"DC0040_QRY_IS_POSTED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_POSTED||"Is_posted"})  );
+  
+       this.queryFieldsVisible = [  "CLIENT_NAME","ACCPERIOD_NAME","DOC_NO","DOC_DATE","BASEDOC_TYPE","BASEDOC_NO","BASEDOC_DATE","BASEDOC_ID","IS_GENERATED","IS_INSERTED","IS_POSTED" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0040"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0040"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0040"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -61,30 +82,6 @@
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
               ,{ id:"POSTEDON",header:this.resourceBundle.FieldLabel.POSTEDON||"Postedon",width:100,dataIndex:'POSTEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"POSTEDBY",header:this.resourceBundle.FieldLabel.POSTEDBY||"Postedby",width:100,dataIndex:'POSTEDBY',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0040_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0040_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "LOV0008",name:"QRY_CLIENT_NAME",id:"DC0040_QRY_CLIENT_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"}
-               ,{xtype: "LOV0023",name:"QRY_ACCPERIOD_NAME",id:"DC0040_QRY_ACCPERIOD_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCPERIOD_NAME||"Accounting_period"}
-               ,{xtype: "numberfield",name:"QRY_DB_AMOUNT",id:"DC0040_QRY_DB_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.DB_AMOUNT||"Db_amount",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_CR_AMOUNT",id:"DC0040_QRY_CR_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.CR_AMOUNT||"Cr_amount",style: "text-align:right;"}
-               ,{xtype: "textfield",name:"QRY_DOC_NO",id:"DC0040_QRY_DOC_NO",width:120,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Doc_no"}
-               ,{xtype: "datefield",name:"QRY_DOC_DATE",id:"DC0040_QRY_DOC_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Doc_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_BASEDOC_TYPE",id:"DC0040_QRY_BASEDOC_TYPE",width:120,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_TYPE||"Basedoc_type"}
-               ,{xtype: "textfield",name:"QRY_BASEDOC_NO",id:"DC0040_QRY_BASEDOC_NO",width:120,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_NO||"Basedoc_no"}
-               ,{xtype: "datefield",name:"QRY_BASEDOC_DATE",id:"DC0040_QRY_BASEDOC_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_DATE||"Basedoc_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "numberfield",name:"QRY_BASEDOC_ID",id:"DC0040_QRY_BASEDOC_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.BASEDOC_ID||"Basedoc_id",style: "text-align:right;"}
-               ,{xtype: "textarea",name:"QRY_NOTES",id:"DC0040_QRY_NOTES",width:120,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_GENERATED",id:"DC0040_QRY_IS_GENERATED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_GENERATED||"Is_generated"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_INSERTED",id:"DC0040_QRY_IS_INSERTED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_POSTED",id:"DC0040_QRY_IS_POSTED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_POSTED||"Is_posted"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0040_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0040_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0040_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0040_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "datefield",name:"QRY_POSTEDON",id:"DC0040_QRY_POSTEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.POSTEDON||"Postedon",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_POSTEDBY",id:"DC0040_QRY_POSTEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.POSTEDBY||"Postedby"}
           ]
           ,dataComponentName:"DC0040G"
           ,queryArraySize:20
@@ -185,13 +182,13 @@
         });
 
         
-
        N21.DataComp.DC0040F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0040F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -223,10 +220,9 @@
 this.getField("ACCPERIOD_NAME").setValue("");
    }
 
+
   });
   Ext.reg("DC0040F", N21.DataComp.DC0040F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -244,24 +240,23 @@ this.getField("ACCPERIOD_NAME").setValue("");
           ,dataComponentName:"DC0040"
           ,masterName:"DC0040G"
           ,detailName:"DC0040F"
-          ,mdLayout:"tab"
+          ,mdLayout:"card"
           ,border: false
           ,items: [
               {
-                xtype:"tabpanel"
+                xtype:"panel"
+               ,layout:"card"
                ,id:"MDTab"
                ,region:"center"
                ,defaults:{layout:"fit"}
                ,activeItem:0
                ,tabPosition: "bottom"
                ,items: [{
-                            title:"List"
-                           ,xtype: "DC0040G"
+                            xtype: "DC0040G"
                            ,id: "DC0040G"
                            ,height:350
                        },{
-                           title:"Edit Record"
-                          ,xtype:"DC0040F"
+                           xtype:"DC0040F"
                           ,id:"DC0040F"
                           ,height:350
                           ,frame:true
@@ -271,6 +266,21 @@ this.getField("ACCPERIOD_NAME").setValue("");
              }
 
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0040.superclass.initComponent.apply(this, arguments);

@@ -11,70 +11,30 @@ class DC0022 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
-    }
-    if (!empty($_REQUEST["QRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CODE like :CODE";
-      $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_LINK"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "LINK like :LINK";
-      $params["LINK"] = $_REQUEST["QRY_LINK"];
-    }
-    if (!empty($_REQUEST["QRY_MENUBAR_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MENUBAR_CODE like :MENUBAR_CODE";
-      $params["MENUBAR_CODE"] = $_REQUEST["QRY_MENUBAR_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MENUITEM_ID like :MENUITEM_ID";
-      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_POSITION"])) {
+    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "POSITION like :POSITION";
-      $params["POSITION"] = $_REQUEST["QRY_POSITION"];
+      $where .= "MENUITEM_ID like :MENUITEM_ID";
+      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
     }
-    if (!empty($_REQUEST["QRY_TARGET"])) {
+    if (!empty($_REQUEST["QRY_LINK"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "TARGET like :TARGET";
-      $params["TARGET"] = $_REQUEST["QRY_TARGET"];
+      $where .= "LINK like :LINK";
+      $params["LINK"] = $_REQUEST["QRY_LINK"];
+    }
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -92,39 +52,39 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTIVE
-                ,CODE
-                ,CREATEDBY
-                ,CREATEDON
+                (select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU
                 ,ID
-                ,LINK
                 ,MENUBAR_CODE
-                ,MENUITEM_ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
                 ,NAME
-                ,(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU
                 ,POSITION
+                ,MENUITEM_ID
+                ,CODE
+                ,LINK
                 ,TARGET
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,ACTIVE
             from MENUITEM  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTIVE"
-      ,"CODE"
-      ,"CREATEDBY"
-      ,"CREATEDON"
+      "PARENT_MENU"
       ,"ID"
-      ,"LINK"
       ,"MENUBAR_CODE"
-      ,"MENUITEM_ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
       ,"NAME"
-      ,"PARENT_MENU"
       ,"POSITION"
+      ,"MENUITEM_ID"
+      ,"CODE"
+      ,"LINK"
       ,"TARGET"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"ACTIVE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -236,29 +196,29 @@ public function doInsert() {
     $RECORD["POSITION"] = $this->getRequestParam("POSITION");
     $RECORD["TARGET"] = $this->getRequestParam("TARGET");
     $sql = "insert into MENUITEM(
-                 ACTIVE
-                ,CODE
-                ,CREATEDBY
-                ,ID
-                ,LINK
+                 ID
                 ,MENUBAR_CODE
-                ,MENUITEM_ID
-                ,MODIFIEDBY
                 ,NAME
                 ,POSITION
+                ,MENUITEM_ID
+                ,CODE
+                ,LINK
                 ,TARGET
+                ,CREATEDBY
+                ,MODIFIEDBY
+                ,ACTIVE
             ) values ( 
-                 :ACTIVE
-                ,:CODE
-                ,:CREATEDBY
-                ,:ID
-                ,:LINK
+                 :ID
                 ,:MENUBAR_CODE
-                ,:MENUITEM_ID
-                ,:MODIFIEDBY
                 ,:NAME
                 ,:POSITION
+                ,:MENUITEM_ID
+                ,:CODE
+                ,:LINK
                 ,:TARGET
+                ,:CREATEDBY
+                ,:MODIFIEDBY
+                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_menuitem_id.nextval seq_val from dual")->fetchRow();
@@ -290,14 +250,14 @@ public function doUpdate() {
     $RECORD["POSITION"] = $this->getRequestParam("POSITION");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0022.doUpdate().");}
     $sql = "update MENUITEM set 
-                 ACTIVE=:ACTIVE
-                ,CODE=:CODE
-                ,ID=:ID
-                ,LINK=:LINK
+                 ID=:ID
                 ,MENUBAR_CODE=:MENUBAR_CODE
-                ,MENUITEM_ID=:MENUITEM_ID
                 ,NAME=:NAME
                 ,POSITION=:POSITION
+                ,MENUITEM_ID=:MENUITEM_ID
+                ,CODE=:CODE
+                ,LINK=:LINK
+                ,ACTIVE=:ACTIVE
     where 
            ID= :ID
     ";
@@ -358,20 +318,20 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTIVE
-                ,CODE
-                ,CREATEDBY
-                ,CREATEDON
+                (select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU
                 ,ID
-                ,LINK
                 ,MENUBAR_CODE
-                ,MENUITEM_ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
                 ,NAME
-                ,(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU
                 ,POSITION
+                ,MENUITEM_ID
+                ,CODE
+                ,LINK
                 ,TARGET
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,ACTIVE
             from MENUITEM 
          where 
            ID= :ID
@@ -382,20 +342,20 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  "PARENT_MENU" => array("DATA_TYPE" => "STRING")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"LINK" => array("DATA_TYPE" => "STRING")
   ,"MENUBAR_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"PARENT_MENU" => array("DATA_TYPE" => "STRING")
   ,"POSITION" => array("DATA_TYPE" => "NUMBER")
+  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"LINK" => array("DATA_TYPE" => "STRING")
   ,"TARGET" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 

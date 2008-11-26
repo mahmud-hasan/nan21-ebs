@@ -16,7 +16,23 @@
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:2 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0036_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("UIDC_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_UIDC_CODE",id:"DC0036_QRY_UIDC_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code"})  );
+         this.queryFields.add("MSG_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MSG_TYPE",id:"DC0036_QRY_MSG_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type"})  );
+         this.queryFields.add("MSG_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MSG_CODE",id:"DC0036_QRY_MSG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code"})  );
+         this.queryFields.add("MAINTAINED_BY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MAINTAINED_BY",id:"DC0036_QRY_MAINTAINED_BY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by"})  );
+         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0036_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0036_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
+         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0036_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0036_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
+  
+       this.queryFieldsVisible = [  "UIDC_CODE","MSG_TYPE","MSG_CODE","MAINTAINED_BY","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0036"
@@ -35,17 +51,6 @@
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0036_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "textfield",name:"QRY_UIDC_CODE",id:"DC0036_QRY_UIDC_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code"}
-               ,{xtype: "textfield",name:"QRY_MSG_TYPE",id:"DC0036_QRY_MSG_TYPE",width:120,fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type"}
-               ,{xtype: "textfield",name:"QRY_MSG_CODE",id:"DC0036_QRY_MSG_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code"}
-               ,{xtype: "textfield",name:"QRY_MAINTAINED_BY",id:"DC0036_QRY_MAINTAINED_BY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0036_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0036_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0036_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0036_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
           ]
           ,dataComponentName:"DC0036G"
           ,queryArraySize:20
@@ -112,13 +117,13 @@
         });
 
         
-
        N21.DataComp.DC0036F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0036F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -135,8 +140,6 @@
 
   });
   Ext.reg("DC0036F", N21.DataComp.DC0036F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -160,6 +163,15 @@
               {xtype: "DC0036G",id: "DC0036G",region:"west"  ,split:true,width:"50%",minWidth:0}
              ,{xtype: "DC0036F",id: "DC0036F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_62"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_64"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_63"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_61"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_143"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0036.superclass.initComponent.apply(this, arguments);

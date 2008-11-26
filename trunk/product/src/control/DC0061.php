@@ -11,60 +11,35 @@ class DC0061 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ASSETGRP_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.ASSETGRP_ID like :ASSETGRP_ID";
-      $params["ASSETGRP_ID"] = $_REQUEST["QRY_ASSETGRP_ID"];
-    }
-    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.BPARTNER_ID like :BPARTNER_ID";
-      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
+      $where .= "a.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "a.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_CLIORG_ID"])) {
+    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.CLIORG_ID like :CLIORG_ID";
-      $params["CLIORG_ID"] = $_REQUEST["QRY_CLIORG_ID"];
+      $where .= "a.PRODUCT_ID like :PRODUCT_ID";
+      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
     }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
+    if (!empty($_REQUEST["QRY_ASSETGRP_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+      $where .= "a.ASSETGRP_ID like :ASSETGRP_ID";
+      $params["ASSETGRP_ID"] = $_REQUEST["QRY_ASSETGRP_ID"];
     }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
+    if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
+      $where .= "a.NAME like :NAME";
+      $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_DEPREC_BASE_VALUE"])) {
+    if (!empty($_REQUEST["QRY_SERIAL_NO"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.DEPREC_BASE_VALUE like :DEPREC_BASE_VALUE";
-      $params["DEPREC_BASE_VALUE"] = $_REQUEST["QRY_DEPREC_BASE_VALUE"];
-    }
-    if (!empty($_REQUEST["QRY_DEPREC_MONTHS"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.DEPREC_MONTHS like :DEPREC_MONTHS";
-      $params["DEPREC_MONTHS"] = $_REQUEST["QRY_DEPREC_MONTHS"];
-    }
-    if (!empty($_REQUEST["QRY_DEPREC_MONTHS_REMAINED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.DEPREC_MONTHS_REMAINED like :DEPREC_MONTHS_REMAINED";
-      $params["DEPREC_MONTHS_REMAINED"] = $_REQUEST["QRY_DEPREC_MONTHS_REMAINED"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_INUSE_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.INUSE_BPARTNER_ID like :INUSE_BPARTNER_ID";
-      $params["INUSE_BPARTNER_ID"] = $_REQUEST["QRY_INUSE_BPARTNER_ID"];
+      $where .= "a.SERIAL_NO like :SERIAL_NO";
+      $params["SERIAL_NO"] = $_REQUEST["QRY_SERIAL_NO"];
     }
     if (!empty($_REQUEST["QRY_IS_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
@@ -81,70 +56,40 @@ private function preQuery(&$params, &$where) {
       $where .= "a.IS_DISPOSED like :IS_DISPOSED";
       $params["IS_DISPOSED"] = $_REQUEST["QRY_IS_DISPOSED"];
     }
-    if (!empty($_REQUEST["QRY_IS_INPOSESSION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.IS_INPOSESSION like :IS_INPOSESSION";
-      $params["IS_INPOSESSION"] = $_REQUEST["QRY_IS_INPOSESSION"];
-    }
     if (!empty($_REQUEST["QRY_IS_OWNED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "a.IS_OWNED like :IS_OWNED";
       $params["IS_OWNED"] = $_REQUEST["QRY_IS_OWNED"];
     }
-    if (!empty($_REQUEST["QRY_LAST_MAINTENANCE_DATE"])) {
+    if (!empty($_REQUEST["QRY_IS_INPOSESSION"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "a.LAST_MAINTENANCE_DATE like :LAST_MAINTENANCE_DATE";
-      $params["LAST_MAINTENANCE_DATE"] = $_REQUEST["QRY_LAST_MAINTENANCE_DATE"];
-    }
-    if (!empty($_REQUEST["QRY_MAINTENANCE_PLAN_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.MAINTENANCE_PLAN_ID like :MAINTENANCE_PLAN_ID";
-      $params["MAINTENANCE_PLAN_ID"] = $_REQUEST["QRY_MAINTENANCE_PLAN_ID"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_NEXT_MAINTENENCE_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.NEXT_MAINTENENCE_DATE like :NEXT_MAINTENENCE_DATE";
-      $params["NEXT_MAINTENENCE_DATE"] = $_REQUEST["QRY_NEXT_MAINTENENCE_DATE"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.PRODUCT_ID like :PRODUCT_ID";
-      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_QUANTITY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.QUANTITY like :QUANTITY";
-      $params["QUANTITY"] = $_REQUEST["QRY_QUANTITY"];
-    }
-    if (!empty($_REQUEST["QRY_SERIAL_NO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.SERIAL_NO like :SERIAL_NO";
-      $params["SERIAL_NO"] = $_REQUEST["QRY_SERIAL_NO"];
+      $where .= "a.IS_INPOSESSION like :IS_INPOSESSION";
+      $params["IS_INPOSESSION"] = $_REQUEST["QRY_IS_INPOSESSION"];
     }
     if (!empty($_REQUEST["QRY_WITH_DEPRECIATION"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "a.WITH_DEPRECIATION like :WITH_DEPRECIATION";
       $params["WITH_DEPRECIATION"] = $_REQUEST["QRY_WITH_DEPRECIATION"];
+    }
+    if (!empty($_REQUEST["QRY_DEPREC_MONTHS"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "a.DEPREC_MONTHS like :DEPREC_MONTHS";
+      $params["DEPREC_MONTHS"] = $_REQUEST["QRY_DEPREC_MONTHS"];
+    }
+    if (!empty($_REQUEST["QRY_DEPREC_MONTHS_REMAINED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "a.DEPREC_MONTHS_REMAINED like :DEPREC_MONTHS_REMAINED";
+      $params["DEPREC_MONTHS_REMAINED"] = $_REQUEST["QRY_DEPREC_MONTHS_REMAINED"];
+    }
+    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "a.BPARTNER_ID like :BPARTNER_ID";
+      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_INUSE_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "a.INUSE_BPARTNER_ID like :INUSE_BPARTNER_ID";
+      $params["INUSE_BPARTNER_ID"] = $_REQUEST["QRY_INUSE_BPARTNER_ID"];
     }
 }
 
@@ -162,69 +107,69 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                a.ASSETGRP_ID
+                (select code from client where id = a.client_id) CLIENT_CODE
                 ,(select name from asset_group where id = a.assetgrp_id) ASSETGRP_NAME
-                ,a.BPARTNER_ID
-                ,(select code from client where id = a.client_id) CLIENT_CODE
+                ,a.ID
                 ,a.CLIENT_ID
                 ,a.CLIORG_ID
-                ,a.CREATEDBY
-                ,a.CREATEDON
-                ,a.DEPREC_BASE_VALUE
-                ,a.DEPREC_MONTHS
-                ,a.DEPREC_MONTHS_REMAINED
-                ,a.ID
-                ,a.INUSE_BPARTNER_ID
+                ,a.PRODUCT_ID
+                ,a.ASSETGRP_ID
+                ,a.NAME
+                ,a.NOTES
+                ,a.QUANTITY
+                ,a.SERIAL_NO
                 ,a.IS_ACTIVE
                 ,a.IS_DEPRECIATED
                 ,a.IS_DISPOSED
-                ,a.IS_INPOSESSION
                 ,a.IS_OWNED
+                ,a.IS_INPOSESSION
                 ,a.LAST_MAINTENANCE_DATE
-                ,a.MAINTENANCE_PLAN_ID
-                ,a.MODIFIEDBY
-                ,a.MODIFIEDON
-                ,a.NAME
                 ,a.NEXT_MAINTENENCE_DATE
-                ,a.NOTES
-                ,a.PRODUCT_ID
-                ,a.QUANTITY
-                ,a.SERIAL_NO
+                ,a.MAINTENANCE_PLAN_ID
                 ,a.WITH_DEPRECIATION
+                ,a.DEPREC_MONTHS
+                ,a.DEPREC_BASE_VALUE
+                ,a.DEPREC_MONTHS_REMAINED
+                ,a.BPARTNER_ID
+                ,a.CREATEDON
+                ,a.INUSE_BPARTNER_ID
+                ,a.MODIFIEDON
+                ,a.MODIFIEDBY
+                ,a.CREATEDBY
             from ASSET a $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ASSETGRP_ID"
+      "CLIENT_CODE"
       ,"ASSETGRP_NAME"
-      ,"BPARTNER_ID"
-      ,"CLIENT_CODE"
+      ,"ID"
       ,"CLIENT_ID"
       ,"CLIORG_ID"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DEPREC_BASE_VALUE"
-      ,"DEPREC_MONTHS"
-      ,"DEPREC_MONTHS_REMAINED"
-      ,"ID"
-      ,"INUSE_BPARTNER_ID"
+      ,"PRODUCT_ID"
+      ,"ASSETGRP_ID"
+      ,"NAME"
+      ,"NOTES"
+      ,"QUANTITY"
+      ,"SERIAL_NO"
       ,"IS_ACTIVE"
       ,"IS_DEPRECIATED"
       ,"IS_DISPOSED"
-      ,"IS_INPOSESSION"
       ,"IS_OWNED"
+      ,"IS_INPOSESSION"
       ,"LAST_MAINTENANCE_DATE"
-      ,"MAINTENANCE_PLAN_ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
       ,"NEXT_MAINTENENCE_DATE"
-      ,"NOTES"
-      ,"PRODUCT_ID"
-      ,"QUANTITY"
-      ,"SERIAL_NO"
+      ,"MAINTENANCE_PLAN_ID"
       ,"WITH_DEPRECIATION"
+      ,"DEPREC_MONTHS"
+      ,"DEPREC_BASE_VALUE"
+      ,"DEPREC_MONTHS_REMAINED"
+      ,"BPARTNER_ID"
+      ,"CREATEDON"
+      ,"INUSE_BPARTNER_ID"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CREATEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -251,9 +196,9 @@ public function doExport() {
     }
     $sql = "select 
                 a.ASSETGRP_ID
-                ,a.CLIENT_ID
                 ,a.PRODUCT_ID
                 ,a.CLIORG_ID
+                ,a.CLIENT_ID
                 ,a.ID
                 ,(select code from client where id = a.client_id) CLIENT_CODE
                 ,a.NAME
@@ -285,9 +230,9 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ASSETGRP_ID"
-     ,"CLIENT_ID"
      ,"PRODUCT_ID"
      ,"CLIORG_ID"
+     ,"CLIENT_ID"
      ,"ID"
      ,"CLIENT_CODE"
      ,"NAME"
@@ -381,53 +326,53 @@ public function doInsert() {
     $RECORD["SERIAL_NO"] = $this->getRequestParam("SERIAL_NO");
     $RECORD["WITH_DEPRECIATION"] = $this->getRequestParamBoolean("WITH_DEPRECIATION");
     $sql = "insert into ASSET(
-                 ASSETGRP_ID
-                ,BPARTNER_ID
+                 ID
                 ,CLIENT_ID
                 ,CLIORG_ID
-                ,DEPREC_BASE_VALUE
-                ,DEPREC_MONTHS
-                ,DEPREC_MONTHS_REMAINED
-                ,ID
-                ,INUSE_BPARTNER_ID
+                ,PRODUCT_ID
+                ,ASSETGRP_ID
+                ,NAME
+                ,NOTES
+                ,QUANTITY
+                ,SERIAL_NO
                 ,IS_ACTIVE
                 ,IS_DEPRECIATED
                 ,IS_DISPOSED
-                ,IS_INPOSESSION
                 ,IS_OWNED
+                ,IS_INPOSESSION
                 ,LAST_MAINTENANCE_DATE
-                ,MAINTENANCE_PLAN_ID
-                ,NAME
                 ,NEXT_MAINTENENCE_DATE
-                ,NOTES
-                ,PRODUCT_ID
-                ,QUANTITY
-                ,SERIAL_NO
+                ,MAINTENANCE_PLAN_ID
                 ,WITH_DEPRECIATION
+                ,DEPREC_MONTHS
+                ,DEPREC_BASE_VALUE
+                ,DEPREC_MONTHS_REMAINED
+                ,BPARTNER_ID
+                ,INUSE_BPARTNER_ID
             ) values ( 
-                 :ASSETGRP_ID
-                ,:BPARTNER_ID
+                 :ID
                 ,:CLIENT_ID
                 ,:CLIORG_ID
-                ,:DEPREC_BASE_VALUE
-                ,:DEPREC_MONTHS
-                ,:DEPREC_MONTHS_REMAINED
-                ,:ID
-                ,:INUSE_BPARTNER_ID
+                ,:PRODUCT_ID
+                ,:ASSETGRP_ID
+                ,:NAME
+                ,:NOTES
+                ,:QUANTITY
+                ,:SERIAL_NO
                 ,:IS_ACTIVE
                 ,:IS_DEPRECIATED
                 ,:IS_DISPOSED
-                ,:IS_INPOSESSION
                 ,:IS_OWNED
+                ,:IS_INPOSESSION
                 ,:LAST_MAINTENANCE_DATE
-                ,:MAINTENANCE_PLAN_ID
-                ,:NAME
                 ,:NEXT_MAINTENENCE_DATE
-                ,:NOTES
-                ,:PRODUCT_ID
-                ,:QUANTITY
-                ,:SERIAL_NO
+                ,:MAINTENANCE_PLAN_ID
                 ,:WITH_DEPRECIATION
+                ,:DEPREC_MONTHS
+                ,:DEPREC_BASE_VALUE
+                ,:DEPREC_MONTHS_REMAINED
+                ,:BPARTNER_ID
+                ,:INUSE_BPARTNER_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ASSET_ID.nextval seq_val from dual")->fetchRow();
@@ -479,29 +424,29 @@ public function doUpdate() {
     $RECORD["WITH_DEPRECIATION"] = $this->getRequestParamBoolean("WITH_DEPRECIATION");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0061.doUpdate().");}
     $sql = "update ASSET set 
-                 ASSETGRP_ID=:ASSETGRP_ID
-                ,BPARTNER_ID=:BPARTNER_ID
+                 ID=:ID
                 ,CLIENT_ID=:CLIENT_ID
                 ,CLIORG_ID=:CLIORG_ID
-                ,DEPREC_BASE_VALUE=:DEPREC_BASE_VALUE
-                ,DEPREC_MONTHS=:DEPREC_MONTHS
-                ,DEPREC_MONTHS_REMAINED=:DEPREC_MONTHS_REMAINED
-                ,ID=:ID
-                ,INUSE_BPARTNER_ID=:INUSE_BPARTNER_ID
+                ,PRODUCT_ID=:PRODUCT_ID
+                ,ASSETGRP_ID=:ASSETGRP_ID
+                ,NAME=:NAME
+                ,NOTES=:NOTES
+                ,QUANTITY=:QUANTITY
+                ,SERIAL_NO=:SERIAL_NO
                 ,IS_ACTIVE=:IS_ACTIVE
                 ,IS_DEPRECIATED=:IS_DEPRECIATED
                 ,IS_DISPOSED=:IS_DISPOSED
-                ,IS_INPOSESSION=:IS_INPOSESSION
                 ,IS_OWNED=:IS_OWNED
+                ,IS_INPOSESSION=:IS_INPOSESSION
                 ,LAST_MAINTENANCE_DATE=:LAST_MAINTENANCE_DATE
-                ,MAINTENANCE_PLAN_ID=:MAINTENANCE_PLAN_ID
-                ,NAME=:NAME
                 ,NEXT_MAINTENENCE_DATE=:NEXT_MAINTENENCE_DATE
-                ,NOTES=:NOTES
-                ,PRODUCT_ID=:PRODUCT_ID
-                ,QUANTITY=:QUANTITY
-                ,SERIAL_NO=:SERIAL_NO
+                ,MAINTENANCE_PLAN_ID=:MAINTENANCE_PLAN_ID
                 ,WITH_DEPRECIATION=:WITH_DEPRECIATION
+                ,DEPREC_MONTHS=:DEPREC_MONTHS
+                ,DEPREC_BASE_VALUE=:DEPREC_BASE_VALUE
+                ,DEPREC_MONTHS_REMAINED=:DEPREC_MONTHS_REMAINED
+                ,BPARTNER_ID=:BPARTNER_ID
+                ,INUSE_BPARTNER_ID=:INUSE_BPARTNER_ID
     where 
            ID= :ID
     ";
@@ -577,35 +522,35 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                a.ASSETGRP_ID
+                (select code from client where id = a.client_id) CLIENT_CODE
                 ,(select name from asset_group where id = a.assetgrp_id) ASSETGRP_NAME
-                ,a.BPARTNER_ID
-                ,(select code from client where id = a.client_id) CLIENT_CODE
+                ,a.ID
                 ,a.CLIENT_ID
                 ,a.CLIORG_ID
-                ,a.CREATEDBY
-                ,a.CREATEDON
-                ,a.DEPREC_BASE_VALUE
-                ,a.DEPREC_MONTHS
-                ,a.DEPREC_MONTHS_REMAINED
-                ,a.ID
-                ,a.INUSE_BPARTNER_ID
+                ,a.PRODUCT_ID
+                ,a.ASSETGRP_ID
+                ,a.NAME
+                ,a.NOTES
+                ,a.QUANTITY
+                ,a.SERIAL_NO
                 ,a.IS_ACTIVE
                 ,a.IS_DEPRECIATED
                 ,a.IS_DISPOSED
-                ,a.IS_INPOSESSION
                 ,a.IS_OWNED
+                ,a.IS_INPOSESSION
                 ,a.LAST_MAINTENANCE_DATE
-                ,a.MAINTENANCE_PLAN_ID
-                ,a.MODIFIEDBY
-                ,a.MODIFIEDON
-                ,a.NAME
                 ,a.NEXT_MAINTENENCE_DATE
-                ,a.NOTES
-                ,a.PRODUCT_ID
-                ,a.QUANTITY
-                ,a.SERIAL_NO
+                ,a.MAINTENANCE_PLAN_ID
                 ,a.WITH_DEPRECIATION
+                ,a.DEPREC_MONTHS
+                ,a.DEPREC_BASE_VALUE
+                ,a.DEPREC_MONTHS_REMAINED
+                ,a.BPARTNER_ID
+                ,a.CREATEDON
+                ,a.INUSE_BPARTNER_ID
+                ,a.MODIFIEDON
+                ,a.MODIFIEDBY
+                ,a.CREATEDBY
             from ASSET a
          where 
            a.ID= :ID
@@ -616,35 +561,35 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ASSETGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"ASSETGRP_NAME" => array("DATA_TYPE" => "STRING")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIORG_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DEPREC_BASE_VALUE" => array("DATA_TYPE" => "NUMBER")
-  ,"DEPREC_MONTHS" => array("DATA_TYPE" => "NUMBER")
-  ,"DEPREC_MONTHS_REMAINED" => array("DATA_TYPE" => "NUMBER")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"INUSE_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ASSETGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"QUANTITY" => array("DATA_TYPE" => "NUMBER")
+  ,"SERIAL_NO" => array("DATA_TYPE" => "STRING")
   ,"IS_ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_DEPRECIATED" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_DISPOSED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_INPOSESSION" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_OWNED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_INPOSESSION" => array("DATA_TYPE" => "BOOLEAN")
   ,"LAST_MAINTENANCE_DATE" => array("DATA_TYPE" => "DATE")
-  ,"MAINTENANCE_PLAN_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"NEXT_MAINTENENCE_DATE" => array("DATA_TYPE" => "DATE")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"QUANTITY" => array("DATA_TYPE" => "NUMBER")
-  ,"SERIAL_NO" => array("DATA_TYPE" => "STRING")
+  ,"MAINTENANCE_PLAN_ID" => array("DATA_TYPE" => "NUMBER")
   ,"WITH_DEPRECIATION" => array("DATA_TYPE" => "BOOLEAN")
+  ,"DEPREC_MONTHS" => array("DATA_TYPE" => "NUMBER")
+  ,"DEPREC_BASE_VALUE" => array("DATA_TYPE" => "NUMBER")
+  ,"DEPREC_MONTHS_REMAINED" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"INUSE_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 

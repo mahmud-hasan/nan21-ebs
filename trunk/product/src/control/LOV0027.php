@@ -20,21 +20,20 @@ class LOV0027 extends Controller {
    and (:p_issuer_id is null or r.issuer_id = :p_issuer_id) ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "DOC_CURRENCY"
+      ,"DOC_DATE"
+      ,"DOC_NO"
+      ,"DOC_NO_DATE"
+      ,"ID"
+      ,"ISSUER_ID"
+      ,"ISSUER_NAME"
+      ,"TOTAL_AMOUNT"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " DOC_CURRENCY:\"".$row["DOC_CURRENCY"]."\"";
-        $jsOn .= ",DOC_DATE:\"".$row["DOC_DATE"]."\"";
-        $jsOn .= ",DOC_NO:\"".$row["DOC_NO"]."\"";
-        $jsOn .= ",DOC_NO_DATE:\"".$row["DOC_NO_DATE"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= ",ISSUER_ID:\"".$row["ISSUER_ID"]."\"";
-        $jsOn .= ",ISSUER_NAME:\"".$row["ISSUER_NAME"]."\"";
-        $jsOn .= ",TOTAL_AMOUNT:\"".$row["TOTAL_AMOUNT"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

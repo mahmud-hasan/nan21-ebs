@@ -20,7 +20,10 @@
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
     ])
-    ,columns: new Ext.util.MixedCollection()
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:2
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
          this.columns.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:false,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
          this.columns.add("POSITION",{ id:'POSITION',header:this.resourceBundle.FieldLabel.POSITION||"Position",width:40,dataIndex:'POSITION',insert_allowed:true,update_allowed:true,sortable:true,align:'right',editor:new Ext.form.NumberField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
@@ -34,6 +37,16 @@
          this.columns.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
          this.columns.add("MODIFIEDBY",{ id:'MODIFIEDBY',header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',insert_allowed:true,update_allowed:true,hidden:true,sortable:true});
 
+
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0066_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("POSITION", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_POSITION",id:"DC0066_QRY_POSITION",width:100,fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",style: "text-align:right;"})  );
+         this.queryFields.add("OWNER", new Ext.form.TextField ({xtype: "textfield",name:"QRY_OWNER",id:"DC0066_QRY_OWNER",width:100,fieldLabel: this.resourceBundle.FieldLabel.OWNER||"Owner"})  );
+         this.queryFields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TITLE",id:"DC0066_QRY_TITLE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title"})  );
+         this.queryFields.add("LINK", new Ext.form.TextField ({xtype: "textfield",name:"QRY_LINK",id:"DC0066_QRY_LINK",width:100,fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link"})  );
+         this.queryFields.add("MENUSHRCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUSHRCT_ID",id:"DC0066_QRY_MENUSHRCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUSHRCT_ID||"Menushrct_id"})  );
+         this.queryFields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0066_QRY_MENUITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id"})  );
+
+       this.queryFieldsVisible = [  "POSITION","OWNER","TITLE","LINK" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0066"
@@ -43,15 +56,15 @@
               ,fields:this.dataRecordMeta
            })
           ,columns: [ this.columns.get("ID"),this.columns.get("POSITION"),this.columns.get("OWNER"),this.columns.get("TITLE"),this.columns.get("LINK"),this.columns.get("MENUSHRCT_ID"),this.columns.get("MENUITEM_ID"),this.columns.get("CREATEDON"),this.columns.get("CREATEDBY"),this.columns.get("MODIFIEDON"),this.columns.get("MODIFIEDBY")]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0066_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "numberfield",name:"QRY_POSITION",id:"DC0066_QRY_POSITION",width:120,fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",style: "text-align:right;"}
-               ,{xtype: "textfield",name:"QRY_OWNER",id:"DC0066_QRY_OWNER",width:120,fieldLabel: this.resourceBundle.FieldLabel.OWNER||"Owner"}
-               ,{xtype: "textfield",name:"QRY_TITLE",id:"DC0066_QRY_TITLE",width:120,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title"}
-               ,{xtype: "textfield",name:"QRY_LINK",id:"DC0066_QRY_LINK",width:120,fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link"}
-               ,{xtype: "hidden",name:"QRY_MENUSHRCT_ID",id:"DC0066_QRY_MENUSHRCT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.MENUSHRCT_ID||"Menushrct_id"}
-               ,{xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0066_QRY_MENUITEM_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id"}
-          ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_62"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_64"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_63"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_61"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_143"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
           ,dataComponentName:"DC0066"
           ,frame:true
           ,queryArraySize:20

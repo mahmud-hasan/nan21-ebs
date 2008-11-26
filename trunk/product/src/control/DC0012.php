@@ -11,25 +11,15 @@ class DC0012 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CURRENCY_FROM"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CURRENCY_FROM like :CURRENCY_FROM";
-      $params["CURRENCY_FROM"] = $_REQUEST["QRY_CURRENCY_FROM"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY_TO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CURRENCY_TO like :CURRENCY_TO";
-      $params["CURRENCY_TO"] = $_REQUEST["QRY_CURRENCY_TO"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+    if (!empty($_REQUEST["QRY_CURRENCY_FROM"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+      $where .= "CURRENCY_FROM like :CURRENCY_FROM";
+      $params["CURRENCY_FROM"] = $_REQUEST["QRY_CURRENCY_FROM"];
     }
     if (!empty($_REQUEST["QRY_VALID_FROM"])) {
       $where .= (!empty($where))?" and ":"";
@@ -41,10 +31,10 @@ private function preQuery(&$params, &$where) {
       $where .= "VALID_TO like :VALID_TO";
       $params["VALID_TO"] = $_REQUEST["QRY_VALID_TO"];
     }
-    if (!empty($_REQUEST["QRY_XRATE"])) {
+    if (!empty($_REQUEST["QRY_CURRENCY_TO"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "XRATE like :XRATE";
-      $params["XRATE"] = $_REQUEST["QRY_XRATE"];
+      $where .= "CURRENCY_TO like :CURRENCY_TO";
+      $params["CURRENCY_TO"] = $_REQUEST["QRY_CURRENCY_TO"];
     }
 }
 
@@ -62,25 +52,25 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CURRENCY_FROM
-                ,CURRENCY_TO
-                ,ID
+                ID
+                ,CURRENCY_FROM
+                ,XRATE
                 ,MODIFIEDON
                 ,VALID_FROM
                 ,VALID_TO
-                ,XRATE
+                ,CURRENCY_TO
             from CURRENCY_XRATE  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CURRENCY_FROM"
-      ,"CURRENCY_TO"
-      ,"ID"
+      "ID"
+      ,"CURRENCY_FROM"
+      ,"XRATE"
       ,"MODIFIEDON"
       ,"VALID_FROM"
       ,"VALID_TO"
-      ,"XRATE"
+      ,"CURRENCY_TO"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -176,19 +166,19 @@ public function doInsert() {
     $RECORD["VALID_TO"] = $this->getRequestParam("VALID_TO");
     $RECORD["XRATE"] = $this->getRequestParam("XRATE");
     $sql = "insert into CURRENCY_XRATE(
-                 CURRENCY_FROM
-                ,CURRENCY_TO
-                ,ID
+                 ID
+                ,CURRENCY_FROM
+                ,XRATE
                 ,VALID_FROM
                 ,VALID_TO
-                ,XRATE
+                ,CURRENCY_TO
             ) values ( 
-                 :CURRENCY_FROM
-                ,:CURRENCY_TO
-                ,:ID
+                 :ID
+                ,:CURRENCY_FROM
+                ,:XRATE
                 ,:VALID_FROM
                 ,:VALID_TO
-                ,:XRATE
+                ,:CURRENCY_TO
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_CRNCYXRATE_ID.nextval seq_val from dual")->fetchRow();
@@ -220,13 +210,13 @@ public function doUpdate() {
     $RECORD["VALID_TO"] = $this->getRequestParam("VALID_TO");
     $RECORD["XRATE"] = $this->getRequestParam("XRATE");
     $sql = "update CURRENCY_XRATE set 
-                 CURRENCY_FROM=:CURRENCY_FROM
-                ,CURRENCY_TO=:CURRENCY_TO
-                ,ID=:ID
+                 ID=:ID
+                ,CURRENCY_FROM=:CURRENCY_FROM
+                ,XRATE=:XRATE
                 ,MODIFIEDON=:MODIFIEDON
                 ,VALID_FROM=:VALID_FROM
                 ,VALID_TO=:VALID_TO
-                ,XRATE=:XRATE
+                ,CURRENCY_TO=:CURRENCY_TO
     where 
            ID= :ID
     ";
@@ -279,13 +269,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CURRENCY_FROM
-                ,CURRENCY_TO
-                ,ID
+                ID
+                ,CURRENCY_FROM
+                ,XRATE
                 ,MODIFIEDON
                 ,VALID_FROM
                 ,VALID_TO
-                ,XRATE
+                ,CURRENCY_TO
             from CURRENCY_XRATE 
          where 
            ID= :ID
@@ -296,13 +286,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CURRENCY_FROM" => array("DATA_TYPE" => "STRING")
-  ,"CURRENCY_TO" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CURRENCY_FROM" => array("DATA_TYPE" => "STRING")
+  ,"XRATE" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"VALID_FROM" => array("DATA_TYPE" => "DATE")
   ,"VALID_TO" => array("DATA_TYPE" => "DATE")
-  ,"XRATE" => array("DATA_TYPE" => "NUMBER")
+  ,"CURRENCY_TO" => array("DATA_TYPE" => "STRING")
 );
 
 

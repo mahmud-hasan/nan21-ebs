@@ -28,7 +28,35 @@
          ,{name:"DATE_DELIVERED", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"NOTES", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:0 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("SORDER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_SORDER_ID",id:"DC0060_QRY_SORDER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.SORDER_ID||"Bporder_id"})  );
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0060_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("LINE_NR", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_LINE_NR",id:"DC0060_QRY_LINE_NR",width:100,fieldLabel: this.resourceBundle.FieldLabel.LINE_NR||"Line_nr"})  );
+         this.queryFields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0060_QRY_PRODUCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"})  );
+         this.queryFields.add("PRODUCT_NAME", new N21.DataComp.LOV0017({xtype: "LOV0017",fieldMapping: [{column:"ID",field:"DC0060_QRY_PRODUCT_ID"},{column:"UOM_CODE",field:"DC0060_QRY_UOM_CODE"}],selectOnFocus:true,name:"QRY_PRODUCT_NAME",id:"DC0060_QRY_PRODUCT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_NAME||"Product"})  );
+         this.queryFields.add("QTY_ORDERED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QTY_ORDERED",id:"DC0060_QRY_QTY_ORDERED",width:100,fieldLabel: this.resourceBundle.FieldLabel.QTY_ORDERED||"Requested qty.",style: "text-align:right;"})  );
+         this.queryFields.add("UOM_CODE", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_CODE",id:"DC0060_QRY_UOM_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"Uom"})  );
+         this.queryFields.add("QTY", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QTY",id:"DC0060_QRY_QTY",width:100,fieldLabel: this.resourceBundle.FieldLabel.QTY||"Actual qty",style: "text-align:right;"})  );
+         this.queryFields.add("PRICE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_PRICE",id:"DC0060_QRY_PRICE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Price",style: "text-align:right;"})  );
+         this.queryFields.add("CURRENCY_CODE", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_CURRENCY_CODE",id:"DC0060_QRY_CURRENCY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_CODE||"Currency"})  );
+         this.queryFields.add("DISCOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DISCOUNT",id:"DC0060_QRY_DISCOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT||"Discount",style: "text-align:right;"})  );
+         this.queryFields.add("DISCOUNT_TYPE", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_DISCOUNT_TYPE",id:"DC0060_QRY_DISCOUNT_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT_TYPE||"Discount type"})  );
+         this.queryFields.add("RAW_NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_RAW_NET_AMOUNT",id:"DC0060_QRY_RAW_NET_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.RAW_NET_AMOUNT||"Raw net amount (no discount)",style: "text-align:right;"})  );
+         this.queryFields.add("NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_NET_AMOUNT",id:"DC0060_QRY_NET_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net amount",style: "text-align:right;"})  );
+         this.queryFields.add("QTY_INVOICED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QTY_INVOICED",id:"DC0060_QRY_QTY_INVOICED",width:100,fieldLabel: this.resourceBundle.FieldLabel.QTY_INVOICED||"Invoiced qty.",style: "text-align:right;"})  );
+         this.queryFields.add("QTY_DELIVERED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QTY_DELIVERED",id:"DC0060_QRY_QTY_DELIVERED",width:100,fieldLabel: this.resourceBundle.FieldLabel.QTY_DELIVERED||"Delivered qty.",style: "text-align:right;"})  );
+         this.queryFields.add("QTY_RESERVED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QTY_RESERVED",id:"DC0060_QRY_QTY_RESERVED",width:100,fieldLabel: this.resourceBundle.FieldLabel.QTY_RESERVED||"Reserved qty",style: "text-align:right;"})  );
+         this.queryFields.add("DATE_REQUESTED", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DATE_REQUESTED",id:"DC0060_QRY_DATE_REQUESTED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DATE_REQUESTED||"Requested for",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("DATE_PROMISED", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DATE_PROMISED",id:"DC0060_QRY_DATE_PROMISED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DATE_PROMISED||"Promised for",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("DATE_DELIVERED", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DATE_DELIVERED",id:"DC0060_QRY_DATE_DELIVERED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DATE_DELIVERED||"Delivered on",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"QRY_NOTES",id:"DC0060_QRY_NOTES",width:100,fieldLabel: "N/A"})  );
+  
+       this.queryFieldsVisible = [  "PRODUCT_NAME","QTY_ORDERED","UOM_CODE","QTY","PRICE","CURRENCY_CODE","DISCOUNT","RAW_NET_AMOUNT","NET_AMOUNT","QTY_INVOICED","QTY_DELIVERED","QTY_RESERVED","DATE_REQUESTED","DATE_PROMISED","DATE_DELIVERED","NOTES" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0060"
@@ -59,29 +87,6 @@
               ,{ id:"DATE_PROMISED",header:this.resourceBundle.FieldLabel.DATE_PROMISED||"Promised for",width:100,dataIndex:'DATE_PROMISED',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"DATE_DELIVERED",header:this.resourceBundle.FieldLabel.DATE_DELIVERED||"Delivered on",width:100,dataIndex:'DATE_DELIVERED',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"",width:100,dataIndex:'NOTES',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_SORDER_ID",id:"DC0060_QRY_SORDER_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.SORDER_ID||"Bporder_id"}
-               ,{xtype: "hidden",name:"QRY_ID",id:"DC0060_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_LINE_NR",id:"DC0060_QRY_LINE_NR",width:120,fieldLabel: this.resourceBundle.FieldLabel.LINE_NR||"Line_nr"}
-               ,{xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0060_QRY_PRODUCT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"}
-               ,{xtype: "LOV0017",fieldMapping: [{column:"ID",field:"DC0060_QRY_PRODUCT_ID"},{column:"UOM_CODE",field:"DC0060_QRY_UOM_CODE"}],selectOnFocus:true,name:"QRY_PRODUCT_NAME",id:"DC0060_QRY_PRODUCT_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_NAME||"Product"}
-               ,{xtype: "numberfield",name:"QRY_QTY_ORDERED",id:"DC0060_QRY_QTY_ORDERED",width:120,fieldLabel: this.resourceBundle.FieldLabel.QTY_ORDERED||"Requested qty.",style: "text-align:right;"}
-               ,{xtype: "LOV0002",name:"QRY_UOM_CODE",id:"DC0060_QRY_UOM_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"Uom"}
-               ,{xtype: "numberfield",name:"QRY_QTY",id:"DC0060_QRY_QTY",width:120,fieldLabel: this.resourceBundle.FieldLabel.QTY||"Actual qty",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_PRICE",id:"DC0060_QRY_PRICE",width:120,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Price",style: "text-align:right;"}
-               ,{xtype: "LOV0001",name:"QRY_CURRENCY_CODE",id:"DC0060_QRY_CURRENCY_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_CODE||"Currency"}
-               ,{xtype: "numberfield",name:"QRY_DISCOUNT",id:"DC0060_QRY_DISCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT||"Discount",style: "text-align:right;"}
-               ,{xtype: "hidden",name:"QRY_DISCOUNT_TYPE",id:"DC0060_QRY_DISCOUNT_TYPE",width:120,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT_TYPE||"Discount type"}
-               ,{xtype: "numberfield",name:"QRY_RAW_NET_AMOUNT",id:"DC0060_QRY_RAW_NET_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.RAW_NET_AMOUNT||"Raw net amount (no discount)",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_NET_AMOUNT",id:"DC0060_QRY_NET_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net amount",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_QTY_INVOICED",id:"DC0060_QRY_QTY_INVOICED",width:120,fieldLabel: this.resourceBundle.FieldLabel.QTY_INVOICED||"Invoiced qty.",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_QTY_DELIVERED",id:"DC0060_QRY_QTY_DELIVERED",width:120,fieldLabel: this.resourceBundle.FieldLabel.QTY_DELIVERED||"Delivered qty.",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_QTY_RESERVED",id:"DC0060_QRY_QTY_RESERVED",width:120,fieldLabel: this.resourceBundle.FieldLabel.QTY_RESERVED||"Reserved qty",style: "text-align:right;"}
-               ,{xtype: "datefield",name:"QRY_DATE_REQUESTED",id:"DC0060_QRY_DATE_REQUESTED",width:120,fieldLabel: this.resourceBundle.FieldLabel.DATE_REQUESTED||"Requested for",format:Ext.DATE_FORMAT}
-               ,{xtype: "datefield",name:"QRY_DATE_PROMISED",id:"DC0060_QRY_DATE_PROMISED",width:120,fieldLabel: this.resourceBundle.FieldLabel.DATE_PROMISED||"Promised for",format:Ext.DATE_FORMAT}
-               ,{xtype: "datefield",name:"QRY_DATE_DELIVERED",id:"DC0060_QRY_DATE_DELIVERED",width:120,fieldLabel: this.resourceBundle.FieldLabel.DATE_DELIVERED||"Delivered on",format:Ext.DATE_FORMAT}
-               ,{xtype: "textarea",name:"QRY_NOTES",id:"DC0060_QRY_NOTES",width:120,fieldLabel: "N/A"}
           ]
           ,dataComponentName:"DC0060G"
           ,queryArraySize:20
@@ -181,13 +186,13 @@
         });
 
         
-
        N21.DataComp.DC0060F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0060F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,SORDER_ID:""
@@ -217,16 +222,19 @@
       this.calcRawNetAmount();
   this.calcNetAmount();
    }
+
   ,change_QTY:function(fld, newVal, oldVal) {
       this.calcRawNetAmount();
   this.calcNetAmount();
    }
+
   ,change_QTY_ORDERED:function(fld, newVal, oldVal) {
     if  (Ext.isEmpty( this.getFieldValue("QTY") )) {
   this.setFieldValue("QTY", newVal ); 
 
 }
    }
+
   ,calcNetAmount:function() {
       if (!Ext.isEmpty(this.getFieldValue("PRICE") ) 
         && !Ext.isEmpty(this.getFieldValue("QTY") ) ) {
@@ -234,6 +242,7 @@
   }
 
    }
+
   ,calcRawNetAmount:function() {
       if (!Ext.isEmpty(this.getFieldValue("PRICE") ) 
         && !Ext.isEmpty(this.getFieldValue("QTY") ) ) {
@@ -242,10 +251,9 @@
 
    }
 
+
   });
   Ext.reg("DC0060F", N21.DataComp.DC0060F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -289,6 +297,21 @@
              }
 
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0060.superclass.initComponent.apply(this, arguments);

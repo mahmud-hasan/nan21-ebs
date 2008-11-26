@@ -16,7 +16,23 @@
          ,{name:"IS_INSERTED", type:"string" }
          ,{name:"IS_APPROVED", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:0 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0055_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("PROJECT_ISSUE_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PROJECT_ISSUE_ID",id:"DC0055_QRY_PROJECT_ISSUE_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0055_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("USER_ACCOUNT", new Ext.form.TextField ({xtype: "textfield",name:"QRY_USER_ACCOUNT",id:"DC0055_QRY_USER_ACCOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.USER_ACCOUNT||"User_account"})  );
+         this.queryFields.add("CHARGED_DATE", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CHARGED_DATE",id:"DC0055_QRY_CHARGED_DATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CHARGED_DATE||"Charged_date",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_EFFORT",id:"DC0055_QRY_EFFORT",width:100,fieldLabel: this.resourceBundle.FieldLabel.EFFORT||"Effort",style: "text-align:right;"})  );
+         this.queryFields.add("EFFORT_UNIT", new N21.DataComp.LOV0037({xtype: "LOV0037",name:"QRY_EFFORT_UNIT",id:"DC0055_QRY_EFFORT_UNIT",width:100,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit"})  );
+         this.queryFields.add("IS_INSERTED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_INSERTED",id:"DC0055_QRY_IS_INSERTED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted"})  );
+         this.queryFields.add("IS_APPROVED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_APPROVED",id:"DC0055_QRY_IS_APPROVED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_APPROVED||"Is_approved"})  );
+  
+       this.queryFieldsVisible = [  "USER_ACCOUNT","CHARGED_DATE","EFFORT","EFFORT_UNIT","IS_INSERTED","IS_APPROVED" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0055"
@@ -35,17 +51,6 @@
               ,{ id:"EFFORT_UNIT",header:this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit",width:100,dataIndex:'EFFORT_UNIT',sortable:true}
               ,{ id:"IS_INSERTED",header:this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted",width:50,dataIndex:'IS_INSERTED',hidden:true,sortable:true}
               ,{ id:"IS_APPROVED",header:this.resourceBundle.FieldLabel.IS_APPROVED||"Is_approved",width:50,dataIndex:'IS_APPROVED',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0055_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_PROJECT_ISSUE_ID",id:"DC0055_QRY_PROJECT_ISSUE_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0055_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "textfield",name:"QRY_USER_ACCOUNT",id:"DC0055_QRY_USER_ACCOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.USER_ACCOUNT||"User_account"}
-               ,{xtype: "datefield",name:"QRY_CHARGED_DATE",id:"DC0055_QRY_CHARGED_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CHARGED_DATE||"Charged_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "numberfield",name:"QRY_EFFORT",id:"DC0055_QRY_EFFORT",width:120,fieldLabel: this.resourceBundle.FieldLabel.EFFORT||"Effort",style: "text-align:right;"}
-               ,{xtype: "LOV0037",name:"QRY_EFFORT_UNIT",id:"DC0055_QRY_EFFORT_UNIT",width:120,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_INSERTED",id:"DC0055_QRY_IS_INSERTED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_APPROVED",id:"DC0055_QRY_IS_APPROVED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_APPROVED||"Is_approved"}
           ]
           ,dataComponentName:"DC0055G"
           ,queryArraySize:-1
@@ -115,13 +120,13 @@
         });
 
         
-
        N21.DataComp.DC0055F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0055F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -138,8 +143,6 @@
 
   });
   Ext.reg("DC0055F", N21.DataComp.DC0055F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -163,6 +166,21 @@
               {xtype: "DC0055G",id: "DC0055G",region:"west"  ,split:true,width:"50%",minWidth:0}
              ,{xtype: "DC0055F",id: "DC0055F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0055.superclass.initComponent.apply(this, arguments);

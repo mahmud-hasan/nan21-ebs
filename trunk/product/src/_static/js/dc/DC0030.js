@@ -18,7 +18,20 @@
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:2 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0030_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("UIDC_CODE", new N21.DataComp.LOV0028({xtype: "LOV0028",selectOnFocus:true,name:"QRY_UIDC_CODE",id:"DC0030_QRY_UIDC_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code"})  );
+         this.queryFields.add("FIELD_NAME", new N21.DataComp.LOV0029({xtype: "LOV0029",selectOnFocus:true,name:"QRY_FIELD_NAME",id:"DC0030_QRY_FIELD_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.FIELD_NAME||"Field_name"})  );
+         this.queryFields.add("VALUE_TYPE", new Ext.form.ComboBox ({   store:['SQL','VALUE'],name:"QRY_VALUE_TYPE",id:"DC0030_QRY_VALUE_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type"})  );
+         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0030_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+         this.queryFields.add("APPLY_TO_USER", new Ext.form.TextField ({xtype: "textfield",name:"QRY_APPLY_TO_USER",id:"DC0030_QRY_APPLY_TO_USER",width:100,fieldLabel: this.resourceBundle.FieldLabel.APPLY_TO_USER||"Apply_to_user"})  );
+  
+       this.queryFieldsVisible = [  "UIDC_CODE","FIELD_NAME","VALUE_TYPE","ACTIVE","APPLY_TO_USER" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0030"
@@ -39,19 +52,6 @@
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0030_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "LOV0028",selectOnFocus:true,name:"QRY_UIDC_CODE",id:"DC0030_QRY_UIDC_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code"}
-               ,{xtype: "LOV0029",selectOnFocus:true,name:"QRY_FIELD_NAME",id:"DC0030_QRY_FIELD_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.FIELD_NAME||"Field_name"}
-               ,{xtype: "textfield",name:"QRY_VALUE_TYPE",id:"DC0030_QRY_VALUE_TYPE",width:120,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type"}
-               ,{xtype: "textarea",name:"QRY_FIELD_VALUE",id:"DC0030_QRY_FIELD_VALUE",width:120,fieldLabel: this.resourceBundle.FieldLabel.FIELD_VALUE||"Field_value"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0030_QRY_ACTIVE",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"}
-               ,{xtype: "textfield",name:"QRY_APPLY_TO_USER",id:"DC0030_QRY_APPLY_TO_USER",width:120,fieldLabel: this.resourceBundle.FieldLabel.APPLY_TO_USER||"Apply_to_user"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0030_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0030_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0030_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0030_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
           ]
           ,dataComponentName:"DC0030G"
           ,queryArraySize:20
@@ -93,7 +93,7 @@
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0030F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("UIDC_CODE", new N21.DataComp.LOV0028({xtype: "LOV0028",selectOnFocus:true,name:"UIDC_CODE",id:"DC0030F_UIDC_CODE",dataIndex:"UIDC_CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",insert_allowed:true,update_allowed:true})   );
        this.fields.add("FIELD_NAME", new N21.DataComp.LOV0029({xtype: "LOV0029",paramMapping: [{param:"p_uidc_code",field:"DC0030F_UIDC_CODE"}],selectOnFocus:true,name:"FIELD_NAME",id:"DC0030F_FIELD_NAME",dataIndex:"FIELD_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIELD_NAME||"Field_name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("VALUE_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"VALUE_TYPE",id:"DC0030F_VALUE_TYPE",dataIndex:"VALUE_TYPE",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("VALUE_TYPE", new Ext.form.ComboBox ({xtype: "combo",store:['SQL','VALUE'],selectOnFocus:true,name:"VALUE_TYPE",id:"DC0030F_VALUE_TYPE",dataIndex:"VALUE_TYPE",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type",insert_allowed:true,update_allowed:true})   );
        this.fields.add("FIELD_VALUE", new Ext.form.TextArea ({xtype: "textarea",name:"FIELD_VALUE",id:"DC0030F_FIELD_VALUE",dataIndex:"FIELD_VALUE",width:200,height:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIELD_VALUE||"Field_value",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ACTIVE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"ACTIVE",id:"DC0030F_ACTIVE",dataIndex:"ACTIVE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",insert_allowed:true,update_allowed:true})   );
        this.fields.add("APPLY_TO_USER", new Ext.form.TextField ({xtype: "textfield",name:"APPLY_TO_USER",id:"DC0030F_APPLY_TO_USER",dataIndex:"APPLY_TO_USER",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.APPLY_TO_USER||"Apply_to_user",insert_allowed:true,update_allowed:true})   );
@@ -121,13 +121,13 @@
         });
 
         
-
        N21.DataComp.DC0030F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0030F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -146,8 +146,6 @@
 
   });
   Ext.reg("DC0030F", N21.DataComp.DC0030F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -171,6 +169,21 @@
               {xtype: "DC0030G",id: "DC0030G",region:"west"  ,split:true,width:"60%",minWidth:0}
              ,{xtype: "DC0030F",id: "DC0030F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0030.superclass.initComponent.apply(this, arguments);

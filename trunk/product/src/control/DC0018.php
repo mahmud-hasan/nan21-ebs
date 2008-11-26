@@ -11,55 +11,55 @@ class DC0018 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_BANKAG_CODE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "BANKAG_CODE like :BANKAG_CODE";
-      $params["BANKAG_CODE"] = $_REQUEST["QRY_BANKAG_CODE"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_BANK_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "BANK_CODE like :BANK_CODE";
       $params["BANK_CODE"] = $_REQUEST["QRY_BANK_CODE"];
     }
-    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
+    if (!empty($_REQUEST["QRY_IBAN"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "BPARTNER_ID like :BPARTNER_ID";
-      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
+      $where .= "IBAN like :IBAN";
+      $params["IBAN"] = $_REQUEST["QRY_IBAN"];
     }
     if (!empty($_REQUEST["QRY_CURRENCY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CURRENCY like :CURRENCY";
       $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
     }
-    if (!empty($_REQUEST["QRY_IBAN"])) {
+    if (!empty($_REQUEST["QRY_CREATEDON"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "IBAN like :IBAN";
-      $params["IBAN"] = $_REQUEST["QRY_IBAN"];
+      $where .= "CREATEDON like :CREATEDON";
+      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "CREATEDBY like :CREATEDBY";
+      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDON like :MODIFIEDON";
+      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
     }
     if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MODIFIEDBY like :MODIFIEDBY";
       $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+      $where .= "BPARTNER_ID like :BPARTNER_ID";
+      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_BANKAG_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "BANKAG_CODE like :BANKAG_CODE";
+      $params["BANKAG_CODE"] = $_REQUEST["QRY_BANKAG_CODE"];
     }
 }
 
@@ -75,31 +75,31 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                BANKAG_CODE
+                ID
                 ,BANK_CODE
-                ,BPARTNER_ID
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY
                 ,IBAN
-                ,ID
-                ,MODIFIEDBY
+                ,CURRENCY
+                ,CREATEDON
+                ,CREATEDBY
                 ,MODIFIEDON
+                ,MODIFIEDBY
+                ,BPARTNER_ID
+                ,BANKAG_CODE
             from BP_BANKACCOUNT  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "BANKAG_CODE"
+      "ID"
       ,"BANK_CODE"
-      ,"BPARTNER_ID"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"CURRENCY"
       ,"IBAN"
-      ,"ID"
-      ,"MODIFIEDBY"
+      ,"CURRENCY"
+      ,"CREATEDON"
+      ,"CREATEDBY"
       ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"BPARTNER_ID"
+      ,"BANKAG_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -201,23 +201,23 @@ public function doInsert() {
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $sql = "insert into BP_BANKACCOUNT(
-                 BANKAG_CODE
+                 ID
                 ,BANK_CODE
-                ,BPARTNER_ID
-                ,CREATEDBY
-                ,CURRENCY
                 ,IBAN
-                ,ID
+                ,CURRENCY
+                ,CREATEDBY
                 ,MODIFIEDBY
+                ,BPARTNER_ID
+                ,BANKAG_CODE
             ) values ( 
-                 :BANKAG_CODE
+                 :ID
                 ,:BANK_CODE
-                ,:BPARTNER_ID
-                ,:CREATEDBY
-                ,:CURRENCY
                 ,:IBAN
-                ,:ID
+                ,:CURRENCY
+                ,:CREATEDBY
                 ,:MODIFIEDBY
+                ,:BPARTNER_ID
+                ,:BANKAG_CODE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bpbankacct_id.nextval seq_val from dual")->fetchRow();
@@ -249,16 +249,16 @@ public function doUpdate() {
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $sql = "update BP_BANKACCOUNT set 
-                 BANKAG_CODE=:BANKAG_CODE
+                 ID=:ID
                 ,BANK_CODE=:BANK_CODE
-                ,BPARTNER_ID=:BPARTNER_ID
-                ,CREATEDBY=:CREATEDBY
-                ,CREATEDON=:CREATEDON
-                ,CURRENCY=:CURRENCY
                 ,IBAN=:IBAN
-                ,ID=:ID
-                ,MODIFIEDBY=:MODIFIEDBY
+                ,CURRENCY=:CURRENCY
+                ,CREATEDON=:CREATEDON
+                ,CREATEDBY=:CREATEDBY
                 ,MODIFIEDON=:MODIFIEDON
+                ,MODIFIEDBY=:MODIFIEDBY
+                ,BPARTNER_ID=:BPARTNER_ID
+                ,BANKAG_CODE=:BANKAG_CODE
     where 
            ID= :ID
     ";
@@ -311,16 +311,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                BANKAG_CODE
+                ID
                 ,BANK_CODE
-                ,BPARTNER_ID
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY
                 ,IBAN
-                ,ID
-                ,MODIFIEDBY
+                ,CURRENCY
+                ,CREATEDON
+                ,CREATEDBY
                 ,MODIFIEDON
+                ,MODIFIEDBY
+                ,BPARTNER_ID
+                ,BANKAG_CODE
             from BP_BANKACCOUNT 
          where 
            ID= :ID
@@ -331,16 +331,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "BANKAG_CODE" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"BANK_CODE" => array("DATA_TYPE" => "STRING")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
   ,"IBAN" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BANKAG_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

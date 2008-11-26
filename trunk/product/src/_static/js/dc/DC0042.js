@@ -25,7 +25,32 @@
          ,{name:"ORIG_AMOUNT", type:"float" }
          ,{name:"ORIG_CURRENCY", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:0 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0042_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("ACCDOC_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ACCDOC_ID",id:"DC0042_QRY_ACCDOC_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCDOC_ID||"Accdoc_id"})  );
+         this.queryFields.add("ACCDOC_NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ACCDOC_NAME",id:"DC0042_QRY_ACCDOC_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCDOC_NAME||"Accdoc"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0042_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("NOTES", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NOTES",id:"DC0042_QRY_NOTES",width:100,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"})  );
+         this.queryFields.add("DB_ACCT", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DB_ACCT",id:"DC0042_QRY_DB_ACCT",width:100,fieldLabel: this.resourceBundle.FieldLabel.DB_ACCT||"Db_acct"})  );
+         this.queryFields.add("CR_ACCT", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CR_ACCT",id:"DC0042_QRY_CR_ACCT",width:100,fieldLabel: this.resourceBundle.FieldLabel.CR_ACCT||"Cr_acct"})  );
+         this.queryFields.add("DB_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DB_AMOUNT",id:"DC0042_QRY_DB_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.DB_AMOUNT||"Dr amount",style: "text-align:right;"})  );
+         this.queryFields.add("CR_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_CR_AMOUNT",id:"DC0042_QRY_CR_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.CR_AMOUNT||"Cr amount",style: "text-align:right;"})  );
+         this.queryFields.add("CURRENCY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CURRENCY",id:"DC0042_QRY_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"})  );
+         this.queryFields.add("XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_XRATE",id:"DC0042_QRY_XRATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.XRATE||"Xrate",style: "text-align:right;"})  );
+         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0042_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0042_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
+         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0042_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0042_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
+         this.queryFields.add("IS_GENERATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_GENERATED",id:"DC0042_QRY_IS_GENERATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_GENERATED||"Is_generated"})  );
+         this.queryFields.add("ORIG_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_ORIG_AMOUNT",id:"DC0042_QRY_ORIG_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",style: "text-align:right;"})  );
+         this.queryFields.add("ORIG_CURRENCY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ORIG_CURRENCY",id:"DC0042_QRY_ORIG_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency"})  );
+  
+       this.queryFieldsVisible = [  "ACCDOC_NAME","NOTES","DB_ACCT","CR_ACCT","DB_AMOUNT","CR_AMOUNT","CURRENCY","XRATE","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY","IS_GENERATED","ORIG_AMOUNT","ORIG_CURRENCY" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0042"
@@ -53,26 +78,6 @@
               ,{ id:"IS_GENERATED",header:this.resourceBundle.FieldLabel.IS_GENERATED||"Is_generated",width:50,dataIndex:'IS_GENERATED',hidden:true,sortable:true}
               ,{ id:"ORIG_AMOUNT",header:this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",width:100,dataIndex:'ORIG_AMOUNT',hidden:true,sortable:true,align:'right'}
               ,{ id:"ORIG_CURRENCY",header:this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency",width:100,dataIndex:'ORIG_CURRENCY',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0042_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_ACCDOC_ID",id:"DC0042_QRY_ACCDOC_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCDOC_ID||"Accdoc_id"}
-               ,{xtype: "textfield",name:"QRY_ACCDOC_NAME",id:"DC0042_QRY_ACCDOC_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.ACCDOC_NAME||"Accdoc"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0042_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "textfield",name:"QRY_NOTES",id:"DC0042_QRY_NOTES",width:120,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"}
-               ,{xtype: "textfield",name:"QRY_DB_ACCT",id:"DC0042_QRY_DB_ACCT",width:120,fieldLabel: this.resourceBundle.FieldLabel.DB_ACCT||"Db_acct"}
-               ,{xtype: "textfield",name:"QRY_CR_ACCT",id:"DC0042_QRY_CR_ACCT",width:120,fieldLabel: this.resourceBundle.FieldLabel.CR_ACCT||"Cr_acct"}
-               ,{xtype: "numberfield",name:"QRY_DB_AMOUNT",id:"DC0042_QRY_DB_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.DB_AMOUNT||"Dr amount",style: "text-align:right;"}
-               ,{xtype: "numberfield",name:"QRY_CR_AMOUNT",id:"DC0042_QRY_CR_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.CR_AMOUNT||"Cr amount",style: "text-align:right;"}
-               ,{xtype: "textfield",name:"QRY_CURRENCY",id:"DC0042_QRY_CURRENCY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"}
-               ,{xtype: "numberfield",name:"QRY_XRATE",id:"DC0042_QRY_XRATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.XRATE||"Xrate",style: "text-align:right;"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0042_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0042_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0042_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0042_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_IS_GENERATED",id:"DC0042_QRY_IS_GENERATED",width:120,fieldLabel: this.resourceBundle.FieldLabel.IS_GENERATED||"Is_generated"}
-               ,{xtype: "numberfield",name:"QRY_ORIG_AMOUNT",id:"DC0042_QRY_ORIG_AMOUNT",width:120,fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",style: "text-align:right;"}
-               ,{xtype: "textfield",name:"QRY_ORIG_CURRENCY",id:"DC0042_QRY_ORIG_CURRENCY",width:120,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency"}
           ]
           ,dataComponentName:"DC0042G"
           ,queryArraySize:-1
@@ -128,22 +133,16 @@
        this.fields.add("CURRENCY", new Ext.form.TextField ({xtype: "textfield",name:"CURRENCY",id:"DC0042F_CURRENCY",dataIndex:"CURRENCY",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",insert_allowed:true,update_allowed:true})   );
        this.fields.add("XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"XRATE",id:"DC0042F_XRATE",dataIndex:"XRATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.XRATE||"Xrate",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
 
+       this.layoutItems.add("C2",
+             { layout:"form",columnWidth:.4, items:[ this.fields.get("CURRENCY"),this.fields.get("XRATE")]}); 
+       this.layoutItems.add("C1",
+             { layout:"form",columnWidth:.6, items:[ this.fields.get("ID"),this.fields.get("ACCDOC_ID"),this.fields.get("CLIENT_ID"),this.fields.get("NOTES"),this.fields.get("DB_ACCT"),this.fields.get("CR_ACCT"),this.fields.get("DB_AMOUNT"),this.fields.get("CR_AMOUNT")]}); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.fields.get("_p_record_status")
-                 ,this.fields.get("ID")
-                 ,this.fields.get("ACCDOC_ID")
-                 ,this.fields.get("CLIENT_ID")
-                 ,this.fields.get("NOTES")
-                 ,this.fields.get("DB_ACCT")
-                 ,this.fields.get("CR_ACCT")
-                 ,this.fields.get("DB_AMOUNT")
-                 ,this.fields.get("CR_AMOUNT")
-                 ,this.fields.get("CURRENCY")
-                 ,this.fields.get("XRATE")
-]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1"),this.layoutItems.get("C2")]
           ,border:false
+          ,layout:"column"
           ,defaults:{labelWidth:110}
           ,frame:true
           ,width: "100%"
@@ -153,13 +152,13 @@
         });
 
         
-
        N21.DataComp.DC0042F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0042F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -186,8 +185,6 @@
   });
   Ext.reg("DC0042F", N21.DataComp.DC0042F);
 
-
-
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0042
@@ -207,9 +204,18 @@
           ,mdLayout:"column"
           ,border: false
           ,items: [
-              {xtype: "DC0042G",id: "DC0042G",region:"north" ,split:true,height:130,minHeight:0}
+              {xtype: "DC0042G",id: "DC0042G",region:"north" ,split:true,height:180,minHeight:0}
              ,{xtype: "DC0042F",id: "DC0042F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_62"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_64"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_63"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_61"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_143"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0042.superclass.initComponent.apply(this, arguments);

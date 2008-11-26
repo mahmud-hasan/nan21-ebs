@@ -230,6 +230,7 @@ Ext.onReady(function(){
      region:'center'
     ,deferredRender:false
     ,activeTab:0
+    ,plain:true
     ,items:[
         {contentEl:'content', title: 'Home', autoScroll:true, layout:'fit'}
       ]
@@ -259,7 +260,16 @@ Ext.onReady(function(){
           ]
         }
      })
-
+    ,new Ext.Toolbar.MenuButton({
+       text:'Help'
+       ,menu: {
+          items: [
+              { text:'About',handler: function() {  document.getElementById("content_iframe").src = "showAbout.php"  } , scope:this}
+             ,{ text:'License', handler: function() { document.getElementById("content_iframe").src = "showLicense.php" } , scope:this}
+             ,{ text:'Online help', handler: function() {  } , scope:this, disabled:true}
+          ]
+        }
+     })
   );  // end mTlb.add
 
 
@@ -285,7 +295,7 @@ Ext.onReady(function(){
                ]
            })
        , contentPane
-       ,{region: "south",border: false,height:0}
+       ,{region: "south",border: false, frame:true, height:25,html:"Powered by Nan21 eBusiness Suite, <a href='http://www.nan21.eu' target=_blank title='www.nan21.eu'>www.nan21.eu</a>"}
        ,{region: "east" ,border: false,width:0}
      ]
   }); // end viewport
@@ -458,7 +468,7 @@ Ext.onReady(function(){
     </div>
     <div id="south" style="margin:0;padding:0;"></div>
     <div style="width:100%;height:100%;overflow: hidden;" id="content">
-      <iframe id="content_iframe" src="" style="border:0;width:100%;height:100%;overflow-y: hidden;margin:0;padding:0;" FRAMEBORDER="no"></iframe>
+      <iframe id="content_iframe" src="showAbout.php" style="border:0;width:100%;height:100%;overflow-y: hidden;margin:0;padding:0;" FRAMEBORDER="no"></iframe>
     </div>
  </body>
 </html>

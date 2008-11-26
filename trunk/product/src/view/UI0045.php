@@ -34,7 +34,7 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0065]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-300}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-400}
     ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-500}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0065.prototype.resourceBundle.DcProperty.Title||"Documents serial")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0045&gt;</div>"}
    ]

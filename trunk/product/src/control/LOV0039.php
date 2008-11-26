@@ -17,20 +17,19 @@ class LOV0039 extends Controller {
  where bp.id = bpa.bpartner_id(+) ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $PARAMS);
+      $columns = array(
+       "ADRESS"
+      ,"CITY"
+      ,"CITY_ID"
+      ,"COUNTRY_CODE"
+      ,"ID"
+      ,"NAME"
+      ,"REGION_CODE"
+      );
+      $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
+      if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
+      print $this->formatQueryResponseData($dataOut,-1);
       $jsOn = "";
-      while ( $row = $rs->FetchRow() ){
-        $jsOn .= (!empty($jsOn))?",":"";
-        $jsOn .= "{";
-        $jsOn .= " ADRESS:\"".$row["ADRESS"]."\"";
-        $jsOn .= ",CITY:\"".$row["CITY"]."\"";
-        $jsOn .= ",CITY_ID:\"".$row["CITY_ID"]."\"";
-        $jsOn .= ",COUNTRY_CODE:\"".$row["COUNTRY_CODE"]."\"";
-        $jsOn .= ",ID:\"".$row["ID"]."\"";
-        $jsOn .= ",NAME:\"".$row["NAME"]."\"";
-        $jsOn .= ",REGION_CODE:\"".$row["REGION_CODE"]."\"";
-        $jsOn .= "}";
-      }
-      print "{success:true, records:[".$jsOn."]}";
     }catch(Exception  $e) {
       System::sendActionErrorJson( $e->getMessage());
     }

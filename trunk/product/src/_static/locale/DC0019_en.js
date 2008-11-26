@@ -6,7 +6,7 @@ DcProperty:{
       ASSIGNED_TO:"Assigned to"
      ,CLOSED:"Closed"
      ,CREATEDBY:"Created by"
-     ,CREATEDON:"Created"
+     ,CREATEDON:"Created on"
      ,FINISH_DATE:"Finish date"
      ,ID:"Id"
      ,MODIFIEDBY:"Modified by"

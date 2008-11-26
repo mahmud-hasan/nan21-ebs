@@ -32,7 +32,7 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0005]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-350}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-400}
     ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-500}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0005.prototype.resourceBundle.DcProperty.Title||"Banks")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0001&gt;</div>"}
    ]

@@ -13,7 +13,20 @@
          ,{name:"DEPRECATED", type:"string" }
          ,{name:"ID", type:"float" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:2 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0021_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0021_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
+         this.queryFields.add("NBS_STANDARD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_NBS_STANDARD",id:"DC0021_QRY_NBS_STANDARD",width:100,fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard"})  );
+         this.queryFields.add("USER_BUILD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_USER_BUILD",id:"DC0021_QRY_USER_BUILD",width:100,fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build"})  );
+         this.queryFields.add("DEPRECATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_DEPRECATED",id:"DC0021_QRY_DEPRECATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated"})  );
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0021_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+  
+       this.queryFieldsVisible = [  "CODE","NAME","NBS_STANDARD","USER_BUILD","DEPRECATED" ];
        Ext.apply(this, {
            store: new Ext.data.Store({
                id:"storeDC0021"
@@ -29,14 +42,6 @@
               ,{ id:"USER_BUILD",header:this.resourceBundle.FieldLabel.USER_BUILD||"User build",width:50,dataIndex:'USER_BUILD',sortable:true}
               ,{ id:"DEPRECATED",header:this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated",width:50,dataIndex:'DEPRECATED',sortable:true}
               ,{ id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "textfield",name:"QRY_CODE",id:"DC0021_QRY_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"}
-               ,{xtype: "textfield",name:"QRY_NAME",id:"DC0021_QRY_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_NBS_STANDARD",id:"DC0021_QRY_NBS_STANDARD",width:120,fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_USER_BUILD",id:"DC0021_QRY_USER_BUILD",width:120,fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build"}
-               ,{xtype: "combo",store:["N","Y"],name:"QRY_DEPRECATED",id:"DC0021_QRY_DEPRECATED",width:120,fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated"}
-               ,{xtype: "hidden",name:"QRY_ID",id:"DC0021_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
           ]
           ,dataComponentName:"DC0021G"
           ,queryArraySize:20
@@ -92,13 +97,13 @@
         });
 
         
-
        N21.DataComp.DC0021F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0021F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,CODE:""
@@ -112,8 +117,6 @@
 
   });
   Ext.reg("DC0021F", N21.DataComp.DC0021F);
-
-
 
 /** 
  * DataControl: Grid with Edit Form
@@ -137,6 +140,21 @@
               {xtype: "DC0021G",id: "DC0021G",region:"west"  ,split:true,width:"60%",minWidth:0}
              ,{xtype: "DC0021F",id: "DC0021F",region:"center",split:true,autoScroll:true}
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0021.superclass.initComponent.apply(this, arguments);

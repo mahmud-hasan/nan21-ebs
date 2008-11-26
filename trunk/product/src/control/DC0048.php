@@ -11,6 +11,21 @@ class DC0048 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_PROJECT_ISSUE_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "PROJECT_ISSUE_ID like :PROJECT_ISSUE_ID";
+      $params["PROJECT_ISSUE_ID"] = $_REQUEST["QRY_PROJECT_ISSUE_ID"];
+    }
+    if (!empty($_REQUEST["QRY_NOTE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "NOTE like :NOTE";
+      $params["NOTE"] = $_REQUEST["QRY_NOTE"];
+    }
     if (!empty($_REQUEST["QRY_CREATEDBY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CREATEDBY like :CREATEDBY";
@@ -21,11 +36,6 @@ private function preQuery(&$params, &$where) {
       $where .= "CREATEDON like :CREATEDON";
       $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MODIFIEDBY like :MODIFIEDBY";
@@ -35,16 +45,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MODIFIEDON like :MODIFIEDON";
       $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_NOTE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NOTE like :NOTE";
-      $params["NOTE"] = $_REQUEST["QRY_NOTE"];
-    }
-    if (!empty($_REQUEST["QRY_PROJECT_ISSUE_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PROJECT_ISSUE_ID like :PROJECT_ISSUE_ID";
-      $params["PROJECT_ISSUE_ID"] = $_REQUEST["QRY_PROJECT_ISSUE_ID"];
     }
 }
 
@@ -60,25 +60,25 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CREATEDBY
+                ID
+                ,PROJECT_ISSUE_ID
+                ,NOTE
+                ,CREATEDBY
                 ,CREATEDON
-                ,ID
                 ,MODIFIEDBY
                 ,MODIFIEDON
-                ,NOTE
-                ,PROJECT_ISSUE_ID
             from PROJECT_ISSUE_NOTE  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDBY"
+      "ID"
+      ,"PROJECT_ISSUE_ID"
+      ,"NOTE"
+      ,"CREATEDBY"
       ,"CREATEDON"
-      ,"ID"
       ,"MODIFIEDBY"
       ,"MODIFIEDON"
-      ,"NOTE"
-      ,"PROJECT_ISSUE_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -169,21 +169,21 @@ public function doInsert() {
     $RECORD["NOTE"] = $this->getRequestParam("NOTE");
     $RECORD["PROJECT_ISSUE_ID"] = $this->getRequestParam("PROJECT_ISSUE_ID");
     $sql = "insert into PROJECT_ISSUE_NOTE(
-                 CREATEDBY
+                 ID
+                ,PROJECT_ISSUE_ID
+                ,NOTE
+                ,CREATEDBY
                 ,CREATEDON
-                ,ID
                 ,MODIFIEDBY
                 ,MODIFIEDON
-                ,NOTE
-                ,PROJECT_ISSUE_ID
             ) values ( 
-                 :CREATEDBY
+                 :ID
+                ,:PROJECT_ISSUE_ID
+                ,:NOTE
+                ,:CREATEDBY
                 ,:CREATEDON
-                ,:ID
                 ,:MODIFIEDBY
                 ,:MODIFIEDON
-                ,:NOTE
-                ,:PROJECT_ISSUE_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_prjissnote_id.nextval seq_val from dual")->fetchRow();
@@ -210,8 +210,8 @@ public function doUpdate() {
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0048.doUpdate().");}
     $sql = "update PROJECT_ISSUE_NOTE set 
                  ID=:ID
-                ,NOTE=:NOTE
                 ,PROJECT_ISSUE_ID=:PROJECT_ISSUE_ID
+                ,NOTE=:NOTE
     where 
            ID= :ID
     ";
@@ -265,13 +265,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CREATEDBY
+                ID
+                ,PROJECT_ISSUE_ID
+                ,NOTE
+                ,CREATEDBY
                 ,CREATEDON
-                ,ID
                 ,MODIFIEDBY
                 ,MODIFIEDON
-                ,NOTE
-                ,PROJECT_ISSUE_ID
             from PROJECT_ISSUE_NOTE 
          where 
            ID= :ID
@@ -282,13 +282,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDBY" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PROJECT_ISSUE_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NOTE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NOTE" => array("DATA_TYPE" => "STRING")
-  ,"PROJECT_ISSUE_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

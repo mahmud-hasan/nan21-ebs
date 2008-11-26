@@ -27,12 +27,33 @@
          ,{name:"MODIFIEDBY", type:"string" }
          ,{name:"CONTRSTAT_CODE", type:"string" }
     ])
+     ,queryFields: new Ext.util.MixedCollection()
+     ,queryFieldsVisible: new Array()
+     ,queryPanelColCount:4 
+    ,recordPk:[ "ID"]
     ,initComponent:function() {
+       
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0035_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0035_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
+         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",name:"QRY_CLIENT_NAME",id:"DC0035_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
+         this.queryFields.add("DOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DOC_NO",id:"DC0035_QRY_DOC_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Doc_no"})  );
+         this.queryFields.add("DOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DOC_DATE",id:"DC0035_QRY_DOC_DATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Doc_date",format:Ext.DATE_FORMAT})  );
+         this.queryFields.add("CUST_BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CUST_BPARTNER_ID",id:"DC0035_QRY_CUST_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CUST_BPARTNER_ID||"Cust_bpartner_id"})  );
+         this.queryFields.add("CUST_BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0035_QRY_CUST_BPARTNER_ID"}],selectOnFocus:true,name:"QRY_CUST_BPARTNER_NAME",id:"DC0035_QRY_CUST_BPARTNER_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CUST_BPARTNER_NAME||"Customer"})  );
+         this.queryFields.add("SUPP_BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_SUPP_BPARTNER_ID",id:"DC0035_QRY_SUPP_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.SUPP_BPARTNER_ID||"Supp_bpartner_id"})  );
+         this.queryFields.add("SUPP_BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0035_QRY_SUPP_BPARTNER_ID"}],selectOnFocus:true,name:"QRY_SUPP_BPARTNER_NAME",id:"DC0035_QRY_SUPP_BPARTNER_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.SUPP_BPARTNER_NAME||"Supplier"})  );
+         this.queryFields.add("CONTRTYPE_CODE", new N21.DataComp.LOV0018({xtype: "LOV0018",name:"QRY_CONTRTYPE_CODE",id:"DC0035_QRY_CONTRTYPE_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CONTRTYPE_CODE||"Contract type"})  );
+         this.queryFields.add("BPCONTR_NAME", new N21.DataComp.LOV0019({xtype: "LOV0019",displayColumn: "doc_no_full",fieldMapping: [{column:"ID",field:"DC0035_QRY_BPCONTR_ID"}],selectOnFocus:true,name:"QRY_BPCONTR_NAME",id:"DC0035_QRY_BPCONTR_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPCONTR_NAME||"Ref Contract"})  );
+         this.queryFields.add("BPCONTR_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPCONTR_ID",id:"DC0035_QRY_BPCONTR_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPCONTR_ID||"Bpcontr_id"})  );
+         this.queryFields.add("CONTRSTAT_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CONTRSTAT_CODE",id:"DC0035_QRY_CONTRSTAT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CONTRSTAT_CODE||"Contrstat_code"})  );
+  
+       this.queryFieldsVisible = [  "CLIENT_NAME","DOC_NO","DOC_DATE","CUST_BPARTNER_NAME","SUPP_BPARTNER_NAME","CONTRTYPE_CODE","BPCONTR_NAME","CONTRSTAT_CODE" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0035"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0035"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0035"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -57,28 +78,6 @@
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
               ,{ id:"CONTRSTAT_CODE",header:this.resourceBundle.FieldLabel.CONTRSTAT_CODE||"Contrstat_code",width:100,dataIndex:'CONTRSTAT_CODE',hidden:true,sortable:true}
-          ]
-          ,queryFields: [
-                {xtype: "hidden",name:"QRY_ID",id:"DC0035_QRY_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"}
-               ,{xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0035_QRY_CLIENT_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"}
-               ,{xtype: "LOV0008",displayColumn: "CODE",name:"QRY_CLIENT_NAME",id:"DC0035_QRY_CLIENT_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"}
-               ,{xtype: "textfield",name:"QRY_DOC_NO",id:"DC0035_QRY_DOC_NO",width:120,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Doc_no"}
-               ,{xtype: "datefield",name:"QRY_DOC_DATE",id:"DC0035_QRY_DOC_DATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Doc_date",format:Ext.DATE_FORMAT}
-               ,{xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0035_QRY_CUST_BPARTNER_ID"}],selectOnFocus:true,name:"QRY_CUST_BPARTNER_NAME",id:"DC0035_QRY_CUST_BPARTNER_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.CUST_BPARTNER_NAME||"Customer"}
-               ,{xtype: "hidden",name:"QRY_CUST_BPARTNER_ID",id:"DC0035_QRY_CUST_BPARTNER_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.CUST_BPARTNER_ID||"Cust_bpartner_id"}
-               ,{xtype: "hidden",name:"QRY_SUPP_BPARTNER_ID",id:"DC0035_QRY_SUPP_BPARTNER_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.SUPP_BPARTNER_ID||"Supp_bpartner_id"}
-               ,{xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0035_QRY_SUPP_BPARTNER_ID"}],selectOnFocus:true,name:"QRY_SUPP_BPARTNER_NAME",id:"DC0035_QRY_SUPP_BPARTNER_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.SUPP_BPARTNER_NAME||"Supplier"}
-               ,{xtype: "LOV0018",name:"QRY_CONTRTYPE_CODE",id:"DC0035_QRY_CONTRTYPE_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CONTRTYPE_CODE||"Contract type"}
-               ,{xtype: "datefield",name:"QRY_STARTDATE",id:"DC0035_QRY_STARTDATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.STARTDATE||"Startdate",format:Ext.DATE_FORMAT}
-               ,{xtype: "datefield",name:"QRY_ENDDATE",id:"DC0035_QRY_ENDDATE",width:120,fieldLabel: this.resourceBundle.FieldLabel.ENDDATE||"Enddate",format:Ext.DATE_FORMAT}
-               ,{xtype: "LOV0019",displayColumn: "doc_no_full",fieldMapping: [{column:"ID",field:"DC0035_QRY_BPCONTR_ID"}],selectOnFocus:true,name:"QRY_BPCONTR_NAME",id:"DC0035_QRY_BPCONTR_NAME",width:120,fieldLabel: this.resourceBundle.FieldLabel.BPCONTR_NAME||"Ref Contract"}
-               ,{xtype: "hidden",name:"QRY_BPCONTR_ID",id:"DC0035_QRY_BPCONTR_ID",width:120,fieldLabel: this.resourceBundle.FieldLabel.BPCONTR_ID||"Bpcontr_id"}
-               ,{xtype: "textarea",name:"QRY_NOTES",id:"DC0035_QRY_NOTES",width:120,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"}
-               ,{xtype: "datefield",name:"QRY_CREATEDON",id:"DC0035_QRY_CREATEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0035_QRY_CREATEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"}
-               ,{xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0035_QRY_MODIFIEDON",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT}
-               ,{xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0035_QRY_MODIFIEDBY",width:120,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"}
-               ,{xtype: "textfield",name:"QRY_CONTRSTAT_CODE",id:"DC0035_QRY_CONTRSTAT_CODE",width:120,fieldLabel: this.resourceBundle.FieldLabel.CONTRSTAT_CODE||"Contrstat_code"}
           ]
           ,dataComponentName:"DC0035G"
           ,queryArraySize:20
@@ -174,13 +173,13 @@
         });
 
         
-
        N21.DataComp.DC0035F.superclass.initComponent.apply(this, arguments);
      }
 
     ,onRender:function() {
        N21.DataComp.DC0035F.superclass.onRender.apply(this, arguments);
      }
+
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
@@ -209,8 +208,6 @@
   });
   Ext.reg("DC0035F", N21.DataComp.DC0035F);
 
-
-
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0035
@@ -227,24 +224,23 @@
           ,dataComponentName:"DC0035"
           ,masterName:"DC0035G"
           ,detailName:"DC0035F"
-          ,mdLayout:"tab"
+          ,mdLayout:"card"
           ,border: false
           ,items: [
               {
-                xtype:"tabpanel"
+                xtype:"panel"
+               ,layout:"card"
                ,id:"MDTab"
                ,region:"center"
                ,defaults:{layout:"fit"}
                ,activeItem:0
                ,tabPosition: "bottom"
                ,items: [{
-                            title:"List"
-                           ,xtype: "DC0035G"
+                            xtype: "DC0035G"
                            ,id: "DC0035G"
                            ,height:350
                        },{
-                           title:"Edit Record"
-                          ,xtype:"DC0035F"
+                           xtype:"DC0035F"
                           ,id:"DC0035F"
                           ,height:350
                           ,frame:true
@@ -254,6 +250,21 @@
              }
 
             ]
+          ,tbar: new Array(
+          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
+          ,new Ext.Toolbar.Separator()
+          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          )
         }); 
 
        N21.DataComp.DC0035.superclass.initComponent.apply(this, arguments);
