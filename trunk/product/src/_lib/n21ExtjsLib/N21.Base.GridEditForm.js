@@ -11,56 +11,11 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,parentDcRelation: null
   ,mdLayout:'tab' // can be : row/column/tab/window
   ,detailTabRendered:false
-   ,toolbarConfig: 'STANDARD'
-
+  ,mainToolbar: null
   ,initComponent:function() {
 
      Ext.apply(this, arguments); // eo apply
 
-     var stdTlb = new Array(
-
-            {id:"tlb_btn_rec_qry",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_src.gif", tooltip:"Filter &lt;Ctrl+F&gt;",handler: this.enter_query,scope :this }
-           ,{id:"tlb_btn_rec_cmt",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_commit.png", tooltip:"Save changes &lt;Ctrl+S&gt;",handler: this.commitForm,scope :this }
-           ,{id:"tlb_btn_rec_new",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_new.gif", tooltip:"Create new &lt;Ctrl+N&gt;",handler: this.createNewRecord,scope :this }
-           ,{id:"tlb_btn_rec_upd",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_upd.gif", tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;",enableToggle:true, handler: this.editModeOn,scope :this }
-           ,'-'
-           ,{id:"tlb_btn_rec_ref",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_refresh.gif", tooltip:"Refresh record",handler: this.reloadRecord,scope :this }
-           ,{id:"tlb_btn_rec_del",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_del.gif", tooltip:"Delete &lt;Ctrl+D&gt;",handler: this.deleteRecord,scope :this }
-           ,'-'
-           ,{id:"tlb_btn_rec_prv",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/f_rec_prev.gif", tooltip:"Previous",handler: this.goToPrevRecord,scope :this }
-           ,{id:"tlb_btn_rec_nxt",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/f_rec_next.gif", tooltip:"Next",handler: this.goToNextRecord,scope :this }
-           ,'-'
-           ,{id:"tlb_btn_rec_prt",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/print.png", tooltip:"Print",handler: this.export_data,scope :this }
-          // ,{id:"tlb_btn_rec_new",xtype: "button",cls:"x-btn-text-icon",text:"Editor", icon:"_static/icon/g_rec_new.gif", tooltip:"Create new &lt;Ctrl+N&gt;",handler: this.createNewRecord,scope :this }
-        );
-     if (Ext.isArray(this.toolbarConfig)) {
-       this.tbar = new Array();
-       var j=0;
-       for (var i=0; i<this.toolbarConfig.length; i++ ) {
-         if (this.toolbarConfig[i] == 'SAVE') {
-           this.tbar[j] = stdTlb[0];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'NEW') {
-           this.tbar[j] = stdTlb[1];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'N_PREV') {
-           this.tbar[j] = stdTlb[2];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'N_NEXT') {
-           this.tbar[j] = stdTlb[3];
-           j++;
-         }
-
-       }
-
-     } else {
-        if (this.toolbarConfig == 'STANDARD') {
-          this.tbar = stdTlb;
-       }
-     }
 
      N21.Base.GridEditForm.superclass.initComponent.apply(this, arguments);
      if (this.parentDcRelation != null) {
@@ -89,7 +44,7 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
 
     var keyMap = new Ext.KeyMap( this.body, [
         { key: 81, fn: this.close_detail,  ctrl:true, scope:this }/* Alt+Q */
-       ,{ key: 70, fn: this.enter_query,   ctrl:true, scope:this }/* Alt+F */
+       ,{ key: 70, fn: this.enterQuery,   ctrl:true, scope:this }/* Alt+F */
        ,{ key: 78, fn: this.createNewRecord, ctrl:true, scope:this }/* Alt+N */
       // ,{ key: 83, fn: this.commitForm,   ctrl:true, scope:this }/* Alt+S */
     ]);
@@ -99,7 +54,7 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   // ----------- private properties
 
   ,reloadRecord: function () {
-     this.getRecordEditor().fetchRecord();
+    this.getRecordEditor().fetchRecord(this.getRecordList().getSelectedRowPK());
   }
 
   ,goToPrevRecord: function() {  //  alert('in goToPrevRecord');
@@ -130,12 +85,17 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
       }
   }
 
-  ,editModeOn: function() {
-     if (!Ext.getCmp("tlb_btn_rec_upd").pressed) { this.close_detail();}
+  ,toggleEditMode: function() {
+     if (this.getTopToolbar().items.get("tlb_67").pressed) { this.close_detail(); this.toggleEditorToolbarItem(false);}
      else {
-       this.onRowDblClick();
+       this.onRowDblClick(); this.toggleEditorToolbarItem(true);
      }
   }
+  ,toggleEditorToolbarItem: function(p) {
+    this.getTopToolbar().items.get("tlb_67").toggle(p);
+  }
+
+
   ,getRecordEditor:function() {
      return this.findById(this.detailName);
   }
@@ -158,7 +118,7 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
        this.detailWindow.hide();  // alert(this.masterName);
        //Ext.getCmp(this.masterName).focus(false,200);
      }
-     this.getTopToolbar().items.get(3).toggle(false);
+     this.toggleEditorToolbarItem(false);
      //this.getRecordList().getView().focusRow(this.getRecordList().getSelectionModel()....?);
      this.getRecordList().getView().focusRow(0);
   }
@@ -198,16 +158,11 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
           this.detailTabRendered = true;
        }
        this.getRecordList().getSelectionModel().fireEvent('rowselect');   // is necessary for the first activation of the form tab
-
-
        // *****************************************************************************************************
        //todo: !!! add a new parameter: fetchChildDataOn : masterSelection - when the master record is changed 
        // check the paramter for each child DC and call this.getRecordEditor().populate_details(block_name);
        this.getRecordEditor().populate_all_details();
        // *****************************************************************************************************
-       
-
-
      }else if (this.mdLayout == "window") {
        this.detailWindow.show();
        this.getRecordList().getSelectionModel().fireEvent('rowselect');  // is necessary for the first activation of the form tab
@@ -215,11 +170,12 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
        this.getComponent("MDTab").layout.setActiveItem(1);
        this.getComponent("MDTab").items.get(1).doLayout();
        this.getRecordList().getSelectionModel().fireEvent('rowselect');  // is necessary for the first activation of the form tab
+       //TODO: see at tab layout
+       this.getRecordEditor().populate_all_details();
      }  else {
          this.getRecordEditor().populate_all_details(); //form is visible with list, on record selection must load details
      }
-
-     this.getTopToolbar().items.get(3).toggle(true);
+     this.toggleEditorToolbarItem(true);
      this.setDefaultFormFocus();
   }
 
@@ -238,7 +194,12 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
               this.detailTabRendered = true;
            }
            this.getRecordList().getSelectionModel().fireEvent('rowselect');  // is necessary for the first activation of the form tab
-          // this.fetchChildRecords();//load child records if any child datacontrol exists ...
+             // *****************************************************************************************************
+             //todo: !!! add a new parameter: fetchChildDataOn : masterSelection - when the master record is changed
+             // check the paramter for each child DC and call this.getRecordEditor().populate_details(block_name);
+             this.getRecordEditor().populate_all_details();
+             // *****************************************************************************************************
+
        }else if (this.mdLayout == "window") {
            this.detailWindow.show();
            // is necessary for the first activation of the form tab
@@ -247,10 +208,12 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
          this.getComponent("MDTab").layout.setActiveItem(1);
          this.getComponent("MDTab").doLayout();
          this.getRecordList().getSelectionModel().fireEvent('rowselect');  // is necessary for the first activation of the form tab
+         //TODO: see at tab layout
+         this.getRecordEditor().populate_all_details();
        } else {
             this.getRecordEditor().populate_all_details();
        }
-       this.getTopToolbar().items.get(3).toggle(true);
+       this.toggleEditorToolbarItem(true);
        this.setDefaultFormFocus();
      }
 
@@ -268,8 +231,8 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
      }
 
   }
-  ,enter_query:function() {
-      this.getRecordList().enter_query();
+  ,enterQuery:function() {
+      this.getRecordList().enterQuery();
   }
 
   ,commitForm: function() {
@@ -317,11 +280,8 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,executeQuery: function() {
       this.getRecordList().executeQuery();
    }
-  ,execute_query: function() {
-      this.getRecordList().executeQuery();
-   }
-   
-  ,export_data: function() {
+
+  ,exportList: function() {
      this.getRecordList().export_data();
   }
   
@@ -343,7 +303,7 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
    }
 
    ,setQueryFieldValue:function(fieldName, fieldValue) {
-     this.getRecordList().queryWindow.findById(this.dataComponentName+"_QRY_"+fieldName).setValue(fieldValue);
+     this.getRecordList().setQueryFieldValue(fieldName, fieldValue);
    }
    ,focus: function() {
       this.getRecordList().getSelectionModel().selectFirstRow();

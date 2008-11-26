@@ -12,7 +12,8 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
   ,initComponent:function() {
 
      Ext.apply(this, arguments); // eo apply
-
+     this.header=false;
+     this.hideBorders =true;
      var stdTlb = new Array(
             {id:"tlb_btn_rec_cmt",xtype: "button",cls:"x-btn-text-icon",text:"Save", icon:"_static/icon/g_rec_commit.png", tooltip:"Save changes &lt;Ctrl+S&gt;",handler: this.commitForm,scope :this }
            ,{id:"tlb_btn_rec_new",xtype: "button",cls:"x-btn-text-icon",text:"New", icon:"_static/icon/g_rec_new.gif", tooltip:"Create new &lt;Ctrl+N&gt;",handler: this.createNewRecord,scope :this }
@@ -267,7 +268,7 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
          for (var x=0; x<this.childDCs[ blockRelationIndex ].relation.length; x++ ) {
            Ext.getCmp(detailBlock).setQueryFieldValue(this.childDCs[ blockRelationIndex ].relation[x].child, Ext.getCmp(this.dataComponentName+"_"+ this.childDCs[ blockRelationIndex ].relation[x].parent).getValue() );
          }
-         Ext.getCmp(detailBlock).execute_query();
+         Ext.getCmp(detailBlock).executeQuery();
        }
   }
 
@@ -334,8 +335,8 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
      } catch (e) {Ext.Msg.alert('Error', 'Network failure. Communication with server lost.');}
   }
 
-  ,fetchRecord:function() {
-     this.getForm().load({ url:"frmMain.php?_p_action=fetchRecord&_p_form="+this.dataComponentName.replace('F',''),params:this.dataRecord.data
+  ,fetchRecord:function(pk) {
+     this.getForm().load({ url:"frmMain.php?_p_action=fetchRecord&_p_form="+this.dataComponentName.replace('F',''),params:pk //this.dataRecord.data
               ,success: this.fetchRecordSuccess, failure: this.fetchRecordFailure, scope:this
               ,waitMsg:'Loading...'});
 

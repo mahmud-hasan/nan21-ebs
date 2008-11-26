@@ -120,6 +120,7 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
     this.on('specialkey', this.onSpecialKeyClick, this);
     this.view.on('keypress', this.onViewKeypress , this);
     this.view.getStore().proxy.on('loadexception', this.onLoadException, this);
+    this.view.getStore().proxy.on('load', this.onLoadProxy, this);
   }
 
 
@@ -131,7 +132,18 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
 
 
   }
-
+  ,onLoadProxy:function(proxy, obj, arg, result) {
+    if (this.view.getStore().reader instanceof Ext.data.JsonReader ) {
+      for (var i=0;i<result.records.length ; i++ )  {
+        for (v in result.records[i].data) {
+          if (Ext.type(result.records[i].get(v)) == 'string')
+            result.records[i].set(v, this.urldecode(result.records[i].get(v) )) ;
+        }
+        result.records[i].commit();
+      }
+    }
+  }
+  
    ,urldecode: function ( str ) {
     var ret = str;
     ret = ret.replace(/\+/g, "%20");

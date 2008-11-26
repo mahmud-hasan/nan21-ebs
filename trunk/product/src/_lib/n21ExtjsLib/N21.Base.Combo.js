@@ -30,8 +30,20 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
     this.on('select', this.onSelectValue, this);
     this.on('focus', this.onFocus, this);
     this.store.proxy.on('loadexception', this.onLoadException, this);
+    this.store.proxy.on('load', this.onLoadProxy, this);
   }
 
+  ,onLoadProxy:function(proxy, obj, arg, result) {
+    if (this.store.reader instanceof Ext.data.JsonReader ) {
+      for (var i=0;i<result.records.length ; i++ )  {
+        for (v in result.records[i].data) {
+          if (Ext.type(result.records[i].get(v)) == 'string')
+            result.records[i].set(v, this.urldecode(result.records[i].get(v) )) ;
+        }
+        result.records[i].commit();
+      }
+    }
+  }
 
   ,onLoadException:function(proxy,options,response,error) {
       if (!response.responseText) {

@@ -5,14 +5,19 @@ Ext.ns('N21.Base');
 N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
    dataComponentName:null
   ,dataRecordMeta: null
-  ,DATE_FORMAT: 'd.m.Y' 
-  ,queryFields: new Array()
+  ,DATE_FORMAT: 'd.m.Y'
+
   ,queryWindow:null
   ,queryArraySize:20
   ,parentDcRelation: null
   ,firstFocusFieldName:null
-   
-
+  ,recordPk: new Array()
+  ,columns: new Ext.util.MixedCollection()
+  
+  ,queryPanelColCount: 2
+  ,queryFields: new Ext.util.MixedCollection()
+  ,queryFieldsVisible: new Array()
+  
   ,initComponent:function() {
 
      Ext.apply(this, arguments); // eo apply
@@ -24,46 +29,38 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
           ,pageSize:20
           });
      }
-
-     this.tbar = new Array(
-            {id:"tlb_btn_rec_qry",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_src.gif", tooltip:"Filter &lt;Ctrl+F&gt;",handler: this.enter_query,scope :this }
-           ,{id:"tlb_btn_rec_cmt",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_commit.png", tooltip:"Save changes &lt;Ctrl+S&gt;",handler: this.commitForm,scope :this }
-           ,{id:"tlb_btn_rec_new",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_new.gif", tooltip:"Create new &lt;Ctrl+N&gt;",handler: this.createNewRecord,scope :this }
-           ,'-'
-           ,{id:"tlb_btn_rec_del",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/g_rec_del.gif", tooltip:"Delete &lt;Ctrl+D&gt;",handler: this.deleteRecord,scope :this }
-           ,'-'
-           ,{id:"tlb_btn_rec_exp",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/print.png", tooltip:"Print",handler: this.export_data,scope :this }
-       );
-
-     //this.tbar = null;
-     this.queryWindow = new Ext.Window({
-          closable: true
-         ,closeAction : 'hide'
-         ,title:'Set Filter'
-         ,width:500
-         ,height:300
-         ,modal:true
-         ,x:100
-         ,y:50
-         ,autoScroll:true
-         ,constrain :true
-         ,layout:'form'
-         ,bodyStyle:'padding:10px 10px 10px 10px;'
-         ,items:this.queryFields
-         ,buttons: [{text:'Apply',handler:this.execute_query,scope:this },{text:'Reset',handler:this.reset_query,scope:this }]
-         ,buttonAlign:'left'
+      var toolbar1 = this.tbar;
+    // this.queryWindow = new Ext.Window({
+      this.tbar = new Ext.Panel({
+          autoScroll:true
+         ,border:true
+         ,bodyBorder :false
+         ,tbar:toolbar1
+         ,frame:false
+         ,layout:'table'
+         , layoutConfig: {columns: this.queryPanelColCount}
+         ,defaults:{labelWidth:90, labelAlign:'right'}
+         ,bodyStyle:'padding-top:5px;padding-bottom:5px;'
+         ,items:[
+            {html: '<p>Filter criteria</p>', bodyStyle:'border:0;padding-left:5px;', colspan: this.queryPanelColCount}
+         ]
        });
+      // alert('this.queryPanelColCount='+this.queryPanelColCount);
+       for (var i=1; i<=this.queryPanelColCount; i++) {
+         // this.tbar.items[this.tbar.items.length]
+         this.tbar.add( {layout:'form',labelAlign:'right', bodyStyle:'border:0;',  items: this.getQueryFieldsForPanelCol(i)});
+       }
+       //alert('this.tbar.items.length='+this.tbar.items.length);
+
+
+
      N21.Base.GridEdit.superclass.initComponent.apply(this, arguments);
      if (this.parentDcRelation != null) {
         for (var j=0;j<this.parentDcRelation.relation.length; j++ ) {
           this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'_'+ this.parentDcRelation.relation[j].parent;
         }
      }
-
-
    }
-   
-
 
    ,sentCommitRecCount:0
    ,doneCommitRecCount:0
@@ -75,8 +72,44 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
     this.getStore().proxy.on('loadexception', this.onLoadException, this);
     this.getStore().proxy.on('load', this.onLoadProxy, this);
     this.on('beforeedit', this.beforeCellEdit,this )
-
   }
+
+
+  ,getQueryFieldsForPanelCol:function (colNr) {
+    var idxStart,idxStop;
+     var colArr = new Array();
+     var vqfLen = this.queryFieldsVisible.length;
+     var mod = vqfLen%this.queryPanelColCount;
+     var colSize = Math.floor(vqfLen/this.queryPanelColCount);
+     colSize =  (mod>0&&colNr<=mod)?(colSize+1):colSize;
+
+     idxStart =  Math.floor(vqfLen/this.queryPanelColCount)*(colNr-1) ;
+
+    // alert('modulus='+mod+', colNr='+colNr+' colSize='+colSize);
+      if (mod>0) {
+        idxStart += (colNr>mod)?mod:(colNr-1);
+      }
+      idxStop = idxStart + colSize;
+     //idxStop =  Math.floor(vqfLen/this.queryPanelColCount)*colNr ;
+     idxStop = (idxStop<vqfLen)?idxStop:vqfLen ;
+    //alert('idxStart='+idxStart+' idxStop='+idxStop);
+    //alert('idxStart='+idxStart+' idxStop='+idxStop);
+     if (vqfLen%this.queryPanelColCount !=0 ) {
+       if (i<vqfLen%this.queryPanelColCount) {
+          //idxStart++;
+          //idxStop++;
+       }
+     }
+     for(var i = idxStart; i < idxStop; i++){ // alert('col='+colNr+' qf='+this.queryFieldsVisible[i]);
+        colArr[colArr.length] = this.queryFields.get(this.queryFieldsVisible[i]);
+     }
+     //alert('arr len='+colArr.length);
+    return colArr;
+  }
+
+
+
+
 
   ,beforeCellEdit:function(e) {
     if (e.record.data._p_record_status == "insert") {
@@ -106,12 +139,15 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   }
 
 
-  ,export_data:function() {
+  ,exportList:function() {
      var qs = '';
-     for(var i=0; i<this.queryFields.length; i++) {
-        if (this.queryWindow.findById(this.queryFields[i].id).getValue() != undefined)
-         qs = qs + '&'+this.queryFields[i].name  + '=' + this.queryWindow.findById(this.queryFields[i].id).getValue();
+
+     var qf = this.queryFields;
+     for(var i = 0, len = qf.keys.length; i < len; i++){
+        if (qf.items[i].getValue() != undefined)
+         qs = qs + '&QRY_'+ qf.keys[i] + '=' + qf.items[i].getValue();
      }
+
      var cs = '&_p_disp_cols=';
      for(var i=0; i<this.getColumnModel().getColumnCount(); i++) {
        if(! this.getColumnModel().isHidden(i) ) {
@@ -131,15 +167,13 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
      v.focus();
   }
 
-  ,enter_query:function() {
-    if (this.queryWindow != null) {
-      this.queryWindow.show();
-    }
+  ,enterQuery:function() {  return ;
   }
 
-   ,reset_query: function() {
-     for(i=0;i<this.queryFields.length;i++) {
-       this.queryWindow.findById(this.queryFields[i].id).setValue(null);
+   ,resetQuery: function() {
+     var qf = this.queryFields;
+     for(var i = 0, len = qf.keys.length; i < len; i++){
+        qf.items[i].setValue(null);
      }
    }
 
@@ -181,14 +215,16 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       if (!o.success) {
          this.serverMessages[this.serverMessages.length] =  this.urldecode(o.message);
       } else {
-         //TODO: overwrite changed values
        var p = o.data ;
        for (var j=0;j<this.dataRecordMeta.prototype.fields.items.length;j++) {
-         if (this.dataRecordMeta.prototype.fields.items[j].type == 'date' ) {
+        // only those fields which have a value set in the returned result
+         if (p.hasOwnProperty(this.dataRecordMeta.prototype.fields.items[j].name)) {
+           if (this.dataRecordMeta.prototype.fields.items[j].type == 'date' ) {
              this.getStore().getById(p["_p_store_recId"]).set(this.dataRecordMeta.prototype.fields.items[j].name, Date.parseDate(p[this.dataRecordMeta.prototype.fields.items[j].name], this.dataRecordMeta.prototype.fields.items[j].dateFormat) );
            } else {
               this.getStore().getById(p["_p_store_recId"]).set(this.dataRecordMeta.prototype.fields.items[j].name,p[this.dataRecordMeta.prototype.fields.items[j].name] );
            }
+         }
       }
         this.store.commitChanges();
       }
@@ -253,8 +289,16 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
   }
   
-  
-  
+
+  ,getSelectedRowPK: function() {
+    var pk = new Object();
+    var rowIdx = this.getSelectionModel().selection.cell[0];
+    for(var i=0; i<this.recordPk.length; i++ ) {
+      pk[this.recordPk[i]] = this.store.getAt(rowIdx).get(this.recordPk[i]);
+    }
+    return pk;
+  }
+
   ,deleteRecord: function() {
     if ( this.getSelectionModel().selection == null  ) {
       Ext.Msg.show({
@@ -278,18 +322,17 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   }
   ,executeDelete: function(btn) {
       if (btn=='yes') {
-         var rowIdx = this.getSelectionModel().selection.cell[0];
+
          this.stopEditing( );
           Ext.Ajax.request({
              url: "frmMain.php?_p_action=delete&_p_form="+this.dataComponentName.replace('G','')
              ,success: this.afterExecuteDeleteSuccess
              ,failure: this.afterExecuteDeleteFailure
              ,scope:this
-             ,params: { ID: this.store.getAt(rowIdx).get("ID") } //TODO: replace ID with PK column(s) !!!
+             ,params: this.getSelectedRowPK() //{ ID: this.store.getAt(rowIdx).get("ID") } //TODO: replace ID with PK column(s) !!!
           });
       }
    }
-
 
   ,afterExecuteDeleteSuccess: function(response,options) {
     var resp = Ext.decode(response.responseText);
@@ -311,26 +354,16 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
 
     ,executeQuery: function() {
-       this.execute_query();
-   }
-   ,execute_query: function() {
-       // set the query params
-
-       var p = new Object(); //{start:0,limit:20}
-       for(i=0;i<this.queryFields.length;i++) {
-          p[this.queryFields[i].name] = this.queryWindow.findById(this.queryFields[i].id).getValue();
+       var p = new Object();
+       var qf = this.queryFields;
+       for(var i = 0, len = qf.keys.length; i < len; i++){
+          p["QRY_"+qf.keys[i]] = qf.items[i].getValue();
        }
-
        this.store.baseParams = p;
-       this.store.load({callback:this.after_execute_query,scope:this});
-       if (this.queryWindow != null ) {
-         if (this.queryWindow.isVisible() )
-            this.queryWindow.hide();
-      }
-
+       this.store.load({callback:this.afterExecuteQuery,scope:this});
      }
 
-  ,after_execute_query: function(r,options,success) {
+  ,afterExecuteQuery: function(r,options,success) {
     if (success) {
 
     }
@@ -351,7 +384,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
    }
 
    ,setQueryFieldValue:function(fieldName, fieldValue) {
-     this.queryWindow.findById(this.dataComponentName+"_QRY_"+fieldName).setValue(fieldValue);
+     this.queryFields.get(fieldName).setValue(fieldValue);
    }
 });
 
