@@ -1,0 +1,25 @@
+
+
+1) Install Apache with Php
+2) Install Oracle database (8,9,10,XE)
+3) Connect to oracle and run the following scripts in this order:
+   a) Connect with a DBA user and execute: product/db/create_user.sql
+   b) Connect with the new user to Oracle:
+       connect NAN21/NAN21@XE       (ie: username/password@Service_Name)
+       If you choose to give a different name to the database schema as the default one use your username.
+   c) Execute: product/db/src/_setup.sql
+   d) Execute: product/db/data/_init_data.sql
+   
+4) Open file: product/src/properties.php and change the values for
+    
+    DB_URL   hostname where your Oracle DB is installed
+    DB_USER   database user [owner schema as given in step 3a)]
+    DB_PASSWORD 
+    DB_SCHEMA  database SID/service name
+    for example if you have installed Oracle XE and use the default at point 3a) you need to change only the  DB_URL host name
+
+    WWW  web-path  to your application
+5) The default application user, requested at application login in browser is user: AMATHE password: 1
+
+
+
