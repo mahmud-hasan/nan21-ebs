@@ -60,7 +60,7 @@ class MainServlet extends Servlet{
          } else {
             System::sendActionErrorJson($e->getMessage() );
          }
-       
+
        }
 
     }
@@ -159,21 +159,25 @@ class MainServlet extends Servlet{
       $class = new ReflectionClass( $this->getRequestParam("_p_form") );
       $frm = $class->newInstance();
       $frm->setDbConnection($this->db);
-
+      $dcName = $this->getRequestParam("_p_form");
       $frm->setLogger($this->logger);
-      $frm->setDcName ($this->getRequestParam("_p_form"));
+      $frm->setDcName ($dcName);
       if ($action == "fetch" ) {
+        $this->checkDCPermission("fetch", $dcName);
         $frm->setQueryDataFormat($this->getRequestParam("_p_data_format") );
         $frm->doQuery();
       }elseif($action == "insert" ) {
+        $this->checkDCPermission("insert", $dcName);
         $frm->doInsert();
       }elseif($action == "update" ) {
+        $this->checkDCPermission("update", $dcName);
         $frm->doUpdate();
       }elseif($action == "fetchRecord" ) {
         $frm->fetchRecord();
       }elseif($action == "call_proc" ) {
         $frm->callProcedure( $this->getRequestParam("_p_proc") );
       }elseif($action == "delete" ) {
+        $this->checkDCPermission("delete", $dcName);
         $frm->doDelete();
       }elseif($action == "export" ) {
         $frm->setExpFormat(( $this->getRequestParam("_p_exp_format") != null )?$this->getRequestParam("_p_exp_format"):"html");
@@ -187,7 +191,22 @@ class MainServlet extends Servlet{
 
   }
 
+  private function checkDCPermission($p_action, $p_dc) {
+    if (DO_DC_PERMISSION_CHECK != 'Y') { return ; }
+    $sUser = $this->getSessionParam("user");
+    $PARAMS = array();
+    $PARAMS['p_dc'] = $p_dc;
+    $PARAMS['p_action'] = $p_action;
+    $PARAMS['p_user'] = $sUser["userName"];
+    $sql = "select pk_system.has_user_dc_permission(:p_dc, :p_action , :p_user) has_permission from dual ";
+    $stmt = $this->db->prepare($sql);
+    $res = $this->db->Execute($stmt, $PARAMS)->fetchRow();
 
+    if ($res["HAS_PERMISSION"] != 'Y') {
+       throw new Exception("ACTION_NOT_AUTHORIZED");
+    }
+
+  }
 
 }
 ?>

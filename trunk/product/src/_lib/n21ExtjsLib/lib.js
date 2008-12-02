@@ -1,4 +1,14 @@
 
+/*
+Object.prototype.hasOwnProperty = function(prop) {
+  for (var k in this) {
+    alert(k);
+
+  }
+
+}
+  */
+
 function getWindowInnerHeight() {
   var myWidth = 0, myHeight = 0;
   if( typeof( window.innerWidth ) == 'number' ) {

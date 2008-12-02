@@ -22,7 +22,8 @@ class Controller extends Servlet{
         return "{ success : true , totalCount:".$totalRecords.", records : [  ".$dataString."] } ";
       }
       if ($this->query_data_format == "xml") {
-        return "<"."?"."xml version='1.0' encoding='UTF-8'?><records><totalCount>".$totalRecords."</totalCount>".$dataString."</records>";;
+        return "<"."?"."xml version='1.0' encoding='UTF-8'?><records>".$dataString."</records>";
+        //<totalCount>".$totalRecords."</totalCount>
       }
     }
 
@@ -125,7 +126,7 @@ class Controller extends Servlet{
     header('Content-type: text/xml');
     print '<?xml version="1.0"?>';
     print '<'.'?'.'xml-stylesheet type="text/xsl" href="test.xsl"'.'?'.'>';
-  
+
   }
   protected function endExport() {
 

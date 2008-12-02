@@ -86,13 +86,13 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   }
 
   ,toggleEditMode: function() {
-     if (this.getTopToolbar().items.get("tlb_67").pressed) { this.close_detail(); this.toggleEditorToolbarItem(false);}
+     if (this.getTopToolbar().items.get("tlb_LIST_EDITOR_MODE").pressed) { this.close_detail(); this.toggleEditorToolbarItem(false);}
      else {
        this.onRowDblClick(); this.toggleEditorToolbarItem(true);
      }
   }
   ,toggleEditorToolbarItem: function(p) {
-    this.getTopToolbar().items.get("tlb_67").toggle(p);
+    this.getTopToolbar().items.get("tlb_LIST_EDITOR_MODE").toggle(p);
   }
 
 
