@@ -11,20 +11,20 @@ class DC0002 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
 }
 
@@ -42,19 +42,19 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                ACTIVE
                 ,CODE
+                ,ID
                 ,NAME
-                ,ACTIVE
             from CURRENCY  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "ACTIVE"
       ,"CODE"
+      ,"ID"
       ,"NAME"
-      ,"ACTIVE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -140,15 +140,15 @@ public function doInsert() {
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into CURRENCY(
-                 ID
+                 ACTIVE
                 ,CODE
+                ,ID
                 ,NAME
-                ,ACTIVE
             ) values ( 
-                 :ID
+                 :ACTIVE
                 ,:CODE
+                ,:ID
                 ,:NAME
-                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_CURRENCY_ID.nextval seq_val from dual")->fetchRow();
@@ -176,10 +176,10 @@ public function doUpdate() {
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update CURRENCY set 
-                 ID=:ID
+                 ACTIVE=:ACTIVE
                 ,CODE=:CODE
+                ,ID=:ID
                 ,NAME=:NAME
-                ,ACTIVE=:ACTIVE
     where 
            ID= :ID
     ";
@@ -228,10 +228,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                ACTIVE
                 ,CODE
+                ,ID
                 ,NAME
-                ,ACTIVE
             from CURRENCY 
          where 
            ID= :ID
@@ -242,10 +242,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 

@@ -11,15 +11,20 @@ class DC0021 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_DEPRECATED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DEPRECATED like :DEPRECATED";
+      $params["DEPRECATED"] = $_REQUEST["QRY_DEPRECATED"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -35,11 +40,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "USER_BUILD like :USER_BUILD";
       $params["USER_BUILD"] = $_REQUEST["QRY_USER_BUILD"];
-    }
-    if (!empty($_REQUEST["QRY_DEPRECATED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEPRECATED like :DEPRECATED";
-      $params["DEPRECATED"] = $_REQUEST["QRY_DEPRECATED"];
     }
 }
 
@@ -57,23 +57,23 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,DEPRECATED
+                ,ID
                 ,NAME
                 ,NBS_STANDARD
                 ,USER_BUILD
-                ,DEPRECATED
             from UI_GUI  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CODE"
+      "CODE"
+      ,"DEPRECATED"
+      ,"ID"
       ,"NAME"
       ,"NBS_STANDARD"
       ,"USER_BUILD"
-      ,"DEPRECATED"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -165,19 +165,19 @@ public function doInsert() {
     $RECORD["NBS_STANDARD"] = $this->getRequestParamBoolean("NBS_STANDARD");
     $RECORD["USER_BUILD"] = $this->getRequestParamBoolean("USER_BUILD");
     $sql = "insert into UI_GUI(
-                 ID
-                ,CODE
+                 CODE
+                ,DEPRECATED
+                ,ID
                 ,NAME
                 ,NBS_STANDARD
                 ,USER_BUILD
-                ,DEPRECATED
             ) values ( 
-                 :ID
-                ,:CODE
+                 :CODE
+                ,:DEPRECATED
+                ,:ID
                 ,:NAME
                 ,:NBS_STANDARD
                 ,:USER_BUILD
-                ,:DEPRECATED
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_uigui_id.nextval seq_val from dual")->fetchRow();
@@ -203,8 +203,8 @@ public function doUpdate() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0021.doUpdate().");}
     $sql = "update UI_GUI set 
-                 ID=:ID
-                ,CODE=:CODE
+                 CODE=:CODE
+                ,ID=:ID
                 ,NAME=:NAME
     where 
            ID= :ID
@@ -262,12 +262,12 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,DEPRECATED
+                ,ID
                 ,NAME
                 ,NBS_STANDARD
                 ,USER_BUILD
-                ,DEPRECATED
             from UI_GUI 
          where 
            ID= :ID
@@ -278,12 +278,12 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
+  "CODE" => array("DATA_TYPE" => "STRING")
+  ,"DEPRECATED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"NBS_STANDARD" => array("DATA_TYPE" => "BOOLEAN")
   ,"USER_BUILD" => array("DATA_TYPE" => "BOOLEAN")
-  ,"DEPRECATED" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 

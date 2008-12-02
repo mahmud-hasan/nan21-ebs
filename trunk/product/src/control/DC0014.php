@@ -11,50 +11,50 @@ class DC0014 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bp.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bp.NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bp.BPARTNER_ID like :BPARTNER_ID";
       $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bp.CODE like :CODE";
-      $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_TAX_NUMBER"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bp.TAX_NUMBER like :TAX_NUMBER";
-      $params["TAX_NUMBER"] = $_REQUEST["QRY_TAX_NUMBER"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bp.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
+    if (!empty($_REQUEST["QRY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bp.CODE like :CODE";
+      $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bp.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_IS_CUSTOMER"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bp.IS_CUSTOMER like :IS_CUSTOMER";
       $params["IS_CUSTOMER"] = $_REQUEST["QRY_IS_CUSTOMER"];
+    }
+    if (!empty($_REQUEST["QRY_IS_EMPLOYEE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bp.IS_EMPLOYEE like :IS_EMPLOYEE";
+      $params["IS_EMPLOYEE"] = $_REQUEST["QRY_IS_EMPLOYEE"];
     }
     if (!empty($_REQUEST["QRY_IS_VENDOR"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bp.IS_VENDOR like :IS_VENDOR";
       $params["IS_VENDOR"] = $_REQUEST["QRY_IS_VENDOR"];
     }
-    if (!empty($_REQUEST["QRY_IS_EMPLOYEE"])) {
+    if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "bp.IS_EMPLOYEE like :IS_EMPLOYEE";
-      $params["IS_EMPLOYEE"] = $_REQUEST["QRY_IS_EMPLOYEE"];
+      $where .= "bp.NAME like :NAME";
+      $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_TAX_NUMBER"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bp.TAX_NUMBER like :TAX_NUMBER";
+      $params["TAX_NUMBER"] = $_REQUEST["QRY_TAX_NUMBER"];
     }
 }
 
@@ -72,67 +72,67 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                bp.ID
-                ,bp.NAME
+                bp.BPARTNER_ID
                 ,bp.BPARTNER_TYPE
-                ,bp.BPARTNER_ID
+                ,(select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
+                ,bp.CLIENT_ID
                 ,bp.CODE
-                ,bp.COPIED_FROM_BPARTNER_ID
-                ,bp.TAX_NUMBER
-                ,bp.TAX_NUMBER_TYPE
                 ,bp.COMPANY_REG_NR
-                ,bp.PHONE
+                ,bp.COPIED_FROM_BPARTNER_ID
+                ,bp.CREATEDBY
+                ,bp.CREATEDON
+                ,bp.CREDITCLASS_CODE
+                ,bp.CUSTGROUP_CODE
                 ,bp.EMAIL
                 ,bp.FAX
-                ,bp.CLIENT_ID
-                ,bp.CUSTGROUP_CODE
-                ,bp.CREDITCLASS_CODE
-                ,bp.PAYMETHOD_CODE
-                ,bp.PAYTERMCLASS_CODE
-                ,bp.MAX_CREDIT_LIMIT
-                ,bp.MAX_PAYMENT_TERM
+                ,bp.ID
                 ,bp.IS_CUSTOMER
-                ,bp.IS_VENDOR
                 ,bp.IS_EMPLOYEE
                 ,bp.IS_ONETIME
-                ,(select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
-                ,bp.CREATEDON
-                ,bp.CREATEDBY
-                ,bp.MODIFIEDON
+                ,bp.IS_VENDOR
+                ,bp.MAX_CREDIT_LIMIT
+                ,bp.MAX_PAYMENT_TERM
                 ,bp.MODIFIEDBY
+                ,bp.MODIFIEDON
+                ,bp.NAME
+                ,bp.PAYMETHOD_CODE
+                ,bp.PAYTERMCLASS_CODE
+                ,bp.PHONE
+                ,bp.TAX_NUMBER
+                ,bp.TAX_NUMBER_TYPE
             from BPARTNER bp $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"NAME"
+      "BPARTNER_ID"
       ,"BPARTNER_TYPE"
-      ,"BPARTNER_ID"
+      ,"CLIENT_CODE"
+      ,"CLIENT_ID"
       ,"CODE"
-      ,"COPIED_FROM_BPARTNER_ID"
-      ,"TAX_NUMBER"
-      ,"TAX_NUMBER_TYPE"
       ,"COMPANY_REG_NR"
-      ,"PHONE"
+      ,"COPIED_FROM_BPARTNER_ID"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"CREDITCLASS_CODE"
+      ,"CUSTGROUP_CODE"
       ,"EMAIL"
       ,"FAX"
-      ,"CLIENT_ID"
-      ,"CUSTGROUP_CODE"
-      ,"CREDITCLASS_CODE"
-      ,"PAYMETHOD_CODE"
-      ,"PAYTERMCLASS_CODE"
-      ,"MAX_CREDIT_LIMIT"
-      ,"MAX_PAYMENT_TERM"
+      ,"ID"
       ,"IS_CUSTOMER"
-      ,"IS_VENDOR"
       ,"IS_EMPLOYEE"
       ,"IS_ONETIME"
-      ,"CLIENT_CODE"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"IS_VENDOR"
+      ,"MAX_CREDIT_LIMIT"
+      ,"MAX_PAYMENT_TERM"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NAME"
+      ,"PAYMETHOD_CODE"
+      ,"PAYTERMCLASS_CODE"
+      ,"PHONE"
+      ,"TAX_NUMBER"
+      ,"TAX_NUMBER_TYPE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -158,9 +158,9 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                bp.ID
+                (select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
                 ,bp.CLIENT_ID
-                ,(select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
+                ,bp.ID
                 ,bp.CODE
                 ,bp.NAME
                 ,bp.TAX_NUMBER_TYPE
@@ -191,9 +191,9 @@ public function doExport() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-     "ID"
+     "CLIENT_CODE"
      ,"CLIENT_ID"
-     ,"CLIENT_CODE"
+     ,"ID"
      ,"CODE"
      ,"NAME"
      ,"TAX_NUMBER_TYPE"
@@ -286,53 +286,53 @@ public function doInsert() {
     $RECORD["TAX_NUMBER"] = $this->getRequestParam("TAX_NUMBER");
     $RECORD["TAX_NUMBER_TYPE"] = $this->getRequestParam("TAX_NUMBER_TYPE");
     $sql = "insert into BPARTNER(
-                 ID
-                ,NAME
+                 BPARTNER_ID
                 ,BPARTNER_TYPE
-                ,BPARTNER_ID
+                ,CLIENT_ID
                 ,CODE
-                ,COPIED_FROM_BPARTNER_ID
-                ,TAX_NUMBER
-                ,TAX_NUMBER_TYPE
                 ,COMPANY_REG_NR
-                ,PHONE
+                ,COPIED_FROM_BPARTNER_ID
+                ,CREDITCLASS_CODE
+                ,CUSTGROUP_CODE
                 ,EMAIL
                 ,FAX
-                ,CLIENT_ID
-                ,CUSTGROUP_CODE
-                ,CREDITCLASS_CODE
-                ,PAYMETHOD_CODE
-                ,PAYTERMCLASS_CODE
-                ,MAX_CREDIT_LIMIT
-                ,MAX_PAYMENT_TERM
+                ,ID
                 ,IS_CUSTOMER
-                ,IS_VENDOR
                 ,IS_EMPLOYEE
                 ,IS_ONETIME
+                ,IS_VENDOR
+                ,MAX_CREDIT_LIMIT
+                ,MAX_PAYMENT_TERM
+                ,NAME
+                ,PAYMETHOD_CODE
+                ,PAYTERMCLASS_CODE
+                ,PHONE
+                ,TAX_NUMBER
+                ,TAX_NUMBER_TYPE
             ) values ( 
-                 :ID
-                ,:NAME
+                 :BPARTNER_ID
                 ,:BPARTNER_TYPE
-                ,:BPARTNER_ID
+                ,:CLIENT_ID
                 ,:CODE
-                ,:COPIED_FROM_BPARTNER_ID
-                ,:TAX_NUMBER
-                ,:TAX_NUMBER_TYPE
                 ,:COMPANY_REG_NR
-                ,:PHONE
+                ,:COPIED_FROM_BPARTNER_ID
+                ,:CREDITCLASS_CODE
+                ,:CUSTGROUP_CODE
                 ,:EMAIL
                 ,:FAX
-                ,:CLIENT_ID
-                ,:CUSTGROUP_CODE
-                ,:CREDITCLASS_CODE
-                ,:PAYMETHOD_CODE
-                ,:PAYTERMCLASS_CODE
-                ,:MAX_CREDIT_LIMIT
-                ,:MAX_PAYMENT_TERM
+                ,:ID
                 ,:IS_CUSTOMER
-                ,:IS_VENDOR
                 ,:IS_EMPLOYEE
                 ,:IS_ONETIME
+                ,:IS_VENDOR
+                ,:MAX_CREDIT_LIMIT
+                ,:MAX_PAYMENT_TERM
+                ,:NAME
+                ,:PAYMETHOD_CODE
+                ,:PAYTERMCLASS_CODE
+                ,:PHONE
+                ,:TAX_NUMBER
+                ,:TAX_NUMBER_TYPE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bpartner_id.nextval seq_val from dual")->fetchRow();
@@ -373,19 +373,19 @@ public function doUpdate() {
     $RECORD["TAX_NUMBER_TYPE"] = $this->getRequestParam("TAX_NUMBER_TYPE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0014.doUpdate().");}
     $sql = "update BPARTNER set 
-                 ID=:ID
-                ,NAME=:NAME
+                 CLIENT_ID=:CLIENT_ID
                 ,CODE=:CODE
-                ,TAX_NUMBER=:TAX_NUMBER
-                ,TAX_NUMBER_TYPE=:TAX_NUMBER_TYPE
                 ,COMPANY_REG_NR=:COMPANY_REG_NR
-                ,PHONE=:PHONE
                 ,EMAIL=:EMAIL
                 ,FAX=:FAX
-                ,CLIENT_ID=:CLIENT_ID
+                ,ID=:ID
                 ,IS_CUSTOMER=:IS_CUSTOMER
-                ,IS_VENDOR=:IS_VENDOR
                 ,IS_EMPLOYEE=:IS_EMPLOYEE
+                ,IS_VENDOR=:IS_VENDOR
+                ,NAME=:NAME
+                ,PHONE=:PHONE
+                ,TAX_NUMBER=:TAX_NUMBER
+                ,TAX_NUMBER_TYPE=:TAX_NUMBER_TYPE
     where 
            ID= :ID
     ";
@@ -460,34 +460,34 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                bp.ID
-                ,bp.NAME
+                bp.BPARTNER_ID
                 ,bp.BPARTNER_TYPE
-                ,bp.BPARTNER_ID
+                ,(select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
+                ,bp.CLIENT_ID
                 ,bp.CODE
-                ,bp.COPIED_FROM_BPARTNER_ID
-                ,bp.TAX_NUMBER
-                ,bp.TAX_NUMBER_TYPE
                 ,bp.COMPANY_REG_NR
-                ,bp.PHONE
+                ,bp.COPIED_FROM_BPARTNER_ID
+                ,bp.CREATEDBY
+                ,bp.CREATEDON
+                ,bp.CREDITCLASS_CODE
+                ,bp.CUSTGROUP_CODE
                 ,bp.EMAIL
                 ,bp.FAX
-                ,bp.CLIENT_ID
-                ,bp.CUSTGROUP_CODE
-                ,bp.CREDITCLASS_CODE
-                ,bp.PAYMETHOD_CODE
-                ,bp.PAYTERMCLASS_CODE
-                ,bp.MAX_CREDIT_LIMIT
-                ,bp.MAX_PAYMENT_TERM
+                ,bp.ID
                 ,bp.IS_CUSTOMER
-                ,bp.IS_VENDOR
                 ,bp.IS_EMPLOYEE
                 ,bp.IS_ONETIME
-                ,(select t.code from client t where t.id = bp.client_id ) CLIENT_CODE
-                ,bp.CREATEDON
-                ,bp.CREATEDBY
-                ,bp.MODIFIEDON
+                ,bp.IS_VENDOR
+                ,bp.MAX_CREDIT_LIMIT
+                ,bp.MAX_PAYMENT_TERM
                 ,bp.MODIFIEDBY
+                ,bp.MODIFIEDON
+                ,bp.NAME
+                ,bp.PAYMETHOD_CODE
+                ,bp.PAYTERMCLASS_CODE
+                ,bp.PHONE
+                ,bp.TAX_NUMBER
+                ,bp.TAX_NUMBER_TYPE
             from BPARTNER bp
          where 
            bp.ID= :ID
@@ -498,34 +498,34 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
+  "BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"BPARTNER_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"COPIED_FROM_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"TAX_NUMBER" => array("DATA_TYPE" => "STRING")
-  ,"TAX_NUMBER_TYPE" => array("DATA_TYPE" => "STRING")
   ,"COMPANY_REG_NR" => array("DATA_TYPE" => "STRING")
-  ,"PHONE" => array("DATA_TYPE" => "STRING")
+  ,"COPIED_FROM_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREDITCLASS_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CUSTGROUP_CODE" => array("DATA_TYPE" => "STRING")
   ,"EMAIL" => array("DATA_TYPE" => "STRING")
   ,"FAX" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CUSTGROUP_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREDITCLASS_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PAYMETHOD_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PAYTERMCLASS_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MAX_CREDIT_LIMIT" => array("DATA_TYPE" => "NUMBER")
-  ,"MAX_PAYMENT_TERM" => array("DATA_TYPE" => "NUMBER")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_CUSTOMER" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_VENDOR" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_EMPLOYEE" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_ONETIME" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"IS_VENDOR" => array("DATA_TYPE" => "BOOLEAN")
+  ,"MAX_CREDIT_LIMIT" => array("DATA_TYPE" => "NUMBER")
+  ,"MAX_PAYMENT_TERM" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"PAYMETHOD_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PAYTERMCLASS_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PHONE" => array("DATA_TYPE" => "STRING")
+  ,"TAX_NUMBER" => array("DATA_TYPE" => "STRING")
+  ,"TAX_NUMBER_TYPE" => array("DATA_TYPE" => "STRING")
 );
 
 

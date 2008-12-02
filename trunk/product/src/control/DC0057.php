@@ -11,35 +11,10 @@ class DC0057 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bpc.BPARTNER_ID like :BPARTNER_ID";
       $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_FIRSTNAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.FIRSTNAME like :FIRSTNAME";
-      $params["FIRSTNAME"] = $_REQUEST["QRY_FIRSTNAME"];
-    }
-    if (!empty($_REQUEST["QRY_LASTNAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.LASTNAME like :LASTNAME";
-      $params["LASTNAME"] = $_REQUEST["QRY_LASTNAME"];
-    }
-    if (!empty($_REQUEST["QRY_PHONE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.PHONE like :PHONE";
-      $params["PHONE"] = $_REQUEST["QRY_PHONE"];
     }
     if (!empty($_REQUEST["QRY_EMAIL"])) {
       $where .= (!empty($where))?" and ":"";
@@ -51,15 +26,40 @@ private function preQuery(&$params, &$where) {
       $where .= "bpc.FAX like :FAX";
       $params["FAX"] = $_REQUEST["QRY_FAX"];
     }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
+    if (!empty($_REQUEST["QRY_FIRSTNAME"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "bpc.NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+      $where .= "bpc.FIRSTNAME like :FIRSTNAME";
+      $params["FIRSTNAME"] = $_REQUEST["QRY_FIRSTNAME"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bpc.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_LASTNAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bpc.LASTNAME like :LASTNAME";
+      $params["LASTNAME"] = $_REQUEST["QRY_LASTNAME"];
     }
     if (!empty($_REQUEST["QRY_MOBILE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bpc.MOBILE like :MOBILE";
       $params["MOBILE"] = $_REQUEST["QRY_MOBILE"];
+    }
+    if (!empty($_REQUEST["QRY_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bpc.NAME like :NAME";
+      $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bpc.NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+    }
+    if (!empty($_REQUEST["QRY_PHONE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bpc.PHONE like :PHONE";
+      $params["PHONE"] = $_REQUEST["QRY_PHONE"];
     }
 }
 
@@ -75,31 +75,31 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                bpc.ID
-                ,bpc.BPARTNER_ID
-                ,bpc.NAME
-                ,bpc.FIRSTNAME
-                ,bpc.LASTNAME
-                ,bpc.PHONE
+                bpc.BPARTNER_ID
                 ,bpc.EMAIL
                 ,bpc.FAX
-                ,bpc.NOTES
+                ,bpc.FIRSTNAME
+                ,bpc.ID
+                ,bpc.LASTNAME
                 ,bpc.MOBILE
+                ,bpc.NAME
+                ,bpc.NOTES
+                ,bpc.PHONE
             from BP_CONTACT bpc $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"BPARTNER_ID"
-      ,"NAME"
-      ,"FIRSTNAME"
-      ,"LASTNAME"
-      ,"PHONE"
+      "BPARTNER_ID"
       ,"EMAIL"
       ,"FAX"
-      ,"NOTES"
+      ,"FIRSTNAME"
+      ,"ID"
+      ,"LASTNAME"
       ,"MOBILE"
+      ,"NAME"
+      ,"NOTES"
+      ,"PHONE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -201,27 +201,27 @@ public function doInsert() {
     $RECORD["NOTES"] = $this->getRequestParam("NOTES");
     $RECORD["PHONE"] = $this->getRequestParam("PHONE");
     $sql = "insert into BP_CONTACT(
-                 ID
-                ,BPARTNER_ID
-                ,NAME
-                ,FIRSTNAME
-                ,LASTNAME
-                ,PHONE
+                 BPARTNER_ID
                 ,EMAIL
                 ,FAX
-                ,NOTES
+                ,FIRSTNAME
+                ,ID
+                ,LASTNAME
                 ,MOBILE
+                ,NAME
+                ,NOTES
+                ,PHONE
             ) values ( 
-                 :ID
-                ,:BPARTNER_ID
-                ,:NAME
-                ,:FIRSTNAME
-                ,:LASTNAME
-                ,:PHONE
+                 :BPARTNER_ID
                 ,:EMAIL
                 ,:FAX
-                ,:NOTES
+                ,:FIRSTNAME
+                ,:ID
+                ,:LASTNAME
                 ,:MOBILE
+                ,:NAME
+                ,:NOTES
+                ,:PHONE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_BPCONTACT_ID.nextval seq_val from dual")->fetchRow();
@@ -253,16 +253,16 @@ public function doUpdate() {
     $RECORD["NOTES"] = $this->getRequestParam("NOTES");
     $RECORD["PHONE"] = $this->getRequestParam("PHONE");
     $sql = "update BP_CONTACT set 
-                 ID=:ID
-                ,BPARTNER_ID=:BPARTNER_ID
-                ,NAME=:NAME
-                ,FIRSTNAME=:FIRSTNAME
-                ,LASTNAME=:LASTNAME
-                ,PHONE=:PHONE
+                 BPARTNER_ID=:BPARTNER_ID
                 ,EMAIL=:EMAIL
                 ,FAX=:FAX
-                ,NOTES=:NOTES
+                ,FIRSTNAME=:FIRSTNAME
+                ,ID=:ID
+                ,LASTNAME=:LASTNAME
                 ,MOBILE=:MOBILE
+                ,NAME=:NAME
+                ,NOTES=:NOTES
+                ,PHONE=:PHONE
     where 
            ID= :ID
     ";
@@ -315,16 +315,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                bpc.ID
-                ,bpc.BPARTNER_ID
-                ,bpc.NAME
-                ,bpc.FIRSTNAME
-                ,bpc.LASTNAME
-                ,bpc.PHONE
+                bpc.BPARTNER_ID
                 ,bpc.EMAIL
                 ,bpc.FAX
-                ,bpc.NOTES
+                ,bpc.FIRSTNAME
+                ,bpc.ID
+                ,bpc.LASTNAME
                 ,bpc.MOBILE
+                ,bpc.NAME
+                ,bpc.NOTES
+                ,bpc.PHONE
             from BP_CONTACT bpc
          where 
            bpc.ID= :ID
@@ -335,16 +335,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"FIRSTNAME" => array("DATA_TYPE" => "STRING")
-  ,"LASTNAME" => array("DATA_TYPE" => "STRING")
-  ,"PHONE" => array("DATA_TYPE" => "STRING")
+  "BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"EMAIL" => array("DATA_TYPE" => "STRING")
   ,"FAX" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"FIRSTNAME" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"LASTNAME" => array("DATA_TYPE" => "STRING")
   ,"MOBILE" => array("DATA_TYPE" => "STRING")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PHONE" => array("DATA_TYPE" => "STRING")
 );
 
 

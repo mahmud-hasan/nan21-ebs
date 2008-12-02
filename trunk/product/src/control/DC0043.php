@@ -16,15 +16,15 @@ private function preQuery(&$params, &$where) {
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MENUITEM_ID like :MENUITEM_ID";
-      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
-    }
     if (!empty($_REQUEST["QRY_LANG"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "LANG like :LANG";
       $params["LANG"] = $_REQUEST["QRY_LANG"];
+    }
+    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MENUITEM_ID like :MENUITEM_ID";
+      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
     }
     if (!empty($_REQUEST["QRY_TRANSLATION"])) {
       $where .= (!empty($where))?" and ":"";
@@ -46,8 +46,8 @@ public function doQuery() {
     }
     $sql = "select 
                 ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             from MENUITEM_TRL  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
@@ -55,8 +55,8 @@ public function doQuery() {
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"MENUITEM_ID"
       ,"LANG"
+      ,"MENUITEM_ID"
       ,"TRANSLATION"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -146,13 +146,13 @@ public function doInsert() {
     $RECORD["TRANSLATION"] = $this->getRequestParam("TRANSLATION");
     $sql = "insert into MENUITEM_TRL(
                  ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             ) values ( 
                  :ID
-                ,:MENUITEM_ID
                 ,:LANG
+                ,:MENUITEM_ID
                 ,:TRANSLATION
     )";
     $stmt = $this->db->prepare($sql);
@@ -234,8 +234,8 @@ public function initNewRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             from MENUITEM_TRL 
          where 
@@ -248,8 +248,8 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
   ,"LANG" => array("DATA_TYPE" => "STRING")
+  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
   ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
 );
 

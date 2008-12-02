@@ -11,15 +11,15 @@ class DC0051 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -40,16 +40,16 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,ID
                 ,NAME
             from PROJECT_ISSUE_STATUS  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CODE"
+      "CODE"
+      ,"ID"
       ,"NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -131,12 +131,12 @@ public function doInsert() {
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into PROJECT_ISSUE_STATUS(
-                 ID
-                ,CODE
+                 CODE
+                ,ID
                 ,NAME
             ) values ( 
-                 :ID
-                ,:CODE
+                 :CODE
+                ,:ID
                 ,:NAME
     )";
     $stmt = $this->db->prepare($sql);
@@ -162,8 +162,8 @@ public function doUpdate() {
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update PROJECT_ISSUE_STATUS set 
-                 ID=:ID
-                ,CODE=:CODE
+                 CODE=:CODE
+                ,ID=:ID
                 ,NAME=:NAME
     where 
            ID= :ID
@@ -210,8 +210,8 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,ID
                 ,NAME
             from PROJECT_ISSUE_STATUS 
          where 
@@ -223,8 +223,8 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
+  "CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
 );
 

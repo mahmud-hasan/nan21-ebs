@@ -11,25 +11,15 @@ class DC0015 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ADRESS"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ADRESS like :ADRESS";
+      $params["ADRESS"] = $_REQUEST["QRY_ADRESS"];
     }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "BPARTNER_ID like :BPARTNER_ID";
       $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_COUNTRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "COUNTRY_CODE like :COUNTRY_CODE";
-      $params["COUNTRY_CODE"] = $_REQUEST["QRY_COUNTRY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "REGION_CODE like :REGION_CODE";
-      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
     }
     if (!empty($_REQUEST["QRY_CITY"])) {
       $where .= (!empty($where))?" and ":"";
@@ -41,25 +31,20 @@ private function preQuery(&$params, &$where) {
       $where .= "CITY_ID like :CITY_ID";
       $params["CITY_ID"] = $_REQUEST["QRY_CITY_ID"];
     }
-    if (!empty($_REQUEST["QRY_STREET"])) {
+    if (!empty($_REQUEST["QRY_COUNTRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "STREET like :STREET";
-      $params["STREET"] = $_REQUEST["QRY_STREET"];
-    }
-    if (!empty($_REQUEST["QRY_STREET_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "STREET_ID like :STREET_ID";
-      $params["STREET_ID"] = $_REQUEST["QRY_STREET_ID"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+      $where .= "COUNTRY_CODE like :COUNTRY_CODE";
+      $params["COUNTRY_CODE"] = $_REQUEST["QRY_COUNTRY_CODE"];
     }
     if (!empty($_REQUEST["QRY_ENTRANCE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ENTRANCE like :ENTRANCE";
       $params["ENTRANCE"] = $_REQUEST["QRY_ENTRANCE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_IS_BILLING"])) {
       $where .= (!empty($where))?" and ":"";
@@ -71,25 +56,40 @@ private function preQuery(&$params, &$where) {
       $where .= "IS_DELIVERY like :IS_DELIVERY";
       $params["IS_DELIVERY"] = $_REQUEST["QRY_IS_DELIVERY"];
     }
+    if (!empty($_REQUEST["QRY_IS_DETAILED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_DETAILED like :IS_DETAILED";
+      $params["IS_DETAILED"] = $_REQUEST["QRY_IS_DETAILED"];
+    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+    }
+    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "REGION_CODE like :REGION_CODE";
+      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_STREET"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "STREET like :STREET";
+      $params["STREET"] = $_REQUEST["QRY_STREET"];
+    }
+    if (!empty($_REQUEST["QRY_STREET_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "STREET_ID like :STREET_ID";
+      $params["STREET_ID"] = $_REQUEST["QRY_STREET_ID"];
+    }
     if (!empty($_REQUEST["QRY_ZIP"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ZIP like :ZIP";
       $params["ZIP"] = $_REQUEST["QRY_ZIP"];
-    }
-    if (!empty($_REQUEST["QRY_ADRESS"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ADRESS like :ADRESS";
-      $params["ADRESS"] = $_REQUEST["QRY_ADRESS"];
-    }
-    if (!empty($_REQUEST["QRY_IS_DETAILED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IS_DETAILED like :IS_DETAILED";
-      $params["IS_DETAILED"] = $_REQUEST["QRY_IS_DETAILED"];
     }
 }
 
@@ -105,43 +105,43 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                ADRESS
                 ,BPARTNER_ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
                 ,CITY
                 ,CITY_ID
-                ,STREET
-                ,STREET_ID
-                ,NOTES
+                ,COUNTRY_CODE
                 ,ENTRANCE
+                ,ID
                 ,IS_BILLING
                 ,IS_DELIVERY
-                ,NAME
-                ,ZIP
-                ,ADRESS
                 ,IS_DETAILED
+                ,NAME
+                ,NOTES
+                ,REGION_CODE
+                ,STREET
+                ,STREET_ID
+                ,ZIP
             from BP_ADRESS  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "ADRESS"
       ,"BPARTNER_ID"
-      ,"COUNTRY_CODE"
-      ,"REGION_CODE"
       ,"CITY"
       ,"CITY_ID"
-      ,"STREET"
-      ,"STREET_ID"
-      ,"NOTES"
+      ,"COUNTRY_CODE"
       ,"ENTRANCE"
+      ,"ID"
       ,"IS_BILLING"
       ,"IS_DELIVERY"
-      ,"NAME"
-      ,"ZIP"
-      ,"ADRESS"
       ,"IS_DETAILED"
+      ,"NAME"
+      ,"NOTES"
+      ,"REGION_CODE"
+      ,"STREET"
+      ,"STREET_ID"
+      ,"ZIP"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -167,8 +167,8 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,BPARTNER_ID
+                BPARTNER_ID
+                ,ID
                 ,NAME
                 ,COUNTRY_CODE
                 ,REGION_CODE
@@ -188,8 +188,8 @@ public function doExport() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-     "ID"
-     ,"BPARTNER_ID"
+     "BPARTNER_ID"
+     ,"ID"
      ,"NAME"
      ,"COUNTRY_CODE"
      ,"REGION_CODE"
@@ -270,39 +270,39 @@ public function doInsert() {
     $RECORD["STREET_ID"] = $this->getRequestParam("STREET_ID");
     $RECORD["ZIP"] = $this->getRequestParam("ZIP");
     $sql = "insert into BP_ADRESS(
-                 ID
+                 ADRESS
                 ,BPARTNER_ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
                 ,CITY
                 ,CITY_ID
-                ,STREET
-                ,STREET_ID
-                ,NOTES
+                ,COUNTRY_CODE
                 ,ENTRANCE
+                ,ID
                 ,IS_BILLING
                 ,IS_DELIVERY
-                ,NAME
-                ,ZIP
-                ,ADRESS
                 ,IS_DETAILED
+                ,NAME
+                ,NOTES
+                ,REGION_CODE
+                ,STREET
+                ,STREET_ID
+                ,ZIP
             ) values ( 
-                 :ID
+                 :ADRESS
                 ,:BPARTNER_ID
-                ,:COUNTRY_CODE
-                ,:REGION_CODE
                 ,:CITY
                 ,:CITY_ID
-                ,:STREET
-                ,:STREET_ID
-                ,:NOTES
+                ,:COUNTRY_CODE
                 ,:ENTRANCE
+                ,:ID
                 ,:IS_BILLING
                 ,:IS_DELIVERY
-                ,:NAME
-                ,:ZIP
-                ,:ADRESS
                 ,:IS_DETAILED
+                ,:NAME
+                ,:NOTES
+                ,:REGION_CODE
+                ,:STREET
+                ,:STREET_ID
+                ,:ZIP
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_BPADR_ID.nextval seq_val from dual")->fetchRow();
@@ -349,22 +349,22 @@ public function doUpdate() {
     $RECORD["STREET_ID"] = $this->getRequestParam("STREET_ID");
     $RECORD["ZIP"] = $this->getRequestParam("ZIP");
     $sql = "update BP_ADRESS set 
-                 ID=:ID
+                 ADRESS=:ADRESS
                 ,BPARTNER_ID=:BPARTNER_ID
-                ,COUNTRY_CODE=:COUNTRY_CODE
-                ,REGION_CODE=:REGION_CODE
                 ,CITY=:CITY
                 ,CITY_ID=:CITY_ID
-                ,STREET=:STREET
-                ,STREET_ID=:STREET_ID
-                ,NOTES=:NOTES
+                ,COUNTRY_CODE=:COUNTRY_CODE
                 ,ENTRANCE=:ENTRANCE
+                ,ID=:ID
                 ,IS_BILLING=:IS_BILLING
                 ,IS_DELIVERY=:IS_DELIVERY
-                ,NAME=:NAME
-                ,ZIP=:ZIP
-                ,ADRESS=:ADRESS
                 ,IS_DETAILED=:IS_DETAILED
+                ,NAME=:NAME
+                ,NOTES=:NOTES
+                ,REGION_CODE=:REGION_CODE
+                ,STREET=:STREET
+                ,STREET_ID=:STREET_ID
+                ,ZIP=:ZIP
     where 
            ID= :ID
     ";
@@ -432,22 +432,22 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                ADRESS
                 ,BPARTNER_ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
                 ,CITY
                 ,CITY_ID
-                ,STREET
-                ,STREET_ID
-                ,NOTES
+                ,COUNTRY_CODE
                 ,ENTRANCE
+                ,ID
                 ,IS_BILLING
                 ,IS_DELIVERY
-                ,NAME
-                ,ZIP
-                ,ADRESS
                 ,IS_DETAILED
+                ,NAME
+                ,NOTES
+                ,REGION_CODE
+                ,STREET
+                ,STREET_ID
+                ,ZIP
             from BP_ADRESS 
          where 
            ID= :ID
@@ -458,22 +458,22 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "ADRESS" => array("DATA_TYPE" => "STRING")
   ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"COUNTRY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"REGION_CODE" => array("DATA_TYPE" => "STRING")
   ,"CITY" => array("DATA_TYPE" => "STRING")
   ,"CITY_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"STREET" => array("DATA_TYPE" => "STRING")
-  ,"STREET_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"COUNTRY_CODE" => array("DATA_TYPE" => "STRING")
   ,"ENTRANCE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_BILLING" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_DELIVERY" => array("DATA_TYPE" => "BOOLEAN")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"ZIP" => array("DATA_TYPE" => "STRING")
-  ,"ADRESS" => array("DATA_TYPE" => "STRING")
   ,"IS_DETAILED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"REGION_CODE" => array("DATA_TYPE" => "STRING")
+  ,"STREET" => array("DATA_TYPE" => "STRING")
+  ,"STREET_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ZIP" => array("DATA_TYPE" => "STRING")
 );
 
 

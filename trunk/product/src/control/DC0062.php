@@ -11,11 +11,6 @@ class DC0062 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CLIENT_ID like :CLIENT_ID";
@@ -25,6 +20,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -47,21 +47,21 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                (select code from client where id = client_id) CLIENT_CODE
                 ,CLIENT_ID
                 ,CODE
+                ,ID
                 ,NAME
-                ,(select code from client where id = client_id) CLIENT_CODE
             from ASSET_GROUP  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CLIENT_CODE"
       ,"CLIENT_ID"
       ,"CODE"
+      ,"ID"
       ,"NAME"
-      ,"CLIENT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -152,14 +152,14 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into ASSET_GROUP(
-                 ID
-                ,CLIENT_ID
+                 CLIENT_ID
                 ,CODE
+                ,ID
                 ,NAME
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
+                 :CLIENT_ID
                 ,:CODE
+                ,:ID
                 ,:NAME
     )";
     $stmt = $this->db->prepare($sql);
@@ -191,9 +191,9 @@ public function doUpdate() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update ASSET_GROUP set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
+                 CLIENT_ID=:CLIENT_ID
                 ,CODE=:CODE
+                ,ID=:ID
                 ,NAME=:NAME
     where 
            ID= :ID
@@ -246,11 +246,11 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                (select code from client where id = client_id) CLIENT_CODE
                 ,CLIENT_ID
                 ,CODE
+                ,ID
                 ,NAME
-                ,(select code from client where id = client_id) CLIENT_CODE
             from ASSET_GROUP 
          where 
            ID= :ID
@@ -261,11 +261,11 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

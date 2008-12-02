@@ -11,60 +11,25 @@ class DC0060 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CURRENCY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ol.CURRENCY_CODE like :CURRENCY_CODE";
+      $params["CURRENCY_CODE"] = $_REQUEST["QRY_CURRENCY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_SORDER_ID"])) {
+    if (!empty($_REQUEST["QRY_DATE_DELIVERED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.SORDER_ID like :SORDER_ID";
-      $params["SORDER_ID"] = $_REQUEST["QRY_SORDER_ID"];
+      $where .= "ol.DATE_DELIVERED like :DATE_DELIVERED";
+      $params["DATE_DELIVERED"] = $_REQUEST["QRY_DATE_DELIVERED"];
     }
-    if (!empty($_REQUEST["QRY_LINE_NR"])) {
+    if (!empty($_REQUEST["QRY_DATE_PROMISED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.LINE_NR like :LINE_NR";
-      $params["LINE_NR"] = $_REQUEST["QRY_LINE_NR"];
+      $where .= "ol.DATE_PROMISED like :DATE_PROMISED";
+      $params["DATE_PROMISED"] = $_REQUEST["QRY_DATE_PROMISED"];
     }
-    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
+    if (!empty($_REQUEST["QRY_DATE_REQUESTED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.PRODUCT_ID like :PRODUCT_ID";
-      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_QTY_ORDERED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.QTY_ORDERED like :QTY_ORDERED";
-      $params["QTY_ORDERED"] = $_REQUEST["QRY_QTY_ORDERED"];
-    }
-    if (!empty($_REQUEST["QRY_QTY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.QTY like :QTY";
-      $params["QTY"] = $_REQUEST["QRY_QTY"];
-    }
-    if (!empty($_REQUEST["QRY_QTY_INVOICED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.QTY_INVOICED like :QTY_INVOICED";
-      $params["QTY_INVOICED"] = $_REQUEST["QRY_QTY_INVOICED"];
-    }
-    if (!empty($_REQUEST["QRY_QTY_DELIVERED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.QTY_DELIVERED like :QTY_DELIVERED";
-      $params["QTY_DELIVERED"] = $_REQUEST["QRY_QTY_DELIVERED"];
-    }
-    if (!empty($_REQUEST["QRY_QTY_RESERVED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.QTY_RESERVED like :QTY_RESERVED";
-      $params["QTY_RESERVED"] = $_REQUEST["QRY_QTY_RESERVED"];
-    }
-    if (!empty($_REQUEST["QRY_UOM_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.UOM_CODE like :UOM_CODE";
-      $params["UOM_CODE"] = $_REQUEST["QRY_UOM_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_PRICE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.PRICE like :PRICE";
-      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
+      $where .= "ol.DATE_REQUESTED like :DATE_REQUESTED";
+      $params["DATE_REQUESTED"] = $_REQUEST["QRY_DATE_REQUESTED"];
     }
     if (!empty($_REQUEST["QRY_DISCOUNT"])) {
       $where .= (!empty($where))?" and ":"";
@@ -76,40 +41,75 @@ private function preQuery(&$params, &$where) {
       $where .= "ol.DISCOUNT_TYPE like :DISCOUNT_TYPE";
       $params["DISCOUNT_TYPE"] = $_REQUEST["QRY_DISCOUNT_TYPE"];
     }
-    if (!empty($_REQUEST["QRY_CURRENCY_CODE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.CURRENCY_CODE like :CURRENCY_CODE";
-      $params["CURRENCY_CODE"] = $_REQUEST["QRY_CURRENCY_CODE"];
+      $where .= "ol.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
+    if (!empty($_REQUEST["QRY_LINE_NR"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ol.NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_REQUESTED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.DATE_REQUESTED like :DATE_REQUESTED";
-      $params["DATE_REQUESTED"] = $_REQUEST["QRY_DATE_REQUESTED"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_PROMISED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.DATE_PROMISED like :DATE_PROMISED";
-      $params["DATE_PROMISED"] = $_REQUEST["QRY_DATE_PROMISED"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_DELIVERED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ol.DATE_DELIVERED like :DATE_DELIVERED";
-      $params["DATE_DELIVERED"] = $_REQUEST["QRY_DATE_DELIVERED"];
+      $where .= "ol.LINE_NR like :LINE_NR";
+      $params["LINE_NR"] = $_REQUEST["QRY_LINE_NR"];
     }
     if (!empty($_REQUEST["QRY_NET_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ol.NET_AMOUNT like :NET_AMOUNT";
       $params["NET_AMOUNT"] = $_REQUEST["QRY_NET_AMOUNT"];
     }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+    }
+    if (!empty($_REQUEST["QRY_PRICE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.PRICE like :PRICE";
+      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
+    }
+    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.PRODUCT_ID like :PRODUCT_ID";
+      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_QTY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.QTY like :QTY";
+      $params["QTY"] = $_REQUEST["QRY_QTY"];
+    }
+    if (!empty($_REQUEST["QRY_QTY_DELIVERED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.QTY_DELIVERED like :QTY_DELIVERED";
+      $params["QTY_DELIVERED"] = $_REQUEST["QRY_QTY_DELIVERED"];
+    }
+    if (!empty($_REQUEST["QRY_QTY_INVOICED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.QTY_INVOICED like :QTY_INVOICED";
+      $params["QTY_INVOICED"] = $_REQUEST["QRY_QTY_INVOICED"];
+    }
+    if (!empty($_REQUEST["QRY_QTY_ORDERED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.QTY_ORDERED like :QTY_ORDERED";
+      $params["QTY_ORDERED"] = $_REQUEST["QRY_QTY_ORDERED"];
+    }
+    if (!empty($_REQUEST["QRY_QTY_RESERVED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.QTY_RESERVED like :QTY_RESERVED";
+      $params["QTY_RESERVED"] = $_REQUEST["QRY_QTY_RESERVED"];
+    }
     if (!empty($_REQUEST["QRY_RAW_NET_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ol.RAW_NET_AMOUNT like :RAW_NET_AMOUNT";
       $params["RAW_NET_AMOUNT"] = $_REQUEST["QRY_RAW_NET_AMOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_SORDER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.SORDER_ID like :SORDER_ID";
+      $params["SORDER_ID"] = $_REQUEST["QRY_SORDER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_UOM_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ol.UOM_CODE like :UOM_CODE";
+      $params["UOM_CODE"] = $_REQUEST["QRY_UOM_CODE"];
     }
 }
 
@@ -127,53 +127,53 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ol.ID
-                ,ol.SORDER_ID
-                ,ol.LINE_NR
-                ,ol.PRODUCT_ID
-                ,ol.QTY_ORDERED
-                ,ol.QTY
-                ,ol.QTY_INVOICED
-                ,ol.QTY_DELIVERED
-                ,ol.QTY_RESERVED
-                ,ol.UOM_CODE
-                ,ol.PRICE
+                ol.CURRENCY_CODE
+                ,ol.DATE_DELIVERED
+                ,ol.DATE_PROMISED
+                ,ol.DATE_REQUESTED
                 ,ol.DISCOUNT
                 ,ol.DISCOUNT_TYPE
-                ,ol.CURRENCY_CODE
-                ,ol.NOTES
-                ,ol.DATE_REQUESTED
-                ,ol.DATE_PROMISED
-                ,ol.DATE_DELIVERED
+                ,ol.ID
+                ,ol.LINE_NR
                 ,ol.NET_AMOUNT
-                ,ol.RAW_NET_AMOUNT
+                ,ol.NOTES
+                ,ol.PRICE
+                ,ol.PRODUCT_ID
                 ,(select name from product where id = ol.product_id) PRODUCT_NAME
+                ,ol.QTY
+                ,ol.QTY_DELIVERED
+                ,ol.QTY_INVOICED
+                ,ol.QTY_ORDERED
+                ,ol.QTY_RESERVED
+                ,ol.RAW_NET_AMOUNT
+                ,ol.SORDER_ID
+                ,ol.UOM_CODE
             from SALES_ORDER_LINE ol $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"SORDER_ID"
-      ,"LINE_NR"
-      ,"PRODUCT_ID"
-      ,"QTY_ORDERED"
-      ,"QTY"
-      ,"QTY_INVOICED"
-      ,"QTY_DELIVERED"
-      ,"QTY_RESERVED"
-      ,"UOM_CODE"
-      ,"PRICE"
+      "CURRENCY_CODE"
+      ,"DATE_DELIVERED"
+      ,"DATE_PROMISED"
+      ,"DATE_REQUESTED"
       ,"DISCOUNT"
       ,"DISCOUNT_TYPE"
-      ,"CURRENCY_CODE"
-      ,"NOTES"
-      ,"DATE_REQUESTED"
-      ,"DATE_PROMISED"
-      ,"DATE_DELIVERED"
+      ,"ID"
+      ,"LINE_NR"
       ,"NET_AMOUNT"
-      ,"RAW_NET_AMOUNT"
+      ,"NOTES"
+      ,"PRICE"
+      ,"PRODUCT_ID"
       ,"PRODUCT_NAME"
+      ,"QTY"
+      ,"QTY_DELIVERED"
+      ,"QTY_INVOICED"
+      ,"QTY_ORDERED"
+      ,"QTY_RESERVED"
+      ,"RAW_NET_AMOUNT"
+      ,"SORDER_ID"
+      ,"UOM_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -199,8 +199,8 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ol.ID
-                ,ol.SORDER_ID
+                ol.SORDER_ID
+                ,ol.ID
                 ,ol.LINE_NR
                 ,ol.PRODUCT_ID
                 ,(select name from product where id = ol.product_id) PRODUCT_NAME
@@ -225,8 +225,8 @@ public function doExport() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-     "ID"
-     ,"SORDER_ID"
+     "SORDER_ID"
+     ,"ID"
      ,"LINE_NR"
      ,"PRODUCT_ID"
      ,"PRODUCT_NAME"
@@ -310,47 +310,47 @@ public function doInsert() {
     $RECORD["SORDER_ID"] = $this->getRequestParam("SORDER_ID");
     $RECORD["UOM_CODE"] = $this->getRequestParam("UOM_CODE");
     $sql = "insert into SALES_ORDER_LINE(
-                 ID
-                ,SORDER_ID
-                ,LINE_NR
-                ,PRODUCT_ID
-                ,QTY_ORDERED
-                ,QTY
-                ,QTY_INVOICED
-                ,QTY_DELIVERED
-                ,QTY_RESERVED
-                ,UOM_CODE
-                ,PRICE
+                 CURRENCY_CODE
+                ,DATE_DELIVERED
+                ,DATE_PROMISED
+                ,DATE_REQUESTED
                 ,DISCOUNT
                 ,DISCOUNT_TYPE
-                ,CURRENCY_CODE
-                ,NOTES
-                ,DATE_REQUESTED
-                ,DATE_PROMISED
-                ,DATE_DELIVERED
+                ,ID
+                ,LINE_NR
                 ,NET_AMOUNT
+                ,NOTES
+                ,PRICE
+                ,PRODUCT_ID
+                ,QTY
+                ,QTY_DELIVERED
+                ,QTY_INVOICED
+                ,QTY_ORDERED
+                ,QTY_RESERVED
                 ,RAW_NET_AMOUNT
+                ,SORDER_ID
+                ,UOM_CODE
             ) values ( 
-                 :ID
-                ,:SORDER_ID
-                ,:LINE_NR
-                ,:PRODUCT_ID
-                ,:QTY_ORDERED
-                ,:QTY
-                ,:QTY_INVOICED
-                ,:QTY_DELIVERED
-                ,:QTY_RESERVED
-                ,:UOM_CODE
-                ,:PRICE
+                 :CURRENCY_CODE
+                ,:DATE_DELIVERED
+                ,:DATE_PROMISED
+                ,:DATE_REQUESTED
                 ,:DISCOUNT
                 ,:DISCOUNT_TYPE
-                ,:CURRENCY_CODE
-                ,:NOTES
-                ,:DATE_REQUESTED
-                ,:DATE_PROMISED
-                ,:DATE_DELIVERED
+                ,:ID
+                ,:LINE_NR
                 ,:NET_AMOUNT
+                ,:NOTES
+                ,:PRICE
+                ,:PRODUCT_ID
+                ,:QTY
+                ,:QTY_DELIVERED
+                ,:QTY_INVOICED
+                ,:QTY_ORDERED
+                ,:QTY_RESERVED
                 ,:RAW_NET_AMOUNT
+                ,:SORDER_ID
+                ,:UOM_CODE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bpordline_id.nextval seq_val from dual")->fetchRow();
@@ -394,26 +394,26 @@ public function doUpdate() {
     $RECORD["UOM_CODE"] = $this->getRequestParam("UOM_CODE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0060.doUpdate().");}
     $sql = "update SALES_ORDER_LINE set 
-                 ID=:ID
-                ,SORDER_ID=:SORDER_ID
-                ,LINE_NR=:LINE_NR
-                ,PRODUCT_ID=:PRODUCT_ID
-                ,QTY_ORDERED=:QTY_ORDERED
-                ,QTY=:QTY
-                ,QTY_INVOICED=:QTY_INVOICED
-                ,QTY_DELIVERED=:QTY_DELIVERED
-                ,QTY_RESERVED=:QTY_RESERVED
-                ,UOM_CODE=:UOM_CODE
-                ,PRICE=:PRICE
+                 CURRENCY_CODE=:CURRENCY_CODE
+                ,DATE_DELIVERED=:DATE_DELIVERED
+                ,DATE_PROMISED=:DATE_PROMISED
+                ,DATE_REQUESTED=:DATE_REQUESTED
                 ,DISCOUNT=:DISCOUNT
                 ,DISCOUNT_TYPE=:DISCOUNT_TYPE
-                ,CURRENCY_CODE=:CURRENCY_CODE
-                ,NOTES=:NOTES
-                ,DATE_REQUESTED=:DATE_REQUESTED
-                ,DATE_PROMISED=:DATE_PROMISED
-                ,DATE_DELIVERED=:DATE_DELIVERED
+                ,ID=:ID
+                ,LINE_NR=:LINE_NR
                 ,NET_AMOUNT=:NET_AMOUNT
+                ,NOTES=:NOTES
+                ,PRICE=:PRICE
+                ,PRODUCT_ID=:PRODUCT_ID
+                ,QTY=:QTY
+                ,QTY_DELIVERED=:QTY_DELIVERED
+                ,QTY_INVOICED=:QTY_INVOICED
+                ,QTY_ORDERED=:QTY_ORDERED
+                ,QTY_RESERVED=:QTY_RESERVED
                 ,RAW_NET_AMOUNT=:RAW_NET_AMOUNT
+                ,SORDER_ID=:SORDER_ID
+                ,UOM_CODE=:UOM_CODE
     where 
            ID= :ID
     ";
@@ -485,27 +485,27 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ol.ID
-                ,ol.SORDER_ID
-                ,ol.LINE_NR
-                ,ol.PRODUCT_ID
-                ,ol.QTY_ORDERED
-                ,ol.QTY
-                ,ol.QTY_INVOICED
-                ,ol.QTY_DELIVERED
-                ,ol.QTY_RESERVED
-                ,ol.UOM_CODE
-                ,ol.PRICE
+                ol.CURRENCY_CODE
+                ,ol.DATE_DELIVERED
+                ,ol.DATE_PROMISED
+                ,ol.DATE_REQUESTED
                 ,ol.DISCOUNT
                 ,ol.DISCOUNT_TYPE
-                ,ol.CURRENCY_CODE
-                ,ol.NOTES
-                ,ol.DATE_REQUESTED
-                ,ol.DATE_PROMISED
-                ,ol.DATE_DELIVERED
+                ,ol.ID
+                ,ol.LINE_NR
                 ,ol.NET_AMOUNT
-                ,ol.RAW_NET_AMOUNT
+                ,ol.NOTES
+                ,ol.PRICE
+                ,ol.PRODUCT_ID
                 ,(select name from product where id = ol.product_id) PRODUCT_NAME
+                ,ol.QTY
+                ,ol.QTY_DELIVERED
+                ,ol.QTY_INVOICED
+                ,ol.QTY_ORDERED
+                ,ol.QTY_RESERVED
+                ,ol.RAW_NET_AMOUNT
+                ,ol.SORDER_ID
+                ,ol.UOM_CODE
             from SALES_ORDER_LINE ol
          where 
            ol.ID= :ID
@@ -516,27 +516,27 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"SORDER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"LINE_NR" => array("DATA_TYPE" => "NUMBER")
-  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY_ORDERED" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY_INVOICED" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY_DELIVERED" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY_RESERVED" => array("DATA_TYPE" => "NUMBER")
-  ,"UOM_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
+  "CURRENCY_CODE" => array("DATA_TYPE" => "STRING")
+  ,"DATE_DELIVERED" => array("DATA_TYPE" => "DATE")
+  ,"DATE_PROMISED" => array("DATA_TYPE" => "DATE")
+  ,"DATE_REQUESTED" => array("DATA_TYPE" => "DATE")
   ,"DISCOUNT" => array("DATA_TYPE" => "NUMBER")
   ,"DISCOUNT_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"CURRENCY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"DATE_REQUESTED" => array("DATA_TYPE" => "DATE")
-  ,"DATE_PROMISED" => array("DATA_TYPE" => "DATE")
-  ,"DATE_DELIVERED" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"LINE_NR" => array("DATA_TYPE" => "NUMBER")
   ,"NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"RAW_NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"QTY" => array("DATA_TYPE" => "NUMBER")
+  ,"QTY_DELIVERED" => array("DATA_TYPE" => "NUMBER")
+  ,"QTY_INVOICED" => array("DATA_TYPE" => "NUMBER")
+  ,"QTY_ORDERED" => array("DATA_TYPE" => "NUMBER")
+  ,"QTY_RESERVED" => array("DATA_TYPE" => "NUMBER")
+  ,"RAW_NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"SORDER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"UOM_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

@@ -11,30 +11,15 @@ class DC0044 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ACCDOC_ID like :ACCDOC_ID";
+      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
     }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+    if (!empty($_REQUEST["QRY_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_PAYDOCTYPE_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PAYDOCTYPE_CODE like :PAYDOCTYPE_CODE";
-      $params["PAYDOCTYPE_CODE"] = $_REQUEST["QRY_PAYDOCTYPE_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_NO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DOC_NO like :DOC_NO";
-      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DOC_DATE like :DOC_DATE";
-      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+      $where .= "AMOUNT like :AMOUNT";
+      $params["AMOUNT"] = $_REQUEST["QRY_AMOUNT"];
     }
     if (!empty($_REQUEST["QRY_BPARTNER_FROM"])) {
       $where .= (!empty($where))?" and ":"";
@@ -46,85 +31,110 @@ private function preQuery(&$params, &$where) {
       $where .= "BPARTNER_TO like :BPARTNER_TO";
       $params["BPARTNER_TO"] = $_REQUEST["QRY_BPARTNER_TO"];
     }
-    if (!empty($_REQUEST["QRY_IS_PAYABLE"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "IS_PAYABLE like :IS_PAYABLE";
-      $params["IS_PAYABLE"] = $_REQUEST["QRY_IS_PAYABLE"];
-    }
-    if (!empty($_REQUEST["QRY_IS_RECEIVABLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IS_RECEIVABLE like :IS_RECEIVABLE";
-      $params["IS_RECEIVABLE"] = $_REQUEST["QRY_IS_RECEIVABLE"];
-    }
-    if (!empty($_REQUEST["QRY_AMOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "AMOUNT like :AMOUNT";
-      $params["AMOUNT"] = $_REQUEST["QRY_AMOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CURRENCY like :CURRENCY";
-      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_CREATEDBY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CREATEDBY like :CREATEDBY";
       $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+    if (!empty($_REQUEST["QRY_CREATEDON"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+      $where .= "CREATEDON like :CREATEDON";
+      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+    if (!empty($_REQUEST["QRY_CURRENCY"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
+      $where .= "CURRENCY like :CURRENCY";
+      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
     }
-    if (!empty($_REQUEST["QRY_PAYMNT_ACCT"])) {
+    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "PAYMNT_ACCT like :PAYMNT_ACCT";
-      $params["PAYMNT_ACCT"] = $_REQUEST["QRY_PAYMNT_ACCT"];
+      $where .= "DOC_DATE like :DOC_DATE";
+      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
     }
-    if (!empty($_REQUEST["QRY_IS_INSERTED"])) {
+    if (!empty($_REQUEST["QRY_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "IS_INSERTED like :IS_INSERTED";
-      $params["IS_INSERTED"] = $_REQUEST["QRY_IS_INSERTED"];
+      $where .= "DOC_NO like :DOC_NO";
+      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
-    if (!empty($_REQUEST["QRY_IS_GENERATED"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "IS_GENERATED like :IS_GENERATED";
-      $params["IS_GENERATED"] = $_REQUEST["QRY_IS_GENERATED"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_IINV_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IINV_ID like :IINV_ID";
+      $params["IINV_ID"] = $_REQUEST["QRY_IINV_ID"];
     }
     if (!empty($_REQUEST["QRY_IS_APPROVED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "IS_APPROVED like :IS_APPROVED";
       $params["IS_APPROVED"] = $_REQUEST["QRY_IS_APPROVED"];
     }
+    if (!empty($_REQUEST["QRY_IS_GENERATED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_GENERATED like :IS_GENERATED";
+      $params["IS_GENERATED"] = $_REQUEST["QRY_IS_GENERATED"];
+    }
+    if (!empty($_REQUEST["QRY_IS_INSERTED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_INSERTED like :IS_INSERTED";
+      $params["IS_INSERTED"] = $_REQUEST["QRY_IS_INSERTED"];
+    }
+    if (!empty($_REQUEST["QRY_IS_MULTI_PAYMENT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_MULTI_PAYMENT like :IS_MULTI_PAYMENT";
+      $params["IS_MULTI_PAYMENT"] = $_REQUEST["QRY_IS_MULTI_PAYMENT"];
+    }
+    if (!empty($_REQUEST["QRY_IS_PAYABLE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_PAYABLE like :IS_PAYABLE";
+      $params["IS_PAYABLE"] = $_REQUEST["QRY_IS_PAYABLE"];
+    }
     if (!empty($_REQUEST["QRY_IS_POSTED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "IS_POSTED like :IS_POSTED";
       $params["IS_POSTED"] = $_REQUEST["QRY_IS_POSTED"];
     }
-    if (!empty($_REQUEST["QRY_ACCDOC_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCDOC_ID like :ACCDOC_ID";
-      $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
-    }
     if (!empty($_REQUEST["QRY_IS_PREPAYMENT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "IS_PREPAYMENT like :IS_PREPAYMENT";
       $params["IS_PREPAYMENT"] = $_REQUEST["QRY_IS_PREPAYMENT"];
+    }
+    if (!empty($_REQUEST["QRY_IS_RECEIVABLE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_RECEIVABLE like :IS_RECEIVABLE";
+      $params["IS_RECEIVABLE"] = $_REQUEST["QRY_IS_RECEIVABLE"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDBY like :MODIFIEDBY";
+      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDON like :MODIFIEDON";
+      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+    }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
+    }
+    if (!empty($_REQUEST["QRY_PAYDOCTYPE_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "PAYDOCTYPE_CODE like :PAYDOCTYPE_CODE";
+      $params["PAYDOCTYPE_CODE"] = $_REQUEST["QRY_PAYDOCTYPE_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_PAYMNT_ACCT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "PAYMNT_ACCT like :PAYMNT_ACCT";
+      $params["PAYMNT_ACCT"] = $_REQUEST["QRY_PAYMNT_ACCT"];
     }
     if (!empty($_REQUEST["QRY_PREPAY_ACCT"])) {
       $where .= (!empty($where))?" and ":"";
@@ -135,16 +145,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "RINV_ID like :RINV_ID";
       $params["RINV_ID"] = $_REQUEST["QRY_RINV_ID"];
-    }
-    if (!empty($_REQUEST["QRY_IS_MULTI_PAYMENT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IS_MULTI_PAYMENT like :IS_MULTI_PAYMENT";
-      $params["IS_MULTI_PAYMENT"] = $_REQUEST["QRY_IS_MULTI_PAYMENT"];
-    }
-    if (!empty($_REQUEST["QRY_IINV_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IINV_ID like :IINV_ID";
-      $params["IINV_ID"] = $_REQUEST["QRY_IINV_ID"];
     }
 }
 
@@ -160,65 +160,65 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CLIENT_ID
-                ,PAYDOCTYPE_CODE
-                ,DOC_NO
-                ,DOC_DATE
+                ACCDOC_ID
+                ,AMOUNT
                 ,BPARTNER_FROM
                 ,BPARTNER_TO
-                ,IS_PAYABLE
-                ,IS_RECEIVABLE
-                ,AMOUNT
-                ,CURRENCY
-                ,NOTES
-                ,CREATEDON
+                ,CLIENT_ID
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,PAYMNT_ACCT
-                ,IS_INSERTED
-                ,IS_GENERATED
+                ,CREATEDON
+                ,CURRENCY
+                ,DOC_DATE
+                ,DOC_NO
+                ,ID
+                ,IINV_ID
                 ,IS_APPROVED
+                ,IS_GENERATED
+                ,IS_INSERTED
+                ,IS_MULTI_PAYMENT
+                ,IS_PAYABLE
                 ,IS_POSTED
-                ,ACCDOC_ID
                 ,IS_PREPAYMENT
+                ,IS_RECEIVABLE
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NOTES
+                ,PAYDOCTYPE_CODE
+                ,PAYMNT_ACCT
                 ,PREPAY_ACCT
                 ,RINV_ID
-                ,IS_MULTI_PAYMENT
-                ,IINV_ID
             from PAYMENT  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CLIENT_ID"
-      ,"PAYDOCTYPE_CODE"
-      ,"DOC_NO"
-      ,"DOC_DATE"
+      "ACCDOC_ID"
+      ,"AMOUNT"
       ,"BPARTNER_FROM"
       ,"BPARTNER_TO"
-      ,"IS_PAYABLE"
-      ,"IS_RECEIVABLE"
-      ,"AMOUNT"
-      ,"CURRENCY"
-      ,"NOTES"
-      ,"CREATEDON"
+      ,"CLIENT_ID"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"PAYMNT_ACCT"
-      ,"IS_INSERTED"
-      ,"IS_GENERATED"
+      ,"CREATEDON"
+      ,"CURRENCY"
+      ,"DOC_DATE"
+      ,"DOC_NO"
+      ,"ID"
+      ,"IINV_ID"
       ,"IS_APPROVED"
+      ,"IS_GENERATED"
+      ,"IS_INSERTED"
+      ,"IS_MULTI_PAYMENT"
+      ,"IS_PAYABLE"
       ,"IS_POSTED"
-      ,"ACCDOC_ID"
       ,"IS_PREPAYMENT"
+      ,"IS_RECEIVABLE"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NOTES"
+      ,"PAYDOCTYPE_CODE"
+      ,"PAYMNT_ACCT"
       ,"PREPAY_ACCT"
       ,"RINV_ID"
-      ,"IS_MULTI_PAYMENT"
-      ,"IINV_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -369,61 +369,61 @@ public function doInsert() {
     $RECORD["PREPAY_ACCT"] = $this->getRequestParam("PREPAY_ACCT");
     $RECORD["RINV_ID"] = $this->getRequestParam("RINV_ID");
     $sql = "insert into PAYMENT(
-                 ID
-                ,CLIENT_ID
-                ,PAYDOCTYPE_CODE
-                ,DOC_NO
-                ,DOC_DATE
+                 ACCDOC_ID
+                ,AMOUNT
                 ,BPARTNER_FROM
                 ,BPARTNER_TO
-                ,IS_PAYABLE
-                ,IS_RECEIVABLE
-                ,AMOUNT
-                ,CURRENCY
-                ,NOTES
-                ,CREATEDON
+                ,CLIENT_ID
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,PAYMNT_ACCT
-                ,IS_INSERTED
-                ,IS_GENERATED
+                ,CREATEDON
+                ,CURRENCY
+                ,DOC_DATE
+                ,DOC_NO
+                ,ID
+                ,IINV_ID
                 ,IS_APPROVED
+                ,IS_GENERATED
+                ,IS_INSERTED
+                ,IS_MULTI_PAYMENT
+                ,IS_PAYABLE
                 ,IS_POSTED
-                ,ACCDOC_ID
                 ,IS_PREPAYMENT
+                ,IS_RECEIVABLE
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NOTES
+                ,PAYDOCTYPE_CODE
+                ,PAYMNT_ACCT
                 ,PREPAY_ACCT
                 ,RINV_ID
-                ,IS_MULTI_PAYMENT
-                ,IINV_ID
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
-                ,:PAYDOCTYPE_CODE
-                ,:DOC_NO
-                ,:DOC_DATE
+                 :ACCDOC_ID
+                ,:AMOUNT
                 ,:BPARTNER_FROM
                 ,:BPARTNER_TO
-                ,:IS_PAYABLE
-                ,:IS_RECEIVABLE
-                ,:AMOUNT
-                ,:CURRENCY
-                ,:NOTES
-                ,:CREATEDON
+                ,:CLIENT_ID
                 ,:CREATEDBY
-                ,:MODIFIEDON
-                ,:MODIFIEDBY
-                ,:PAYMNT_ACCT
-                ,:IS_INSERTED
-                ,:IS_GENERATED
+                ,:CREATEDON
+                ,:CURRENCY
+                ,:DOC_DATE
+                ,:DOC_NO
+                ,:ID
+                ,:IINV_ID
                 ,:IS_APPROVED
+                ,:IS_GENERATED
+                ,:IS_INSERTED
+                ,:IS_MULTI_PAYMENT
+                ,:IS_PAYABLE
                 ,:IS_POSTED
-                ,:ACCDOC_ID
                 ,:IS_PREPAYMENT
+                ,:IS_RECEIVABLE
+                ,:MODIFIEDBY
+                ,:MODIFIEDON
+                ,:NOTES
+                ,:PAYDOCTYPE_CODE
+                ,:PAYMNT_ACCT
                 ,:PREPAY_ACCT
                 ,:RINV_ID
-                ,:IS_MULTI_PAYMENT
-                ,:IINV_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PAYMENT_ID.nextval seq_val from dual")->fetchRow();
@@ -460,20 +460,20 @@ public function doUpdate() {
     $RECORD["RINV_ID"] = $this->getRequestParam("RINV_ID");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0044.doUpdate().");}
     $sql = "update PAYMENT set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,PAYDOCTYPE_CODE=:PAYDOCTYPE_CODE
-                ,DOC_NO=:DOC_NO
-                ,DOC_DATE=:DOC_DATE
+                 AMOUNT=:AMOUNT
                 ,BPARTNER_FROM=:BPARTNER_FROM
                 ,BPARTNER_TO=:BPARTNER_TO
-                ,IS_PAYABLE=:IS_PAYABLE
-                ,AMOUNT=:AMOUNT
+                ,CLIENT_ID=:CLIENT_ID
                 ,CURRENCY=:CURRENCY
+                ,DOC_DATE=:DOC_DATE
+                ,DOC_NO=:DOC_NO
+                ,ID=:ID
+                ,IS_MULTI_PAYMENT=:IS_MULTI_PAYMENT
+                ,IS_PAYABLE=:IS_PAYABLE
                 ,NOTES=:NOTES
+                ,PAYDOCTYPE_CODE=:PAYDOCTYPE_CODE
                 ,PAYMNT_ACCT=:PAYMNT_ACCT
                 ,RINV_ID=:RINV_ID
-                ,IS_MULTI_PAYMENT=:IS_MULTI_PAYMENT
     where 
            ID= :ID
     ";
@@ -547,33 +547,33 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CLIENT_ID
-                ,PAYDOCTYPE_CODE
-                ,DOC_NO
-                ,DOC_DATE
+                ACCDOC_ID
+                ,AMOUNT
                 ,BPARTNER_FROM
                 ,BPARTNER_TO
-                ,IS_PAYABLE
-                ,IS_RECEIVABLE
-                ,AMOUNT
-                ,CURRENCY
-                ,NOTES
-                ,CREATEDON
+                ,CLIENT_ID
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,PAYMNT_ACCT
-                ,IS_INSERTED
-                ,IS_GENERATED
+                ,CREATEDON
+                ,CURRENCY
+                ,DOC_DATE
+                ,DOC_NO
+                ,ID
+                ,IINV_ID
                 ,IS_APPROVED
+                ,IS_GENERATED
+                ,IS_INSERTED
+                ,IS_MULTI_PAYMENT
+                ,IS_PAYABLE
                 ,IS_POSTED
-                ,ACCDOC_ID
                 ,IS_PREPAYMENT
+                ,IS_RECEIVABLE
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NOTES
+                ,PAYDOCTYPE_CODE
+                ,PAYMNT_ACCT
                 ,PREPAY_ACCT
                 ,RINV_ID
-                ,IS_MULTI_PAYMENT
-                ,IINV_ID
             from PAYMENT 
          where 
            ID= :ID
@@ -584,33 +584,33 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PAYDOCTYPE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  "ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"AMOUNT" => array("DATA_TYPE" => "NUMBER")
   ,"BPARTNER_FROM" => array("DATA_TYPE" => "NUMBER")
   ,"BPARTNER_TO" => array("DATA_TYPE" => "NUMBER")
-  ,"IS_PAYABLE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_RECEIVABLE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"PAYMNT_ACCT" => array("DATA_TYPE" => "STRING")
-  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_GENERATED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"IINV_ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_APPROVED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_GENERATED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_MULTI_PAYMENT" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_PAYABLE" => array("DATA_TYPE" => "BOOLEAN")
   ,"IS_POSTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_PREPAYMENT" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_RECEIVABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PAYDOCTYPE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PAYMNT_ACCT" => array("DATA_TYPE" => "STRING")
   ,"PREPAY_ACCT" => array("DATA_TYPE" => "STRING")
   ,"RINV_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"IS_MULTI_PAYMENT" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IINV_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

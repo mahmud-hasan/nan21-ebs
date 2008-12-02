@@ -11,50 +11,50 @@ class DC0055 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CHARGED_DATE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ts.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ts.CHARGED_DATE like :CHARGED_DATE";
+      $params["CHARGED_DATE"] = $_REQUEST["QRY_CHARGED_DATE"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ts.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_CHARGED_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ts.CHARGED_DATE like :CHARGED_DATE";
-      $params["CHARGED_DATE"] = $_REQUEST["QRY_CHARGED_DATE"];
-    }
-    if (!empty($_REQUEST["QRY_USER_ACCOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ts.USER_ACCOUNT like :USER_ACCOUNT";
-      $params["USER_ACCOUNT"] = $_REQUEST["QRY_USER_ACCOUNT"];
-    }
     if (!empty($_REQUEST["QRY_EFFORT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ts.EFFORT like :EFFORT";
       $params["EFFORT"] = $_REQUEST["QRY_EFFORT"];
     }
-    if (!empty($_REQUEST["QRY_IS_INSERTED"])) {
+    if (!empty($_REQUEST["QRY_EFFORT_UNIT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ts.IS_INSERTED like :IS_INSERTED";
-      $params["IS_INSERTED"] = $_REQUEST["QRY_IS_INSERTED"];
+      $where .= "ts.EFFORT_UNIT like :EFFORT_UNIT";
+      $params["EFFORT_UNIT"] = $_REQUEST["QRY_EFFORT_UNIT"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ts.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_IS_APPROVED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ts.IS_APPROVED like :IS_APPROVED";
       $params["IS_APPROVED"] = $_REQUEST["QRY_IS_APPROVED"];
     }
+    if (!empty($_REQUEST["QRY_IS_INSERTED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ts.IS_INSERTED like :IS_INSERTED";
+      $params["IS_INSERTED"] = $_REQUEST["QRY_IS_INSERTED"];
+    }
     if (!empty($_REQUEST["QRY_PROJECT_ISSUE_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ts.PROJECT_ISSUE_ID like :PROJECT_ISSUE_ID";
       $params["PROJECT_ISSUE_ID"] = $_REQUEST["QRY_PROJECT_ISSUE_ID"];
     }
-    if (!empty($_REQUEST["QRY_EFFORT_UNIT"])) {
+    if (!empty($_REQUEST["QRY_USER_ACCOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ts.EFFORT_UNIT like :EFFORT_UNIT";
-      $params["EFFORT_UNIT"] = $_REQUEST["QRY_EFFORT_UNIT"];
+      $where .= "ts.USER_ACCOUNT like :USER_ACCOUNT";
+      $params["USER_ACCOUNT"] = $_REQUEST["QRY_USER_ACCOUNT"];
     }
 }
 
@@ -70,29 +70,29 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ts.ID
+                ts.CHARGED_DATE
                 ,ts.CLIENT_ID
-                ,ts.CHARGED_DATE
-                ,ts.USER_ACCOUNT
                 ,ts.EFFORT
-                ,ts.IS_INSERTED
-                ,ts.IS_APPROVED
-                ,ts.PROJECT_ISSUE_ID
                 ,ts.EFFORT_UNIT
+                ,ts.ID
+                ,ts.IS_APPROVED
+                ,ts.IS_INSERTED
+                ,ts.PROJECT_ISSUE_ID
+                ,ts.USER_ACCOUNT
             from TIMESHEET ts $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CHARGED_DATE"
       ,"CLIENT_ID"
-      ,"CHARGED_DATE"
-      ,"USER_ACCOUNT"
       ,"EFFORT"
-      ,"IS_INSERTED"
-      ,"IS_APPROVED"
-      ,"PROJECT_ISSUE_ID"
       ,"EFFORT_UNIT"
+      ,"ID"
+      ,"IS_APPROVED"
+      ,"IS_INSERTED"
+      ,"PROJECT_ISSUE_ID"
+      ,"USER_ACCOUNT"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -119,8 +119,8 @@ public function doExport() {
     }
     $sql = "select 
                 ts.ID
-                ,ts.CLIENT_ID
                 ,ts.PROJECT_ISSUE_ID
+                ,ts.CLIENT_ID
                 ,ts.USER_ACCOUNT
                 ,ts.CHARGED_DATE
                 ,ts.EFFORT
@@ -133,8 +133,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"PROJECT_ISSUE_ID"
+     ,"CLIENT_ID"
      ,"USER_ACCOUNT"
      ,"CHARGED_DATE"
      ,"EFFORT"
@@ -189,25 +189,25 @@ public function doInsert() {
     $RECORD["PROJECT_ISSUE_ID"] = $this->getRequestParam("PROJECT_ISSUE_ID");
     $RECORD["USER_ACCOUNT"] = $this->getRequestParam("USER_ACCOUNT");
     $sql = "insert into TIMESHEET(
-                 ID
+                 CHARGED_DATE
                 ,CLIENT_ID
-                ,CHARGED_DATE
-                ,USER_ACCOUNT
                 ,EFFORT
-                ,IS_INSERTED
-                ,IS_APPROVED
-                ,PROJECT_ISSUE_ID
                 ,EFFORT_UNIT
+                ,ID
+                ,IS_APPROVED
+                ,IS_INSERTED
+                ,PROJECT_ISSUE_ID
+                ,USER_ACCOUNT
             ) values ( 
-                 :ID
+                 :CHARGED_DATE
                 ,:CLIENT_ID
-                ,:CHARGED_DATE
-                ,:USER_ACCOUNT
                 ,:EFFORT
-                ,:IS_INSERTED
-                ,:IS_APPROVED
-                ,:PROJECT_ISSUE_ID
                 ,:EFFORT_UNIT
+                ,:ID
+                ,:IS_APPROVED
+                ,:IS_INSERTED
+                ,:PROJECT_ISSUE_ID
+                ,:USER_ACCOUNT
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_timesht_id.nextval seq_val from dual")->fetchRow();
@@ -239,15 +239,15 @@ public function doUpdate() {
     $RECORD["USER_ACCOUNT"] = $this->getRequestParam("USER_ACCOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0055.doUpdate().");}
     $sql = "update TIMESHEET set 
-                 ID=:ID
+                 CHARGED_DATE=:CHARGED_DATE
                 ,CLIENT_ID=:CLIENT_ID
-                ,CHARGED_DATE=:CHARGED_DATE
-                ,USER_ACCOUNT=:USER_ACCOUNT
                 ,EFFORT=:EFFORT
-                ,IS_INSERTED=:IS_INSERTED
-                ,IS_APPROVED=:IS_APPROVED
-                ,PROJECT_ISSUE_ID=:PROJECT_ISSUE_ID
                 ,EFFORT_UNIT=:EFFORT_UNIT
+                ,ID=:ID
+                ,IS_APPROVED=:IS_APPROVED
+                ,IS_INSERTED=:IS_INSERTED
+                ,PROJECT_ISSUE_ID=:PROJECT_ISSUE_ID
+                ,USER_ACCOUNT=:USER_ACCOUNT
     where 
            ID= :ID
     ";
@@ -303,15 +303,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ts.ID
+                ts.CHARGED_DATE
                 ,ts.CLIENT_ID
-                ,ts.CHARGED_DATE
-                ,ts.USER_ACCOUNT
                 ,ts.EFFORT
-                ,ts.IS_INSERTED
-                ,ts.IS_APPROVED
-                ,ts.PROJECT_ISSUE_ID
                 ,ts.EFFORT_UNIT
+                ,ts.ID
+                ,ts.IS_APPROVED
+                ,ts.IS_INSERTED
+                ,ts.PROJECT_ISSUE_ID
+                ,ts.USER_ACCOUNT
             from TIMESHEET ts
          where 
            ts.ID= :ID
@@ -322,15 +322,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CHARGED_DATE" => array("DATA_TYPE" => "DATE")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CHARGED_DATE" => array("DATA_TYPE" => "DATE")
-  ,"USER_ACCOUNT" => array("DATA_TYPE" => "STRING")
   ,"EFFORT" => array("DATA_TYPE" => "NUMBER")
-  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_APPROVED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"PROJECT_ISSUE_ID" => array("DATA_TYPE" => "NUMBER")
   ,"EFFORT_UNIT" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"IS_APPROVED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_INSERTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"PROJECT_ISSUE_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"USER_ACCOUNT" => array("DATA_TYPE" => "STRING")
 );
 
 

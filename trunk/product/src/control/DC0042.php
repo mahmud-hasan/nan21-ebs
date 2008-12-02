@@ -11,16 +11,6 @@ class DC0042 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CR_AMOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CR_AMOUNT like :CR_AMOUNT";
-      $params["CR_AMOUNT"] = $_REQUEST["QRY_CR_AMOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
       $where .= (!empty($where))?" and ":"";
       $where .= "ACCDOC_ID like :ACCDOC_ID";
       $params["ACCDOC_ID"] = $_REQUEST["QRY_ACCDOC_ID"];
@@ -29,60 +19,65 @@ private function preQuery(&$params, &$where) {
       $where .= "CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_DB_ACCT"])) {
+    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "DB_ACCT like :DB_ACCT";
-      $params["DB_ACCT"] = $_REQUEST["QRY_DB_ACCT"];
-    }
-    if (!empty($_REQUEST["QRY_CR_ACCT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CR_ACCT like :CR_ACCT";
-      $params["CR_ACCT"] = $_REQUEST["QRY_CR_ACCT"];
-    }
-    if (!empty($_REQUEST["QRY_DB_AMOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DB_AMOUNT like :DB_AMOUNT";
-      $params["DB_AMOUNT"] = $_REQUEST["QRY_DB_AMOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CURRENCY like :CURRENCY";
-      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
-    }
-    if (!empty($_REQUEST["QRY_XRATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "XRATE like :XRATE";
-      $params["XRATE"] = $_REQUEST["QRY_XRATE"];
+      $where .= "CREATEDBY like :CREATEDBY";
+      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
     }
     if (!empty($_REQUEST["QRY_CREATEDON"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CREATEDON like :CREATEDON";
       $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
     }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
+    if (!empty($_REQUEST["QRY_CR_ACCT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+      $where .= "CR_ACCT like :CR_ACCT";
+      $params["CR_ACCT"] = $_REQUEST["QRY_CR_ACCT"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+    if (!empty($_REQUEST["QRY_CR_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+      $where .= "CR_AMOUNT like :CR_AMOUNT";
+      $params["CR_AMOUNT"] = $_REQUEST["QRY_CR_AMOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_CURRENCY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CURRENCY like :CURRENCY";
+      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
+    }
+    if (!empty($_REQUEST["QRY_DB_ACCT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DB_ACCT like :DB_ACCT";
+      $params["DB_ACCT"] = $_REQUEST["QRY_DB_ACCT"];
+    }
+    if (!empty($_REQUEST["QRY_DB_AMOUNT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DB_AMOUNT like :DB_AMOUNT";
+      $params["DB_AMOUNT"] = $_REQUEST["QRY_DB_AMOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_IS_GENERATED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "IS_GENERATED like :IS_GENERATED";
+      $params["IS_GENERATED"] = $_REQUEST["QRY_IS_GENERATED"];
     }
     if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MODIFIEDBY like :MODIFIEDBY";
       $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
     }
+    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDON like :MODIFIEDON";
+      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
+    }
     if (!empty($_REQUEST["QRY_NOTES"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NOTES like :NOTES";
       $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_IS_GENERATED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IS_GENERATED like :IS_GENERATED";
-      $params["IS_GENERATED"] = $_REQUEST["QRY_IS_GENERATED"];
     }
     if (!empty($_REQUEST["QRY_ORIG_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
@@ -93,6 +88,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ORIG_CURRENCY like :ORIG_CURRENCY";
       $params["ORIG_CURRENCY"] = $_REQUEST["QRY_ORIG_CURRENCY"];
+    }
+    if (!empty($_REQUEST["QRY_XRATE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "XRATE like :XRATE";
+      $params["XRATE"] = $_REQUEST["QRY_XRATE"];
     }
 }
 
@@ -108,47 +108,47 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CR_AMOUNT
-                ,ID
-                ,ACCDOC_ID
+                ACCDOC_ID
+                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
                 ,CLIENT_ID
-                ,DB_ACCT
-                ,CR_ACCT
-                ,DB_AMOUNT
-                ,CURRENCY
-                ,XRATE
-                ,CREATEDON
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,NOTES
+                ,CREATEDON
+                ,CR_ACCT
+                ,CR_AMOUNT
+                ,CURRENCY
+                ,DB_ACCT
+                ,DB_AMOUNT
+                ,ID
                 ,IS_GENERATED
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NOTES
                 ,ORIG_AMOUNT
                 ,ORIG_CURRENCY
-                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
+                ,XRATE
             from ACCOUNTING_DOC_LINE  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CR_AMOUNT"
-      ,"ID"
-      ,"ACCDOC_ID"
+      "ACCDOC_ID"
+      ,"ACCDOC_NAME"
       ,"CLIENT_ID"
-      ,"DB_ACCT"
-      ,"CR_ACCT"
-      ,"DB_AMOUNT"
-      ,"CURRENCY"
-      ,"XRATE"
-      ,"CREATEDON"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"NOTES"
+      ,"CREATEDON"
+      ,"CR_ACCT"
+      ,"CR_AMOUNT"
+      ,"CURRENCY"
+      ,"DB_ACCT"
+      ,"DB_AMOUNT"
+      ,"ID"
       ,"IS_GENERATED"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NOTES"
       ,"ORIG_AMOUNT"
       ,"ORIG_CURRENCY"
-      ,"ACCDOC_NAME"
+      ,"XRATE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -175,8 +175,8 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
                 ,ACCDOC_ID
+                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
                 ,CLIENT_ID
                 ,NOTES
                 ,DB_ACCT
@@ -198,8 +198,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"ACCDOC_NAME"
      ,"ACCDOC_ID"
+     ,"ACCDOC_NAME"
      ,"CLIENT_ID"
      ,"NOTES"
      ,"DB_ACCT"
@@ -272,39 +272,39 @@ public function doInsert() {
     $RECORD["ORIG_CURRENCY"] = $this->getRequestParam("ORIG_CURRENCY");
     $RECORD["XRATE"] = $this->getRequestParam("XRATE");
     $sql = "insert into ACCOUNTING_DOC_LINE(
-                 CR_AMOUNT
-                ,ID
-                ,ACCDOC_ID
+                 ACCDOC_ID
                 ,CLIENT_ID
-                ,DB_ACCT
-                ,CR_ACCT
-                ,DB_AMOUNT
-                ,CURRENCY
-                ,XRATE
-                ,CREATEDON
                 ,CREATEDBY
+                ,CREATEDON
+                ,CR_ACCT
+                ,CR_AMOUNT
+                ,CURRENCY
+                ,DB_ACCT
+                ,DB_AMOUNT
+                ,ID
+                ,IS_GENERATED
                 ,MODIFIEDBY
                 ,NOTES
-                ,IS_GENERATED
                 ,ORIG_AMOUNT
                 ,ORIG_CURRENCY
+                ,XRATE
             ) values ( 
-                 :CR_AMOUNT
-                ,:ID
-                ,:ACCDOC_ID
+                 :ACCDOC_ID
                 ,:CLIENT_ID
-                ,:DB_ACCT
-                ,:CR_ACCT
-                ,:DB_AMOUNT
-                ,:CURRENCY
-                ,:XRATE
-                ,:CREATEDON
                 ,:CREATEDBY
+                ,:CREATEDON
+                ,:CR_ACCT
+                ,:CR_AMOUNT
+                ,:CURRENCY
+                ,:DB_ACCT
+                ,:DB_AMOUNT
+                ,:ID
+                ,:IS_GENERATED
                 ,:MODIFIEDBY
                 ,:NOTES
-                ,:IS_GENERATED
                 ,:ORIG_AMOUNT
                 ,:ORIG_CURRENCY
+                ,:XRATE
     )";
     $stmt = $this->db->prepare($sql);
     $this->logger->debug("insert of RECORD: ".$this->logger->map2string($RECORD) );
@@ -335,16 +335,16 @@ public function doUpdate() {
     $RECORD["XRATE"] = $this->getRequestParam("XRATE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0042.doUpdate().");}
     $sql = "update ACCOUNTING_DOC_LINE set 
-                 CR_AMOUNT=:CR_AMOUNT
-                ,ID=:ID
-                ,ACCDOC_ID=:ACCDOC_ID
+                 ACCDOC_ID=:ACCDOC_ID
                 ,CLIENT_ID=:CLIENT_ID
-                ,DB_ACCT=:DB_ACCT
                 ,CR_ACCT=:CR_ACCT
-                ,DB_AMOUNT=:DB_AMOUNT
+                ,CR_AMOUNT=:CR_AMOUNT
                 ,CURRENCY=:CURRENCY
-                ,XRATE=:XRATE
+                ,DB_ACCT=:DB_ACCT
+                ,DB_AMOUNT=:DB_AMOUNT
+                ,ID=:ID
                 ,NOTES=:NOTES
+                ,XRATE=:XRATE
     where 
            ID= :ID
     ";
@@ -409,24 +409,24 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CR_AMOUNT
-                ,ID
-                ,ACCDOC_ID
+                ACCDOC_ID
+                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
                 ,CLIENT_ID
-                ,DB_ACCT
-                ,CR_ACCT
-                ,DB_AMOUNT
-                ,CURRENCY
-                ,XRATE
-                ,CREATEDON
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,NOTES
+                ,CREATEDON
+                ,CR_ACCT
+                ,CR_AMOUNT
+                ,CURRENCY
+                ,DB_ACCT
+                ,DB_AMOUNT
+                ,ID
                 ,IS_GENERATED
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NOTES
                 ,ORIG_AMOUNT
                 ,ORIG_CURRENCY
-                ,(select t.doc_no||' / '||t.doc_date from accounting_doc t where t.id = accdoc_id ) ACCDOC_NAME
+                ,XRATE
             from ACCOUNTING_DOC_LINE 
          where 
            ID= :ID
@@ -437,24 +437,24 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CR_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
+  "ACCDOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DB_ACCT" => array("DATA_TYPE" => "STRING")
-  ,"CR_ACCT" => array("DATA_TYPE" => "STRING")
-  ,"DB_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"XRATE" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CR_ACCT" => array("DATA_TYPE" => "STRING")
+  ,"CR_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"DB_ACCT" => array("DATA_TYPE" => "STRING")
+  ,"DB_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_GENERATED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
   ,"ORIG_AMOUNT" => array("DATA_TYPE" => "NUMBER")
   ,"ORIG_CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"ACCDOC_NAME" => array("DATA_TYPE" => "STRING")
+  ,"XRATE" => array("DATA_TYPE" => "NUMBER")
 );
 
 

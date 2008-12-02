@@ -11,15 +11,15 @@ class DC0005 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -47,29 +47,29 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,CREATEDBY
+                ,CREATEDON
+                ,ID
+                ,LOCATION_ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,NAME
                 ,SWIFTCODE
-                ,LOCATION_ID
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
             from BANK  $where $orderByClause ";
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CODE"
+      "CODE"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"ID"
+      ,"LOCATION_ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"NAME"
       ,"SWIFTCODE"
-      ,"LOCATION_ID"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -164,17 +164,17 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["SWIFTCODE"] = $this->getRequestParam("SWIFTCODE");
     $sql = "insert into BANK(
-                 ID
-                ,CODE
+                 CODE
+                ,ID
+                ,LOCATION_ID
                 ,NAME
                 ,SWIFTCODE
-                ,LOCATION_ID
             ) values ( 
-                 :ID
-                ,:CODE
+                 :CODE
+                ,:ID
+                ,:LOCATION_ID
                 ,:NAME
                 ,:SWIFTCODE
-                ,:LOCATION_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bank_id.nextval seq_val from dual")->fetchRow();
@@ -202,9 +202,9 @@ public function doUpdate() {
     $RECORD["SWIFTCODE"] = $this->getRequestParam("SWIFTCODE");
     $sql = "update BANK set 
                  CODE=:CODE
+                ,LOCATION_ID=:LOCATION_ID
                 ,NAME=:NAME
                 ,SWIFTCODE=:SWIFTCODE
-                ,LOCATION_ID=:LOCATION_ID
     where 
            ID= :ID
     ";
@@ -256,15 +256,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CODE
+                CODE
+                ,CREATEDBY
+                ,CREATEDON
+                ,ID
+                ,LOCATION_ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,NAME
                 ,SWIFTCODE
-                ,LOCATION_ID
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
             from BANK 
          where 
            ID= :ID
@@ -275,15 +275,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
+  "CODE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"LOCATION_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"SWIFTCODE" => array("DATA_TYPE" => "STRING")
-  ,"LOCATION_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 
