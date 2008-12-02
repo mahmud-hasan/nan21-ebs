@@ -61,28 +61,23 @@
 
        this.queryFieldsVisible = [  "LINE_NR","PRODUCT_NAME","UOM_CODE","QTY","CURRENCY_CODE","PRICE","NET_AMOUNT","NOTES","DATE_REQUESTED","DATE_PROMISED","DATE_DELIVERED" ];
        Ext.apply(this, {
-           store: new Ext.data.Store({
+           store: new Ext.data.JsonStore({
                id:"storeDC0064"
-              ,reader: new Ext.data.XmlReader({totalRecords:"totalCount",record: "record"},this.dataRecordMeta)
-              ,url:"frmMain.php?_p_action=fetch&_p_data_format=xml&_p_form=DC0064"
+              ,totalProperty:"totalCount"
+              ,root:"records"
+              ,url:"frmMain.php?_p_action=fetch&_p_data_format=json&_p_form=DC0064"
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
           ,columns: [ this.columns.get("ID"),this.columns.get("PORDER_ID"),this.columns.get("LINE_NR"),this.columns.get("PRODUCT_NAME"),this.columns.get("PRODUCT_ID"),this.columns.get("UOM_CODE"),this.columns.get("QTY"),this.columns.get("CURRENCY_CODE"),this.columns.get("PRICE"),this.columns.get("NET_AMOUNT"),this.columns.get("NOTES"),this.columns.get("DATE_REQUESTED"),this.columns.get("DATE_PROMISED"),this.columns.get("DATE_DELIVERED")]
           ,tbar: new Array(
-          new Ext.Toolbar.Button({  id:"tlb_66"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"Apply filter" ,handler: this.executeQuery ,scope :this})
+          new Ext.Toolbar.Button({  id:"tlb_FILTER"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_73"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"Save changes &lt;Ctrl+S&gt;" ,handler: this.commitForm ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_68"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"Create new record &lt;Ctrl+N&gt;" ,handler: this.createNewRecord ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_65"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"Delete record &lt;Ctrl+D&gt;" ,handler: this.deleteRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_SAVE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_commit.png" ,tooltip:"" ,handler: this.commitForm ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_67"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_upd.png" ,tooltip:"Editor&lt;Enter&gt;, List&lt;Ctrl+Q&gt;" ,handler: this.toggleEditMode ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_72"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_refresh.gif" ,tooltip:"Refresh record" ,handler: this.reloadRecord ,scope :this})
-          ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_70"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_69"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
-          ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_71"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
           )
           ,dataComponentName:"DC0064"
           ,frame:true
