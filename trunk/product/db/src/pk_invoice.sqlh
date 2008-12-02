@@ -1,5 +1,0 @@
-create or replace package pk_invoice is
-
-end;
-/
-
