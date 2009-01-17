@@ -22,6 +22,6 @@ select
   ,invitem.notes
   ,invitem.tax_rate vat_rate
   ,invitem.tax_amount vat_amount
- from iinvoice_item invitem, product prod
+ from iinvoice_item invitem, mm_product prod
 where invitem.prod_id = prod.id
 /
