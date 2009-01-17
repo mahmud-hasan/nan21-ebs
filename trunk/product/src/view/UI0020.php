@@ -11,6 +11,10 @@
   <script type="text/javascript" src="_static/locale/DC0003_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0004.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0004_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/DC0011.js"></script>
+  <script type="text/javascript" src="_static/locale/DC0011_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0002.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0002_<?php print $_SESSION["user"]["language"];?>.js"></script>
 
 </head>
 <body  style="margin:0;padding:0;" >

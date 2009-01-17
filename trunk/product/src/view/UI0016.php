@@ -46,8 +46,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0022]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-950}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0022.prototype.resourceBundle.DcProperty.Title||"Menu items")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0016&gt;</div>"}
    ]
 });

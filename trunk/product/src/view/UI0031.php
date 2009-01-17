@@ -13,10 +13,10 @@
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0013.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0013_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0003.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0003_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0001.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0001_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0003.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0003_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0025.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0025_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0009.js"></script>
@@ -60,8 +60,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0004]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-900}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0004.prototype.resourceBundle.DcProperty.Title||"Issued invoices")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0031&gt;</div>"}
    ]
 });

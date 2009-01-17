@@ -3,6 +3,15 @@
   print print_page_header ();
 ?>
  <link rel="stylesheet" type="text/css" href="<?php print PATH_EXTJS;?>/resources/css/xtheme-sap.css" />
+ <style>
+   .lang_menu_flag_en {
+       background: url("http://localhost/n21eBusinessSuite/product/src/_static/icon/steag_en.jpg")   no-repeat 0 0 ;background-position:-2px 3px;
+    }
+   .lang_menu_flag_ro {
+       background: url("http://localhost/n21eBusinessSuite/product/src/_static/icon/steag_ro.jpg")   no-repeat 0 0 ;background-position:-2px 3px;
+    }
+
+ </style>
  <script>
 Ext.BLANK_IMAGE_URL = '<?php print PATH_EXTJS;?>/s.gif';
 
@@ -32,6 +41,7 @@ Ext.onReady(function(){
     ,autoScroll:true
     ,loader: new Ext.tree.TreeLoader({
                    dataUrl:'frmMain.php?_p_form='+dcName+'&_p_action=custom&_p_custom_action=loadMenu'
+                   ,baseParams:{module:''} 
   		 })
     ,root: new Ext.tree.AsyncTreeNode({
                   text:'My shortcuts',
@@ -46,32 +56,8 @@ Ext.onReady(function(){
      if(!this.contextMenu||this.contextMenu==undefined) {
 	this.contextMenu = new Ext.menu.Menu({
                                	items: [
-				    { id:'ctx-shmenu-open'    , scope:this, text:'Open',            handler:function() { tree.fireEvent('click',treeContextMenuNode,e);}}
-				  , { id:'ctx-shmenu-openTab' , scope:this, text:'Open in New Tab', handler: function() {
-                                                                                                               if (!treeContextMenuNode.attributes.guiID) { return false; }
-                                                                                                               else {
-                                                                                                                 var iframeId = treeContextMenuNode.attributes.guiID;
-                                                                                                                 if (document.getElementById("iframe_"+iframeId)) {
-                                                                                                                    if (contentPane.getActiveTab().getId() == 'tabPanel_'+iframeId) {
-                                                                                                                      openInNewTab(treeContextMenuNode,iframeId);
-                                                                                                                    } else {
-                                                                                                                      contentPane.activate('tabPanel_'+iframeId);
-                                                                                                                    }
-                                                                                                                 } else {
-                                                                                                                 contentPane.add(new Ext.Panel({
-                                                                                                                      title:treeContextMenuNode.attributes.text
-                                                                                                                     ,id: 'tabPanel_'+iframeId
-                                                                                                                     ,autoScroll:true
-                                                                                                                     ,layout:'fit'
-                                                                                                                     ,closable:true
-                                                                                                                     ,html:'<div style="width:100%;height:99%" id="div_'+iframeId+'"><iframe id="iframe_'+iframeId+'" src="" style="border:0;width:99%;height:99%"></iframe></div>'
-                                                                                                                   }));
-                                                                                                                   contentPane.activate('tabPanel_'+iframeId);
-                                                                                                                   openInNewTab(treeContextMenuNode,iframeId);
-                                                                                                                 }
-                                                                                                               }
-                                                                                                             }//end handler
-                    		    }
+				                            { id:'ctx-shmenu-open'    , scope:this, text:'Open',            handler:function() { tree.fireEvent('click',treeContextMenuNode,e);}}
+				                          , { id:'ctx-shmenu-openTab' , scope:this, text:'Open in New Tab', handler: function() { if (!treeContextMenuNode.attributes.guiID) { return false; } else { openMenuLinkInNewTab(treeContextMenuNode.attributes.guiID, treeContextMenuNode.attributes.text, null); }  }   }
                                   , new Ext.menu.Separator({id:'shmenu-sep-1'})
                                   , {id:'ctx-shmenu-newfolder', scope:this, text:'New folder',       handler:function() {createShrtctWdw.findById("ShrtctWdw_title_field").setValue(treeContextMenuNode.attributes.text);createShrtctWdw.show();} }
                                   , {id:'ctx-shmenu-remove'   , scope:this, text:'Remove shortcut' , handler:function() {createShrtctWdw.findById("ShrtctWdw_title_field").setValue(treeContextMenuNode.attributes.text);createShrtctWdw.show();} }
@@ -104,12 +90,7 @@ Ext.onReady(function(){
 
   shtree.on("click", function(node, e) {
     if (node.attributes.guiID != undefined && node.attributes.guiID != '') {
-       if(node.attributes.guiID.substr(0,3)=="REP") {
-           document.getElementById("content_iframe").src = "runReport.php?_p_report_id="+node.attributes.guiID;
-        } else {
-           document.getElementById("content_iframe").src = "frmMain.php?action=loadGUI&guiID="+node.attributes.guiID;
-        }
-        contentPane.activate(0);
+       openMenuLink(node.attributes.guiID, node.attributes.text , null);
     }
   });  // end shtree.on("click"
 
@@ -137,34 +118,8 @@ Ext.onReady(function(){
  	if(!this.contextMenu||this.contextMenu==undefined) {
 			this.contextMenu = new Ext.menu.Menu({
 				items: [
-					  {id:'ctx-menu-open',    scope:this, text:'Open', handler:function() { tree.fireEvent('click',treeContextMenuNode,e);} }
-
-      					, {id:'ctx-menu-openTab', scope:this, text:'Open in New Tab'
-                                                                    , handler: function() {
-                                                                             if (!treeContextMenuNode.attributes.guiID) { return false; }
-                                                                             else {
-                                                                               var iframeId = treeContextMenuNode.attributes.guiID;
-                                                                               if (document.getElementById("iframe_"+iframeId)) {
-                                                                                  if (contentPane.getActiveTab().getId() == 'tabPanel_'+iframeId) {
-                                                                                    openInNewTab(treeContextMenuNode,iframeId);
-                                                                                  } else {
-                                                                                    contentPane.activate('tabPanel_'+iframeId);
-                                                                                  }
-                                                                               } else {
-                                                                               contentPane.add(new Ext.Panel({
-                                                                                    title:treeContextMenuNode.attributes.text
-                                                                                   ,id: 'tabPanel_'+iframeId
-                                                                                   ,autoScroll:true
-                                                                                   ,layout:'fit'
-                                                                                   ,closable:true
-                                                                                   ,html:'<div style="width:100%;height:100%;overflow: hidden;" id="div_'+iframeId+'"><iframe id="iframe_'+iframeId+'" src="" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
-                                                                                 }));
-                                                                                 contentPane.activate('tabPanel_'+iframeId);
-                                                                                 openInNewTab(treeContextMenuNode,iframeId);
-                                                                               }
-                                                                             }
-                                                                            }
-      					  }
+					        {id:'ctx-menu-open',    scope:this, text:'Open', handler:function() { tree.fireEvent('click',treeContextMenuNode,e);} }
+      					, {id:'ctx-menu-openTab', scope:this, text:'Open in New Tab' , handler: function() { if (!treeContextMenuNode.attributes.guiID) { return false; } else { openMenuLinkInNewTab(treeContextMenuNode.attributes.guiID, treeContextMenuNode.attributes.text, null); }  }   }
       					, new Ext.menu.Separator({id:'sep-1'})
                                         , {id:'ctx-menu-bookmark', scope:this, text:'Add to Shortcuts', handler:function() {createShrtctWdw.findById("ShrtctWdw_title_field").setValue(treeContextMenuNode.attributes.text);createShrtctWdw.show();} }
       					, new Ext.menu.Separator({id:'sep-2'})
@@ -196,12 +151,7 @@ Ext.onReady(function(){
 
   tree.on("click", function(node, e) {
     if (node.attributes.guiID != undefined && node.attributes.guiID != '') {
-       if(node.attributes.guiID.substr(0,3)=="REP") {
-           document.getElementById("content_iframe").src = "runReport.php?_p_report_id="+node.attributes.guiID;
-        } else {
-           document.getElementById("content_iframe").src = "frmMain.php?action=loadGUI&guiID="+node.attributes.guiID;
-        }
-        contentPane.activate(0);
+       openMenuLink(node.attributes.guiID, node.attributes.text , null);
     }
   }); // end tree.on("click"
 
@@ -235,18 +185,49 @@ Ext.onReady(function(){
         {contentEl:'content', title: 'Home', autoScroll:true, layout:'fit'}
       ]
   });
-                
+
+
+  var modules = new Ext.util.MixedCollection();
+    modules.add('AD', {name:'Administration', enabled:true} );
+    modules.add('BP', {name:'Business Partners', enabled:true} );
+    modules.add('MM', {name:'Material Management', enabled:true} );
+    modules.add('SL', {name:'Sales', enabled:true} );
+    modules.add('DT', {name:'Distribution', enabled:true} );
+    modules.add('FI', {name:'Financials', enabled:true} );
+    modules.add('HR', {name:'Human Resources', enabled:true} );
+    modules.add('DV', {name:'Developer', enabled:true} );
+
+
 
 
   mTlb = new Ext.Toolbar();
   mTlb.render('north');
   mTlb.add(
-    new Ext.Toolbar.MenuButton({
+   new Ext.Toolbar.MenuButton({
+       text:'Module'
+       ,menu: {
+          items: [
+              {id:"menu-mod-AD", text:'Administration' ,handler: function() { loadModuleMenu('AD','Administration')  } , scope:this }
+             ,{id:"menu-mod-BP", text:'Business Partners',handler: function() { loadModuleMenu('BP','Business Partners') } , scope:this }
+             ,{id:"menu-mod-MM", text:'Material Management'   ,handler: function() {  loadModuleMenu('MM','Material Management') }  }
+             ,{id:"menu-mod-SL", text:'Sales', handler: function() { loadModuleMenu('SL','Sales') } , scope:this }
+             ,{id:"menu-mod-DT", text:'Distribution'   ,handler: function() { loadModuleMenu('DT','Distribution')  } , scope:this}
+             ,{id:"menu-mod-FI", text:'Financials'   ,handler: function() {  loadModuleMenu('FI','Financials') } , scope:this }
+             ,{id:"menu-mod-HR", text:'Human Resources'   ,handler: function() {  loadModuleMenu('HR','Human Resources') } , scope:this, disabled:true}
+             ,{id:"menu-mod-PJ", text:'Project Management'   ,handler: function() {  loadModuleMenu('PJ','Project Management') } , scope:this }
+             ,"-"
+             ,{id:"menu-mod-DV", text:'Developer'   ,handler: function() { loadModuleMenu('DV','Developer')  } , scope:this, disabled:true}
+
+          ]
+        }
+     })
+    ,new Ext.Toolbar.MenuButton({
        text:'Session'
        ,menu: {
           items: [
               {id:"menu-login", text:'Log-in' ,handler: function() { logInWindow.show(); } , scope:this, disabled:loggedIn}
              ,{id:"menu-logout", text:'Log-out',handler: function() { doLogout(); } , scope:this, disabled:!loggedIn}
+             ,"-"
              ,{id:"menu-lock", text:'Lock'   ,handler: function() { doLockSession(); } , scope:this, disabled:!loggedIn}
           ]
         }
@@ -255,8 +236,8 @@ Ext.onReady(function(){
        text:'Language'
        ,menu: {
           items: [
-              { text:'English',handler: function() { changeLanguage('en'); } , scope:this}
-             ,{ text:'Romana', handler: function() { changeLanguage('ro'); } , scope:this}
+              { text:'English',handler: function() { changeLanguage('en'); } , scope:this ,  iconCls:'lang_menu_flag_en' }
+             ,{ text:'Romana', handler: function() { changeLanguage('ro'); } , scope:this ,  iconCls:'lang_menu_flag_ro'}
           ]
         }
      })
@@ -270,6 +251,8 @@ Ext.onReady(function(){
           ]
         }
      })
+     ,"->"
+     ,"Welcome: <?php print $_SESSION["user"]["userName"]?>  "
   );  // end mTlb.add
 
 
@@ -285,12 +268,12 @@ Ext.onReady(function(){
             ,region:'west'
             ,split:true
             ,width: 220
-            ,title:'Navigare'
+            ,title:'Navigation'
             ,minSize: 175
             ,maxSize: 300
             ,collapsible: true
             ,items:[
-                {title: 'Standard menu', layout:'fit', border:false, items:[ tree ] }
+                {title: 'Module menu', layout:'fit', border:false, items:[ tree ] }
                ,{title: 'My Shortcuts' , border:false, items:[ shtree ] }
                ]
            })
@@ -320,10 +303,16 @@ Ext.onReady(function(){
   }); // end logInWindow
 
 
-   if (!loggedIn) {
-       logInWindow.show();
-       Ext.getCmp("login_username").focus();
-   }
+  function initDC() {
+    if (!loggedIn) {
+      logInWindow.show();
+      Ext.getCmp("login_username").focus();
+    } else {
+      loadModuleMenu('MM','Material Management');
+    }
+  }
+
+
 
    function doLockSession() {
       Ext.Ajax.request({
@@ -385,8 +374,10 @@ Ext.onReady(function(){
 
   }
 
+
   /**
    *  Open a menu-link in a new tab (not Home tab). 
+   *  DEPRECATED! The new functions are openMenuLink and openMenuLinkInNewTab
    */
   function openInNewTab(node,ifrid) {
     if (node.attributes.guiID != undefined && node.attributes.guiID != '') {
@@ -398,6 +389,90 @@ Ext.onReady(function(){
     }
   }
 
+  /**
+   *  Load a UI url into a content tab.
+   *  Params:  ifrID - Id of the iframe in tabpanel tab where the UI is loaded
+   *           guiID - UI code 
+   *           params - extra params
+   */
+  function loadMenuLink(ifrID, guiID, params) {
+    if(guiID.substr(0,3)=="REP") {
+      document.getElementById(ifrID).src = "runReport.php?_p_report_id="+guiID;
+    } else {
+      document.getElementById(ifrID).src = "frmMain.php?action=loadGUI&guiID="+guiID;
+    }
+  }
+
+  /**
+   *  Open a menu-link. It is called by the menu tree onclick event handler.
+   *  If UI is already loaded but tab is not active then activate tab.
+   *  If UI is already loaded and tab is active then reload UI.
+   *  If UI is not loaded, create a new tab load UI into it and activate it.
+   */
+  function openMenuLink(guiID, guiText, params) {
+    var tabID = "tabPanel_"+guiID;
+    var ifrID = "iframe_"+guiID;
+    _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
+  }
+
+
+  /**
+   *  Open a menu-link in a new tab. 
+   *  Creates a new tab and load the UI regardless of how many tabs are opened with the same UI
+   *
+   */
+  function openMenuLinkInNewTab(guiID, guiText, params) {
+    var tabID = "tabPanel_"+guiID+"_"+(new Date()).getTime();
+    var ifrID = "iframe_"+guiID+"_"+(new Date()).getTime();
+    _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
+  }
+
+  /**
+   *  Implements the UI loading mechanism.
+   */
+  function _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params) {
+    if (!Ext.isEmpty(document.getElementById(ifrID))) {
+      if (contentPane.getActiveTab().getId() == tabID ) {
+        loadMenuLink(ifrID, guiID, params );
+      } else {
+        contentPane.activate(tabID);
+      }
+    } else {
+      contentPane.add(new Ext.Panel({
+              title:guiText
+             ,id: tabID
+             ,autoScroll:true
+             ,layout:'fit'
+             ,closable:true
+             ,html:'<div style="width:100%;height:100%;overflow: hidden;" id="div_'+guiID+'"><iframe id="'+ifrID+'" src="" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
+           }));
+           contentPane.activate(tabID);
+           loadMenuLink(ifrID, guiID, params );
+    }
+  }
+
+  /*
+  if (!Ext.isEmpty(document.getElementById(ifrID))) {
+      if (contentPane.getActiveTab().getId() == tabID ) {
+        loadMenuLink(ifrID, guiID, params );
+      } else {
+        contentPane.activate(tabID);
+      }
+    } else {
+      contentPane.add(new Ext.Panel({
+              title:guiText
+             ,id: tabID
+             ,autoScroll:true
+             ,layout:'fit'
+             ,closable:true
+             ,html:'<div style="width:100%;height:100%;overflow: hidden;" id="div_'+guiID+'"><iframe id="'+ifrID+'" src="" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
+           }));
+           contentPane.activate(tabID);
+           loadMenuLink(ifrID, guiID, params );
+    }
+
+
+  */
 
 
 
@@ -407,7 +482,7 @@ Ext.onReady(function(){
   function onLogin(p_usr, p_psw) {
     Ext.Ajax.request({
        url: "frmMain.php?_p_action=login&_p_usr="+p_usr+"&_p_psw="+p_psw
-      ,callback: after_onlogin
+      ,callback: afterOnlogin
       ,scope:this
     });
   }
@@ -415,12 +490,28 @@ Ext.onReady(function(){
   /**
    *  Post logon processing. If authentication succesful hide the logon window and load the main menu.
    */
-  function after_onlogin(o,s,r) {
+  function afterOnlogin(o,s,r) {
     var respText = Ext.decode(r.responseText);
     if (respText.success && respText.message == "OK") { logInWindow.hide(); loggedIn=true; tree.getLoader().load(tree.getRootNode(),function(l,n,r){n.expand();});   }
     if (!respText.success) { Ext.Msg.alert('Autenthication error', urldecode(respText.message) ); }
     Ext.getCmp("login_password").setRawValue("");
   }
+
+
+
+  /**
+   *  Load selected module menu in menu tree.
+   *  Parameters: mCode: module Code 
+   *              mName: module Name -
+   */
+  function loadModuleMenu(mCode, mName) {
+    tree.getLoader().baseParams.module =  mCode;
+    tree.getRootNode().setText( mName );
+    tree.getLoader().load(tree.getRootNode(),function(l,n,r){n.expand();});
+  }
+
+
+
 
   /**
    *  Decode a string which has been urlencoded
@@ -432,6 +523,11 @@ Ext.onReady(function(){
     ret = ret.toString();
     return ret;
   }
+
+
+
+
+   initDC();
 
 
 });

@@ -9,10 +9,10 @@
 ?>
   <script type="text/javascript" src="_static/js/dc/DC0029.js"></script>
   <script type="text/javascript" src="_static/locale/DC0029_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0012.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0012_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0008.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0012.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0012_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0027.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0027_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0001.js"></script>
@@ -44,8 +44,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0029]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-900}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0029.prototype.resourceBundle.DcProperty.Title||"Payments - Payables")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0035&gt;</div>"}
    ]
 });

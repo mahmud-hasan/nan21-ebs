@@ -13,10 +13,16 @@
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0002.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0002_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0046.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0046_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0014.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0014_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0025.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0025_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/DC0077.js"></script>
+  <script type="text/javascript" src="_static/locale/DC0077_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0017.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0017_<?php print $_SESSION["user"]["language"];?>.js"></script>
 
 </head>
 <body  style="margin:0;padding:0;" >
@@ -40,8 +46,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0039]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-800}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0039.prototype.resourceBundle.DcProperty.Title||"Products")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0037&gt;</div>"}
    ]
 });
