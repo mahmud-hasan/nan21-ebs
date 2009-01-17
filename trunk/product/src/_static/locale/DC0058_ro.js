@@ -3,12 +3,12 @@ DcProperty:{
   Title:"Canale comunicare"
     }
 ,FieldLabel:{ 
-      BPARTNER_ID:"Id tert"
+      BPARTNER_ID:"ID tert"
      ,CMNCT_TYPE:"Metoda"
      ,CMNCT_VALUE:"Valoare"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
     }

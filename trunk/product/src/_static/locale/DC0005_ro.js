@@ -6,7 +6,7 @@ DcProperty:{
       CODE:"Cod"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,LOCATION_ID:"ID locatie"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"

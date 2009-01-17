@@ -8,14 +8,15 @@ DcProperty:{
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
      ,DBUSER:"Cont Oracle"
-     ,ID:"Id"
+     ,ID:"ID"
      ,LOGIN_CODE:"Cod autentificare"
      ,LOGIN_PASSWORD:"Parola"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
-     ,PERSON_ID:"Person_id"
+     ,PERSON_ID:"ID persoana"
     }
 ,FieldsetTitle:{ 
+      Modified:"Modificari"
     }
   }
 N21.DataComp.DC0031G.prototype.resourceBundle = N21.DataComp.DC0031.prototype.resourceBundle;

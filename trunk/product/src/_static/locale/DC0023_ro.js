@@ -3,13 +3,13 @@ DcProperty:{
   Title:"Ani fiscali"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client_id"
+      CLIENT_ID:"ID unitate"
      ,CLIENT_NAME:"Unitate"
      ,CLOSED:"Inchis"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
      ,ENDDATE:"Pana la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"

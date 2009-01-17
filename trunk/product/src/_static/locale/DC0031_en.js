@@ -16,6 +16,7 @@ DcProperty:{
      ,PERSON_ID:"Person ID"
     }
 ,FieldsetTitle:{ 
+      Modified:"Modified"
     }
   }
 N21.DataComp.DC0031G.prototype.resourceBundle = N21.DataComp.DC0031.prototype.resourceBundle;

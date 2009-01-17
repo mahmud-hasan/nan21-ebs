@@ -3,7 +3,9 @@ DcProperty:{
   Title:"Produse"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client_id"
+      ATTRGRP_ID:"ID grup atribute"
+     ,ATTRGRP_NAME:"Grup atribute"
+     ,CLIENT_ID:"ID unitate"
      ,CLIENT_NAME:"Unitate"
      ,CODE:"Cod"
      ,CREATEDBY:"Creat de"
@@ -11,7 +13,7 @@ DcProperty:{
      ,DESCRIPTION:"Descriere"
      ,EXPENSE_ACCOUNT:"Cont chelt."
      ,FOR_SALE:"La vanzare"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"
@@ -21,7 +23,7 @@ DcProperty:{
      ,REVENUE_ACCOUNT:"Cont vanz."
      ,STORABLE:"Stocabil"
      ,SUMMARY:"Sumar"
-     ,UOM_CODE:"Unitate de masura"
+     ,UOM_CODE:"UM"
      ,VOLUME:"Volum"
      ,WEIGHT:"Greutate"
     }

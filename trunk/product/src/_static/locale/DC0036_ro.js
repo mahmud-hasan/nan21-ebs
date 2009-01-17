@@ -5,7 +5,7 @@ DcProperty:{
 ,FieldLabel:{ 
       CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MAINTAINED_BY:"Intretinut de"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"

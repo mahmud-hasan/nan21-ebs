@@ -5,7 +5,7 @@ DcProperty:{
 ,FieldLabel:{ 
       CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,LANG:"Limba"
      ,MENUITEM_ID:"ID meniu"
      ,MODIFIEDBY:"Modificat de"

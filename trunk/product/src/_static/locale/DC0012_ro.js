@@ -7,7 +7,7 @@ DcProperty:{
      ,CREATEDON:"Creat la"
      ,CURRENCY_FROM:"Din moneda"
      ,CURRENCY_TO:"In moneda"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,VALID_FROM:"Valabil de la"

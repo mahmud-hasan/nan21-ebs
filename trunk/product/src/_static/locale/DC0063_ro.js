@@ -1,23 +1,23 @@
 N21.DataComp.DC0063.prototype.resourceBundle =  {
 DcProperty:{ 
-  Title:"DC0063"
+  Title:"Comenzi furnizor"
     }
 ,FieldLabel:{ 
-      BPARTNER_CONTACT_ID:"Bpartner_contact_id"
-     ,BPARTNER_ID:"Bpartner_id"
-     ,BPARTNER_NAME:"Supplier"
-     ,CLIENT_CODE:"Client"
-     ,CLIENT_ID:"Client_id"
-     ,CREATEDBY:"Created by"
-     ,CREATEDON:"Created on"
-     ,CURRENCY:"Currency"
-     ,DOC_DATE:"Doc_date"
-     ,DOC_NO:"Doc_no"
-     ,ID:"Id"
-     ,MODIFIEDBY:"Modified by"
-     ,MODIFIEDON:"Modified on"
-     ,REF_PORDER_ID:"Ref_porder_id"
-     ,TOTAL_AMOUNT:"Total_amount"
+      BPARTNER_CONTACT_ID:"ID contact"
+     ,BPARTNER_ID:"ID tert"
+     ,BPARTNER_NAME:"Furnizor"
+     ,CLIENT_CODE:"Unitate"
+     ,CLIENT_ID:"ID unitate"
+     ,CREATEDBY:"Creat de"
+     ,CREATEDON:"Creat la"
+     ,CURRENCY:"Moneda"
+     ,DOC_DATE:"Data"
+     ,DOC_NO:"Nr doc"
+     ,ID:"ID"
+     ,MODIFIEDBY:"Modificat de"
+     ,MODIFIEDON:"Modificat la"
+     ,REF_PORDER_ID:"ID doc referinta"
+     ,TOTAL_AMOUNT:"Valoare totala"
     }
 ,FieldsetTitle:{ 
     }

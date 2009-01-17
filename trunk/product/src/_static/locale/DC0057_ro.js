@@ -3,16 +3,16 @@ DcProperty:{
   Title:"Persoane de contact"
     }
 ,FieldLabel:{ 
-      BPARTNER_ID:"Bpartner_id"
+      BPARTNER_ID:"ID tert"
      ,EMAIL:"Email"
      ,FAX:"Fax"
-     ,FIRSTNAME:"Firstname"
-     ,ID:"Id"
+     ,FIRSTNAME:"Prenume"
+     ,ID:"ID"
      ,LASTNAME:"Lastname"
-     ,MOBILE:"Mobile"
-     ,NAME:"Name"
-     ,NOTES:"Notes"
-     ,PHONE:"Phone"
+     ,MOBILE:"Mobil"
+     ,NAME:"Denumire"
+     ,NOTES:"Observatii"
+     ,PHONE:"Telefon"
     }
 ,FieldsetTitle:{ 
     }

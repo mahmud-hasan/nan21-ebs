@@ -6,6 +6,8 @@ DcProperty:{
       BY_AGENT:"By agent"
      ,BY_BANK:"By bank"
      ,BY_CASH_DESK:"By cash desk"
+     ,CLIENT_CODE:"Client"
+     ,CLIENT_ID:"Client_id"
      ,CODE:"Code"
      ,COMPENSATION:"Compensation"
      ,CREATEDBY:"Created by"

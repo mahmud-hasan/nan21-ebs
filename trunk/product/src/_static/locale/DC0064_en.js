@@ -1,6 +1,6 @@
 N21.DataComp.DC0064.prototype.resourceBundle =  {
 DcProperty:{ 
-  Title:"DC0064"
+  Title:"Purchase order items"
     }
 ,FieldLabel:{ 
       CREATEDBY:"Created by"
@@ -25,4 +25,6 @@ DcProperty:{
 ,FieldsetTitle:{ 
     }
   }
+N21.DataComp.DC0064G.prototype.resourceBundle = N21.DataComp.DC0064.prototype.resourceBundle;
+N21.DataComp.DC0064F.prototype.resourceBundle = N21.DataComp.DC0064.prototype.resourceBundle;
 

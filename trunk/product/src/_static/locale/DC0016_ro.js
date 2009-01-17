@@ -3,14 +3,14 @@ DcProperty:{
   Title:"Colete"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client_id"
+      CLIENT_ID:"ID unitate"
      ,CLIENT_NAME:"Unitate"
      ,CODE:"Cod"
      ,CONTENT:"Continut"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
      ,DECLARED_VALUE:"Valoare declarata"
-     ,DELIVERED:"Livrate"
+     ,DELIVERED:"Predat"
      ,DELIVERED_TO_IDENT:"Predat la (act. ident pers.)"
      ,DELIVERED_TO_NAME:"Predat la (nume persoana)"
      ,DELIVERY_AGENT_CODE:"Agent livrare"
@@ -36,7 +36,7 @@ DcProperty:{
      ,EXP_NAME:"Nume exp."
      ,EXP_REGION:"Judet exp."
      ,EXP_ZIP:"Cod postal exp."
-     ,ID:"Id"
+     ,ID:"ID"
      ,INSURED_VALUE:"Valoare asigurata"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
@@ -56,9 +56,9 @@ DcProperty:{
     }
 ,FieldsetTitle:{ 
       Delivery:"Livrare"
-     ,Notes:"Notes"
+     ,Notes:"Observatii"
      ,ParcelInfo:"Info colet"
-     ,Pickup:"Pickup"
+     ,Pickup:"Ridicare"
      ,Receiver:"Destinatar"
      ,Sender:"Expeditor"
     }

@@ -3,9 +3,9 @@ DcProperty:{
   Title:"Tipuri gravitate incident"
     }
 ,FieldLabel:{ 
-      CODE:"Code"
-     ,ID:"Id"
-     ,NAME:"Name"
+      CODE:"Cod"
+     ,ID:"ID"
+     ,NAME:"Denumire"
     }
 ,FieldsetTitle:{ 
     }

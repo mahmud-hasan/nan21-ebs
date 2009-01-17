@@ -5,7 +5,7 @@ DcProperty:{
 ,FieldLabel:{ 
       CODE:"Cod"
      ,DESCRIPTION:"Descriere"
-     ,ID:"Id"
+     ,ID:"ID"
      ,NAME:"Denumire"
     }
 ,FieldsetTitle:{ 

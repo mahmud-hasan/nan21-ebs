@@ -5,7 +5,7 @@ DcProperty:{
 ,FieldLabel:{ 
       ACTIVE:"Utilizat"
      ,CODE:"Cod"
-     ,ID:"Id"
+     ,ID:"ID"
      ,NAME:"Denumire"
     }
 ,FieldsetTitle:{ 

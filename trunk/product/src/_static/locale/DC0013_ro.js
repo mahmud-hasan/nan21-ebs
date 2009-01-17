@@ -9,7 +9,7 @@ DcProperty:{
      ,COUNTRY_CODE:"Tara"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"

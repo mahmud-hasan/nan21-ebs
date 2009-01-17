@@ -3,10 +3,10 @@ DcProperty:{
   Title:"Adrese tert"
     }
 ,FieldLabel:{ 
-      ADRESS:"Adress"
+      ADRESS:"Adresa"
      ,ADRESS_TYPE:"Tip adresa"
      ,APT:"Apt"
-     ,BPARTNER_ID:"Bpartner_id"
+     ,BPARTNER_ID:"ID tert"
      ,BUILDING:"Bloc"
      ,CITY:"Localitate"
      ,CITY_ID:"ID localitate"
@@ -15,10 +15,10 @@ DcProperty:{
      ,CREATEDON:"Creat la"
      ,ENTRANCE:"Scara"
      ,FLOOR:"Etaj"
-     ,ID:"Id"
+     ,ID:"ID"
      ,IS_BILLING:"Pentru facturare"
      ,IS_DELIVERY:"Pentru livrare"
-     ,IS_DETAILED:"Detailed"
+     ,IS_DETAILED:"Detaliat"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"
@@ -31,9 +31,9 @@ DcProperty:{
     }
 ,FieldsetTitle:{ 
       Adress:"Adress"
-     ,DetailedAdress:"DetailedAdress"
-     ,Location:"Location"
-     ,ShortAdress:"ShortAdress"
+     ,DetailedAdress:"Adresa detaliata"
+     ,Location:"Locatie"
+     ,ShortAdress:"Adresa scurta"
     }
   }
 

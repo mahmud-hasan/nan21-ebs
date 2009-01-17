@@ -8,16 +8,16 @@ DcProperty:{
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
      ,FINISH_DATE:"Data sfarsit"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NOTES:"Observatii"
      ,START_DATE:"Data inceput"
      ,STATUS:"Stadiu"
-     ,TITLE:"Title"
+     ,TITLE:"Titlu"
     }
 ,FieldsetTitle:{ 
-      Notes:"Notes"
+      Notes:"Observatii"
     }
   }
 N21.DataComp.DC0019G.prototype.resourceBundle = N21.DataComp.DC0019.prototype.resourceBundle;

@@ -4,17 +4,17 @@ DcProperty:{
     }
 ,FieldLabel:{ 
       ACTIVE:"Utilizat"
-     ,CLIENT_ID:"Client_id"
+     ,CLIENT_ID:"ID unitate"
      ,CLIENT_NAME:"Unitate"
      ,CODE:"Cod"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
      ,DESCRIPTION:"Descriere"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"
-     ,PRODCATEG_ID:"Prodcateg_id"
+     ,PRODCATEG_ID:"ID categorie"
      ,PRODCATEG_NAME:"Categorie parinte"
     }
 ,FieldsetTitle:{ 

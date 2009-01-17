@@ -9,7 +9,7 @@ DcProperty:{
      ,CREATEDON:"Creat la"
      ,FIELD_NAME:"Cod cimp"
      ,FIELD_VALUE:"Valoare initializare"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,UIDC_CODE:"DC (Componenta-date)"

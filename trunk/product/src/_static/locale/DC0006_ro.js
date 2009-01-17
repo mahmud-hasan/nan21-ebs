@@ -6,7 +6,7 @@ DcProperty:{
       ADRESS:"Adresa"
      ,BANK_CODE:"Banca"
      ,CODE:"Cod"
-     ,ID:"Id"
+     ,ID:"ID"
      ,NAME:"Denumire"
      ,TYPE:"Tip"
     }

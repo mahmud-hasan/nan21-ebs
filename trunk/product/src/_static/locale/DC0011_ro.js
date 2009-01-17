@@ -7,7 +7,7 @@ DcProperty:{
      ,CONVERSION_TYPE:"Tip conversie"
      ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,ID:"Id"
+     ,ID:"ID"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,UOM_FROM:"UM sursa"

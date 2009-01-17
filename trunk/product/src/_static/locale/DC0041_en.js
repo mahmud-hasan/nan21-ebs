@@ -19,7 +19,7 @@ DcProperty:{
      ,PROD_ID:"Product ID"
      ,PURCHASE_ACCT:"Purchase acct."
      ,QUANTITY:"Quantity"
-     ,QUANTITY_UNIT:"Quantity unit"
+     ,QUANTITY_UNIT:"UOM"
      ,RINVITEM_ID:"Supplier invoice ID"
      ,RINV_ID:"Supplier invoice ID"
      ,TAX_AMOUNT:"Tax amount"

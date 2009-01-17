@@ -5,18 +5,18 @@ DcProperty:{
 ,FieldLabel:{ 
       ACCPERIOD_NAME:"Perioada contabila"
      ,BASEDOC_DATE:"Data doc. sursa"
-     ,BASEDOC_ID:"Basedoc_id"
+     ,BASEDOC_ID:"ID doc sursa"
      ,BASEDOC_NO:"Nr. doc. sursa"
      ,BASEDOC_TYPE:"Tip sursa"
-     ,CLIENT_ID:"Client_id"
+     ,CLIENT_ID:"ID unitate"
      ,CLIENT_NAME:"Unitate"
-     ,CREATEDBY:"Create de"
+     ,CREATEDBY:"Creat de"
      ,CREATEDON:"Creat la"
-     ,CR_AMOUNT:"Suma credit"
-     ,DB_AMOUNT:"Suma debit"
-     ,DOC_DATE:"Data NC"
-     ,DOC_NO:"Nr. NC"
-     ,ID:"Id"
+     ,CR_AMOUNT:"Suma CR"
+     ,DB_AMOUNT:"Suma DB"
+     ,DOC_DATE:"Data"
+     ,DOC_NO:"Nr. nota contabila"
+     ,ID:"ID"
      ,IS_GENERATED:"Generat"
      ,IS_INSERTED:"Introdus"
      ,IS_POSTED:"Validat"
@@ -27,7 +27,7 @@ DcProperty:{
      ,POSTEDON:"Validat la"
     }
 ,FieldsetTitle:{ 
-      Modified:"Modificare"
+      Modified:"Modificari"
      ,Processing:"Procesare"
     }
   }

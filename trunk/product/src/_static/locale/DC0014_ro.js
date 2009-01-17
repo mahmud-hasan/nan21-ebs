@@ -3,10 +3,10 @@ DcProperty:{
   Title:"Terti"
     }
 ,FieldLabel:{ 
-      BPARTNER_ID:"Tert ID"
+      BPARTNER_ID:"ID tert"
      ,BPARTNER_TYPE:"Tip tert"
      ,CLIENT_CODE:"Unitate"
-     ,CLIENT_ID:"Unitate ID"
+     ,CLIENT_ID:"ID unitate"
      ,CODE:"Cod"
      ,COMPANY_REG_NR:"Nr inregistrare"
      ,COPIED_FROM_BPARTNER_ID:"Copiat dupa tert"
@@ -21,8 +21,8 @@ DcProperty:{
      ,IS_EMPLOYEE:"Angajat"
      ,IS_ONETIME:"Is_onetime"
      ,IS_VENDOR:"Furnizor"
-     ,MAX_CREDIT_LIMIT:"Max_credit_limit"
-     ,MAX_PAYMENT_TERM:"Max_payment_term"
+     ,MAX_CREDIT_LIMIT:"Limita max credit"
+     ,MAX_PAYMENT_TERM:"Limita termen de plata"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"
      ,NAME:"Denumire"

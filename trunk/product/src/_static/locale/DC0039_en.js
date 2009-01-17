@@ -3,7 +3,9 @@ DcProperty:{
   Title:"Product master-data"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client ID"
+      ATTRGRP_ID:"Attribute group ID"
+     ,ATTRGRP_NAME:"Attribute group"
+     ,CLIENT_ID:"Client ID"
      ,CLIENT_NAME:"Client"
      ,CODE:"Code"
      ,CREATEDBY:"Created by"

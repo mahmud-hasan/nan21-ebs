@@ -1,6 +1,6 @@
 N21.DataComp.DC0063.prototype.resourceBundle =  {
 DcProperty:{ 
-  Title:"DC0063"
+  Title:"Purchase orders"
     }
 ,FieldLabel:{ 
       BPARTNER_CONTACT_ID:"Bpartner_contact_id"
