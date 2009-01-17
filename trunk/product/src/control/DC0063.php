@@ -11,45 +11,45 @@ class DC0063 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_BPARTNER_CONTACT_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "po.BPARTNER_CONTACT_ID like :BPARTNER_CONTACT_ID";
-      $params["BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_BPARTNER_CONTACT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "po.BPARTNER_ID like :BPARTNER_ID";
-      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "po.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "po.CURRENCY like :CURRENCY";
-      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "po.DOC_DATE like :DOC_DATE";
-      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+      $where .= "po.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "po.DOC_NO like :DOC_NO";
       $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "po.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "po.DOC_DATE like :DOC_DATE";
+      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+    }
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "po.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "po.BPARTNER_ID like :BPARTNER_ID";
+      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_BPARTNER_CONTACT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "po.BPARTNER_CONTACT_ID like :BPARTNER_CONTACT_ID";
+      $params["BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_BPARTNER_CONTACT_ID"];
     }
     if (!empty($_REQUEST["QRY_REF_PORDER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "po.REF_PORDER_ID like :REF_PORDER_ID";
       $params["REF_PORDER_ID"] = $_REQUEST["QRY_REF_PORDER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_CURRENCY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "po.CURRENCY like :CURRENCY";
+      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
     }
     if (!empty($_REQUEST["QRY_TOTAL_AMOUNT"])) {
       $where .= (!empty($where))?" and ":"";
@@ -72,41 +72,42 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                po.BPARTNER_CONTACT_ID
-                ,po.BPARTNER_ID
-                ,(select name from bpartner where id = po.BPARTNER_ID) BPARTNER_NAME
-                ,(select code from client where id = po.client_id) CLIENT_CODE
-                ,po.CLIENT_ID
-                ,po.CREATEDBY
-                ,po.CREATEDON
-                ,po.CURRENCY
-                ,po.DOC_DATE
+                po.ID
                 ,po.DOC_NO
-                ,po.ID
-                ,po.MODIFIEDBY
-                ,po.MODIFIEDON
+                ,po.DOC_DATE
+                ,po.CLIENT_ID
+                ,po.BPARTNER_ID
+                ,po.BPARTNER_CONTACT_ID
                 ,po.REF_PORDER_ID
+                ,po.CURRENCY
                 ,po.TOTAL_AMOUNT
+                ,po.CREATEDON
+                ,po.CREATEDBY
+                ,po.MODIFIEDON
+                ,po.MODIFIEDBY
+                ,(select code from client where id = po.client_id) CLIENT_CODE
+                ,(select name from bpartner where id = po.BPARTNER_ID) BPARTNER_NAME
             from PURCHASE_ORDER po $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "BPARTNER_CONTACT_ID"
-      ,"BPARTNER_ID"
-      ,"BPARTNER_NAME"
-      ,"CLIENT_CODE"
-      ,"CLIENT_ID"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"CURRENCY"
-      ,"DOC_DATE"
+      "ID"
       ,"DOC_NO"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
+      ,"DOC_DATE"
+      ,"CLIENT_ID"
+      ,"BPARTNER_ID"
+      ,"BPARTNER_CONTACT_ID"
       ,"REF_PORDER_ID"
+      ,"CURRENCY"
       ,"TOTAL_AMOUNT"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CLIENT_CODE"
+      ,"BPARTNER_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -221,24 +222,24 @@ public function doInsert() {
     $RECORD["REF_PORDER_ID"] = $this->getRequestParam("REF_PORDER_ID");
     $RECORD["TOTAL_AMOUNT"] = $this->getRequestParam("TOTAL_AMOUNT");
     $sql = "insert into PURCHASE_ORDER(
-                 BPARTNER_CONTACT_ID
-                ,BPARTNER_ID
-                ,CLIENT_ID
-                ,CURRENCY
-                ,DOC_DATE
+                 ID
                 ,DOC_NO
-                ,ID
+                ,DOC_DATE
+                ,CLIENT_ID
+                ,BPARTNER_ID
+                ,BPARTNER_CONTACT_ID
                 ,REF_PORDER_ID
+                ,CURRENCY
                 ,TOTAL_AMOUNT
             ) values ( 
-                 :BPARTNER_CONTACT_ID
-                ,:BPARTNER_ID
-                ,:CLIENT_ID
-                ,:CURRENCY
-                ,:DOC_DATE
+                 :ID
                 ,:DOC_NO
-                ,:ID
+                ,:DOC_DATE
+                ,:CLIENT_ID
+                ,:BPARTNER_ID
+                ,:BPARTNER_CONTACT_ID
                 ,:REF_PORDER_ID
+                ,:CURRENCY
                 ,:TOTAL_AMOUNT
     )";
     $stmt = $this->db->prepare($sql);
@@ -276,13 +277,13 @@ public function doUpdate() {
     $RECORD["TOTAL_AMOUNT"] = $this->getRequestParam("TOTAL_AMOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0063.doUpdate().");}
     $sql = "update PURCHASE_ORDER set 
-                 BPARTNER_CONTACT_ID=:BPARTNER_CONTACT_ID
-                ,BPARTNER_ID=:BPARTNER_ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,CURRENCY=:CURRENCY
-                ,DOC_DATE=:DOC_DATE
+                 ID=:ID
                 ,DOC_NO=:DOC_NO
-                ,ID=:ID
+                ,DOC_DATE=:DOC_DATE
+                ,CLIENT_ID=:CLIENT_ID
+                ,BPARTNER_ID=:BPARTNER_ID
+                ,BPARTNER_CONTACT_ID=:BPARTNER_CONTACT_ID
+                ,CURRENCY=:CURRENCY
                 ,TOTAL_AMOUNT=:TOTAL_AMOUNT
     where 
            ID= :ID
@@ -345,21 +346,21 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                po.BPARTNER_CONTACT_ID
-                ,po.BPARTNER_ID
-                ,(select name from bpartner where id = po.BPARTNER_ID) BPARTNER_NAME
-                ,(select code from client where id = po.client_id) CLIENT_CODE
-                ,po.CLIENT_ID
-                ,po.CREATEDBY
-                ,po.CREATEDON
-                ,po.CURRENCY
-                ,po.DOC_DATE
+                po.ID
                 ,po.DOC_NO
-                ,po.ID
-                ,po.MODIFIEDBY
-                ,po.MODIFIEDON
+                ,po.DOC_DATE
+                ,po.CLIENT_ID
+                ,po.BPARTNER_ID
+                ,po.BPARTNER_CONTACT_ID
                 ,po.REF_PORDER_ID
+                ,po.CURRENCY
                 ,po.TOTAL_AMOUNT
+                ,po.CREATEDON
+                ,po.CREATEDBY
+                ,po.MODIFIEDON
+                ,po.MODIFIEDBY
+                ,(select code from client where id = po.client_id) CLIENT_CODE
+                ,(select name from bpartner where id = po.BPARTNER_ID) BPARTNER_NAME
             from PURCHASE_ORDER po
          where 
            po.ID= :ID
@@ -370,21 +371,21 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"DOC_NO" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"REF_PORDER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
   ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

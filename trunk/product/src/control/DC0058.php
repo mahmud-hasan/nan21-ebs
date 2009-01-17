@@ -11,6 +11,11 @@ class DC0058 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "BPARTNER_ID like :BPARTNER_ID";
@@ -26,11 +31,6 @@ private function preQuery(&$params, &$where) {
       $where .= "CMNCT_VALUE like :CMNCT_VALUE";
       $params["CMNCT_VALUE"] = $_REQUEST["QRY_CMNCT_VALUE"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
 }
 
 public function doQuery() {
@@ -45,19 +45,20 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                BPARTNER_ID
+                ID
+                ,BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
-                ,ID
             from BP_PHONE  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "BPARTNER_ID"
+      "ID"
+      ,"BPARTNER_ID"
       ,"CMNCT_TYPE"
       ,"CMNCT_VALUE"
-      ,"ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -145,15 +146,15 @@ public function doInsert() {
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $sql = "insert into BP_PHONE(
-                 BPARTNER_ID
+                 ID
+                ,BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
-                ,ID
             ) values ( 
-                 :BPARTNER_ID
+                 :ID
+                ,:BPARTNER_ID
                 ,:CMNCT_TYPE
                 ,:CMNCT_VALUE
-                ,:ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_BPPHONE_ID.nextval seq_val from dual")->fetchRow();
@@ -237,10 +238,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                BPARTNER_ID
+                ID
+                ,BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
-                ,ID
             from BP_PHONE 
          where 
            ID= :ID
@@ -251,10 +252,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CMNCT_TYPE" => array("DATA_TYPE" => "STRING")
   ,"CMNCT_VALUE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

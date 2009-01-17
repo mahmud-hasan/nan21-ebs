@@ -11,40 +11,20 @@ class DC0032 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCGRP_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACCGRP_ID like :ACCGRP_ID";
-      $params["ACCGRP_ID"] = $_REQUEST["QRY_ACCGRP_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACCJOURNAL_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCJOURNAL_ID like :ACCJOURNAL_ID";
-      $params["ACCJOURNAL_ID"] = $_REQUEST["QRY_ACCJOURNAL_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACCOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCOUNT like :ACCOUNT";
-      $params["ACCOUNT"] = $_REQUEST["QRY_ACCOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCSCHEMA_ID like :ACCSCHEMA_ID";
-      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACCOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ACCOUNT like :ACCOUNT";
+      $params["ACCOUNT"] = $_REQUEST["QRY_ACCOUNT"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -55,6 +35,26 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "PARENT_ACCOUNT like :PARENT_ACCOUNT";
       $params["PARENT_ACCOUNT"] = $_REQUEST["QRY_PARENT_ACCOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+    }
+    if (!empty($_REQUEST["QRY_ACCJOURNAL_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACCJOURNAL_ID like :ACCJOURNAL_ID";
+      $params["ACCJOURNAL_ID"] = $_REQUEST["QRY_ACCJOURNAL_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ACCGRP_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACCGRP_ID like :ACCGRP_ID";
+      $params["ACCGRP_ID"] = $_REQUEST["QRY_ACCGRP_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACCSCHEMA_ID like :ACCSCHEMA_ID";
+      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
     }
 }
 
@@ -72,45 +72,46 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACCGRP_ID
-                ,ACCJOURNAL_ID
-                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
-                ,ACCOUNT
-                ,ACCSCHEMA_ID
-                ,ACTIVE
+                ID
                 ,CLIENT_ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY
-                ,DESCRIPTION
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ,ACCOUNT
                 ,NAME
                 ,PARENT_ACCOUNT
+                ,CURRENCY
+                ,DESCRIPTION
+                ,ACTIVE
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
+                ,ACCJOURNAL_ID
+                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
+                ,ACCGRP_ID
+                ,ACCSCHEMA_ID
             from ACCOUNT  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCGRP_ID"
-      ,"ACCJOURNAL_ID"
-      ,"ACCJOURNAL_NAME"
-      ,"ACCOUNT"
-      ,"ACCSCHEMA_ID"
-      ,"ACTIVE"
+      "ID"
       ,"CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"CURRENCY"
-      ,"DESCRIPTION"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
+      ,"ACCOUNT"
       ,"NAME"
       ,"PARENT_ACCOUNT"
+      ,"CURRENCY"
+      ,"DESCRIPTION"
+      ,"ACTIVE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CLIENT_NAME"
+      ,"ACCJOURNAL_ID"
+      ,"ACCJOURNAL_NAME"
+      ,"ACCGRP_ID"
+      ,"ACCSCHEMA_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -232,31 +233,31 @@ public function doInsert() {
     $RECORD["PARENT_ACCOUNT"] = $this->getRequestParam("PARENT_ACCOUNT");
     $RECORD["SUMMARY"] = $this->getRequestParamBoolean("SUMMARY");
     $sql = "insert into ACCOUNT(
-                 ACCGRP_ID
-                ,ACCJOURNAL_ID
-                ,ACCOUNT
-                ,ACCSCHEMA_ID
-                ,ACTIVE
+                 ID
                 ,CLIENT_ID
-                ,CREATEDBY
-                ,CURRENCY
-                ,DESCRIPTION
-                ,ID
+                ,ACCOUNT
                 ,NAME
                 ,PARENT_ACCOUNT
+                ,CURRENCY
+                ,DESCRIPTION
+                ,ACTIVE
+                ,CREATEDBY
+                ,ACCJOURNAL_ID
+                ,ACCGRP_ID
+                ,ACCSCHEMA_ID
             ) values ( 
-                 :ACCGRP_ID
-                ,:ACCJOURNAL_ID
-                ,:ACCOUNT
-                ,:ACCSCHEMA_ID
-                ,:ACTIVE
+                 :ID
                 ,:CLIENT_ID
-                ,:CREATEDBY
-                ,:CURRENCY
-                ,:DESCRIPTION
-                ,:ID
+                ,:ACCOUNT
                 ,:NAME
                 ,:PARENT_ACCOUNT
+                ,:CURRENCY
+                ,:DESCRIPTION
+                ,:ACTIVE
+                ,:CREATEDBY
+                ,:ACCJOURNAL_ID
+                ,:ACCGRP_ID
+                ,:ACCSCHEMA_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_acct_id.nextval seq_val from dual")->fetchRow();
@@ -294,17 +295,17 @@ public function doUpdate() {
     $RECORD["PARENT_ACCOUNT"] = $this->getRequestParam("PARENT_ACCOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0032.doUpdate().");}
     $sql = "update ACCOUNT set 
-                 ACCGRP_ID=:ACCGRP_ID
-                ,ACCJOURNAL_ID=:ACCJOURNAL_ID
-                ,ACCOUNT=:ACCOUNT
-                ,ACCSCHEMA_ID=:ACCSCHEMA_ID
-                ,ACTIVE=:ACTIVE
+                 ID=:ID
                 ,CLIENT_ID=:CLIENT_ID
-                ,CURRENCY=:CURRENCY
-                ,DESCRIPTION=:DESCRIPTION
-                ,ID=:ID
+                ,ACCOUNT=:ACCOUNT
                 ,NAME=:NAME
                 ,PARENT_ACCOUNT=:PARENT_ACCOUNT
+                ,CURRENCY=:CURRENCY
+                ,DESCRIPTION=:DESCRIPTION
+                ,ACTIVE=:ACTIVE
+                ,ACCJOURNAL_ID=:ACCJOURNAL_ID
+                ,ACCGRP_ID=:ACCGRP_ID
+                ,ACCSCHEMA_ID=:ACCSCHEMA_ID
     where 
            ID= :ID
     ";
@@ -369,23 +370,23 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACCGRP_ID
-                ,ACCJOURNAL_ID
-                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
-                ,ACCOUNT
-                ,ACCSCHEMA_ID
-                ,ACTIVE
+                ID
                 ,CLIENT_ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,CURRENCY
-                ,DESCRIPTION
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ,ACCOUNT
                 ,NAME
                 ,PARENT_ACCOUNT
+                ,CURRENCY
+                ,DESCRIPTION
+                ,ACTIVE
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
+                ,ACCJOURNAL_ID
+                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
+                ,ACCGRP_ID
+                ,ACCSCHEMA_ID
             from ACCOUNT 
          where 
            ID= :ID
@@ -396,23 +397,23 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCGRP_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCJOURNAL_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCJOURNAL_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ACCOUNT" => array("DATA_TYPE" => "STRING")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"PARENT_ACCOUNT" => array("DATA_TYPE" => "STRING")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ACCJOURNAL_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCJOURNAL_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ACCGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

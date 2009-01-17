@@ -11,20 +11,20 @@ class DC0027 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -42,20 +42,21 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTIVE
+                ID
                 ,CODE
-                ,ID
                 ,NAME
+                ,ACTIVE
                 ,PRINT_REPORT_CODE
             from IINV_DOC_TYPE  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTIVE"
+      "ID"
       ,"CODE"
-      ,"ID"
       ,"NAME"
+      ,"ACTIVE"
       ,"PRINT_REPORT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -143,16 +144,16 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PRINT_REPORT_CODE"] = $this->getRequestParam("PRINT_REPORT_CODE");
     $sql = "insert into IINV_DOC_TYPE(
-                 ACTIVE
+                 ID
                 ,CODE
-                ,ID
                 ,NAME
+                ,ACTIVE
                 ,PRINT_REPORT_CODE
             ) values ( 
-                 :ACTIVE
+                 :ID
                 ,:CODE
-                ,:ID
                 ,:NAME
+                ,:ACTIVE
                 ,:PRINT_REPORT_CODE
     )";
     $stmt = $this->db->prepare($sql);
@@ -232,10 +233,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTIVE
+                ID
                 ,CODE
-                ,ID
                 ,NAME
+                ,ACTIVE
                 ,PRINT_REPORT_CODE
             from IINV_DOC_TYPE 
          where 
@@ -247,10 +248,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"PRINT_REPORT_CODE" => array("DATA_TYPE" => "STRING")
 );
 

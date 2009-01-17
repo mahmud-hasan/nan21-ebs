@@ -16,15 +16,15 @@ private function preQuery(&$params, &$where) {
       $where .= "ur.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_ROLE_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ur.ROLE_NAME like :ROLE_NAME";
-      $params["ROLE_NAME"] = $_REQUEST["QRY_ROLE_NAME"];
-    }
     if (!empty($_REQUEST["QRY_USER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ur.USER_ID like :USER_ID";
       $params["USER_ID"] = $_REQUEST["QRY_USER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ROLE_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ur.ROLE_NAME like :ROLE_NAME";
+      $params["ROLE_NAME"] = $_REQUEST["QRY_ROLE_NAME"];
     }
 }
 
@@ -40,21 +40,22 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ur.CREATEDBY
-                ,ur.CREATEDON
-                ,ur.ID
-                ,ur.ROLE_NAME
+                ur.ID
                 ,ur.USER_ID
+                ,ur.ROLE_NAME
+                ,ur.CREATEDON
+                ,ur.CREATEDBY
             from SYS_USER_ROLE ur $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDBY"
-      ,"CREATEDON"
-      ,"ID"
-      ,"ROLE_NAME"
+      "ID"
       ,"USER_ID"
+      ,"ROLE_NAME"
+      ,"CREATEDON"
+      ,"CREATEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -142,12 +143,12 @@ public function doInsert() {
     $RECORD["USER_ID"] = $this->getRequestParam("USER_ID");
     $sql = "insert into SYS_USER_ROLE(
                  ID
-                ,ROLE_NAME
                 ,USER_ID
+                ,ROLE_NAME
             ) values ( 
                  :ID
-                ,:ROLE_NAME
                 ,:USER_ID
+                ,:ROLE_NAME
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_USRROL_ID.nextval seq_val from dual")->fetchRow();
@@ -226,11 +227,11 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ur.CREATEDBY
-                ,ur.CREATEDON
-                ,ur.ID
-                ,ur.ROLE_NAME
+                ur.ID
                 ,ur.USER_ID
+                ,ur.ROLE_NAME
+                ,ur.CREATEDON
+                ,ur.CREATEDBY
             from SYS_USER_ROLE ur
          where 
            ur.ID= :ID
@@ -241,11 +242,11 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"USER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 

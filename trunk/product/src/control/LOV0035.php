@@ -8,16 +8,16 @@ require_once(PATH_CTRL_FRMWK."/Controller.php");
 class LOV0035 extends Controller {
   public function doQuery() {
     try {
-      $PARAMS = array();
+      $params = array();
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
-      $PARAMS["p_project_id"] = (isset($_REQUEST["p_project_id"]))?  $_REQUEST["p_project_id"] : "-1";
+      $params["p_project_id"] = (isset($_REQUEST["p_project_id"]))?  $_REQUEST["p_project_id"] : "-1";
       $sql = "select code from project_cmp_type 
  where (:p_project_id is null or project_id = :p_project_id) 
 order by 1 ".$orderByClause;
       $stmt = $this->db->prepare($sql);
-      $rs = $this->db->Execute($stmt, $PARAMS);
+      $rs = $this->db->Execute($stmt, $params);
       $columns = array(
        "CODE"
       );

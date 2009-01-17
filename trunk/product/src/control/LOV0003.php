@@ -8,7 +8,7 @@ require_once(PATH_CTRL_FRMWK."/Controller.php");
 class LOV0003 extends Controller {
   public function doQuery() {
     try {
-      $PARAMS = array();
+      $params = array();
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"t.code";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
@@ -16,7 +16,7 @@ class LOV0003 extends Controller {
   from iinv_doc_type t 
  where t.active = 'Y' ".$orderByClause;
       $stmt = $this->db->prepare($sql);
-      $rs = $this->db->Execute($stmt, $PARAMS);
+      $rs = $this->db->Execute($stmt, $params);
       $columns = array(
        "CODE"
       ,"NAME"

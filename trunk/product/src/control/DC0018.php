@@ -86,6 +86,7 @@ public function doQuery() {
                 ,MODIFIEDBY
                 ,MODIFIEDON
             from BP_BANKACCOUNT  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
@@ -127,8 +128,8 @@ public function doExport() {
     $sql = "select 
                 ID
                 ,BPARTNER_ID
-                ,BANK_CODE
                 ,IBAN
+                ,BANK_CODE
                 ,CURRENCY
                 ,BANKAG_CODE
                 ,CREATEDON
@@ -142,8 +143,8 @@ public function doExport() {
     $columns = array(
      "ID"
      ,"BPARTNER_ID"
-     ,"BANK_CODE"
      ,"IBAN"
+     ,"BANK_CODE"
      ,"CURRENCY"
      ,"BANKAG_CODE"
      ,"CREATEDON"

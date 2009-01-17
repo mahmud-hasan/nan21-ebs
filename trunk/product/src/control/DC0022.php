@@ -26,6 +26,11 @@ private function preQuery(&$params, &$where) {
       $where .= "LINK like :LINK";
       $params["LINK"] = $_REQUEST["QRY_LINK"];
     }
+    if (!empty($_REQUEST["QRY_MENUBAR_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MENUBAR_CODE like :MENUBAR_CODE";
+      $params["MENUBAR_CODE"] = $_REQUEST["QRY_MENUBAR_CODE"];
+    }
     if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MENUITEM_ID like :MENUITEM_ID";
@@ -67,6 +72,7 @@ public function doQuery() {
                 ,POSITION
                 ,TARGET
             from MENUITEM  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();

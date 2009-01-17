@@ -11,30 +11,30 @@ class DC0003 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_UOM_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "UOM_TYPE like :UOM_TYPE";
+      $params["UOM_TYPE"] = $_REQUEST["QRY_UOM_TYPE"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_UOM_TYPE"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "UOM_TYPE like :UOM_TYPE";
-      $params["UOM_TYPE"] = $_REQUEST["QRY_UOM_TYPE"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -52,35 +52,30 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTIVE
+                ID
                 ,CODE
-                ,CREATEDBY
-                ,CREATEDON
-                ,ID
-                ,IS_MASS
-                ,IS_PERIOD
-                ,IS_VOLUME
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NAME
                 ,UOM_TYPE
+                ,NAME
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,ACTIVE
             from UOM  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTIVE"
+      "ID"
       ,"CODE"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"ID"
-      ,"IS_MASS"
-      ,"IS_PERIOD"
-      ,"IS_VOLUME"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
       ,"UOM_TYPE"
+      ,"NAME"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"ACTIVE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -107,12 +102,9 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,UOM_TYPE
                 ,CODE
                 ,NAME
-                ,IS_PERIOD
-                ,IS_VOLUME
-                ,IS_MASS
+                ,UOM_TYPE
                 ,ACTIVE
                 ,CREATEDON
                 ,CREATEDBY
@@ -124,12 +116,9 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"UOM_TYPE"
      ,"CODE"
      ,"NAME"
-     ,"IS_PERIOD"
-     ,"IS_VOLUME"
-     ,"IS_MASS"
+     ,"UOM_TYPE"
      ,"ACTIVE"
      ,"CREATEDON"
      ,"CREATEDBY"
@@ -178,30 +167,21 @@ public function doInsert() {
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
-    $RECORD["IS_MASS"] = $this->getRequestParamBoolean("IS_MASS");
-    $RECORD["IS_PERIOD"] = $this->getRequestParamBoolean("IS_PERIOD");
-    $RECORD["IS_VOLUME"] = $this->getRequestParamBoolean("IS_VOLUME");
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["UOM_TYPE"] = $this->getRequestParam("UOM_TYPE");
     $sql = "insert into UOM(
-                 ACTIVE
+                 ID
                 ,CODE
-                ,ID
-                ,IS_MASS
-                ,IS_PERIOD
-                ,IS_VOLUME
-                ,NAME
                 ,UOM_TYPE
+                ,NAME
+                ,ACTIVE
             ) values ( 
-                 :ACTIVE
+                 :ID
                 ,:CODE
-                ,:ID
-                ,:IS_MASS
-                ,:IS_PERIOD
-                ,:IS_VOLUME
-                ,:NAME
                 ,:UOM_TYPE
+                ,:NAME
+                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_uom_id.nextval seq_val from dual")->fetchRow();
@@ -225,9 +205,6 @@ public function doUpdate() {
     $RECORD["ACTIVE"] = $this->getRequestParam("ACTIVE");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
-    $RECORD["IS_MASS"] = $this->getRequestParam("IS_MASS");
-    $RECORD["IS_PERIOD"] = $this->getRequestParam("IS_PERIOD");
-    $RECORD["IS_VOLUME"] = $this->getRequestParam("IS_VOLUME");
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["UOM_TYPE"] = $this->getRequestParam("UOM_TYPE");
@@ -235,9 +212,6 @@ public function doUpdate() {
                  ACTIVE=:ACTIVE
                 ,CODE=:CODE
                 ,ID=:ID
-                ,IS_MASS=:IS_MASS
-                ,IS_PERIOD=:IS_PERIOD
-                ,IS_VOLUME=:IS_VOLUME
                 ,MODIFIEDBY=:MODIFIEDBY
                 ,NAME=:NAME
                 ,UOM_TYPE=:UOM_TYPE
@@ -278,9 +252,6 @@ public function initNewRecord() {
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
     $RECORD["ID"] = $this->getRequestParam("ID");
-    $RECORD["IS_MASS"] = $this->getRequestParam("IS_MASS");
-    $RECORD["IS_PERIOD"] = $this->getRequestParam("IS_PERIOD");
-    $RECORD["IS_VOLUME"] = $this->getRequestParam("IS_VOLUME");
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
@@ -295,18 +266,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTIVE
+                ID
                 ,CODE
-                ,CREATEDBY
-                ,CREATEDON
-                ,ID
-                ,IS_MASS
-                ,IS_PERIOD
-                ,IS_VOLUME
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,NAME
                 ,UOM_TYPE
+                ,NAME
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,ACTIVE
             from UOM 
          where 
            ID= :ID
@@ -317,18 +285,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"IS_MASS" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_PERIOD" => array("DATA_TYPE" => "BOOLEAN")
-  ,"IS_VOLUME" => array("DATA_TYPE" => "BOOLEAN")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"UOM_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 
@@ -338,9 +303,6 @@ private function readRequest(&$RECORD) {
      if (isset($_REQUEST["CREATEDBY"] )) { $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY"); }
      if (isset($_REQUEST["CREATEDON"] )) { $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON"); }
      if (isset($_REQUEST["ID"] )) { $RECORD["ID"] = $this->getRequestParam("ID"); }
-    $RECORD["IS_MASS"] = $this->getRequestParamBoolean("IS_MASS");
-    $RECORD["IS_PERIOD"] = $this->getRequestParamBoolean("IS_PERIOD");
-    $RECORD["IS_VOLUME"] = $this->getRequestParamBoolean("IS_VOLUME");
      if (isset($_REQUEST["MODIFIEDBY"] )) { $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY"); }
      if (isset($_REQUEST["MODIFIEDON"] )) { $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON"); }
      if (isset($_REQUEST["NAME"] )) { $RECORD["NAME"] = $this->getRequestParam("NAME"); }

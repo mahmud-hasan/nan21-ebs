@@ -11,25 +11,30 @@ class DC0056 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
+    if (!empty($_REQUEST["QRY_ACCT_RECEIVABLE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "bac.ACCSCHEMA_ID like :ACCSCHEMA_ID";
-      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
+      $where .= "bac.ACCT_RECEIVABLE like :ACCT_RECEIVABLE";
+      $params["ACCT_RECEIVABLE"] = $_REQUEST["QRY_ACCT_RECEIVABLE"];
     }
     if (!empty($_REQUEST["QRY_ACCT_PREPAYMENT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bac.ACCT_PREPAYMENT like :ACCT_PREPAYMENT";
       $params["ACCT_PREPAYMENT"] = $_REQUEST["QRY_ACCT_PREPAYMENT"];
     }
-    if (!empty($_REQUEST["QRY_ACCT_RECEIVABLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bac.ACCT_RECEIVABLE like :ACCT_RECEIVABLE";
-      $params["ACCT_RECEIVABLE"] = $_REQUEST["QRY_ACCT_RECEIVABLE"];
-    }
     if (!empty($_REQUEST["QRY_ACCT_RECEVABLE_SRVC"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bac.ACCT_RECEVABLE_SRVC like :ACCT_RECEVABLE_SRVC";
       $params["ACCT_RECEVABLE_SRVC"] = $_REQUEST["QRY_ACCT_RECEVABLE_SRVC"];
+    }
+    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bac.ACCSCHEMA_ID like :ACCSCHEMA_ID";
+      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "bac.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -40,11 +45,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "bac.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "bac.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
     }
 }
 
@@ -60,29 +60,30 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                bac.ACCSCHEMA_ID
-                ,( select t.name from acc_schema t where t.id = bac.accschema_id ) ACCSCHEMA_NAME
+                bac.ACCT_RECEIVABLE
                 ,bac.ACCT_PREPAYMENT
-                ,bac.ACCT_RECEIVABLE
                 ,bac.ACCT_RECEVABLE_SRVC
+                ,bac.ACCSCHEMA_ID
+                ,( select t.name from acc_schema t where t.id = bac.accschema_id ) ACCSCHEMA_NAME
+                ,bac.ID
                 ,bac.BPARTNER_ID
                 ,bac.CLIENT_ID
                 ,(select code from client where id = bac.client_id) CLIENT_NAME
-                ,bac.ID
             from BP_ACCOUNT_CUSTOMER bac $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCSCHEMA_ID"
-      ,"ACCSCHEMA_NAME"
+      "ACCT_RECEIVABLE"
       ,"ACCT_PREPAYMENT"
-      ,"ACCT_RECEIVABLE"
       ,"ACCT_RECEVABLE_SRVC"
+      ,"ACCSCHEMA_ID"
+      ,"ACCSCHEMA_NAME"
+      ,"ID"
       ,"BPARTNER_ID"
       ,"CLIENT_ID"
       ,"CLIENT_NAME"
-      ,"ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -185,21 +186,21 @@ public function doInsert() {
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $sql = "insert into BP_ACCOUNT_CUSTOMER(
-                 ACCSCHEMA_ID
+                 ACCT_RECEIVABLE
                 ,ACCT_PREPAYMENT
-                ,ACCT_RECEIVABLE
                 ,ACCT_RECEVABLE_SRVC
+                ,ACCSCHEMA_ID
+                ,ID
                 ,BPARTNER_ID
                 ,CLIENT_ID
-                ,ID
             ) values ( 
-                 :ACCSCHEMA_ID
+                 :ACCT_RECEIVABLE
                 ,:ACCT_PREPAYMENT
-                ,:ACCT_RECEIVABLE
                 ,:ACCT_RECEVABLE_SRVC
+                ,:ACCSCHEMA_ID
+                ,:ID
                 ,:BPARTNER_ID
                 ,:CLIENT_ID
-                ,:ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_BPACCTCUST_ID.nextval seq_val from dual")->fetchRow();
@@ -296,15 +297,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                bac.ACCSCHEMA_ID
-                ,( select t.name from acc_schema t where t.id = bac.accschema_id ) ACCSCHEMA_NAME
+                bac.ACCT_RECEIVABLE
                 ,bac.ACCT_PREPAYMENT
-                ,bac.ACCT_RECEIVABLE
                 ,bac.ACCT_RECEVABLE_SRVC
+                ,bac.ACCSCHEMA_ID
+                ,( select t.name from acc_schema t where t.id = bac.accschema_id ) ACCSCHEMA_NAME
+                ,bac.ID
                 ,bac.BPARTNER_ID
                 ,bac.CLIENT_ID
                 ,(select code from client where id = bac.client_id) CLIENT_NAME
-                ,bac.ID
             from BP_ACCOUNT_CUSTOMER bac
          where 
            bac.ID= :ID
@@ -315,15 +316,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCSCHEMA_NAME" => array("DATA_TYPE" => "STRING")
+  "ACCT_RECEIVABLE" => array("DATA_TYPE" => "STRING")
   ,"ACCT_PREPAYMENT" => array("DATA_TYPE" => "STRING")
-  ,"ACCT_RECEIVABLE" => array("DATA_TYPE" => "STRING")
   ,"ACCT_RECEVABLE_SRVC" => array("DATA_TYPE" => "STRING")
+  ,"ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCSCHEMA_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

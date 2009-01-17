@@ -24,16 +24,17 @@ class DC_MAIN extends Controller {
   private function loadMenu($node) {
     $user = $this->getSessionParam("user");
     $lang = $user["language"];
+    $module = (!empty($_REQUEST["module"]))?$_REQUEST["module"]:'MAIN';
     if ($node == "root") {
       $sql = "select m.*, mt.translation menu_title
               from menuitem m , menuitem_trl mt
              where m.id = mt.menuitem_id
-               and m.menubar_code = 'MAIN'
+               and m.menubar_code = '".$module."'
                and m.menuitem_id is null
                and m.active = 'Y'
                and mt.lang = '".$lang."'
                and not exists (
-                 select 1 
+                 select 1
                    from menuitem_role mr 
                   where mr. menuitem_id = m.id 
                     and mr.role_name not in (select ur.role_name 
@@ -45,7 +46,7 @@ class DC_MAIN extends Controller {
       $sql = "select m.*, mt.translation menu_title
               from menuitem m , menuitem_trl mt
              where m.id = mt.menuitem_id
-               and m.menubar_code = 'MAIN' 
+               and m.menubar_code = '".$module."'
                and m.active = 'Y'
                and m.menuitem_id = '".$node."'
                and mt.lang = '".$lang."'

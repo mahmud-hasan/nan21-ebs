@@ -8,13 +8,13 @@ require_once(PATH_CTRL_FRMWK."/Controller.php");
 class LOV0033 extends Controller {
   public function doQuery() {
     try {
-      $PARAMS = array();
+      $params = array();
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
       $sql = "select id, name from project order by 2 ".$orderByClause;
       $stmt = $this->db->prepare($sql);
-      $rs = $this->db->Execute($stmt, $PARAMS);
+      $rs = $this->db->Execute($stmt, $params);
       $columns = array(
        "ID"
       ,"NAME"

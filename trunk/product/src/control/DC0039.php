@@ -11,6 +11,11 @@ class DC0039 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "p.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.CLIENT_ID like :CLIENT_ID";
@@ -21,20 +26,10 @@ private function preQuery(&$params, &$where) {
       $where .= "p.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_PRODCATEG_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "p.PRODCATEG_ID like :PRODCATEG_ID";
-      $params["PRODCATEG_ID"] = $_REQUEST["QRY_PRODCATEG_ID"];
     }
     if (!empty($_REQUEST["QRY_PROD_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
@@ -45,6 +40,16 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "p.SUMMARY like :SUMMARY";
       $params["SUMMARY"] = $_REQUEST["QRY_SUMMARY"];
+    }
+    if (!empty($_REQUEST["QRY_PRODCATEG_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "p.PRODCATEG_ID like :PRODCATEG_ID";
+      $params["PRODCATEG_ID"] = $_REQUEST["QRY_PRODCATEG_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ATTRGRP_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "p.ATTRGRP_ID like :ATTRGRP_ID";
+      $params["ATTRGRP_ID"] = $_REQUEST["QRY_ATTRGRP_ID"];
     }
 }
 
@@ -62,53 +67,58 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                p.CLIENT_ID
-                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
-                ,p.CODE
-                ,p.CREATEDBY
-                ,p.CREATEDON
-                ,p.DESCRIPTION
+                p.FOR_SALE
                 ,p.EXPENSE_ACCOUNT
-                ,p.FOR_SALE
-                ,p.ID
-                ,p.MODIFIEDBY
-                ,p.MODIFIEDON
-                ,p.NAME
-                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
-                ,p.PRODCATEG_ID
-                ,p.PROD_TYPE
                 ,p.REVENUE_ACCOUNT
-                ,p.STORABLE
+                ,p.ID
+                ,p.CLIENT_ID
+                ,p.CODE
+                ,p.NAME
+                ,p.DESCRIPTION
+                ,p.PROD_TYPE
                 ,p.SUMMARY
+                ,p.STORABLE
+                ,p.CREATEDON
+                ,p.CREATEDBY
+                ,p.MODIFIEDON
+                ,p.MODIFIEDBY
                 ,p.UOM_CODE
                 ,p.VOLUME
                 ,p.WEIGHT
-            from PRODUCT p $where $orderByClause ";
+                ,p.PRODCATEG_ID
+                ,pbo_product.get_categ_name_by_id(p.prodcateg_id, 'N') PRODCATEG_CODE
+                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
+                ,p.ATTRGRP_ID
+                ,pbo_product.get_attrgrp_name_by_id(p.attrgrp_id, 'N' ) ATTRGRP_NAME
+            from MM_PRODUCT p $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CODE"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DESCRIPTION"
+      "FOR_SALE"
       ,"EXPENSE_ACCOUNT"
-      ,"FOR_SALE"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NAME"
-      ,"PRODCATEG_CODE"
-      ,"PRODCATEG_ID"
-      ,"PROD_TYPE"
       ,"REVENUE_ACCOUNT"
-      ,"STORABLE"
+      ,"ID"
+      ,"CLIENT_ID"
+      ,"CODE"
+      ,"NAME"
+      ,"DESCRIPTION"
+      ,"PROD_TYPE"
       ,"SUMMARY"
+      ,"STORABLE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
       ,"UOM_CODE"
       ,"VOLUME"
       ,"WEIGHT"
+      ,"PRODCATEG_ID"
+      ,"PRODCATEG_CODE"
+      ,"CLIENT_NAME"
+      ,"ATTRGRP_ID"
+      ,"ATTRGRP_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -135,11 +145,11 @@ public function doExport() {
     }
     $sql = "select 
                 p.ID
-                ,p.CLIENT_ID
                 ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
+                ,p.CLIENT_ID
                 ,p.CODE
                 ,p.NAME
-                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
+                ,pbo_product.get_categ_name_by_id(p.prodcateg_id, 'N') PRODCATEG_CODE
                 ,p.PRODCATEG_ID
                 ,p.STORABLE
                 ,p.UOM_CODE
@@ -148,6 +158,8 @@ public function doExport() {
                 ,p.REVENUE_ACCOUNT
                 ,p.PROD_TYPE
                 ,p.SUMMARY
+                ,p.ATTRGRP_ID
+                ,pbo_product.get_attrgrp_name_by_id(p.attrgrp_id, 'N' ) ATTRGRP_NAME
                 ,p.VOLUME
                 ,p.WEIGHT
                 ,p.CREATEDON
@@ -155,14 +167,14 @@ public function doExport() {
                 ,p.MODIFIEDON
                 ,p.MODIFIEDBY
                 ,p.FOR_SALE
-            from PRODUCT p $where $orderByClause ";
+            from MM_PRODUCT p $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_NAME"
+     ,"CLIENT_ID"
      ,"CODE"
      ,"NAME"
      ,"PRODCATEG_CODE"
@@ -174,6 +186,8 @@ public function doExport() {
      ,"REVENUE_ACCOUNT"
      ,"PROD_TYPE"
      ,"SUMMARY"
+     ,"ATTRGRP_ID"
+     ,"ATTRGRP_NAME"
      ,"VOLUME"
      ,"WEIGHT"
      ,"CREATEDON"
@@ -219,9 +233,11 @@ public function doInsert() {
   $this->logger->debug("start: ".$this->dcName.".doInsert");
   try {
     $RECORD = array();
+    $RECORD["ATTRGRP_ID"] = $this->getRequestParam("ATTRGRP_ID");
+    $RECORD["ATTRGRP_NAME"] = $this->getRequestParam("ATTRGRP_NAME");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
     $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
-    $RECORD["CODE"] = $this->getRequestParam("CODE");
+    $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
@@ -240,42 +256,44 @@ public function doInsert() {
     $RECORD["UOM_CODE"] = $this->getRequestParam("UOM_CODE");
     $RECORD["VOLUME"] = $this->getRequestParam("VOLUME");
     $RECORD["WEIGHT"] = $this->getRequestParam("WEIGHT");
-    $sql = "insert into PRODUCT(
-                 CLIENT_ID
-                ,CODE
-                ,CREATEDBY
-                ,DESCRIPTION
+    $sql = "insert into MM_PRODUCT(
+                 FOR_SALE
                 ,EXPENSE_ACCOUNT
-                ,FOR_SALE
-                ,ID
-                ,MODIFIEDBY
-                ,NAME
-                ,PRODCATEG_ID
-                ,PROD_TYPE
                 ,REVENUE_ACCOUNT
-                ,STORABLE
+                ,ID
+                ,CLIENT_ID
+                ,CODE
+                ,NAME
+                ,DESCRIPTION
+                ,PROD_TYPE
                 ,SUMMARY
+                ,STORABLE
+                ,CREATEDBY
+                ,MODIFIEDBY
                 ,UOM_CODE
                 ,VOLUME
                 ,WEIGHT
+                ,PRODCATEG_ID
+                ,ATTRGRP_ID
             ) values ( 
-                 :CLIENT_ID
-                ,:CODE
-                ,:CREATEDBY
-                ,:DESCRIPTION
+                 :FOR_SALE
                 ,:EXPENSE_ACCOUNT
-                ,:FOR_SALE
-                ,:ID
-                ,:MODIFIEDBY
-                ,:NAME
-                ,:PRODCATEG_ID
-                ,:PROD_TYPE
                 ,:REVENUE_ACCOUNT
-                ,:STORABLE
+                ,:ID
+                ,:CLIENT_ID
+                ,:CODE
+                ,:NAME
+                ,:DESCRIPTION
+                ,:PROD_TYPE
                 ,:SUMMARY
+                ,:STORABLE
+                ,:CREATEDBY
+                ,:MODIFIEDBY
                 ,:UOM_CODE
                 ,:VOLUME
                 ,:WEIGHT
+                ,:PRODCATEG_ID
+                ,:ATTRGRP_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PROD_ID.nextval seq_val from dual")->fetchRow();
@@ -296,11 +314,14 @@ public function doUpdate() {
   $this->logger->debug("Start: ".$this->dcName.".doUpdate");
   try {
     $RECORD = array();
+    $RECORD["ATTRGRP_ID"] = $this->getRequestParam("ATTRGRP_ID");
+    $RECORD["ATTRGRP_NAME"] = $this->getRequestParam("ATTRGRP_NAME");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
     $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
-    $RECORD["CODE"] = $this->getRequestParam("CODE");
+    $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
     $RECORD["EXPENSE_ACCOUNT"] = $this->getRequestParam("EXPENSE_ACCOUNT");
+    $RECORD["FOR_SALE"] = $this->getRequestParamBoolean("FOR_SALE");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PRODCATEG_CODE"] = $this->getRequestParam("PRODCATEG_CODE");
@@ -311,19 +332,21 @@ public function doUpdate() {
     $RECORD["SUMMARY"] = $this->getRequestParamBoolean("SUMMARY");
     $RECORD["UOM_CODE"] = $this->getRequestParam("UOM_CODE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0039.doUpdate().");}
-    $sql = "update PRODUCT set 
-                 CLIENT_ID=:CLIENT_ID
-                ,CODE=:CODE
-                ,DESCRIPTION=:DESCRIPTION
+    $sql = "update MM_PRODUCT set 
+                 FOR_SALE=:FOR_SALE
                 ,EXPENSE_ACCOUNT=:EXPENSE_ACCOUNT
-                ,ID=:ID
-                ,NAME=:NAME
-                ,PRODCATEG_ID=:PRODCATEG_ID
-                ,PROD_TYPE=:PROD_TYPE
                 ,REVENUE_ACCOUNT=:REVENUE_ACCOUNT
-                ,STORABLE=:STORABLE
+                ,ID=:ID
+                ,CLIENT_ID=:CLIENT_ID
+                ,CODE=:CODE
+                ,NAME=:NAME
+                ,DESCRIPTION=:DESCRIPTION
+                ,PROD_TYPE=:PROD_TYPE
                 ,SUMMARY=:SUMMARY
+                ,STORABLE=:STORABLE
                 ,UOM_CODE=:UOM_CODE
+                ,PRODCATEG_ID=:PRODCATEG_ID
+                ,ATTRGRP_ID=:ATTRGRP_ID
     where 
            ID= :ID
     ";
@@ -345,7 +368,7 @@ public function doDelete() {
   try {
     $RECORD["ID"] = $this->getRequestParam("ID");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0039.doDelete().");}
-    $sql = "delete from PRODUCT where 
+    $sql = "delete from MM_PRODUCT where 
            ID= :ID
     ";
     $stmt = $this->db->prepare($sql);
@@ -360,6 +383,8 @@ public function doDelete() {
 
 public function initNewRecord() {
   try {
+    $RECORD["ATTRGRP_ID"] = $this->getRequestParam("ATTRGRP_ID");
+    $RECORD["ATTRGRP_NAME"] = $this->getRequestParam("ATTRGRP_NAME");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
     $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
@@ -391,28 +416,30 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                p.CLIENT_ID
-                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
-                ,p.CODE
-                ,p.CREATEDBY
-                ,p.CREATEDON
-                ,p.DESCRIPTION
+                p.FOR_SALE
                 ,p.EXPENSE_ACCOUNT
-                ,p.FOR_SALE
-                ,p.ID
-                ,p.MODIFIEDBY
-                ,p.MODIFIEDON
-                ,p.NAME
-                ,(select t.code from product_category t where t.id = p.prodcateg_id) PRODCATEG_CODE
-                ,p.PRODCATEG_ID
-                ,p.PROD_TYPE
                 ,p.REVENUE_ACCOUNT
-                ,p.STORABLE
+                ,p.ID
+                ,p.CLIENT_ID
+                ,p.CODE
+                ,p.NAME
+                ,p.DESCRIPTION
+                ,p.PROD_TYPE
                 ,p.SUMMARY
+                ,p.STORABLE
+                ,p.CREATEDON
+                ,p.CREATEDBY
+                ,p.MODIFIEDON
+                ,p.MODIFIEDBY
                 ,p.UOM_CODE
                 ,p.VOLUME
                 ,p.WEIGHT
-            from PRODUCT p
+                ,p.PRODCATEG_ID
+                ,pbo_product.get_categ_name_by_id(p.prodcateg_id, 'N') PRODCATEG_CODE
+                ,(select t.code from client t where t.id = p.client_id) CLIENT_NAME
+                ,p.ATTRGRP_ID
+                ,pbo_product.get_attrgrp_name_by_id(p.attrgrp_id, 'N' ) ATTRGRP_NAME
+            from MM_PRODUCT p
          where 
            p.ID= :ID
             ";
@@ -422,31 +449,35 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  "FOR_SALE" => array("DATA_TYPE" => "BOOLEAN")
   ,"EXPENSE_ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"FOR_SALE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"PRODCATEG_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PRODCATEG_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PROD_TYPE" => array("DATA_TYPE" => "STRING")
   ,"REVENUE_ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"STORABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"PROD_TYPE" => array("DATA_TYPE" => "STRING")
   ,"SUMMARY" => array("DATA_TYPE" => "BOOLEAN")
+  ,"STORABLE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"UOM_CODE" => array("DATA_TYPE" => "STRING")
   ,"VOLUME" => array("DATA_TYPE" => "NUMBER")
   ,"WEIGHT" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODCATEG_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODCATEG_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ATTRGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ATTRGRP_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 
 private function readRequest(&$RECORD) {
+     if (isset($_REQUEST["ATTRGRP_ID"] )) { $RECORD["ATTRGRP_ID"] = $this->getRequestParam("ATTRGRP_ID"); }
+     if (isset($_REQUEST["ATTRGRP_NAME"] )) { $RECORD["ATTRGRP_NAME"] = $this->getRequestParam("ATTRGRP_NAME"); }
      if (isset($_REQUEST["CLIENT_ID"] )) { $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID"); }
      if (isset($_REQUEST["CLIENT_NAME"] )) { $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME"); }
      if (isset($_REQUEST["CODE"] )) { $RECORD["CODE"] = $this->getRequestParam("CODE"); }

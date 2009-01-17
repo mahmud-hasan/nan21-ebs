@@ -11,11 +11,6 @@ class DC0045 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
@@ -25,6 +20,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_STATUS_CODE"])) {
       $where .= (!empty($where))?" and ":"";
@@ -52,30 +52,31 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CLIENT_ID
-                ,(select code from client where id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ID
                 ,NAME
+                ,CLIENT_ID
                 ,STATUS_CODE
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select code from client where id = client_id) CLIENT_NAME
                 ,TYPE_CODE
             from PROJECT  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
+      "ID"
       ,"NAME"
+      ,"CLIENT_ID"
       ,"STATUS_CODE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CLIENT_NAME"
       ,"TYPE_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -103,8 +104,8 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,(select code from client where id = client_id) CLIENT_NAME
                 ,CLIENT_ID
+                ,(select code from client where id = client_id) CLIENT_NAME
                 ,NAME
                 ,TYPE_CODE
                 ,STATUS_CODE
@@ -118,8 +119,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_NAME"
      ,"CLIENT_ID"
+     ,"CLIENT_NAME"
      ,"NAME"
      ,"TYPE_CODE"
      ,"STATUS_CODE"
@@ -176,15 +177,15 @@ public function doInsert() {
     $RECORD["STATUS_CODE"] = $this->getRequestParam("STATUS_CODE");
     $RECORD["TYPE_CODE"] = $this->getRequestParam("TYPE_CODE");
     $sql = "insert into PROJECT(
-                 CLIENT_ID
-                ,ID
+                 ID
                 ,NAME
+                ,CLIENT_ID
                 ,STATUS_CODE
                 ,TYPE_CODE
             ) values ( 
-                 :CLIENT_ID
-                ,:ID
+                 :ID
                 ,:NAME
+                ,:CLIENT_ID
                 ,:STATUS_CODE
                 ,:TYPE_CODE
     )";
@@ -219,9 +220,9 @@ public function doUpdate() {
     $RECORD["TYPE_CODE"] = $this->getRequestParam("TYPE_CODE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0045.doUpdate().");}
     $sql = "update PROJECT set 
-                 CLIENT_ID=:CLIENT_ID
-                ,ID=:ID
+                 ID=:ID
                 ,NAME=:NAME
+                ,CLIENT_ID=:CLIENT_ID
                 ,STATUS_CODE=:STATUS_CODE
                 ,TYPE_CODE=:TYPE_CODE
     where 
@@ -280,15 +281,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CLIENT_ID
-                ,(select code from client where id = client_id) CLIENT_NAME
-                ,CREATEDBY
-                ,CREATEDON
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ID
                 ,NAME
+                ,CLIENT_ID
                 ,STATUS_CODE
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,(select code from client where id = client_id) CLIENT_NAME
                 ,TYPE_CODE
             from PROJECT 
          where 
@@ -300,15 +301,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"STATUS_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
   ,"TYPE_CODE" => array("DATA_TYPE" => "STRING")
 );
 

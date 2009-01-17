@@ -11,35 +11,25 @@ class DC0046 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ASSIGNED_TO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ASSIGNED_TO like :ASSIGNED_TO";
-      $params["ASSIGNED_TO"] = $_REQUEST["QRY_ASSIGNED_TO"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_ISSUE_TYPE_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ISSUE_TYPE_CODE like :ISSUE_TYPE_CODE";
-      $params["ISSUE_TYPE_CODE"] = $_REQUEST["QRY_ISSUE_TYPE_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_IS_CLOSED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "IS_CLOSED like :IS_CLOSED";
-      $params["IS_CLOSED"] = $_REQUEST["QRY_IS_CLOSED"];
-    }
-    if (!empty($_REQUEST["QRY_PRIORITY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PRIORITY_CODE like :PRIORITY_CODE";
-      $params["PRIORITY_CODE"] = $_REQUEST["QRY_PRIORITY_CODE"];
-    }
     if (!empty($_REQUEST["QRY_PROJECT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "PROJECT_ID like :PROJECT_ID";
       $params["PROJECT_ID"] = $_REQUEST["QRY_PROJECT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_TITLE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "TITLE like :TITLE";
+      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
+    }
+    if (!empty($_REQUEST["QRY_ISSUE_TYPE_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ISSUE_TYPE_CODE like :ISSUE_TYPE_CODE";
+      $params["ISSUE_TYPE_CODE"] = $_REQUEST["QRY_ISSUE_TYPE_CODE"];
     }
     if (!empty($_REQUEST["QRY_SEVERITY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
@@ -51,10 +41,20 @@ private function preQuery(&$params, &$where) {
       $where .= "STATUS_CODE like :STATUS_CODE";
       $params["STATUS_CODE"] = $_REQUEST["QRY_STATUS_CODE"];
     }
-    if (!empty($_REQUEST["QRY_TITLE"])) {
+    if (!empty($_REQUEST["QRY_IS_CLOSED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "TITLE like :TITLE";
-      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
+      $where .= "IS_CLOSED like :IS_CLOSED";
+      $params["IS_CLOSED"] = $_REQUEST["QRY_IS_CLOSED"];
+    }
+    if (!empty($_REQUEST["QRY_PRIORITY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "PRIORITY_CODE like :PRIORITY_CODE";
+      $params["PRIORITY_CODE"] = $_REQUEST["QRY_PRIORITY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ASSIGNED_TO"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ASSIGNED_TO like :ASSIGNED_TO";
+      $params["ASSIGNED_TO"] = $_REQUEST["QRY_ASSIGNED_TO"];
     }
 }
 
@@ -72,61 +72,62 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACTUAL_EFFORT
-                ,ACT_ENDDATE
-                ,ACT_STARTDATE
-                ,AFF_CMP
-                ,AFF_CMP_TYPE_CODE
-                ,AFF_PROJECT_RELEASE_CODE
-                ,ASSIGNED_TO
-                ,CREATEDBY
-                ,CREATEDON
-                ,DESCRIPTION
+                ESTIMATE_EFFORT
+                ,ACTUAL_EFFORT
                 ,EFFORT_UNIT
-                ,ESTIMATE_EFFORT
                 ,ID
-                ,ISSUE_TYPE_CODE
-                ,IS_CLOSED
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,PLAN_ENDDATE
-                ,PLAN_STARTDATE
-                ,PRIORITY_CODE
                 ,PROJECT_ID
-                ,( select name from project where id = project_id) PROJECT_NAME
-                ,SEVERITY_CODE
-                ,STATUS_CODE
                 ,TITLE
+                ,ISSUE_TYPE_CODE
+                ,SEVERITY_CODE
+                ,AFF_CMP_TYPE_CODE
+                ,AFF_CMP
+                ,AFF_PROJECT_RELEASE_CODE
+                ,STATUS_CODE
+                ,IS_CLOSED
+                ,DESCRIPTION
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,PRIORITY_CODE
+                ,ASSIGNED_TO
+                ,PLAN_STARTDATE
+                ,PLAN_ENDDATE
+                ,ACT_STARTDATE
+                ,ACT_ENDDATE
+                ,( select name from project where id = project_id) PROJECT_NAME
             from PROJECT_ISSUE  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACTUAL_EFFORT"
-      ,"ACT_ENDDATE"
-      ,"ACT_STARTDATE"
-      ,"AFF_CMP"
-      ,"AFF_CMP_TYPE_CODE"
-      ,"AFF_PROJECT_RELEASE_CODE"
-      ,"ASSIGNED_TO"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"DESCRIPTION"
+      "ESTIMATE_EFFORT"
+      ,"ACTUAL_EFFORT"
       ,"EFFORT_UNIT"
-      ,"ESTIMATE_EFFORT"
       ,"ID"
-      ,"ISSUE_TYPE_CODE"
-      ,"IS_CLOSED"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"PLAN_ENDDATE"
-      ,"PLAN_STARTDATE"
-      ,"PRIORITY_CODE"
       ,"PROJECT_ID"
-      ,"PROJECT_NAME"
-      ,"SEVERITY_CODE"
-      ,"STATUS_CODE"
       ,"TITLE"
+      ,"ISSUE_TYPE_CODE"
+      ,"SEVERITY_CODE"
+      ,"AFF_CMP_TYPE_CODE"
+      ,"AFF_CMP"
+      ,"AFF_PROJECT_RELEASE_CODE"
+      ,"STATUS_CODE"
+      ,"IS_CLOSED"
+      ,"DESCRIPTION"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"PRIORITY_CODE"
+      ,"ASSIGNED_TO"
+      ,"PLAN_STARTDATE"
+      ,"PLAN_ENDDATE"
+      ,"ACT_STARTDATE"
+      ,"ACT_ENDDATE"
+      ,"PROJECT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -270,45 +271,45 @@ public function doInsert() {
     $RECORD["STATUS_CODE"] = $this->getRequestParam("STATUS_CODE");
     $RECORD["TITLE"] = $this->getRequestParam("TITLE");
     $sql = "insert into PROJECT_ISSUE(
-                 ACT_ENDDATE
-                ,ACT_STARTDATE
-                ,AFF_CMP
-                ,AFF_CMP_TYPE_CODE
-                ,AFF_PROJECT_RELEASE_CODE
-                ,ASSIGNED_TO
-                ,DESCRIPTION
+                 ESTIMATE_EFFORT
                 ,EFFORT_UNIT
-                ,ESTIMATE_EFFORT
                 ,ID
-                ,ISSUE_TYPE_CODE
-                ,IS_CLOSED
-                ,PLAN_ENDDATE
-                ,PLAN_STARTDATE
-                ,PRIORITY_CODE
                 ,PROJECT_ID
-                ,SEVERITY_CODE
-                ,STATUS_CODE
                 ,TITLE
+                ,ISSUE_TYPE_CODE
+                ,SEVERITY_CODE
+                ,AFF_CMP_TYPE_CODE
+                ,AFF_CMP
+                ,AFF_PROJECT_RELEASE_CODE
+                ,STATUS_CODE
+                ,IS_CLOSED
+                ,DESCRIPTION
+                ,PRIORITY_CODE
+                ,ASSIGNED_TO
+                ,PLAN_STARTDATE
+                ,PLAN_ENDDATE
+                ,ACT_STARTDATE
+                ,ACT_ENDDATE
             ) values ( 
-                 :ACT_ENDDATE
-                ,:ACT_STARTDATE
-                ,:AFF_CMP
-                ,:AFF_CMP_TYPE_CODE
-                ,:AFF_PROJECT_RELEASE_CODE
-                ,:ASSIGNED_TO
-                ,:DESCRIPTION
+                 :ESTIMATE_EFFORT
                 ,:EFFORT_UNIT
-                ,:ESTIMATE_EFFORT
                 ,:ID
-                ,:ISSUE_TYPE_CODE
-                ,:IS_CLOSED
-                ,:PLAN_ENDDATE
-                ,:PLAN_STARTDATE
-                ,:PRIORITY_CODE
                 ,:PROJECT_ID
-                ,:SEVERITY_CODE
-                ,:STATUS_CODE
                 ,:TITLE
+                ,:ISSUE_TYPE_CODE
+                ,:SEVERITY_CODE
+                ,:AFF_CMP_TYPE_CODE
+                ,:AFF_CMP
+                ,:AFF_PROJECT_RELEASE_CODE
+                ,:STATUS_CODE
+                ,:IS_CLOSED
+                ,:DESCRIPTION
+                ,:PRIORITY_CODE
+                ,:ASSIGNED_TO
+                ,:PLAN_STARTDATE
+                ,:PLAN_ENDDATE
+                ,:ACT_STARTDATE
+                ,:ACT_ENDDATE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_prjissue_id.nextval seq_val from dual")->fetchRow();
@@ -355,25 +356,25 @@ public function doUpdate() {
     $RECORD["TITLE"] = $this->getRequestParam("TITLE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0046.doUpdate().");}
     $sql = "update PROJECT_ISSUE set 
-                 ACT_ENDDATE=:ACT_ENDDATE
-                ,ACT_STARTDATE=:ACT_STARTDATE
-                ,AFF_CMP=:AFF_CMP
-                ,AFF_CMP_TYPE_CODE=:AFF_CMP_TYPE_CODE
-                ,AFF_PROJECT_RELEASE_CODE=:AFF_PROJECT_RELEASE_CODE
-                ,ASSIGNED_TO=:ASSIGNED_TO
-                ,DESCRIPTION=:DESCRIPTION
+                 ESTIMATE_EFFORT=:ESTIMATE_EFFORT
                 ,EFFORT_UNIT=:EFFORT_UNIT
-                ,ESTIMATE_EFFORT=:ESTIMATE_EFFORT
                 ,ID=:ID
-                ,ISSUE_TYPE_CODE=:ISSUE_TYPE_CODE
-                ,IS_CLOSED=:IS_CLOSED
-                ,PLAN_ENDDATE=:PLAN_ENDDATE
-                ,PLAN_STARTDATE=:PLAN_STARTDATE
-                ,PRIORITY_CODE=:PRIORITY_CODE
                 ,PROJECT_ID=:PROJECT_ID
-                ,SEVERITY_CODE=:SEVERITY_CODE
-                ,STATUS_CODE=:STATUS_CODE
                 ,TITLE=:TITLE
+                ,ISSUE_TYPE_CODE=:ISSUE_TYPE_CODE
+                ,SEVERITY_CODE=:SEVERITY_CODE
+                ,AFF_CMP_TYPE_CODE=:AFF_CMP_TYPE_CODE
+                ,AFF_CMP=:AFF_CMP
+                ,AFF_PROJECT_RELEASE_CODE=:AFF_PROJECT_RELEASE_CODE
+                ,STATUS_CODE=:STATUS_CODE
+                ,IS_CLOSED=:IS_CLOSED
+                ,DESCRIPTION=:DESCRIPTION
+                ,PRIORITY_CODE=:PRIORITY_CODE
+                ,ASSIGNED_TO=:ASSIGNED_TO
+                ,PLAN_STARTDATE=:PLAN_STARTDATE
+                ,PLAN_ENDDATE=:PLAN_ENDDATE
+                ,ACT_STARTDATE=:ACT_STARTDATE
+                ,ACT_ENDDATE=:ACT_ENDDATE
     where 
            ID= :ID
     ";
@@ -445,31 +446,31 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACTUAL_EFFORT
-                ,ACT_ENDDATE
-                ,ACT_STARTDATE
-                ,AFF_CMP
-                ,AFF_CMP_TYPE_CODE
-                ,AFF_PROJECT_RELEASE_CODE
-                ,ASSIGNED_TO
-                ,CREATEDBY
-                ,CREATEDON
-                ,DESCRIPTION
+                ESTIMATE_EFFORT
+                ,ACTUAL_EFFORT
                 ,EFFORT_UNIT
-                ,ESTIMATE_EFFORT
                 ,ID
-                ,ISSUE_TYPE_CODE
-                ,IS_CLOSED
-                ,MODIFIEDBY
-                ,MODIFIEDON
-                ,PLAN_ENDDATE
-                ,PLAN_STARTDATE
-                ,PRIORITY_CODE
                 ,PROJECT_ID
-                ,( select name from project where id = project_id) PROJECT_NAME
-                ,SEVERITY_CODE
-                ,STATUS_CODE
                 ,TITLE
+                ,ISSUE_TYPE_CODE
+                ,SEVERITY_CODE
+                ,AFF_CMP_TYPE_CODE
+                ,AFF_CMP
+                ,AFF_PROJECT_RELEASE_CODE
+                ,STATUS_CODE
+                ,IS_CLOSED
+                ,DESCRIPTION
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,PRIORITY_CODE
+                ,ASSIGNED_TO
+                ,PLAN_STARTDATE
+                ,PLAN_ENDDATE
+                ,ACT_STARTDATE
+                ,ACT_ENDDATE
+                ,( select name from project where id = project_id) PROJECT_NAME
             from PROJECT_ISSUE 
          where 
            ID= :ID
@@ -480,31 +481,31 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACTUAL_EFFORT" => array("DATA_TYPE" => "NUMBER")
-  ,"ACT_ENDDATE" => array("DATA_TYPE" => "DATE")
-  ,"ACT_STARTDATE" => array("DATA_TYPE" => "DATE")
-  ,"AFF_CMP" => array("DATA_TYPE" => "STRING")
-  ,"AFF_CMP_TYPE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"AFF_PROJECT_RELEASE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"ASSIGNED_TO" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  "ESTIMATE_EFFORT" => array("DATA_TYPE" => "NUMBER")
+  ,"ACTUAL_EFFORT" => array("DATA_TYPE" => "NUMBER")
   ,"EFFORT_UNIT" => array("DATA_TYPE" => "STRING")
-  ,"ESTIMATE_EFFORT" => array("DATA_TYPE" => "NUMBER")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ISSUE_TYPE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"IS_CLOSED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"PLAN_ENDDATE" => array("DATA_TYPE" => "DATE")
-  ,"PLAN_STARTDATE" => array("DATA_TYPE" => "DATE")
-  ,"PRIORITY_CODE" => array("DATA_TYPE" => "STRING")
   ,"PROJECT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PROJECT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"SEVERITY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"STATUS_CODE" => array("DATA_TYPE" => "STRING")
   ,"TITLE" => array("DATA_TYPE" => "STRING")
+  ,"ISSUE_TYPE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"SEVERITY_CODE" => array("DATA_TYPE" => "STRING")
+  ,"AFF_CMP_TYPE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"AFF_CMP" => array("DATA_TYPE" => "STRING")
+  ,"AFF_PROJECT_RELEASE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"STATUS_CODE" => array("DATA_TYPE" => "STRING")
+  ,"IS_CLOSED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"PRIORITY_CODE" => array("DATA_TYPE" => "STRING")
+  ,"ASSIGNED_TO" => array("DATA_TYPE" => "STRING")
+  ,"PLAN_STARTDATE" => array("DATA_TYPE" => "DATE")
+  ,"PLAN_ENDDATE" => array("DATA_TYPE" => "DATE")
+  ,"ACT_STARTDATE" => array("DATA_TYPE" => "DATE")
+  ,"ACT_ENDDATE" => array("DATA_TYPE" => "DATE")
+  ,"PROJECT_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

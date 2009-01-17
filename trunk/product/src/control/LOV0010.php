@@ -8,12 +8,12 @@ require_once(PATH_CTRL_FRMWK."/Controller.php");
 class LOV0010 extends Controller {
   public function doQuery() {
     try {
-      $PARAMS = array();
+      $params = array();
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"NAME";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
-      $PARAMS["p_country_code"] = (isset($_REQUEST["p_country_code"]))?  $_REQUEST["p_country_code"] : "-1";
-      $PARAMS["p_region_code"] = (isset($_REQUEST["p_region_code"]))?  $_REQUEST["p_region_code"] : "-1";
+      $params["p_country_code"] = (isset($_REQUEST["p_country_code"]))?  $_REQUEST["p_country_code"] : "-1";
+      $params["p_region_code"] = (isset($_REQUEST["p_region_code"]))?  $_REQUEST["p_region_code"] : "-1";
       $sql = "select id, name 
   from city 
  where (:p_country_code is null 
@@ -22,7 +22,7 @@ class LOV0010 extends Controller {
         or region_code like :p_region_code) 
   and active='Y' ".$orderByClause;
       $stmt = $this->db->prepare($sql);
-      $rs = $this->db->Execute($stmt, $PARAMS);
+      $rs = $this->db->Execute($stmt, $params);
       $columns = array(
        "ID"
       ,"NAME"

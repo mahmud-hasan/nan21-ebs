@@ -11,15 +11,15 @@ class DC0010 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CODE like :CODE";
-      $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CODE like :CODE";
+      $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -42,17 +42,24 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                CODE
-                ,ID
+                ID
+                ,CODE
                 ,NAME
+                ,IS_PERIOD
+                ,IS_VOLUME
+                ,IS_WEIGHT
             from UOM_TYPE  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CODE"
-      ,"ID"
+      "ID"
+      ,"CODE"
       ,"NAME"
+      ,"IS_PERIOD"
+      ,"IS_VOLUME"
+      ,"IS_WEIGHT"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -81,6 +88,9 @@ public function doExport() {
                 ID
                 ,CODE
                 ,NAME
+                ,IS_PERIOD
+                ,IS_VOLUME
+                ,IS_WEIGHT
             from UOM_TYPE  $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
@@ -89,6 +99,9 @@ public function doExport() {
      "ID"
      ,"CODE"
      ,"NAME"
+     ,"IS_PERIOD"
+     ,"IS_VOLUME"
+     ,"IS_WEIGHT"
       );
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
@@ -131,15 +144,24 @@ public function doInsert() {
     $RECORD["_p_store_recId"] = $this->getRequestParam("_p_store_recId");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
+    $RECORD["IS_PERIOD"] = $this->getRequestParamBoolean("IS_PERIOD");
+    $RECORD["IS_VOLUME"] = $this->getRequestParamBoolean("IS_VOLUME");
+    $RECORD["IS_WEIGHT"] = $this->getRequestParamBoolean("IS_WEIGHT");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into UOM_TYPE(
-                 CODE
-                ,ID
+                 ID
+                ,CODE
                 ,NAME
+                ,IS_PERIOD
+                ,IS_VOLUME
+                ,IS_WEIGHT
             ) values ( 
-                 :CODE
-                ,:ID
+                 :ID
+                ,:CODE
                 ,:NAME
+                ,:IS_PERIOD
+                ,:IS_VOLUME
+                ,:IS_WEIGHT
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_uomtype_id.nextval seq_val from dual")->fetchRow();
@@ -162,10 +184,16 @@ public function doUpdate() {
     $RECORD["_p_store_recId"] = $this->getRequestParam("_p_store_recId");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
+    $RECORD["IS_PERIOD"] = $this->getRequestParam("IS_PERIOD");
+    $RECORD["IS_VOLUME"] = $this->getRequestParam("IS_VOLUME");
+    $RECORD["IS_WEIGHT"] = $this->getRequestParam("IS_WEIGHT");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "update UOM_TYPE set 
                  CODE=:CODE
                 ,ID=:ID
+                ,IS_PERIOD=:IS_PERIOD
+                ,IS_VOLUME=:IS_VOLUME
+                ,IS_WEIGHT=:IS_WEIGHT
                 ,NAME=:NAME
     where 
            ID= :ID
@@ -201,6 +229,9 @@ public function initNewRecord() {
   try {
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["ID"] = $this->getRequestParam("ID");
+    $RECORD["IS_PERIOD"] = $this->getRequestParam("IS_PERIOD");
+    $RECORD["IS_VOLUME"] = $this->getRequestParam("IS_VOLUME");
+    $RECORD["IS_WEIGHT"] = $this->getRequestParam("IS_WEIGHT");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["_p_record_status"] = "insert";
     $this->setFieldInitialValues($RECORD, "DC0010");
@@ -212,9 +243,12 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                CODE
-                ,ID
+                ID
+                ,CODE
                 ,NAME
+                ,IS_PERIOD
+                ,IS_VOLUME
+                ,IS_WEIGHT
             from UOM_TYPE 
          where 
            ID= :ID
@@ -225,15 +259,21 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CODE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"IS_PERIOD" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_VOLUME" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_WEIGHT" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 
 private function readRequest(&$RECORD) {
      if (isset($_REQUEST["CODE"] )) { $RECORD["CODE"] = $this->getRequestParam("CODE"); }
      if (isset($_REQUEST["ID"] )) { $RECORD["ID"] = $this->getRequestParam("ID"); }
+    $RECORD["IS_PERIOD"] = $this->getRequestParamBoolean("IS_PERIOD");
+    $RECORD["IS_VOLUME"] = $this->getRequestParamBoolean("IS_VOLUME");
+    $RECORD["IS_WEIGHT"] = $this->getRequestParamBoolean("IS_WEIGHT");
      if (isset($_REQUEST["NAME"] )) { $RECORD["NAME"] = $this->getRequestParam("NAME"); }
 } /* end function readRequest  */
 

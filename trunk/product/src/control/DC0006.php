@@ -11,25 +11,25 @@ class DC0006 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_BANK_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "BANK_CODE like :BANK_CODE";
-      $params["BANK_CODE"] = $_REQUEST["QRY_BANK_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CODE like :CODE";
-      $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
+    if (!empty($_REQUEST["QRY_BANK_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "BANK_CODE like :BANK_CODE";
+      $params["BANK_CODE"] = $_REQUEST["QRY_BANK_CODE"];
+    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CODE like :CODE";
+      $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
 }
 
@@ -47,23 +47,24 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ADRESS
+                ID
                 ,BANK_CODE
-                ,CODE
-                ,ID
                 ,NAME
                 ,TYPE
+                ,CODE
+                ,ADRESS
             from BANK_AGENCY  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ADRESS"
+      "ID"
       ,"BANK_CODE"
-      ,"CODE"
-      ,"ID"
       ,"NAME"
       ,"TYPE"
+      ,"CODE"
+      ,"ADRESS"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -153,19 +154,19 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["TYPE"] = $this->getRequestParam("TYPE");
     $sql = "insert into BANK_AGENCY(
-                 ADRESS
+                 ID
                 ,BANK_CODE
-                ,CODE
-                ,ID
                 ,NAME
                 ,TYPE
+                ,CODE
+                ,ADRESS
             ) values ( 
-                 :ADRESS
+                 :ID
                 ,:BANK_CODE
-                ,:CODE
-                ,:ID
                 ,:NAME
                 ,:TYPE
+                ,:CODE
+                ,:ADRESS
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bankag_id.nextval seq_val from dual")->fetchRow();
@@ -247,12 +248,12 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ADRESS
+                ID
                 ,BANK_CODE
-                ,CODE
-                ,ID
                 ,NAME
                 ,TYPE
+                ,CODE
+                ,ADRESS
             from BANK_AGENCY 
          where 
            ID= :ID
@@ -263,12 +264,12 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ADRESS" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"BANK_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"TYPE" => array("DATA_TYPE" => "STRING")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"ADRESS" => array("DATA_TYPE" => "STRING")
 );
 
 

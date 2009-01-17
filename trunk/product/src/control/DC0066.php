@@ -16,6 +16,16 @@ private function preQuery(&$params, &$where) {
       $where .= "ms.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
+    if (!empty($_REQUEST["QRY_OWNER"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ms.OWNER like :OWNER";
+      $params["OWNER"] = $_REQUEST["QRY_OWNER"];
+    }
+    if (!empty($_REQUEST["QRY_TITLE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ms.TITLE like :TITLE";
+      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
+    }
     if (!empty($_REQUEST["QRY_LINK"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ms.LINK like :LINK";
@@ -31,20 +41,10 @@ private function preQuery(&$params, &$where) {
       $where .= "ms.MENUSHRCT_ID like :MENUSHRCT_ID";
       $params["MENUSHRCT_ID"] = $_REQUEST["QRY_MENUSHRCT_ID"];
     }
-    if (!empty($_REQUEST["QRY_OWNER"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ms.OWNER like :OWNER";
-      $params["OWNER"] = $_REQUEST["QRY_OWNER"];
-    }
     if (!empty($_REQUEST["QRY_POSITION"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ms.POSITION like :POSITION";
       $params["POSITION"] = $_REQUEST["QRY_POSITION"];
-    }
-    if (!empty($_REQUEST["QRY_TITLE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ms.TITLE like :TITLE";
-      $params["TITLE"] = $_REQUEST["QRY_TITLE"];
     }
 }
 
@@ -62,33 +62,34 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ms.CREATEDBY
-                ,ms.CREATEDON
-                ,ms.ID
+                ms.ID
+                ,ms.OWNER
+                ,ms.TITLE
                 ,ms.LINK
                 ,ms.MENUITEM_ID
                 ,ms.MENUSHRCT_ID
-                ,ms.MODIFIEDBY
-                ,ms.MODIFIEDON
-                ,ms.OWNER
                 ,ms.POSITION
-                ,ms.TITLE
+                ,ms.CREATEDON
+                ,ms.CREATEDBY
+                ,ms.MODIFIEDON
+                ,ms.MODIFIEDBY
             from MENU_SHORTCUT ms $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDBY"
-      ,"CREATEDON"
-      ,"ID"
+      "ID"
+      ,"OWNER"
+      ,"TITLE"
       ,"LINK"
       ,"MENUITEM_ID"
       ,"MENUSHRCT_ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"OWNER"
       ,"POSITION"
-      ,"TITLE"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -194,20 +195,20 @@ public function doInsert() {
     $RECORD["TITLE"] = $this->getRequestParam("TITLE");
     $sql = "insert into MENU_SHORTCUT(
                  ID
+                ,OWNER
+                ,TITLE
                 ,LINK
                 ,MENUITEM_ID
                 ,MENUSHRCT_ID
-                ,OWNER
                 ,POSITION
-                ,TITLE
             ) values ( 
                  :ID
+                ,:OWNER
+                ,:TITLE
                 ,:LINK
                 ,:MENUITEM_ID
                 ,:MENUSHRCT_ID
-                ,:OWNER
                 ,:POSITION
-                ,:TITLE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_MENUSHRCT_ID.nextval seq_val from dual")->fetchRow();
@@ -303,17 +304,17 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ms.CREATEDBY
-                ,ms.CREATEDON
-                ,ms.ID
+                ms.ID
+                ,ms.OWNER
+                ,ms.TITLE
                 ,ms.LINK
                 ,ms.MENUITEM_ID
                 ,ms.MENUSHRCT_ID
-                ,ms.MODIFIEDBY
-                ,ms.MODIFIEDON
-                ,ms.OWNER
                 ,ms.POSITION
-                ,ms.TITLE
+                ,ms.CREATEDON
+                ,ms.CREATEDBY
+                ,ms.MODIFIEDON
+                ,ms.MODIFIEDBY
             from MENU_SHORTCUT ms
          where 
            ms.ID= :ID
@@ -324,17 +325,17 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ID" => array("DATA_TYPE" => "NUMBER")
+  ,"OWNER" => array("DATA_TYPE" => "STRING")
+  ,"TITLE" => array("DATA_TYPE" => "STRING")
   ,"LINK" => array("DATA_TYPE" => "STRING")
   ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
   ,"MENUSHRCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"OWNER" => array("DATA_TYPE" => "STRING")
   ,"POSITION" => array("DATA_TYPE" => "NUMBER")
-  ,"TITLE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 

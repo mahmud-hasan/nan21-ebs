@@ -11,45 +11,45 @@ class DC0035 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_BPCONTR_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "c.BPCONTR_ID like :BPCONTR_ID";
-      $params["BPCONTR_ID"] = $_REQUEST["QRY_BPCONTR_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CONTRSTAT_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.CONTRSTAT_CODE like :CONTRSTAT_CODE";
-      $params["CONTRSTAT_CODE"] = $_REQUEST["QRY_CONTRSTAT_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_CONTRTYPE_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.CONTRTYPE_CODE like :CONTRTYPE_CODE";
-      $params["CONTRTYPE_CODE"] = $_REQUEST["QRY_CONTRTYPE_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_CUST_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.CUST_BPARTNER_ID like :CUST_BPARTNER_ID";
-      $params["CUST_BPARTNER_ID"] = $_REQUEST["QRY_CUST_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "c.DOC_DATE like :DOC_DATE";
-      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+      $where .= "c.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "c.DOC_NO like :DOC_NO";
       $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "c.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "c.DOC_DATE like :DOC_DATE";
+      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+    }
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_CUST_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.CUST_BPARTNER_ID like :CUST_BPARTNER_ID";
+      $params["CUST_BPARTNER_ID"] = $_REQUEST["QRY_CUST_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_CONTRTYPE_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.CONTRTYPE_CODE like :CONTRTYPE_CODE";
+      $params["CONTRTYPE_CODE"] = $_REQUEST["QRY_CONTRTYPE_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_BPCONTR_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.BPCONTR_ID like :BPCONTR_ID";
+      $params["BPCONTR_ID"] = $_REQUEST["QRY_BPCONTR_ID"];
+    }
+    if (!empty($_REQUEST["QRY_CONTRSTAT_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "c.CONTRSTAT_CODE like :CONTRSTAT_CODE";
+      $params["CONTRSTAT_CODE"] = $_REQUEST["QRY_CONTRSTAT_CODE"];
     }
     if (!empty($_REQUEST["QRY_SUPP_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -72,51 +72,52 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                c.BPCONTR_ID
+                (select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME
                 ,(select tt.doc_no||'/'||tt.doc_date from bp_contract tt where tt.id = c.bpcontr_id ) BPCONTR_NAME
-                ,c.CLIENT_ID
-                ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME
-                ,c.CONTRSTAT_CODE
-                ,c.CONTRTYPE_CODE
-                ,c.CREATEDBY
-                ,c.CREATEDON
-                ,c.CUST_BPARTNER_ID
-                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
-                ,c.DOC_DATE
-                ,c.DOC_NO
-                ,c.ENDDATE
                 ,c.ID
-                ,c.MODIFIEDBY
-                ,c.MODIFIEDON
-                ,c.NOTES
+                ,c.DOC_NO
+                ,c.DOC_DATE
+                ,c.CLIENT_ID
+                ,c.CUST_BPARTNER_ID
+                ,c.CONTRTYPE_CODE
                 ,c.STARTDATE
+                ,c.ENDDATE
+                ,c.NOTES
+                ,c.BPCONTR_ID
+                ,c.CREATEDON
+                ,c.CREATEDBY
+                ,c.MODIFIEDON
+                ,c.MODIFIEDBY
+                ,c.CONTRSTAT_CODE
                 ,c.SUPP_BPARTNER_ID
-                ,(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME
+                ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME
+                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
             from BP_CONTRACT c $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "BPCONTR_ID"
+      "SUPP_BPARTNER_NAME"
       ,"BPCONTR_NAME"
-      ,"CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CONTRSTAT_CODE"
-      ,"CONTRTYPE_CODE"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"CUST_BPARTNER_ID"
-      ,"CUST_BPARTNER_NAME"
-      ,"DOC_DATE"
-      ,"DOC_NO"
-      ,"ENDDATE"
       ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
-      ,"NOTES"
+      ,"DOC_NO"
+      ,"DOC_DATE"
+      ,"CLIENT_ID"
+      ,"CUST_BPARTNER_ID"
+      ,"CONTRTYPE_CODE"
       ,"STARTDATE"
+      ,"ENDDATE"
+      ,"NOTES"
+      ,"BPCONTR_ID"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"CONTRSTAT_CODE"
       ,"SUPP_BPARTNER_ID"
-      ,"SUPP_BPARTNER_NAME"
+      ,"CLIENT_NAME"
+      ,"CUST_BPARTNER_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -143,12 +144,12 @@ public function doExport() {
     }
     $sql = "select 
                 c.ID
-                ,c.CLIENT_ID
                 ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME
+                ,c.CLIENT_ID
                 ,c.DOC_NO
                 ,c.DOC_DATE
-                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
                 ,c.CUST_BPARTNER_ID
+                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
                 ,c.SUPP_BPARTNER_ID
                 ,(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME
                 ,c.CONTRTYPE_CODE
@@ -168,12 +169,12 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_NAME"
+     ,"CLIENT_ID"
      ,"DOC_NO"
      ,"DOC_DATE"
-     ,"CUST_BPARTNER_NAME"
      ,"CUST_BPARTNER_ID"
+     ,"CUST_BPARTNER_NAME"
      ,"SUPP_BPARTNER_ID"
      ,"SUPP_BPARTNER_NAME"
      ,"CONTRTYPE_CODE"
@@ -246,34 +247,34 @@ public function doInsert() {
     $RECORD["SUPP_BPARTNER_ID"] = $this->getRequestParam("SUPP_BPARTNER_ID");
     $RECORD["SUPP_BPARTNER_NAME"] = $this->getRequestParam("SUPP_BPARTNER_NAME");
     $sql = "insert into BP_CONTRACT(
-                 BPCONTR_ID
-                ,CLIENT_ID
-                ,CONTRSTAT_CODE
-                ,CONTRTYPE_CODE
-                ,CREATEDBY
-                ,CUST_BPARTNER_ID
-                ,DOC_DATE
+                 ID
                 ,DOC_NO
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
-                ,NOTES
+                ,DOC_DATE
+                ,CLIENT_ID
+                ,CUST_BPARTNER_ID
+                ,CONTRTYPE_CODE
                 ,STARTDATE
+                ,ENDDATE
+                ,NOTES
+                ,BPCONTR_ID
+                ,CREATEDBY
+                ,MODIFIEDBY
+                ,CONTRSTAT_CODE
                 ,SUPP_BPARTNER_ID
             ) values ( 
-                 :BPCONTR_ID
-                ,:CLIENT_ID
-                ,:CONTRSTAT_CODE
-                ,:CONTRTYPE_CODE
-                ,:CREATEDBY
-                ,:CUST_BPARTNER_ID
-                ,:DOC_DATE
+                 :ID
                 ,:DOC_NO
-                ,:ENDDATE
-                ,:ID
-                ,:MODIFIEDBY
-                ,:NOTES
+                ,:DOC_DATE
+                ,:CLIENT_ID
+                ,:CUST_BPARTNER_ID
+                ,:CONTRTYPE_CODE
                 ,:STARTDATE
+                ,:ENDDATE
+                ,:NOTES
+                ,:BPCONTR_ID
+                ,:CREATEDBY
+                ,:MODIFIEDBY
+                ,:CONTRSTAT_CODE
                 ,:SUPP_BPARTNER_ID
     )";
     $stmt = $this->db->prepare($sql);
@@ -313,17 +314,17 @@ public function doUpdate() {
     $RECORD["SUPP_BPARTNER_NAME"] = $this->getRequestParam("SUPP_BPARTNER_NAME");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0035.doUpdate().");}
     $sql = "update BP_CONTRACT set 
-                 BPCONTR_ID=:BPCONTR_ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,CONTRSTAT_CODE=:CONTRSTAT_CODE
-                ,CONTRTYPE_CODE=:CONTRTYPE_CODE
-                ,CUST_BPARTNER_ID=:CUST_BPARTNER_ID
-                ,DOC_DATE=:DOC_DATE
+                 ID=:ID
                 ,DOC_NO=:DOC_NO
-                ,ENDDATE=:ENDDATE
-                ,ID=:ID
-                ,NOTES=:NOTES
+                ,DOC_DATE=:DOC_DATE
+                ,CLIENT_ID=:CLIENT_ID
+                ,CUST_BPARTNER_ID=:CUST_BPARTNER_ID
+                ,CONTRTYPE_CODE=:CONTRTYPE_CODE
                 ,STARTDATE=:STARTDATE
+                ,ENDDATE=:ENDDATE
+                ,NOTES=:NOTES
+                ,BPCONTR_ID=:BPCONTR_ID
+                ,CONTRSTAT_CODE=:CONTRSTAT_CODE
                 ,SUPP_BPARTNER_ID=:SUPP_BPARTNER_ID
     where 
            ID= :ID
@@ -391,26 +392,26 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                c.BPCONTR_ID
+                (select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME
                 ,(select tt.doc_no||'/'||tt.doc_date from bp_contract tt where tt.id = c.bpcontr_id ) BPCONTR_NAME
-                ,c.CLIENT_ID
-                ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME
-                ,c.CONTRSTAT_CODE
-                ,c.CONTRTYPE_CODE
-                ,c.CREATEDBY
-                ,c.CREATEDON
-                ,c.CUST_BPARTNER_ID
-                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
-                ,c.DOC_DATE
-                ,c.DOC_NO
-                ,c.ENDDATE
                 ,c.ID
-                ,c.MODIFIEDBY
-                ,c.MODIFIEDON
-                ,c.NOTES
+                ,c.DOC_NO
+                ,c.DOC_DATE
+                ,c.CLIENT_ID
+                ,c.CUST_BPARTNER_ID
+                ,c.CONTRTYPE_CODE
                 ,c.STARTDATE
+                ,c.ENDDATE
+                ,c.NOTES
+                ,c.BPCONTR_ID
+                ,c.CREATEDON
+                ,c.CREATEDBY
+                ,c.MODIFIEDON
+                ,c.MODIFIEDBY
+                ,c.CONTRSTAT_CODE
                 ,c.SUPP_BPARTNER_ID
-                ,(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME
+                ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME
+                ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME
             from BP_CONTRACT c
          where 
            c.ID= :ID
@@ -421,26 +422,26 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "BPCONTR_ID" => array("DATA_TYPE" => "NUMBER")
+  "SUPP_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
   ,"BPCONTR_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CONTRSTAT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CONTRTYPE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CUST_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CUST_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
-  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
-  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CUST_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CONTRTYPE_CODE" => array("DATA_TYPE" => "STRING")
   ,"STARTDATE" => array("DATA_TYPE" => "DATE")
+  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"BPCONTR_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CONTRSTAT_CODE" => array("DATA_TYPE" => "STRING")
   ,"SUPP_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"SUPP_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CUST_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

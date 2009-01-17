@@ -40,25 +40,26 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                mir.CREATEDBY
-                ,mir.CREATEDON
+                mir.MODIFIEDBY
                 ,mir.ID
                 ,mir.MENUITEM_ID
-                ,mir.MODIFIEDBY
-                ,mir.MODIFIEDON
                 ,mir.ROLE_NAME
+                ,mir.CREATEDON
+                ,mir.CREATEDBY
+                ,mir.MODIFIEDON
             from MENUITEM_ROLE mir $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDBY"
-      ,"CREATEDON"
+      "MODIFIEDBY"
       ,"ID"
       ,"MENUITEM_ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
       ,"ROLE_NAME"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -242,13 +243,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                mir.CREATEDBY
-                ,mir.CREATEDON
+                mir.MODIFIEDBY
                 ,mir.ID
                 ,mir.MENUITEM_ID
-                ,mir.MODIFIEDBY
-                ,mir.MODIFIEDON
                 ,mir.ROLE_NAME
+                ,mir.CREATEDON
+                ,mir.CREATEDBY
+                ,mir.MODIFIEDON
             from MENUITEM_ROLE mir
          where 
            mir.ID= :ID
@@ -259,13 +260,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  "MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
 );
 
 

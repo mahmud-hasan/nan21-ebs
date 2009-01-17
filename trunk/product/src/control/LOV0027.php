@@ -8,18 +8,30 @@ require_once(PATH_CTRL_FRMWK."/Controller.php");
 class LOV0027 extends Controller {
   public function doQuery() {
     try {
-      $PARAMS = array();
+      $params = array();
+      $p_query_column = $this->getRequestParam("_p_query_column");
+      $p_query_value = $this->getRequestParam("_p_query_value");
+      $where = "";
+      if (!empty($p_query_value )) {
+      if ($p_query_column == "DOC_NO") {
+        $where = " tsql.DOC_NO like :p_query_value" ;
+      }
+        if (!empty($where)) {
+          $where = " where ".$where;
+          $params ["p_query_value"] = $p_query_value;
+        }
+      }
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"doc_date";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
-      $PARAMS["p_client_id"] = (isset($_REQUEST["p_client_id"]))?  $_REQUEST["p_client_id"] : "";
-      $PARAMS["p_issuer_id"] = (isset($_REQUEST["p_issuer_id"]))?  $_REQUEST["p_issuer_id"] : "";
-      $sql = "select r.id, r.doc_date, r.doc_no, r.issuer_id , iss.name issuer_name, r.doc_no||' / '||to_char(r.doc_date ,'DD.MM.YYYY') doc_no_date, r.client_id, r.total_amount, r.doc_currency 
+      $params["p_client_id"] = (isset($_REQUEST["p_client_id"]))?  $_REQUEST["p_client_id"] : "";
+      $params["p_issuer_id"] = (isset($_REQUEST["p_issuer_id"]))?  $_REQUEST["p_issuer_id"] : "";
+      $sql = "select tsql.* from (select r.id, r.doc_date, r.doc_no, r.issuer_id , iss.name issuer_name, r.doc_no||' / '||to_char(r.doc_date ,'DD.MM.YYYY') doc_no_date, r.client_id, r.total_amount, r.doc_currency 
   from rinvoice  r, bpartner iss
  where r.issuer_id = iss.id
-   and (:p_issuer_id is null or r.issuer_id = :p_issuer_id) ".$orderByClause;
+   and (:p_issuer_id is null or r.issuer_id = :p_issuer_id)) tsql ".$where." ".$orderByClause;
       $stmt = $this->db->prepare($sql);
-      $rs = $this->db->Execute($stmt, $PARAMS);
+      $rs = $this->db->Execute($stmt, $params);
       $columns = array(
        "DOC_CURRENCY"
       ,"DOC_DATE"

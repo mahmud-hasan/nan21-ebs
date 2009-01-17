@@ -101,6 +101,7 @@ public function doQuery() {
                 ,bp.TAX_NUMBER
                 ,bp.TAX_NUMBER_TYPE
             from BPARTNER bp $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
@@ -357,35 +358,31 @@ public function doUpdate() {
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["COMPANY_REG_NR"] = $this->getRequestParam("COMPANY_REG_NR");
-    $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
-    $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
     $RECORD["EMAIL"] = $this->getRequestParam("EMAIL");
     $RECORD["FAX"] = $this->getRequestParam("FAX");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["IS_CUSTOMER"] = $this->getRequestParamBoolean("IS_CUSTOMER");
     $RECORD["IS_EMPLOYEE"] = $this->getRequestParamBoolean("IS_EMPLOYEE");
     $RECORD["IS_VENDOR"] = $this->getRequestParamBoolean("IS_VENDOR");
-    $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
-    $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PHONE"] = $this->getRequestParam("PHONE");
     $RECORD["TAX_NUMBER"] = $this->getRequestParam("TAX_NUMBER");
     $RECORD["TAX_NUMBER_TYPE"] = $this->getRequestParam("TAX_NUMBER_TYPE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0014.doUpdate().");}
     $sql = "update BPARTNER set 
-                 CLIENT_ID=:CLIENT_ID
-                ,CODE=:CODE
-                ,COMPANY_REG_NR=:COMPANY_REG_NR
-                ,EMAIL=:EMAIL
-                ,FAX=:FAX
-                ,ID=:ID
-                ,IS_CUSTOMER=:IS_CUSTOMER
-                ,IS_EMPLOYEE=:IS_EMPLOYEE
-                ,IS_VENDOR=:IS_VENDOR
+                 ID=:ID
                 ,NAME=:NAME
-                ,PHONE=:PHONE
+                ,CODE=:CODE
                 ,TAX_NUMBER=:TAX_NUMBER
                 ,TAX_NUMBER_TYPE=:TAX_NUMBER_TYPE
+                ,COMPANY_REG_NR=:COMPANY_REG_NR
+                ,PHONE=:PHONE
+                ,EMAIL=:EMAIL
+                ,FAX=:FAX
+                ,CLIENT_ID=:CLIENT_ID
+                ,IS_CUSTOMER=:IS_CUSTOMER
+                ,IS_VENDOR=:IS_VENDOR
+                ,IS_EMPLOYEE=:IS_EMPLOYEE
     where 
            ID= :ID
     ";

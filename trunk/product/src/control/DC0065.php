@@ -11,6 +11,11 @@ class DC0065 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CLIENT_ID like :CLIENT_ID";
@@ -20,11 +25,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "DOCUMENT_TYPE like :DOCUMENT_TYPE";
       $params["DOCUMENT_TYPE"] = $_REQUEST["QRY_DOCUMENT_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_SERIAL"])) {
       $where .= (!empty($where))?" and ":"";
@@ -47,21 +47,22 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                (select t.code from client t where t.id = client_id) CLIENT_CODE
+                ID
                 ,CLIENT_ID
                 ,DOCUMENT_TYPE
-                ,ID
                 ,SERIAL
+                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
             from DOCUMENT_SERIAL  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CLIENT_CODE"
+      "ID"
       ,"CLIENT_ID"
       ,"DOCUMENT_TYPE"
-      ,"ID"
       ,"SERIAL"
+      ,"CLIENT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -88,8 +89,8 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
                 ,CLIENT_ID
+                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
                 ,DOCUMENT_TYPE
                 ,SERIAL
             from DOCUMENT_SERIAL  $where $orderByClause ";
@@ -98,8 +99,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_CODE"
      ,"CLIENT_ID"
+     ,"CLIENT_CODE"
      ,"DOCUMENT_TYPE"
      ,"SERIAL"
       );
@@ -148,14 +149,14 @@ public function doInsert() {
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["SERIAL"] = $this->getRequestParam("SERIAL");
     $sql = "insert into DOCUMENT_SERIAL(
-                 CLIENT_ID
+                 ID
+                ,CLIENT_ID
                 ,DOCUMENT_TYPE
-                ,ID
                 ,SERIAL
             ) values ( 
-                 :CLIENT_ID
+                 :ID
+                ,:CLIENT_ID
                 ,:DOCUMENT_TYPE
-                ,:ID
                 ,:SERIAL
     )";
     $stmt = $this->db->prepare($sql);
@@ -234,11 +235,11 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                (select t.code from client t where t.id = client_id) CLIENT_CODE
+                ID
                 ,CLIENT_ID
                 ,DOCUMENT_TYPE
-                ,ID
                 ,SERIAL
+                ,(select t.code from client t where t.id = client_id) CLIENT_CODE
             from DOCUMENT_SERIAL 
          where 
            ID= :ID
@@ -249,11 +250,11 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"DOCUMENT_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"SERIAL" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

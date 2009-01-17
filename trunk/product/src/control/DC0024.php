@@ -11,30 +11,30 @@ class DC0024 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ACCYEAR"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACCYEAR like :ACCYEAR";
-      $params["ACCYEAR"] = $_REQUEST["QRY_ACCYEAR"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_CLOSED"])) {
+    if (!empty($_REQUEST["QRY_ACCYEAR"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CLOSED like :CLOSED";
-      $params["CLOSED"] = $_REQUEST["QRY_CLOSED"];
-    }
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "ACCYEAR like :ACCYEAR";
+      $params["ACCYEAR"] = $_REQUEST["QRY_ACCYEAR"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_CLOSED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CLOSED like :CLOSED";
+      $params["CLOSED"] = $_REQUEST["QRY_CLOSED"];
     }
 }
 
@@ -52,45 +52,46 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ACCYEAR
+                ID
                 ,CLIENT_ID
-                ,(select code from client where id=client_id) CLIENT_NAME
-                ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ,ACCYEAR
                 ,NAME
-                ,NOTES
-                ,OPENED
-                ,PERIODTYPE
-                ,PREV_PERIOD_NAME
-                ,PROCESSING
                 ,STARTDATE
+                ,ENDDATE
+                ,CLOSED
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,PREV_PERIOD_NAME
+                ,NOTES
+                ,PERIODTYPE
+                ,PROCESSING
+                ,OPENED
+                ,(select code from client where id=client_id) CLIENT_NAME
             from ACCOUNTING_PERIOD  $where $orderByClause ";
+    $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ACCYEAR"
+      "ID"
       ,"CLIENT_ID"
-      ,"CLIENT_NAME"
-      ,"CLOSED"
-      ,"CREATEDBY"
-      ,"CREATEDON"
-      ,"ENDDATE"
-      ,"ID"
-      ,"MODIFIEDBY"
-      ,"MODIFIEDON"
+      ,"ACCYEAR"
       ,"NAME"
-      ,"NOTES"
-      ,"OPENED"
-      ,"PERIODTYPE"
-      ,"PREV_PERIOD_NAME"
-      ,"PROCESSING"
       ,"STARTDATE"
+      ,"ENDDATE"
+      ,"CLOSED"
+      ,"CREATEDON"
+      ,"CREATEDBY"
+      ,"MODIFIEDON"
+      ,"MODIFIEDBY"
+      ,"PREV_PERIOD_NAME"
+      ,"NOTES"
+      ,"PERIODTYPE"
+      ,"PROCESSING"
+      ,"OPENED"
+      ,"CLIENT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -211,35 +212,35 @@ public function doInsert() {
     $RECORD["PROCESSING"] = $this->getRequestParam("PROCESSING");
     $RECORD["STARTDATE"] = $this->getRequestParam("STARTDATE");
     $sql = "insert into ACCOUNTING_PERIOD(
-                 ACCYEAR
+                 ID
                 ,CLIENT_ID
+                ,ACCYEAR
+                ,NAME
+                ,STARTDATE
+                ,ENDDATE
                 ,CLOSED
                 ,CREATEDBY
-                ,ENDDATE
-                ,ID
                 ,MODIFIEDBY
-                ,NAME
-                ,NOTES
-                ,OPENED
-                ,PERIODTYPE
                 ,PREV_PERIOD_NAME
+                ,NOTES
+                ,PERIODTYPE
                 ,PROCESSING
-                ,STARTDATE
+                ,OPENED
             ) values ( 
-                 :ACCYEAR
+                 :ID
                 ,:CLIENT_ID
+                ,:ACCYEAR
+                ,:NAME
+                ,:STARTDATE
+                ,:ENDDATE
                 ,:CLOSED
                 ,:CREATEDBY
-                ,:ENDDATE
-                ,:ID
                 ,:MODIFIEDBY
-                ,:NAME
-                ,:NOTES
-                ,:OPENED
-                ,:PERIODTYPE
                 ,:PREV_PERIOD_NAME
+                ,:NOTES
+                ,:PERIODTYPE
                 ,:PROCESSING
-                ,:STARTDATE
+                ,:OPENED
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_accperiod_id.nextval seq_val from dual")->fetchRow();
@@ -269,12 +270,12 @@ public function doUpdate() {
     $RECORD["STARTDATE"] = $this->getRequestParam("STARTDATE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0024.doUpdate().");}
     $sql = "update ACCOUNTING_PERIOD set 
-                 ACCYEAR=:ACCYEAR
+                 ID=:ID
                 ,CLIENT_ID=:CLIENT_ID
-                ,ENDDATE=:ENDDATE
-                ,ID=:ID
+                ,ACCYEAR=:ACCYEAR
                 ,NAME=:NAME
                 ,STARTDATE=:STARTDATE
+                ,ENDDATE=:ENDDATE
     where 
            ID= :ID
     ";
@@ -338,23 +339,23 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ACCYEAR
+                ID
                 ,CLIENT_ID
-                ,(select code from client where id=client_id) CLIENT_NAME
-                ,CLOSED
-                ,CREATEDBY
-                ,CREATEDON
-                ,ENDDATE
-                ,ID
-                ,MODIFIEDBY
-                ,MODIFIEDON
+                ,ACCYEAR
                 ,NAME
-                ,NOTES
-                ,OPENED
-                ,PERIODTYPE
-                ,PREV_PERIOD_NAME
-                ,PROCESSING
                 ,STARTDATE
+                ,ENDDATE
+                ,CLOSED
+                ,CREATEDON
+                ,CREATEDBY
+                ,MODIFIEDON
+                ,MODIFIEDBY
+                ,PREV_PERIOD_NAME
+                ,NOTES
+                ,PERIODTYPE
+                ,PROCESSING
+                ,OPENED
+                ,(select code from client where id=client_id) CLIENT_NAME
             from ACCOUNTING_PERIOD 
          where 
            ID= :ID
@@ -365,23 +366,23 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ACCYEAR" => array("DATA_TYPE" => "STRING")
+  "ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CLOSED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ACCYEAR" => array("DATA_TYPE" => "STRING")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"OPENED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"PERIODTYPE" => array("DATA_TYPE" => "STRING")
-  ,"PREV_PERIOD_NAME" => array("DATA_TYPE" => "STRING")
-  ,"PROCESSING" => array("DATA_TYPE" => "STRING")
   ,"STARTDATE" => array("DATA_TYPE" => "DATE")
+  ,"ENDDATE" => array("DATA_TYPE" => "DATE")
+  ,"CLOSED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"PREV_PERIOD_NAME" => array("DATA_TYPE" => "STRING")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PERIODTYPE" => array("DATA_TYPE" => "STRING")
+  ,"PROCESSING" => array("DATA_TYPE" => "STRING")
+  ,"OPENED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 
