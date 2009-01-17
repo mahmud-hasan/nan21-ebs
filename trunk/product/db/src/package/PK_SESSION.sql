@@ -12,6 +12,8 @@ create or replace package pk_session is
   function getLang return varchar2;
   procedure setLang(p_lang in varchar2);
   function translateErrorMessage(p_message in varchar2, p_lang in varchar2) return varchar2;
+  
+  procedure do_user_login(p_username in varchar2, p_password in varchar2, p_ip_adress in varchar2);
 end;
 /
 show errors package PK_SESSION; 
@@ -69,7 +71,26 @@ create or replace package body pk_session is
     return v_out;  
   end;
   
-  
+  procedure do_user_login(p_username in varchar2, p_password in varchar2, p_ip_adress in varchar2) is
+    cursor c is 
+      select * 
+        from sys_user 
+       where login_code = p_username
+         and login_password = p_password;
+    r c%rowtype;    
+    b boolean; 
+  begin
+    open c;
+    fetch c into r;
+    b := c%found;
+    close c;
+    if not b then
+    	raise_error('AUTH_INVALID_CREDENTIALS');
+    end if;
+
+    insert into usr_login(username,login,ip_adress) values(p_username, sysdate, p_ip_adress); 
+
+  end;
   
 end;
 /

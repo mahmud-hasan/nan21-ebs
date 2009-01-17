@@ -83,7 +83,7 @@ create or replace package body pk_rinv is
      -- invoice items cursor
      cursor ci is 
       select t.* , p.name prod_name
-        from rinvoice_item t, product p
+        from rinvoice_item t, mm_product p
        where t.rinv_id = pr_doc.id
          and t.prod_id = p.id(+); 
          

@@ -112,7 +112,7 @@ create or replace package body pk_iinv is
      -- invoice items cursor
      cursor ci is 
       select t.* , p.name prod_name
-        from iinvoice_item t, product p
+        from iinvoice_item t, mm_product p
        where t.iinv_id = pr_iinv.id
          and t.prod_id = p.id; 
          
