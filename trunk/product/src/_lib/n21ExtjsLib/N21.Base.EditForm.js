@@ -14,48 +14,8 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
      Ext.apply(this, arguments); // eo apply
      this.header=false;
      this.hideBorders =true;
-     var stdTlb = new Array(
-            {id:"tlb_btn_rec_cmt",xtype: "button",cls:"x-btn-text-icon",text:"Save", icon:"_static/icon/g_rec_commit.png", tooltip:"Save changes &lt;Ctrl+S&gt;",handler: this.commitForm,scope :this }
-           ,{id:"tlb_btn_rec_new",xtype: "button",cls:"x-btn-text-icon",text:"New", icon:"_static/icon/g_rec_new.gif", tooltip:"Create new &lt;Ctrl+N&gt;",handler: this.createNewRecord,scope :this }
-           ,{id:"tlb_btn_rec_del",xtype: "button",cls:"x-btn-text-icon",text:"Delete", icon:"_static/icon/g_rec_del.gif", tooltip:"Delete",handler: this.deleteRecord,scope :this }
-           ,{id:"tlb_btn_rec_prv",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/f_rec_prev.gif", tooltip:"Previous",handler: this.fetchPrevFromDs,scope :this }
-           ,{id:"tlb_btn_rec_nxt",xtype: "button",cls:"x-btn-icon", icon:"_static/icon/f_rec_next.gif", tooltip:"Next",handler: this.fetchNextFromDs,scope :this }
-       
-        );
-     /*
-     if (Ext.isArray(this.toolbarConfig)) {
-       this.tbar = new Array();
-       var j=0;
-       for (var i=0; i<this.toolbarConfig.length; i++ ) {
-         if (this.toolbarConfig[i] == 'SAVE') {
-           this.tbar[j] = stdTlb[0];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'NEW') {
-           this.tbar[j] = stdTlb[1];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'N_PREV') {
-           this.tbar[j] = stdTlb[2];
-           j++;
-         }
-         if (this.toolbarConfig[i] == 'N_NEXT') {
-           this.tbar[j] = stdTlb[3];
-           j++;
-         }
-
-       }
-
-     } else {
-        if (this.toolbarConfig == 'STANDARD') {
-          this.tbar = stdTlb;
-       }
-       
-     }
-        */
      this.trackResetOnLoad=true;
      N21.Base.EditForm.superclass.initComponent.apply(this, arguments);
-    // alert(this.bodyStyle);
      this.addEvents('commitFormSuccess', 'commitFormFailure', 'loadNextRecord', 'loadPrevRecord', 'deleteRecord');
    }
 
@@ -69,14 +29,17 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
     keyMap.stopEvent = true;
   }
 
+  /*
   ,fetchPrevFromDs: function() { // alert(-1);
      this.fireEvent("loadPrevRecord",this);
+     // this.populateAllDetails();
   }
 
   ,fetchNextFromDs: function() {// alert(+1);
      this.fireEvent("loadNextRecord",this);
+    // this.populateAllDetails();
   }
-
+    */
   ,loadRecord: function (record) { //
      if (record!=null && record != undefined) {
        this.dataRecord =  record;

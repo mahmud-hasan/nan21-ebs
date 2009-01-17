@@ -12,52 +12,55 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   ,parentDcRelation: null
   ,firstFocusFieldName:null
   ,recordPk: new Array()
-  ,columns: new Ext.util.MixedCollection()
-  
+  ,columnMap: new Ext.util.MixedCollection()
+  ,dcToolbar: null
   ,queryPanelColCount: 2
   ,queryFields: new Ext.util.MixedCollection()
   ,queryFieldsVisible: new Array()
-  
+
+  ,childDCs:new Array()   //Array
+
+
+
   ,initComponent:function() {
 
-     Ext.apply(this, arguments); // eo apply
+     //Ext.apply(this, arguments); // eo apply
      this.clicksToEdit = 1;
      if (this.queryArraySize != null && this.queryArraySize != -1) {
        this.bbar = new Ext.PagingToolbar({
            store:this.store
           ,displayInfo:true
-          ,pageSize:20
+          ,pageSize:this.queryArraySize
           });
      }
-      var toolbar1 = this.tbar;
-    // this.queryWindow = new Ext.Window({
+      this.dcToolbar = this.tbar;
       this.tbar = new Ext.Panel({
           autoScroll:true
          ,border:true
          ,bodyBorder :false
-         ,tbar:toolbar1
+         ,tbar:this.dcToolbar
          ,frame:false
          ,layout:'table'
-         , layoutConfig: {columns: this.queryPanelColCount}
+         ,layoutConfig: {columns: this.queryPanelColCount}
          ,defaults:{labelWidth:90, labelAlign:'right'}
          ,bodyStyle:'padding-top:5px;padding-bottom:5px;'
          ,items:[
             {html: '<p>Filter criteria</p>', bodyStyle:'border:0;padding-left:5px;', colspan: this.queryPanelColCount}
          ]
        });
-      // alert('this.queryPanelColCount='+this.queryPanelColCount);
+
        for (var i=1; i<=this.queryPanelColCount; i++) {
-         // this.tbar.items[this.tbar.items.length]
-         this.tbar.add( {layout:'form',labelAlign:'right', bodyStyle:'border:0;',  items: this.getQueryFieldsForPanelCol(i)});
+         this.tbar.add( {layout:'form',labelAlign:'right', bodyStyle:'border:0;', autoScroll:false, items: this.getQueryFieldsForPanelCol(i)});
        }
-       //alert('this.tbar.items.length='+this.tbar.items.length);
 
 
 
      N21.Base.GridEdit.superclass.initComponent.apply(this, arguments);
      if (this.parentDcRelation != null) {
         for (var j=0;j<this.parentDcRelation.relation.length; j++ ) {
-          this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'_'+ this.parentDcRelation.relation[j].parent;
+          //this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'_'+ this.parentDcRelation.relation[j].parent;
+          this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'.'+ this.parentDcRelation.relation[j].parent;
+
         }
      }
    }
@@ -67,55 +70,96 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
    ,serverMessages: []
 
 
+  ,getCurrentRowIndex:function() {
+     if (this.getSelectionModel().selection) {
+       return this.getSelectionModel().selection.cell[0];
+     }  else return -1;
+
+   }
+
+
+  ,show_window:function(detailBlock) {
+    var showWindow = true;
+    //if it is a child DC fetch the data
+    var blockRelationIndex = -1;
+        for (var i=0;i<this.childDCs.length;i++) {
+          if  (this.childDCs[i].name == detailBlock)  {
+            blockRelationIndex = i;
+            break;
+          }
+        }
+    if (blockRelationIndex != -1 ) {
+      var rowIdx = -1;
+      try {
+        var rowIdx = this.getCurrentRowIndex();
+      } catch (e) { /* No selection */ showWindow=false; Ext.Msg.alert('Error', 'No record selected. Cannot load details. '); }
+      if (rowIdx != -1) {
+        for (var x=0; x<this.childDCs[ blockRelationIndex ].relation.length; x++ ) {
+             Ext.getCmp(detailBlock).setQueryFieldValue(this.childDCs[ blockRelationIndex ].relation[x].child, this.store.getAt(rowIdx).get(this.childDCs[ blockRelationIndex ].relation[x].parent )  );
+        }
+        Ext.getCmp(detailBlock).executeQuery();
+      }
+
+    }
+    if (showWindow) {
+      this.layoutItems.get(detailBlock).show();
+    }
+  }
+
+
+
+
+
   ,initEvents: function() {
     N21.Base.GridEdit.superclass.initEvents.call(this);
     this.getStore().proxy.on('loadexception', this.onLoadException, this);
     this.getStore().proxy.on('load', this.onLoadProxy, this);
-    this.on('beforeedit', this.beforeCellEdit,this )
+    this.on('beforeedit', this.beforeCellEdit,this );
   }
 
 
   ,getQueryFieldsForPanelCol:function (colNr) {
-    var idxStart,idxStop;
+     var idxStart,idxStop;
      var colArr = new Array();
      var vqfLen = this.queryFieldsVisible.length;
      var mod = vqfLen%this.queryPanelColCount;
      var colSize = Math.floor(vqfLen/this.queryPanelColCount);
      colSize =  (mod>0&&colNr<=mod)?(colSize+1):colSize;
-
      idxStart =  Math.floor(vqfLen/this.queryPanelColCount)*(colNr-1) ;
-
-    // alert('modulus='+mod+', colNr='+colNr+' colSize='+colSize);
-      if (mod>0) {
+     if (mod>0) {
         idxStart += (colNr>mod)?mod:(colNr-1);
       }
-      idxStop = idxStart + colSize;
-     //idxStop =  Math.floor(vqfLen/this.queryPanelColCount)*colNr ;
+     idxStop = idxStart + colSize;
      idxStop = (idxStop<vqfLen)?idxStop:vqfLen ;
-    //alert('idxStart='+idxStart+' idxStop='+idxStop);
-    //alert('idxStart='+idxStart+' idxStop='+idxStop);
+     /*
      if (vqfLen%this.queryPanelColCount !=0 ) {
        if (i<vqfLen%this.queryPanelColCount) {
           //idxStart++;
           //idxStop++;
        }
-     }
+     } */
      for(var i = idxStart; i < idxStop; i++){ // alert('col='+colNr+' qf='+this.queryFieldsVisible[i]);
         colArr[colArr.length] = this.queryFields.get(this.queryFieldsVisible[i]);
      }
-     //alert('arr len='+colArr.length);
     return colArr;
   }
 
 
-
+  ,getFieldValue: function(fieldName, rowIdx) {
+      if (!Ext.isEmpty(rowIdx)) {
+         return this.getStore().getAt(rowIdx).get(fieldName);
+      } else {
+        return this.getStore().getAt(this.getCurrentRowIndex()).get(fieldName);
+      }
+      //return this.fields.get(fieldName).getValue();
+  }
 
 
   ,beforeCellEdit:function(e) {
     if (e.record.data._p_record_status == "insert") {
-      if (!this.columns.get(e.field).insert_allowed) {e.cancel=true;}
+      if (!this.columnMap.get(e.field).insert_allowed) {e.cancel=true;}
     } else {
-      if (!this.columns.get(e.field).update_allowed) {e.cancel=true;}
+      if (!this.columnMap.get(e.field).update_allowed) {e.cancel=true;}
     }
   }
 
@@ -253,7 +297,12 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
      for (var i=0; i<this.getColumnModel().config.length; i++) {
        if (!Ext.isEmpty(this.getColumnModel().config[i].copyValueFrom) ) {
-            newRecord.set(this.getColumnModel().config[i].dataIndex, Ext.getCmp(this.getColumnModel().config[i].copyValueFrom).getValue());
+            var cpValFrom = this.getColumnModel().config[i].copyValueFrom;
+            var dc = cpValFrom.substring(0,cpValFrom.indexOf("."));
+            var fld = cpValFrom.substring(cpValFrom.indexOf(".")+1);
+            //var val = Ext.getCmp(this.getColumnModel().config[i].copyValueFrom).getValue();
+            var val = Ext.getCmp(dc).getFieldValue(fld);
+            newRecord.set(this.getColumnModel().config[i].dataIndex, val);
           }
      }
      this.store.add(newRecord);
@@ -370,13 +419,18 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   }
 
 
-   ,urldecode: function ( str ) {
-      var ret = str;
-      ret = ret.replace(/\+/g, "%20");
-      ret = decodeURIComponent(ret);
-      ret = ret.toString();
-      return ret;
+  ,urldecode: function ( str ) {
+    var ret = str;
+    try{
+    ret = str.replace(/\+/g, "%20");
+    ret = decodeURIComponent(ret);
+    ret = ret.toString();
+    return ret;
     }
+    catch(e) {
+      return str;
+    }
+  }
 
 
    ,clear_records:function() {

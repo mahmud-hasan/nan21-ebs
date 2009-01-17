@@ -7,7 +7,13 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
     defaultAutoCreate : {tag: "input", type: "text", size: "16",style:"cursor:default;", autocomplete: "off"}
     ,triggerClass: 'x-form-search-trigger'
     ,validateOnBlur: false
-    
+
+    ,dataComponentName: null
+
+    ,queryFields: []
+    ,queryFieldsMap: null
+    ,defQueryField:''
+
     , params:{}
     ,callFromGrid: null
     ,callFromGridRow:null
@@ -35,7 +41,7 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
 
    , paramMapping:[]
     // example: paramMapping:[{param:'p_client_id',field:'DC0014_CLIENT_ID'},{param:'p_bpartner_id',field:'DC0014_BPARTNER_FROM'}]
-
+    ,queryArraySize:-1
     ,window:null
 
 
@@ -73,11 +79,19 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
    , selectedRecords: []
 
     , initComponent: function(){
+
+        Ext.apply(this,arguments);
+
+        this.queryFieldsMap = [
+           new Ext.form.ComboBox({xtype:'combo', value:this.defQueryField,selectOnFocus:true,  name: this.dataComponentName+'_QRY_FIELD',hiddenName:  this.dataComponentName+'_QRY_FIELD_ID', hiddenId:  this.dataComponentName+'_QRY_FIELD_ID',  width:120, store: this.queryFields /*getQueryFieldLabels() */   })
+          ,new Ext.form.TextField({xtype:'textfield',selectOnFocus:true, name: this.dataComponentName+'_QRY_VALUE', width:150  })
+        ];
+        //alert(this.queryFieldsMap[0]);
+
         if((this.view.xtype != 'grid' && this.view.xtype != 'dataview') &&
         (!(this.view instanceof Ext.grid.GridPanel) && !(this.view instanceof Ext.DataView))){
             throw "N21.Base.Lov.view option must be instance of Ext.grid.GridPanel or Ext.DataView!";
         }
-
         N21.Base.Lov.superclass.initComponent.call(this);
 
         this.viewType = this.view.getXType();
@@ -92,25 +106,6 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
             this.view.multiSelect = this.multiSelect;
         }
 
-        if(Ext.type(this.displayField) == 'array'){
-            this.displayField = this.displayField.join('');
-        }
-        if (/<tpl(.*)<\/tpl>/.test(this.displayField) && !(this.displayFieldTpl instanceof Ext.XTemplate)) {
-            this.displayFieldTpl = new Ext.XTemplate(this.displayField).compile();
-        }
-
-        if(Ext.type(this.qtipTpl) == 'array'){
-            this.qtipTpl = this.qtipTpl.join('');
-        }
-        if(/<tpl(.*)<\/tpl>/.test(this.qtipTpl) && !(this.qtipTpl instanceof Ext.XTemplate) ){
-            this.qtipTpl = new Ext.XTemplate(this.qtipTpl).compile();
-        }
-
-        // If store was auto loaded mark it as loaded
-        if (this.view.store.autoLoad) {
-            this.isStoreLoaded = true;
-        }
-              
     }
 
 
@@ -122,6 +117,9 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
     this.view.getStore().proxy.on('loadexception', this.onLoadException, this);
     this.view.getStore().proxy.on('load', this.onLoadProxy, this);
   }
+
+
+
 
 
   ,onLoadException:function(proxy,options,response,error) {
@@ -151,33 +149,26 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
     ret = ret.toString();
     return ret;
   }
-  ,onViewKeypress: function( evnt) {
-  //  alert(evnt.getKey());
+  ,onViewKeypress: function( evnt) {  //  alert(evnt.getKey());
    if (evnt.getKey() == 13 ) { // arrow down => open lov
        this.onDoSelect();
     }
   }
+
   ,onSpecialKeyClick: function(field, evnt) {
-   // alert(evnt.getKey());
    if (evnt.getKey() == 40 ) { // arrow down => open lov
        this.showLov();
     }
-   // this.view.getTopToolbar().items.get("lov_p_filter_val").getEl().focus();
     return false;
   }
 
 
   ,showLov:function() {
-    	this.renderWindow();
-    	 this.executeQuery();
-    /*	if (!this.isStoreLoaded) {
-            this.executeQuery();
-            this.isStoreLoaded = true;
-        } else if (this.alwaysLoadStore === true) {
-            this.executeQuery();
-        }*/
-        this.window.show();
-
+    this.renderWindow();
+    if (!this.isStoreLoaded) {
+      this.executeQuery();
+    }
+    this.window.show();
   }
 
     , onRender: function(ct, position){
@@ -256,52 +247,68 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
       this.executeQuery();
     }
 
+
+
+
+
+
     ,executeQuery:function() {
        var p = new Object();
-      // p["_p_filter_val"] = this.view.getTopToolbar().items.get("lov_p_filter_val").getEl().value;
-      // p["_p_filter_col"] = this.view.getTopToolbar().items.get("lov_p_filter_col").getEl().value;
-      // this.view.store.baseParams = p;
+       this.isStoreLoaded = false;
        var newParamVal;
-       var oldParamVal;
+       
+
+    // ---------------------
+
+    // if (this.callFromGrid) {
+    //   newParamVal = (!Ext.isEmpty(this.paramMapping[i].field))? this.callFromGrid.store.getAt(this.callFromGridRow).get( this.paramMapping[i].field ):this.paramMapping[i].value;
+    // } else {
        for(var i=0;i<this.paramMapping.length; i++ ) {
          if (this.paramMapping[i].field) {
-           newParamVal = Ext.getCmp(this.paramMapping[i].field).getValue();
+           if (this.paramMapping[i].field.indexOf(".")<0) {
+             newParamVal = Ext.getCmp(this.paramMapping[i].field).getValue();
+           }else {
+            var dc = this.paramMapping[i].field.substring(0,this.paramMapping[i].field.indexOf("."));
+            var fld = this.paramMapping[i].field.substring(this.paramMapping[i].field.indexOf(".")+1);
+            newParamVal = Ext.getCmp(dc).getFieldValue(fld);
+           }
+
          } else {
            newParamVal = this.paramMapping[i].value;
          }
-
-         oldParamVal = this.view.store.baseParams[this.paramMapping[i].param];
-         if (newParamVal != oldParamVal) {
-            this.view.store.baseParams[this.paramMapping[i].param] = newParamVal;
-            this.isStoreLoaded = false;
-         }
-
+         p[this.paramMapping[i].param] =  newParamVal;
        }
+
+     // ---------------------
+ 
+      p['_p_query_column'] = this.queryFieldsMap[0].getValue();
+      //p['_p_query_column_code'] = Ext.getCmp(this.dataComponentName+'_QRY_FIELD_ID').getValue();
+      p['_p_query_value'] = this.queryFieldsMap[1].getValue();
+
+
+       this.view.store.baseParams = p;
+
        if (!this.isStoreLoaded) {
-         this.view.store.load({params:this.params,callback:this.afterExecuteQuery,scope:this});
+         this.view.store.load({callback:this.afterExecuteQuery,scope:this});
        }
-
 
     }
 
 
     
   ,afterExecuteQuery: function(r,options,success) {
-    //alert(success);
     if (success) {
        this.isStoreLoaded = true;
        if (this.view.store.getCount()>0) {
          this.view.getSelectionModel().selectFirstRow();
          this.view.getView().focusRow(0);
        }
-
      }
   }
   
   
 
   ,onBlur:function () {
-
      if (!this.getValue()) {
         for (var i=0;i<this.fieldMapping.length;i++ ) {
           Ext.getCmp(this.fieldMapping[i].field).setValue("");
@@ -312,8 +319,12 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
 
     ,onDoSelect: function(){
 
-        //TODO:  fix for Tpl !!!!    ComboBox
-
+        //TODO:  fix for Tpl
+          
+         if (this.getSelectedRecords().length == 0 ) {
+           Ext.Msg.alert('Warning', 'No record selected.');
+           return false;
+         }
         Ext.form.TriggerField.superclass.setValue.call(this, this.getSelectedRecords()[0].get(this.displayField));
 
         for (var i=0;i<this.fieldMapping.length;i++ ) {
@@ -323,7 +334,6 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
           else {
             Ext.getCmp(this.fieldMapping[i].field).setValue(this.getSelectedRecords()[0].get(this.fieldMapping[i].column));
           }
-
         }
 
         if(Ext.QuickTips){ // fix for floating editors interacting with DND
@@ -349,11 +359,9 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
                 } else {
                     vals.dv.push(i.get(this.displayField));
                 }
-
                 if(this.qtipTpl){
                     this.el.dom.qtip += this.qtipTpl.apply(i.data);
                 }
-
             }, this);
             return vals;
         }
@@ -366,44 +374,69 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
          this.callFromGridRow = this.callFromGrid.getSelectionModel().selection.cell[0];
        }
        this.showLov();
-       //setTimeout(this.view.getTopToolbar().items.get("lov_p_filter_val").getEl().focus(),1000);
-      return false;
+       return false;
     }
 
+    ,getQueryFieldLabels: function() {
+       var qfl = new Array();
+       for (var i=0; i< this.queryFields.length; i++ ) {
+        qfl[qfl.length] = [this.queryFields[i].code, this.queryFields[i].label ];
+       }
+       return qfl;
+    }
+
+ 
 
    , renderWindow: function(){
-        // Store Load
-          /*
-        if (!this.isStoreLoaded) {
-            this.view.store.load();
-            this.isStoreLoaded = true;
-        } else if (this.alwaysLoadStore === true) {
-            this.view.store.reload();
-        }
-            */
-        this.windowConfig = Ext.apply(this.windowConfig, {
+
+        if(!this.window){
+
+          //alert(this.dataComponentName);
+          this.windowConfig = Ext.apply(this.windowConfig, {
              title: this.lovTitle
             ,width: this.lovWidth
             ,height: this.lovHeight
             ,modal: true
             ,autoScroll: true
             ,closable: true
-            ,closeAction:'hide'
+            ,closeAction: 'hide'
             ,layout: 'fit'
-            ,bbar: [
-               {text:'Select', handler:this.onDoSelect, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_select.gif"}
-              ,{text:'Cancel', handler:this.onDoCancel, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_cancel.gif"}
-              ,'->'
-              ,{text:'Refresh', handler:this.onDoRefresh, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_refresh.gif"}
-            ]
             ,items: this.view
-        },{shadow: false, frame: true});
+            ,tbar: new Ext.Panel({
+                      autoScroll:true
+                     ,border:true
+                     ,bodyBorder :false
+                     ,height:0
+                     ,bbar:
+                        [
+                           {text:'Select', handler:this.onDoSelect, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_select.gif"}
+                          ,{text:'Cancel', handler:this.onDoCancel, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_cancel.gif"}
+                        //  ,'->'
+                         // ,{text:'Refresh', handler:this.onDoRefresh, scope:this, xtype:"button", cls:"x-btn-text-icon", icon:"_static/icon/lov_refresh.gif"}
+                        ]
+                     ,frame:false
+                     ,layout:'table'
+                     ,layoutConfig: {columns: this.queryPanelColCount}
+                     ,defaults:{labelWidth:90, labelAlign:'right'}
+                     ,tbar:[
+                              {xtype:'label', text :'Filter on:'}
+                              ,this.queryFieldsMap[0]
+                              ,this.queryFieldsMap[1]
+                             ,{xtype:'button', text:'Ok', handler:this.executeQuery, scope:this }
+                     ]
+                   })
 
-        if(!this.window){
+        },{shadow: true, frame: true});
+
+       if (this.queryArraySize != null && this.queryArraySize != -1) {
+
+          this.windowConfig.bbar = new Ext.PagingToolbar({
+             store:this.view.store
+            ,displayInfo:true
+            ,pageSize:this.queryArraySize
+            });
+         }
             this.window = new Ext.Window(this.windowConfig);
-
-            //this.window.setPagePosition(e.xy[0] + 16, e.xy[1] + 16);
-
             this.window.on('beforeclose', function(){
                 this.window.hide();
                 return false;
@@ -411,16 +444,9 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
 
             this.window.on('hide', this.validate, this);
             this.view.on('dblclick', this.onDoSelect, this);
-            //this.view.on('render', this.initSelect, this);
+
         }
-        /*
-        if (!this.isStoreLoaded) {
-            this.executeQuery();
-            this.isStoreLoaded = true;
-        } else if (this.alwaysLoadStore === true) {
-            this.executeQuery();
-        }
-          */
+
 
     }
 });

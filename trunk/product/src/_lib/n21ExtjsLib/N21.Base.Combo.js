@@ -18,12 +18,14 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
   ,callFromGrid: null
      /* row number where the combo is editing */
   ,callFromGridRow:null
-
+  ,maxHeight :150
   ,initComponent:function() {
      Ext.apply(this, arguments);
      this.displayField = this.displayColumn;
      N21.Base.Combo.superclass.initComponent.apply(this, arguments);
   }
+
+
 
   ,initEvents: function() {
     N21.Base.Combo.superclass.initEvents.call(this);
@@ -32,6 +34,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
     this.store.proxy.on('loadexception', this.onLoadException, this);
     this.store.proxy.on('load', this.onLoadProxy, this);
   }
+
+
 
   ,onLoadProxy:function(proxy, obj, arg, result) {
     if (this.store.reader instanceof Ext.data.JsonReader ) {
@@ -45,6 +49,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
     }
   }
 
+
+
   ,onLoadException:function(proxy,options,response,error) {
       if (!response.responseText) {
         Ext.Msg.alert('Error', 'Network failure. Communication with server lost.');
@@ -54,6 +60,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
       }
 
   }
+
+
 
  ,onSelectValue: function (cbo, rec, idx ) {
     if (this.fieldMapping.length > 0  ) {
@@ -72,15 +80,26 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
 
   ,onFocus: function () {
     if (!Ext.isEmpty(this.callFromGrid)) {
-       this.callFromGridRow = this.callFromGrid.getSelectionModel().selection.cell[0];
+       this.callFromGridRow = this.callFromGrid.getCurrentRowIndex(); //getSelectionModel().selection.cell[0];
      }
     var newParamVal;
     var oldParamVal;
     for (var i=0;i<this.paramMapping.length;i++) {
-      if (this.callFromGrid) { 
+
+      if (this.callFromGrid) {
         newParamVal = (!Ext.isEmpty(this.paramMapping[i].field))? this.callFromGrid.store.getAt(this.callFromGridRow).get( this.paramMapping[i].field ):this.paramMapping[i].value ;
       } else {
-        newParamVal = (!Ext.isEmpty(this.paramMapping[i].field))?Ext.getCmp(this.paramMapping[i].field).getValue():this.paramMapping[i].value;
+        if (Ext.isEmpty(this.paramMapping[i].field)) {
+          newParamVal = this.paramMapping[i].value;
+        } else {
+          if (this.paramMapping[i].field.indexOf(".")<0) {
+            newParamVal = Ext.getCmp(this.paramMapping[i].field).getValue();
+          } else {
+            var dc = this.paramMapping[i].field.substring(0,this.paramMapping[i].field.indexOf("."));
+            var fld = this.paramMapping[i].field.substring(this.paramMapping[i].field.indexOf(".")+1);
+            newParamVal = Ext.getCmp(dc).getFieldValue(fld);
+          }
+        }
       }
       oldParamVal = this.store.baseParams[this.paramMapping[i].param];
       if (newParamVal != oldParamVal) {
@@ -95,6 +114,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
       N21.Base.Combo.superclass.onFocus.apply(this, arguments);
     }
   }
+
+
   ,onBlur: function () {
     if (!this.getRawValue()) {
       if (this.fieldMapping.length > 0  ) {
@@ -109,8 +130,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
       }
     }
     N21.Base.Combo.superclass.onBlur.apply(this, arguments);
-  
   }
+
 
   ,afterLoad: function(records, options, success) {
      this.isStoreLoaded = true;
@@ -121,11 +142,13 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
      }
   }
 
-  ,setParamValue:function(paramName, paramValue) {  //alert('in BaseCombo.setParamValue'+ paramName +' '+paramValue);
+
+  ,setParamValue:function(paramName, paramValue) {  //alert('in BaseCombo.setParamValue'+ paramName +'='+paramValue);
     this.store.baseParams[paramName] = paramValue;
     this.isStoreLoaded = false;
     this.store.removeAll()
   }
+
 
   ,urldecode: function ( str ) {
     var ret = str;

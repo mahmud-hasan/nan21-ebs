@@ -9,7 +9,7 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,detailName: null
 
   ,parentDcRelation: null
-  ,mdLayout:'tab' // can be : row/column/tab/window
+  ,mdLayout:'card' // can be : row/column/tab/window/card
   ,detailTabRendered:false
   ,mainToolbar: null
   ,initComponent:function() {
@@ -60,15 +60,21 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,goToPrevRecord: function() {  //  alert('in goToPrevRecord');
      if (this.getRecordList().getStore().getCount()==1) {
        this.reSelectCurrent();
+     } else {
+       this.getRecordList().getSelectionModel().selectPrevious(false);
+       this.fetchAllChildRecords();
      }
-     this.getRecordList().getSelectionModel().selectPrevious(false);
+
   }
 
   ,goToNextRecord: function() {  //   alert('in goToNextRecord');
      if (this.getRecordList().getStore().getCount()==1) {
        this.reSelectCurrent();
+     } else{
+       this.getRecordList().getSelectionModel().selectNext(false);
+       this.fetchAllChildRecords();
      }
-     this.getRecordList().getSelectionModel().selectNext(false);
+
   }
 
   ,reSelectCurrent:function () {
@@ -106,6 +112,12 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,getDataRecord:function() {
      return this.getRecordEditor().dataRecord;
   }
+
+
+  ,getFieldValue: function(fieldName) {
+    return this.getRecordEditor().getFieldValue(fieldName);
+  }
+
 
   ,close_detail: function() {
      if (this.mdLayout == "tab") {
@@ -258,11 +270,11 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
           this.getComponent("MDTab").doLayout();
           this.detailTabRendered = true;
        }
-       this.getTopToolbar().items.get(3).toggle(true);
+       this.toggleEditorToolbarItem(true);
      } else if (this.mdLayout == "card") {
          this.getComponent("MDTab").layout.setActiveItem(1);
          this.getComponent("MDTab").doLayout();
-         this.getTopToolbar().items.get(3).toggle(true);
+         this.toggleEditorToolbarItem(true);
        }
      this.getRecordEditor().createNewRecord();
   }

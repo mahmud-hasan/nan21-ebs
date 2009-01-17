@@ -180,12 +180,17 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
   }
    ,urldecode: function ( str ) {
     var ret = str;
+    try{
     ret = str.replace(/\+/g, "%20");
     ret = decodeURIComponent(ret);
     ret = ret.toString();
     return ret;
+    }
+    catch(e) {
+      return str;
+    }
   }
- 
+
   ,clear_records:function() {
      this.getStore().removeAll();
    }
