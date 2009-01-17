@@ -41,6 +41,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"UIDC_CODE",header:this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",width:100,dataIndex:'UIDC_CODE',sortable:true}

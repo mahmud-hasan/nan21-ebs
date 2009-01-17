@@ -37,10 +37,11 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"PROJECT_ISSUE_ID",header:this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id",width:100,dataIndex:'PROJECT_ISSUE_ID',hidden:true,sortable:true}
-              ,{ id:"NOTE",header:this.resourceBundle.FieldLabel.NOTE||"Note",width:100,dataIndex:'NOTE',sortable:true}
+              ,{ id:"NOTE",header:this.resourceBundle.FieldLabel.NOTE||"Note",width:250,dataIndex:'NOTE',sortable:true}
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Createdby",width:100,dataIndex:'CREATEDBY',sortable:true}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"Createdon",width:100,dataIndex:'CREATEDON',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modifiedby",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
@@ -80,17 +81,17 @@
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0048F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PROJECT_ISSUE_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PROJECT_ISSUE_ID",id:"DC0048F_PROJECT_ISSUE_ID",dataIndex:"PROJECT_ISSUE_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTE", new Ext.form.TextArea ({xtype: "textarea",name:"NOTE",id:"DC0048F_NOTE",dataIndex:"NOTE",width:350,height:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NOTE||"Note",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("NOTE", new Ext.form.TextArea ({xtype: "textarea",name:"NOTE",id:"DC0048F_NOTE",dataIndex:"NOTE",width:450,height:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NOTE||"Note",insert_allowed:true,update_allowed:true})   );
 
+       this.layoutItems.add("C1",
+             { layout:"form",columnWidth:1,labelAlign:"top",labelWidth:100, items:[ this.fields.get("ID"),this.fields.get("PROJECT_ISSUE_ID"),this.fields.get("NOTE")]
+ }); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.fields.get("_p_record_status")
-                 ,this.fields.get("ID")
-                 ,this.fields.get("PROJECT_ISSUE_ID")
-                 ,this.fields.get("NOTE")
-]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1")]
           ,border:false
+          ,layout:"column"
           ,defaults:{labelWidth:110}
           ,frame:true
           ,width: "100%"

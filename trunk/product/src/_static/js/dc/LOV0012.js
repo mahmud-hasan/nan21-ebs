@@ -11,6 +11,7 @@
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeLOV0012"
+              ,totalProperty:"totalCount"
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0012&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true

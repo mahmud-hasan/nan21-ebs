@@ -65,6 +65,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"SORDER_ID",header:this.resourceBundle.FieldLabel.SORDER_ID||"Bporder_id",width:100,dataIndex:'SORDER_ID',hidden:true,sortable:true}
               ,{ id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
@@ -141,10 +142,10 @@
        this.fields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PRODUCT_ID",id:"DC0060F_PRODUCT_ID",dataIndex:"PRODUCT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PRODUCT_NAME", new N21.DataComp.LOV0017({xtype: "LOV0017",fieldMapping: [{column:"ID",field:"DC0060F_PRODUCT_ID"},{column:"UOM_CODE",field:"DC0060F_UOM_CODE"}],selectOnFocus:true,name:"PRODUCT_NAME",id:"DC0060F_PRODUCT_NAME",dataIndex:"PRODUCT_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_NAME||"Product",insert_allowed:true,update_allowed:true})   );
        this.fields.add("QTY_ORDERED", new Ext.form.NumberField ({xtype: "numberfield",name:"QTY_ORDERED",id:"DC0060F_QTY_ORDERED",dataIndex:"QTY_ORDERED",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.QTY_ORDERED||"Requested qty.",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;",listeners:{  "change":{scope:this, fn:this.change_QTY_ORDERED}  }})   );
-       this.fields.add("UOM_CODE", new N21.DataComp.LOV0002({xtype: "LOV0002",selectOnFocus:true,name:"UOM_CODE",id:"DC0060F_UOM_CODE",dataIndex:"UOM_CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"Uom",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("UOM_CODE", new N21.DataComp.LOV0002({xtype: "LOV0002",selectOnFocus:true,name:"UOM_CODE",id:"DC0060F_UOM_CODE",dataIndex:"UOM_CODE",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"Uom",insert_allowed:true,update_allowed:true})   );
        this.fields.add("QTY", new Ext.form.NumberField ({xtype: "numberfield",name:"QTY",id:"DC0060F_QTY",dataIndex:"QTY",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.QTY||"Actual qty",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;",listeners:{  "change":{scope:this, fn:this.change_QTY}  }})   );
        this.fields.add("PRICE", new Ext.form.NumberField ({xtype: "numberfield",name:"PRICE",id:"DC0060F_PRICE",dataIndex:"PRICE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Price",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;",listeners:{  "change":{scope:this, fn:this.change_PRICE}  }})   );
-       this.fields.add("CURRENCY_CODE", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"CURRENCY_CODE",id:"DC0060F_CURRENCY_CODE",dataIndex:"CURRENCY_CODE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_CODE||"Currency",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CURRENCY_CODE", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"CURRENCY_CODE",id:"DC0060F_CURRENCY_CODE",dataIndex:"CURRENCY_CODE",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_CODE||"Currency",insert_allowed:true,update_allowed:true})   );
        this.fields.add("DISCOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"DISCOUNT",id:"DC0060F_DISCOUNT",dataIndex:"DISCOUNT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT||"Discount",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
        this.fields.add("DISCOUNT_TYPE", new Ext.form.Hidden ({xtype: "hidden",name:"DISCOUNT_TYPE",id:"DC0060F_DISCOUNT_TYPE",dataIndex:"DISCOUNT_TYPE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DISCOUNT_TYPE||"Discount type",insert_allowed:true,update_allowed:true})   );
        this.fields.add("RAW_NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"RAW_NET_AMOUNT",id:"DC0060F_RAW_NET_AMOUNT",dataIndex:"RAW_NET_AMOUNT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.RAW_NET_AMOUNT||"Raw net amount (no discount)",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
@@ -158,19 +159,21 @@
        this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0060F_NOTES",dataIndex:"NOTES",width:200,height:50,allowBlank:true,labelSeparator: "",insert_allowed:true,update_allowed:true})   );
 
        this.layoutItems.add("Notes",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Notes||"Notes",autoHeight:true,collapsible: true,labelWidth:1,width:"90%",items:[ this.fields.get("NOTES")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("NOTES")] });
        this.layoutItems.add("Terms",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Terms||"Terms",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("DATE_REQUESTED"),this.fields.get("DATE_PROMISED"),this.fields.get("DATE_DELIVERED")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("DATE_REQUESTED"),this.fields.get("DATE_PROMISED"),this.fields.get("DATE_DELIVERED")] });
        this.layoutItems.add("Quantity",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Quantity||"Quantity",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("QTY_INVOICED"),this.fields.get("QTY_DELIVERED"),this.fields.get("QTY_RESERVED")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("QTY_INVOICED"),this.fields.get("QTY_DELIVERED"),this.fields.get("QTY_RESERVED")] });
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.4, items:[ this.layoutItems.get("Quantity"),this.layoutItems.get("Terms"),this.layoutItems.get("Notes")]}); 
+             { layout:"form",columnWidth:.4, items:[ this.layoutItems.get("Quantity"),this.layoutItems.get("Terms"),this.layoutItems.get("Notes")]
+ }); 
        this.layoutItems.add("Price",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Price||"Price",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("PRICE"),this.fields.get("CURRENCY_CODE"),this.fields.get("DISCOUNT"),this.fields.get("DISCOUNT_TYPE"),this.fields.get("RAW_NET_AMOUNT"),this.fields.get("NET_AMOUNT")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("PRICE"),this.fields.get("CURRENCY_CODE"),this.fields.get("DISCOUNT"),this.fields.get("DISCOUNT_TYPE"),this.fields.get("RAW_NET_AMOUNT"),this.fields.get("NET_AMOUNT")] });
        this.layoutItems.add("Product",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Product||"Product",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("ID"),this.fields.get("SORDER_ID"),this.fields.get("LINE_NR"),this.fields.get("PRODUCT_ID"),this.fields.get("PRODUCT_NAME"),this.fields.get("QTY_ORDERED"),this.fields.get("UOM_CODE"),this.fields.get("QTY")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("ID"),this.fields.get("SORDER_ID"),this.fields.get("LINE_NR"),this.fields.get("PRODUCT_ID"),this.fields.get("PRODUCT_NAME"),this.fields.get("QTY_ORDERED"),this.fields.get("UOM_CODE"),this.fields.get("QTY")] });
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.6, items:[ this.layoutItems.get("Product"),this.layoutItems.get("Price")]}); 
+             { layout:"form",columnWidth:.6, items:[ this.layoutItems.get("Product"),this.layoutItems.get("Price")]
+ }); 
 
 
        Ext.apply(this, {

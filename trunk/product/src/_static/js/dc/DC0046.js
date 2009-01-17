@@ -40,7 +40,7 @@
        
          this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0046_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
          this.queryFields.add("PROJECT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PROJECT_ID",id:"DC0046_QRY_PROJECT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ID||"Project_id"})  );
-         this.queryFields.add("PROJECT_NAME", new N21.DataComp.LOV0033({xtype: "LOV0033",name:"QRY_PROJECT_NAME",id:"DC0046_QRY_PROJECT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_NAME||"Project"})  );
+         this.queryFields.add("PROJECT_NAME", new N21.DataComp.LOV0033({xtype: "LOV0033",fieldMapping: [{column:"ID",field:"DC0046_QRY_PROJECT_ID"}],name:"QRY_PROJECT_NAME",id:"DC0046_QRY_PROJECT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_NAME||"Project"})  );
          this.queryFields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TITLE",id:"DC0046_QRY_TITLE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title"})  );
          this.queryFields.add("ISSUE_TYPE_CODE", new N21.DataComp.LOV0031({xtype: "LOV0031",name:"QRY_ISSUE_TYPE_CODE",id:"DC0046_QRY_ISSUE_TYPE_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.ISSUE_TYPE_CODE||"Type"})  );
          this.queryFields.add("SEVERITY_CODE", new N21.DataComp.LOV0030({xtype: "LOV0030",name:"QRY_SEVERITY_CODE",id:"DC0046_QRY_SEVERITY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.SEVERITY_CODE||"Severity"})  );
@@ -63,6 +63,7 @@
                         }, this.dataRecordMeta)
              ,groupField:""
            })
+           ,loadMask :true
           ,view: new Ext.grid.GroupingView({
                     groupTextTpl: "{text}"
                 })
@@ -82,7 +83,7 @@
               ,{ id:"ESTIMATE_EFFORT",header:this.resourceBundle.FieldLabel.ESTIMATE_EFFORT||"Estimated effort",width:100,dataIndex:'ESTIMATE_EFFORT',hidden:true,sortable:true,align:'right'}
               ,{ id:"ACTUAL_EFFORT",header:this.resourceBundle.FieldLabel.ACTUAL_EFFORT||"Actual effort",width:100,dataIndex:'ACTUAL_EFFORT',hidden:true,sortable:true,align:'right'}
               ,{ id:"IS_CLOSED",header:this.resourceBundle.FieldLabel.IS_CLOSED||"Closed",width:50,dataIndex:'IS_CLOSED',sortable:true}
-              ,{ id:"DESCRIPTION",header:this.resourceBundle.FieldLabel.DESCRIPTION||"",width:100,dataIndex:'DESCRIPTION',hidden:true,sortable:true}
+              ,{ id:"DESCRIPTION",header:this.resourceBundle.FieldLabel.DESCRIPTION||"Description",width:100,dataIndex:'DESCRIPTION',hidden:true,sortable:true}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"Created on",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Created by",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
@@ -146,20 +147,20 @@
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("PROJECT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PROJECT_ID",id:"DC0046F_PROJECT_ID",dataIndex:"PROJECT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ID||"Project_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0046F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PROJECT_NAME", new N21.DataComp.LOV0033({xtype: "LOV0033",fieldMapping: [{column:"ID",field:"DC0046F_PROJECT_ID"}],selectOnFocus:true,name:"PROJECT_NAME",id:"DC0046F_PROJECT_NAME",dataIndex:"PROJECT_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_NAME||"Project",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"TITLE",id:"DC0046F_TITLE",dataIndex:"TITLE",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ISSUE_TYPE_CODE", new N21.DataComp.LOV0031({xtype: "LOV0031",selectOnFocus:true,name:"ISSUE_TYPE_CODE",id:"DC0046F_ISSUE_TYPE_CODE",dataIndex:"ISSUE_TYPE_CODE",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ISSUE_TYPE_CODE||"Type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("SEVERITY_CODE", new N21.DataComp.LOV0030({xtype: "LOV0030",selectOnFocus:true,name:"SEVERITY_CODE",id:"DC0046F_SEVERITY_CODE",dataIndex:"SEVERITY_CODE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SEVERITY_CODE||"Severity",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("STATUS_CODE", new N21.DataComp.LOV0032({xtype: "LOV0032",selectOnFocus:true,name:"STATUS_CODE",id:"DC0046F_STATUS_CODE",dataIndex:"STATUS_CODE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STATUS_CODE||"Status",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PRIORITY_CODE", new N21.DataComp.LOV0034({xtype: "LOV0034",selectOnFocus:true,name:"PRIORITY_CODE",id:"DC0046F_PRIORITY_CODE",dataIndex:"PRIORITY_CODE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRIORITY_CODE||"Priority",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("AFF_CMP_TYPE_CODE", new N21.DataComp.LOV0035({xtype: "LOV0035",paramMapping: [{param:"p_project_id",field:"DC0046F_PROJECT_ID"}],selectOnFocus:true,name:"AFF_CMP_TYPE_CODE",id:"DC0046F_AFF_CMP_TYPE_CODE",dataIndex:"AFF_CMP_TYPE_CODE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.AFF_CMP_TYPE_CODE||"Affected component type",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("PROJECT_NAME", new N21.DataComp.LOV0033({xtype: "LOV0033",fieldMapping: [{column:"ID",field:"DC0046F_PROJECT_ID"}],selectOnFocus:true,name:"PROJECT_NAME",id:"DC0046F_PROJECT_NAME",dataIndex:"PROJECT_NAME",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_NAME||"Project",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"TITLE",id:"DC0046F_TITLE",dataIndex:"TITLE",width:480,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ISSUE_TYPE_CODE", new N21.DataComp.LOV0031({xtype: "LOV0031",selectOnFocus:true,name:"ISSUE_TYPE_CODE",id:"DC0046F_ISSUE_TYPE_CODE",dataIndex:"ISSUE_TYPE_CODE",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ISSUE_TYPE_CODE||"Type",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("SEVERITY_CODE", new N21.DataComp.LOV0030({xtype: "LOV0030",selectOnFocus:true,name:"SEVERITY_CODE",id:"DC0046F_SEVERITY_CODE",dataIndex:"SEVERITY_CODE",width:120,listWidth:138,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SEVERITY_CODE||"Severity",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("STATUS_CODE", new N21.DataComp.LOV0032({xtype: "LOV0032",selectOnFocus:true,name:"STATUS_CODE",id:"DC0046F_STATUS_CODE",dataIndex:"STATUS_CODE",width:120,listWidth:138,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STATUS_CODE||"Status",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("PRIORITY_CODE", new N21.DataComp.LOV0034({xtype: "LOV0034",selectOnFocus:true,name:"PRIORITY_CODE",id:"DC0046F_PRIORITY_CODE",dataIndex:"PRIORITY_CODE",width:100,listWidth:118,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRIORITY_CODE||"Priority",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("AFF_CMP_TYPE_CODE", new N21.DataComp.LOV0035({xtype: "LOV0035",paramMapping: [{param:"p_project_id",field:"DC0046F.PROJECT_ID"}],selectOnFocus:true,name:"AFF_CMP_TYPE_CODE",id:"DC0046F_AFF_CMP_TYPE_CODE",dataIndex:"AFF_CMP_TYPE_CODE",width:100,listWidth:118,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.AFF_CMP_TYPE_CODE||"Affected component type",insert_allowed:true,update_allowed:true})   );
        this.fields.add("AFF_CMP", new Ext.form.TextField ({xtype: "textfield",name:"AFF_CMP",id:"DC0046F_AFF_CMP",dataIndex:"AFF_CMP",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.AFF_CMP||"Affected component",insert_allowed:true,update_allowed:true})   );
        this.fields.add("AFF_PROJECT_RELEASE_CODE", new Ext.form.TextField ({xtype: "textfield",name:"AFF_PROJECT_RELEASE_CODE",id:"DC0046F_AFF_PROJECT_RELEASE_CODE",dataIndex:"AFF_PROJECT_RELEASE_CODE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.AFF_PROJECT_RELEASE_CODE||"Affected release",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("EFFORT_UNIT", new N21.DataComp.LOV0037({xtype: "LOV0037",selectOnFocus:true,name:"EFFORT_UNIT",id:"DC0046F_EFFORT_UNIT",dataIndex:"EFFORT_UNIT",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort unit",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ESTIMATE_EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"ESTIMATE_EFFORT",id:"DC0046F_ESTIMATE_EFFORT",dataIndex:"ESTIMATE_EFFORT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ESTIMATE_EFFORT||"Estimated effort",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("ACTUAL_EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"ACTUAL_EFFORT",id:"DC0046F_ACTUAL_EFFORT",dataIndex:"ACTUAL_EFFORT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACTUAL_EFFORT||"Actual effort",disabled:true,decimalPrecision:2,style: "text-align:right;"})   );
+       this.fields.add("EFFORT_UNIT", new N21.DataComp.LOV0037({xtype: "LOV0037",selectOnFocus:true,name:"EFFORT_UNIT",id:"DC0046F_EFFORT_UNIT",dataIndex:"EFFORT_UNIT",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort unit",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ESTIMATE_EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"ESTIMATE_EFFORT",id:"DC0046F_ESTIMATE_EFFORT",dataIndex:"ESTIMATE_EFFORT",width:60,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ESTIMATE_EFFORT||"Estimated effort",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
+       this.fields.add("ACTUAL_EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"ACTUAL_EFFORT",id:"DC0046F_ACTUAL_EFFORT",dataIndex:"ACTUAL_EFFORT",width:60,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACTUAL_EFFORT||"Actual effort",disabled:true,decimalPrecision:2,style: "text-align:right;"})   );
        this.fields.add("IS_CLOSED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_CLOSED",id:"DC0046F_IS_CLOSED",dataIndex:"IS_CLOSED",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_CLOSED||"Closed",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0046F_DESCRIPTION",dataIndex:"DESCRIPTION",width:350,height:120,allowBlank:true,labelSeparator: "",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0046F_DESCRIPTION",dataIndex:"DESCRIPTION",width:480,height:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"CREATEDON",id:"DC0046F_CREATEDON",dataIndex:"CREATEDON",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"Created on",disabled:true,format:Ext.DATE_FORMAT})   );
        this.fields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"CREATEDBY",id:"DC0046F_CREATEDBY",dataIndex:"CREATEDBY",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"Created by",disabled:true})   );
        this.fields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"MODIFIEDON",id:"DC0046F_MODIFIEDON",dataIndex:"MODIFIEDON",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",disabled:true,format:Ext.DATE_FORMAT})   );
@@ -171,31 +172,42 @@
        this.fields.add("ACT_ENDDATE", new Ext.form.DateField ({xtype: "datefield",name:"ACT_ENDDATE",id:"DC0046F_ACT_ENDDATE",dataIndex:"ACT_ENDDATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACT_ENDDATE||"Actual end-date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
 
        this.layoutItems.add("DC0048",
-             new Ext.Window({ xtype:"window", modal:true, title:N21.DataComp.DC0048.prototype.resourceBundle.DcProperty.Title,  closeAction:"hide",closable:true,layout:"fit", width:500, height:420, items:{xtype:"DC0048",id:"DC0048", parentDcRelation:{name:"DC0046F",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}         }} ) ); 
+             new Ext.Window({ xtype:"window", modal:true, title: "DC0048 - "+(N21.DataComp.DC0048.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:600, height:450, items:{xtype:"DC0048",id:"DC0048", parentDcRelation:{name:"DC0046F",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}         }} ) ); 
        this.layoutItems.add("Timing",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Timing||"Timing",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("IS_CLOSED"),this.fields.get("PLAN_STARTDATE"),this.fields.get("PLAN_ENDDATE"),this.fields.get("ACT_STARTDATE"),this.fields.get("ACT_ENDDATE")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Timing||"Timing",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("IS_CLOSED"),this.fields.get("PLAN_STARTDATE"),this.fields.get("PLAN_ENDDATE"),this.fields.get("ACT_STARTDATE"),this.fields.get("ACT_ENDDATE")] });
        this.layoutItems.add("Modified",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Modified||"Modified",autoHeight:true,collapsible: true,collapsed:true,width:"90%",items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")]});
-       this.layoutItems.add("C3",
-             { layout:"form",columnWidth:.25, items:[ this.layoutItems.get("Timing"),this.layoutItems.get("Modified")]}); 
-       this.layoutItems.add("Impact",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Impact||"Impact",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("AFF_CMP_TYPE_CODE"),this.fields.get("AFF_CMP"),this.fields.get("AFF_PROJECT_RELEASE_CODE")]});
-       this.layoutItems.add("Effort",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Effort||"Effort",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("EFFORT_UNIT"),this.fields.get("ESTIMATE_EFFORT"),this.fields.get("ACTUAL_EFFORT")]});
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Modified||"Modified",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")] });
+       this.layoutItems.add("Eval",
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Eval||"Eval",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("ISSUE_TYPE_CODE"),this.fields.get("SEVERITY_CODE"),this.fields.get("PRIORITY_CODE"),this.fields.get("STATUS_CODE"),this.fields.get("ASSIGNED_TO")] });
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.3, items:[ this.layoutItems.get("Impact"),this.layoutItems.get("Effort")]}); 
+             { layout:"form",width:280,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("Eval"),this.layoutItems.get("Timing"),this.layoutItems.get("Modified")]
+ }); 
        this.layoutItems.add("Info",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Info||"Info",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("PROJECT_NAME"),this.fields.get("TITLE"),this.fields.get("ISSUE_TYPE_CODE"),this.fields.get("SEVERITY_CODE"),this.fields.get("STATUS_CODE"),this.fields.get("PRIORITY_CODE"),this.fields.get("ASSIGNED_TO")]});
-       this.layoutItems.add("Notes",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Notes||"Notes",autoHeight:true,collapsible: true,labelWidth:1,width:"90%",items:[ this.fields.get("DESCRIPTION")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Info||"Info",border:true,labelAlign:"top",width:"500"   ,items:[ this.fields.get("ID"),this.fields.get("TITLE"),this.fields.get("DESCRIPTION")] });
+       this.layoutItems.add("Effort",
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Effort||"Effort",border:true,labelAlign:"left",width:"220"   ,items:[ this.fields.get("EFFORT_UNIT"),this.fields.get("ESTIMATE_EFFORT"),this.fields.get("ACTUAL_EFFORT")] });
+       this.layoutItems.add("C1R2C2",
+             { layout:"form",width:250,labelAlign:"right",labelWidth:90, items:[ this.layoutItems.get("Effort")]
+ }); 
+       this.layoutItems.add("Impact",
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Impact||"Impact",border:true,labelAlign:"left",width:"240"   ,items:[ this.fields.get("PROJECT_ID"),this.fields.get("PROJECT_NAME"),this.fields.get("AFF_PROJECT_RELEASE_CODE"),this.fields.get("AFF_CMP_TYPE_CODE"),this.fields.get("AFF_CMP")] });
+       this.layoutItems.add("C1R2C1",
+             { layout:"form",width:270,labelAlign:"right",labelWidth:90, items:[ this.layoutItems.get("Impact")]
+ }); 
+       this.layoutItems.add("C1R2",
+             { layout:"column",columnWidth:1,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("C1R2C1"),this.layoutItems.get("C1R2C2")]
+ }); 
+       this.layoutItems.add("C1R1",
+             { layout:"form",columnWidth:1,labelAlign:"left",labelWidth:100 }); 
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.4, items:[ this.fields.get("PROJECT_ID"),this.fields.get("ID"),this.layoutItems.get("Info"),this.layoutItems.get("Notes")]}); 
+             { layout:"form",width:530,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("C1R1"),this.layoutItems.get("Info"),this.layoutItems.get("C1R2")]
+ }); 
        this.layoutItems.add("DC0055",
-             new Ext.Window({ xtype:"window", modal:true, title:N21.DataComp.DC0055.prototype.resourceBundle.DcProperty.Title,  closeAction:"hide",closable:true,layout:"fit", width:550, height:300, items:{xtype:"DC0055",id:"DC0055", parentDcRelation:{name:"DC0046F",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}         }} ) ); 
+             new Ext.Window({ xtype:"window", modal:true, title: "DC0055 - "+(N21.DataComp.DC0055.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:500, height:300, items:{xtype:"DC0055",id:"DC0055", parentDcRelation:{name:"DC0046F",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}         }} ) ); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1"),this.layoutItems.get("C2"),this.layoutItems.get("C3")]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1"),this.layoutItems.get("C2")]
           ,border:false
           ,layout:"column"
           ,defaults:{labelWidth:110}
@@ -203,7 +215,7 @@
           ,width: "100%"
           ,dataComponentName:"DC0046F"
           ,firstFocusFieldName:"TITLE"
-          ,childDCs: [{name:"DC0055",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]},{name:"DC0048",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}]
+          ,childDCs: [{name:"DC0048",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]},{name:"DC0055",relation:[{parent:"ID",child:"PROJECT_ISSUE_ID"}]}]
           ,buttons: [{xtype:"button",text:"Timesheet charge",scope:this,handler:function() {this.show_window("DC0055");}  },{xtype:"button",text:"Notes",scope:this,handler:function() {this.show_window("DC0048");}  }]
           ,buttonAlign:"left"
           ,toolbarConfig:"STANDARD"

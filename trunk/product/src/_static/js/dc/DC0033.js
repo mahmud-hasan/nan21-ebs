@@ -39,6 +39,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"PROPERTY_NAME",header:this.resourceBundle.FieldLabel.PROPERTY_NAME||"Property_name",width:100,dataIndex:'PROPERTY_NAME',sortable:true}

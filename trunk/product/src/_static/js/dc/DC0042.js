@@ -59,6 +59,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"ACCDOC_ID",header:this.resourceBundle.FieldLabel.ACCDOC_ID||"Accdoc_id",width:100,dataIndex:'ACCDOC_ID',hidden:true,sortable:true}
@@ -69,7 +70,7 @@
               ,{ id:"CR_ACCT",header:this.resourceBundle.FieldLabel.CR_ACCT||"Cr_acct",width:100,dataIndex:'CR_ACCT',sortable:true}
               ,{ id:"DB_AMOUNT",header:this.resourceBundle.FieldLabel.DB_AMOUNT||"Dr amount",width:100,dataIndex:'DB_AMOUNT',sortable:true,align:'right'}
               ,{ id:"CR_AMOUNT",header:this.resourceBundle.FieldLabel.CR_AMOUNT||"Cr amount",width:100,dataIndex:'CR_AMOUNT',sortable:true,align:'right'}
-              ,{ id:"CURRENCY",header:this.resourceBundle.FieldLabel.CURRENCY||"Currency",width:100,dataIndex:'CURRENCY',sortable:true}
+              ,{ id:"CURRENCY",header:this.resourceBundle.FieldLabel.CURRENCY||"Currency",width:50,dataIndex:'CURRENCY',sortable:true}
               ,{ id:"XRATE",header:this.resourceBundle.FieldLabel.XRATE||"Xrate",width:100,dataIndex:'XRATE',hidden:true,sortable:true,align:'right'}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
@@ -134,9 +135,11 @@
        this.fields.add("XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"XRATE",id:"DC0042F_XRATE",dataIndex:"XRATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.XRATE||"Xrate",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
 
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.4, items:[ this.fields.get("CURRENCY"),this.fields.get("XRATE")]}); 
+             { layout:"form",columnWidth:.4, items:[ this.fields.get("CURRENCY"),this.fields.get("XRATE")]
+ }); 
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.6, items:[ this.fields.get("ID"),this.fields.get("ACCDOC_ID"),this.fields.get("CLIENT_ID"),this.fields.get("NOTES"),this.fields.get("DB_ACCT"),this.fields.get("CR_ACCT"),this.fields.get("DB_AMOUNT"),this.fields.get("CR_AMOUNT")]}); 
+             { layout:"form",columnWidth:.6, items:[ this.fields.get("ID"),this.fields.get("ACCDOC_ID"),this.fields.get("CLIENT_ID"),this.fields.get("NOTES"),this.fields.get("DB_ACCT"),this.fields.get("CR_ACCT"),this.fields.get("DB_AMOUNT"),this.fields.get("CR_AMOUNT")]
+ }); 
 
 
        Ext.apply(this, {
@@ -204,7 +207,7 @@
           ,mdLayout:"column"
           ,border: false
           ,items: [
-              {xtype: "DC0042G",id: "DC0042G",region:"north" ,split:true,height:180,minHeight:0}
+              {xtype: "DC0042G",id: "DC0042G",region:"north" ,split:true,height:220,minHeight:0}
              ,{xtype: "DC0042F",id: "DC0042F",region:"center",split:true,autoScroll:true}
             ]
           ,tbar: new Array(

@@ -7,17 +7,19 @@
   Ext.ns("N21.DataComp");
   N21.DataComp.LOV0022 = Ext.extend(N21.Base.Lov, {
      displayField:"NAME"
+    ,queryArraySize:40
     ,initComponent:function() {
        Ext.apply(this, {
            lovTitle:"Menu items (LOV0022)"
           ,view: new Ext.grid.GridPanel({
              store: new Ext.data.JsonStore({
                id:"storeLOV0022"
+              ,totalProperty:"totalCount"
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0022&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
               ,fields:[{name:"ID",type:"float"},{name:"MENUBAR_CODE",type:"string"},{name:"MENUITEM_ID",type:"float"},{name:"NAME",type:"string"},{name:"PARENT_NAME",type:"string"},{name:"POSITION",type:"float"}]
-              ,baseParams: {p_parent:"",p_menubar:"MAIN"}
+              ,baseParams: {p_parent:"",p_menubar:"%"}
              })
              ,columns: [new Ext.grid.RowNumberer(),
                {id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,hidden :true,dataIndex:'ID',sortable:true,align:'right'}
@@ -32,6 +34,7 @@
           ,displayField:this.displayField
           ,lovWidth:500
           ,lovHeight:300
+          ,queryFields:[["MENUBAR_CODE", this.resourceBundle.FieldLabel.MENUBAR_CODE||"Menubar"],["NAME", this.resourceBundle.FieldLabel.NAME||"Name"]]
         });
        N21.DataComp.LOV0022.superclass.initComponent.apply(this, arguments);
      }

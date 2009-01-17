@@ -44,6 +44,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"BPARTNER_ID",header:this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",width:100,dataIndex:'BPARTNER_ID',hidden:true,sortable:true}
@@ -108,19 +109,24 @@
        this.fields.add("FIRSTNAME", new Ext.form.TextField ({xtype: "textfield",name:"FIRSTNAME",id:"DC0069F_FIRSTNAME",dataIndex:"FIRSTNAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIRSTNAME||"Firstname",insert_allowed:true,update_allowed:true})   );
        this.fields.add("LASTNAME", new Ext.form.TextField ({xtype: "textfield",name:"LASTNAME",id:"DC0069F_LASTNAME",dataIndex:"LASTNAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.LASTNAME||"Lastname",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PHONE", new Ext.form.TextField ({xtype: "textfield",name:"PHONE",id:"DC0069F_PHONE",dataIndex:"PHONE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PHONE||"Phone",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("EMAIL", new Ext.form.TextField ({xtype: "textfield",name:"EMAIL",id:"DC0069F_EMAIL",dataIndex:"EMAIL",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("EMAIL", new Ext.form.TextField ({xtype: "textfield",name:"EMAIL",id:"DC0069F_EMAIL",dataIndex:"EMAIL",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",insert_allowed:true,update_allowed:true})   );
        this.fields.add("FAX", new Ext.form.TextField ({xtype: "textfield",name:"FAX",id:"DC0069F_FAX",dataIndex:"FAX",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FAX||"Fax",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0069F_NOTES",dataIndex:"NOTES",width:300,height:60,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0069F_NOTES",dataIndex:"NOTES",width:250,height:60,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
        this.fields.add("MOBILE", new Ext.form.TextField ({xtype: "textfield",name:"MOBILE",id:"DC0069F_MOBILE",dataIndex:"MOBILE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MOBILE||"Mobile",insert_allowed:true,update_allowed:true})   );
 
+       this.layoutItems.add("C3",
+             { layout:"form",width:260,labelAlign:"top",labelWidth:100, items:[ this.fields.get("NOTES")]
+ }); 
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.5,labelAlign:"top", items:[ this.fields.get("NOTES")]}); 
+             { layout:"form",width:250,labelAlign:"right",labelWidth:80, items:[ this.fields.get("PHONE"),this.fields.get("MOBILE"),this.fields.get("FAX"),this.fields.get("EMAIL")]
+ }); 
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.4, items:[ this.fields.get("ID"),this.fields.get("BPARTNER_ID"),this.fields.get("BPARTNER_NAME"),this.fields.get("FIRSTNAME"),this.fields.get("LASTNAME"),this.fields.get("EMAIL"),this.fields.get("PHONE"),this.fields.get("MOBILE"),this.fields.get("FAX")]}); 
+             { layout:"form",width:280,labelAlign:"right",labelWidth:100, items:[ this.fields.get("ID"),this.fields.get("BPARTNER_ID"),this.fields.get("BPARTNER_NAME"),this.fields.get("FIRSTNAME"),this.fields.get("LASTNAME")]
+ }); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1"),this.layoutItems.get("C2")]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1"),this.layoutItems.get("C2"),this.layoutItems.get("C3")]
           ,border:false
           ,layout:"column"
           ,defaults:{labelWidth:110}
@@ -180,7 +186,7 @@
           ,mdLayout:"column"
           ,border: false
           ,items: [
-              {xtype: "DC0069G",id: "DC0069G",region:"north" ,split:true,height:280,minHeight:0}
+              {xtype: "DC0069G",id: "DC0069G",region:"north" ,split:true,height:320,minHeight:0}
              ,{xtype: "DC0069F",id: "DC0069F",region:"center",split:true,autoScroll:true}
             ]
           ,tbar: new Array(

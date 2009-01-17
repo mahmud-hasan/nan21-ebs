@@ -40,6 +40,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"TITLE",header:this.resourceBundle.FieldLabel.TITLE||"Title",width:200,dataIndex:'TITLE',sortable:true}
               ,{ id:"ASSIGNED_TO",header:this.resourceBundle.FieldLabel.ASSIGNED_TO||"Assigned to",width:100,dataIndex:'ASSIGNED_TO',sortable:true}
@@ -47,12 +48,12 @@
               ,{ id:"FINISH_DATE",header:this.resourceBundle.FieldLabel.FINISH_DATE||"Finish date",width:100,dataIndex:'FINISH_DATE',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"STATUS",header:this.resourceBundle.FieldLabel.STATUS||"Status",width:100,dataIndex:'STATUS',sortable:true}
               ,{ id:"CLOSED",header:this.resourceBundle.FieldLabel.CLOSED||"Closed",width:50,dataIndex:'CLOSED',sortable:true}
-              ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"",width:100,dataIndex:'NOTES',hidden:true,sortable:true}
+              ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"Notes",width:100,dataIndex:'NOTES',hidden:true,sortable:true}
               ,{ id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"Created on",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Created by",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',sortable:true}
+              ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
           ]
           ,dataComponentName:"DC0019G"
           ,queryArraySize:20
@@ -92,21 +93,21 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"TITLE",id:"DC0019F_TITLE",dataIndex:"TITLE",width:350,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"TITLE",id:"DC0019F_TITLE",dataIndex:"TITLE",width:420,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ASSIGNED_TO", new Ext.form.TextField ({xtype: "textfield",name:"ASSIGNED_TO",id:"DC0019F_ASSIGNED_TO",dataIndex:"ASSIGNED_TO",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ASSIGNED_TO||"Assigned to",insert_allowed:true,update_allowed:true})   );
        this.fields.add("START_DATE", new Ext.form.DateField ({xtype: "datefield",name:"START_DATE",id:"DC0019F_START_DATE",dataIndex:"START_DATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.START_DATE||"Start date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
        this.fields.add("FINISH_DATE", new Ext.form.DateField ({xtype: "datefield",name:"FINISH_DATE",id:"DC0019F_FINISH_DATE",dataIndex:"FINISH_DATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FINISH_DATE||"Finish date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
        this.fields.add("STATUS", new Ext.form.TextField ({xtype: "textfield",name:"STATUS",id:"DC0019F_STATUS",dataIndex:"STATUS",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STATUS||"Status",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CLOSED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"CLOSED",id:"DC0019F_CLOSED",dataIndex:"CLOSED",width:20,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0019F_NOTES",dataIndex:"NOTES",width:400,height:120,allowBlank:true,labelSeparator: "",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0019F_NOTES",dataIndex:"NOTES",width:420,height:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0019F_ID",dataIndex:"ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
 
-       this.layoutItems.add("Notes",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Notes||"Notes",autoHeight:true,collapsible: true,labelWidth:1,width:"90%",items:[ this.fields.get("NOTES")]});
        this.layoutItems.add("c2",
-             { layout:"form",columnWidth:.4, items:[ this.fields.get("ID"),this.layoutItems.get("Notes")]}); 
+             { layout:"form",width:260,labelAlign:"right",labelWidth:100, items:[ this.fields.get("START_DATE"),this.fields.get("ID"),this.fields.get("FINISH_DATE"),this.fields.get("STATUS"),this.fields.get("ASSIGNED_TO"),this.fields.get("CLOSED")]
+ }); 
        this.layoutItems.add("c1",
-             { layout:"form",columnWidth:.5, items:[ this.fields.get("TITLE"),this.fields.get("ASSIGNED_TO"),this.fields.get("START_DATE"),this.fields.get("FINISH_DATE"),this.fields.get("STATUS"),this.fields.get("CLOSED")]}); 
+             { layout:"form",width:450,labelAlign:"top",labelWidth:100, items:[ this.fields.get("TITLE"),this.fields.get("NOTES")]
+ }); 
 
 
        Ext.apply(this, {

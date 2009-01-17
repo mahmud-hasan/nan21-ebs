@@ -41,14 +41,15 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"PROJECT_ISSUE_ID",header:this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id",width:100,dataIndex:'PROJECT_ISSUE_ID',hidden:true,sortable:true}
               ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
               ,{ id:"USER_ACCOUNT",header:this.resourceBundle.FieldLabel.USER_ACCOUNT||"User_account",width:100,dataIndex:'USER_ACCOUNT',hidden:true,sortable:true}
               ,{ id:"CHARGED_DATE",header:this.resourceBundle.FieldLabel.CHARGED_DATE||"Charged_date",width:100,dataIndex:'CHARGED_DATE',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"EFFORT",header:this.resourceBundle.FieldLabel.EFFORT||"Effort",width:100,dataIndex:'EFFORT',sortable:true,align:'right'}
-              ,{ id:"EFFORT_UNIT",header:this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit",width:100,dataIndex:'EFFORT_UNIT',sortable:true}
+              ,{ id:"EFFORT",header:this.resourceBundle.FieldLabel.EFFORT||"Effort",width:60,dataIndex:'EFFORT',sortable:true,align:'right'}
+              ,{ id:"EFFORT_UNIT",header:this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit",width:80,dataIndex:'EFFORT_UNIT',sortable:true}
               ,{ id:"IS_INSERTED",header:this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted",width:50,dataIndex:'IS_INSERTED',hidden:true,sortable:true}
               ,{ id:"IS_APPROVED",header:this.resourceBundle.FieldLabel.IS_APPROVED||"Is_approved",width:50,dataIndex:'IS_APPROVED',hidden:true,sortable:true}
           ]
@@ -92,7 +93,7 @@
        this.fields.add("USER_ACCOUNT", new Ext.form.TextField ({xtype: "textfield",name:"USER_ACCOUNT",id:"DC0055F_USER_ACCOUNT",dataIndex:"USER_ACCOUNT",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.USER_ACCOUNT||"User_account",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CHARGED_DATE", new Ext.form.DateField ({xtype: "datefield",name:"CHARGED_DATE",id:"DC0055F_CHARGED_DATE",dataIndex:"CHARGED_DATE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CHARGED_DATE||"Charged_date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
        this.fields.add("EFFORT", new Ext.form.NumberField ({xtype: "numberfield",name:"EFFORT",id:"DC0055F_EFFORT",dataIndex:"EFFORT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.EFFORT||"Effort",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("EFFORT_UNIT", new N21.DataComp.LOV0037({xtype: "LOV0037",selectOnFocus:true,name:"EFFORT_UNIT",id:"DC0055F_EFFORT_UNIT",dataIndex:"EFFORT_UNIT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("EFFORT_UNIT", new N21.DataComp.LOV0037({xtype: "LOV0037",selectOnFocus:true,name:"EFFORT_UNIT",id:"DC0055F_EFFORT_UNIT",dataIndex:"EFFORT_UNIT",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.EFFORT_UNIT||"Effort_unit",insert_allowed:true,update_allowed:true})   );
        this.fields.add("IS_INSERTED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_INSERTED",id:"DC0055F_IS_INSERTED",dataIndex:"IS_INSERTED",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_INSERTED||"Is_inserted",insert_allowed:true,update_allowed:true})   );
        this.fields.add("IS_APPROVED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_APPROVED",id:"DC0055F_IS_APPROVED",dataIndex:"IS_APPROVED",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_APPROVED||"Is_approved",insert_allowed:true,update_allowed:true})   );
 

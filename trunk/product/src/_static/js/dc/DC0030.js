@@ -40,6 +40,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"UIDC_CODE",header:this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",width:100,dataIndex:'UIDC_CODE',sortable:true}
@@ -92,8 +93,8 @@
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0030F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("UIDC_CODE", new N21.DataComp.LOV0028({xtype: "LOV0028",selectOnFocus:true,name:"UIDC_CODE",id:"DC0030F_UIDC_CODE",dataIndex:"UIDC_CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("FIELD_NAME", new N21.DataComp.LOV0029({xtype: "LOV0029",paramMapping: [{param:"p_uidc_code",field:"DC0030F_UIDC_CODE"}],selectOnFocus:true,name:"FIELD_NAME",id:"DC0030F_FIELD_NAME",dataIndex:"FIELD_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIELD_NAME||"Field_name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("VALUE_TYPE", new Ext.form.ComboBox ({xtype: "combo",store:['SQL','VALUE'],selectOnFocus:true,name:"VALUE_TYPE",id:"DC0030F_VALUE_TYPE",dataIndex:"VALUE_TYPE",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("FIELD_NAME", new N21.DataComp.LOV0029({xtype: "LOV0029",paramMapping: [{param:"p_uidc_code",field:"DC0030F.UIDC_CODE"}],selectOnFocus:true,name:"FIELD_NAME",id:"DC0030F_FIELD_NAME",dataIndex:"FIELD_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIELD_NAME||"Field_name",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("VALUE_TYPE", new Ext.form.ComboBox ({xtype: "combo",store:['SQL','VALUE'],selectOnFocus:true,name:"VALUE_TYPE",id:"DC0030F_VALUE_TYPE",dataIndex:"VALUE_TYPE",width:80,listWidth:98,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.VALUE_TYPE||"Value_type",insert_allowed:true,update_allowed:true})   );
        this.fields.add("FIELD_VALUE", new Ext.form.TextArea ({xtype: "textarea",name:"FIELD_VALUE",id:"DC0030F_FIELD_VALUE",dataIndex:"FIELD_VALUE",width:200,height:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIELD_VALUE||"Field_value",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ACTIVE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"ACTIVE",id:"DC0030F_ACTIVE",dataIndex:"ACTIVE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",insert_allowed:true,update_allowed:true})   );
        this.fields.add("APPLY_TO_USER", new Ext.form.TextField ({xtype: "textfield",name:"APPLY_TO_USER",id:"DC0030F_APPLY_TO_USER",dataIndex:"APPLY_TO_USER",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.APPLY_TO_USER||"Apply_to_user",insert_allowed:true,update_allowed:true})   );
@@ -103,9 +104,10 @@
        this.fields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"MODIFIEDBY",id:"DC0030F_MODIFIEDBY",dataIndex:"MODIFIEDBY",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",disabled:true})   );
 
        this.layoutItems.add("Modified",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Modified||"Modified",autoHeight:true,collapsible: true,collapsed:true,width:"90%",items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")]});
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")] });
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:1, items:[ this.fields.get("ID"),this.fields.get("UIDC_CODE"),this.fields.get("FIELD_NAME"),this.fields.get("VALUE_TYPE"),this.fields.get("FIELD_VALUE"),this.fields.get("ACTIVE"),this.fields.get("APPLY_TO_USER"),this.layoutItems.get("Modified")]}); 
+             { layout:"form",columnWidth:1, items:[ this.fields.get("ID"),this.fields.get("UIDC_CODE"),this.fields.get("FIELD_NAME"),this.fields.get("VALUE_TYPE"),this.fields.get("FIELD_VALUE"),this.fields.get("ACTIVE"),this.fields.get("APPLY_TO_USER"),this.layoutItems.get("Modified")]
+ }); 
 
 
        Ext.apply(this, {

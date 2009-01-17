@@ -46,16 +46,16 @@
          this.queryFields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0061_QRY_PRODUCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"})  );
          this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0061_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
          this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0061_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",name:"QRY_CLIENT_CODE",id:"DC0061_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
+         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0061_QRY_CLIENT_ID"}],name:"QRY_CLIENT_CODE",id:"DC0061_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
          this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0061_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("ASSETGRP_NAME", new N21.DataComp.LOV0040({xtype: "LOV0040",name:"QRY_ASSETGRP_NAME",id:"DC0061_QRY_ASSETGRP_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group"})  );
+         this.queryFields.add("ASSETGRP_NAME", new N21.DataComp.LOV0040({xtype: "LOV0040",fieldMapping: [{column:"ID",field:"DC0061_QRY_ASSETGRP_ID"}],paramMapping: [{param:"p_client_id",field:"DC0061_QRY_CLIENT_ID"}],name:"QRY_ASSETGRP_NAME",id:"DC0061_QRY_ASSETGRP_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group"})  );
          this.queryFields.add("SERIAL_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_SERIAL_NO",id:"DC0061_QRY_SERIAL_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.SERIAL_NO||"Serial_no"})  );
-         this.queryFields.add("IS_ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_ACTIVE",id:"DC0061_QRY_IS_ACTIVE",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_ACTIVE||"Active"})  );
-         this.queryFields.add("IS_DEPRECIATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DEPRECIATED",id:"DC0061_QRY_IS_DEPRECIATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DEPRECIATED||"Depreciated"})  );
-         this.queryFields.add("IS_DISPOSED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DISPOSED",id:"DC0061_QRY_IS_DISPOSED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DISPOSED||"Disposed"})  );
-         this.queryFields.add("IS_OWNED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_OWNED",id:"DC0061_QRY_IS_OWNED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_OWNED||"Owned"})  );
-         this.queryFields.add("IS_INPOSESSION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_INPOSESSION",id:"DC0061_QRY_IS_INPOSESSION",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_INPOSESSION||"In-posession"})  );
-         this.queryFields.add("WITH_DEPRECIATION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_WITH_DEPRECIATION",id:"DC0061_QRY_WITH_DEPRECIATION",width:100,fieldLabel: this.resourceBundle.FieldLabel.WITH_DEPRECIATION||"With_depreciation"})  );
+         this.queryFields.add("IS_ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_ACTIVE",id:"DC0061_QRY_IS_ACTIVE",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_ACTIVE||"Active"})  );
+         this.queryFields.add("IS_DEPRECIATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DEPRECIATED",id:"DC0061_QRY_IS_DEPRECIATED",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_DEPRECIATED||"Depreciated"})  );
+         this.queryFields.add("IS_DISPOSED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DISPOSED",id:"DC0061_QRY_IS_DISPOSED",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_DISPOSED||"Disposed"})  );
+         this.queryFields.add("IS_OWNED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_OWNED",id:"DC0061_QRY_IS_OWNED",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_OWNED||"Owned"})  );
+         this.queryFields.add("IS_INPOSESSION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_INPOSESSION",id:"DC0061_QRY_IS_INPOSESSION",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_INPOSESSION||"In-posession"})  );
+         this.queryFields.add("WITH_DEPRECIATION", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_WITH_DEPRECIATION",id:"DC0061_QRY_WITH_DEPRECIATION",width:50,fieldLabel: this.resourceBundle.FieldLabel.WITH_DEPRECIATION||"With_depreciation"})  );
          this.queryFields.add("DEPREC_MONTHS", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DEPREC_MONTHS",id:"DC0061_QRY_DEPREC_MONTHS",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS||"Deprec. months",style: "text-align:right;"})  );
          this.queryFields.add("DEPREC_MONTHS_REMAINED", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_DEPREC_MONTHS_REMAINED",id:"DC0061_QRY_DEPREC_MONTHS_REMAINED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPREC_MONTHS_REMAINED||"Deprec months remained",style: "text-align:right;"})  );
          this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0061_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
@@ -71,6 +71,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ASSETGRP_ID",header:this.resourceBundle.FieldLabel.ASSETGRP_ID||"Assetgrp_id",width:100,dataIndex:'ASSETGRP_ID',hidden:true,sortable:true}
               ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
@@ -162,9 +163,9 @@
        this.fields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PRODUCT_ID",id:"DC0061F_PRODUCT_ID",dataIndex:"PRODUCT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CLIORG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIORG_ID",id:"DC0061F_CLIORG_ID",dataIndex:"CLIORG_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIORG_ID||"Cliorg_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0061F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0061F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0061F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0061F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0061F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
        this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0061F_NAME",dataIndex:"NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ASSETGRP_NAME", new N21.DataComp.LOV0040({xtype: "LOV0040",fieldMapping: [{column:"ID",field:"DC0061F_ASSETGRP_ID"}],paramMapping: [{param:"p_client_id",field:"DC0061F_CLIENT_ID"}],selectOnFocus:true,name:"ASSETGRP_NAME",id:"DC0061F_ASSETGRP_NAME",dataIndex:"ASSETGRP_NAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ASSETGRP_NAME", new N21.DataComp.LOV0040({xtype: "LOV0040",fieldMapping: [{column:"ID",field:"DC0061F_ASSETGRP_ID"}],paramMapping: [{param:"p_client_id",field:"DC0061F.CLIENT_ID"}],selectOnFocus:true,name:"ASSETGRP_NAME",id:"DC0061F_ASSETGRP_NAME",dataIndex:"ASSETGRP_NAME",width:150,listWidth:168,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ASSETGRP_NAME||"Asset group",insert_allowed:true,update_allowed:true})   );
        this.fields.add("QUANTITY", new Ext.form.NumberField ({xtype: "numberfield",name:"QUANTITY",id:"DC0061F_QUANTITY",dataIndex:"QUANTITY",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
        this.fields.add("SERIAL_NO", new Ext.form.TextField ({xtype: "textfield",name:"SERIAL_NO",id:"DC0061F_SERIAL_NO",dataIndex:"SERIAL_NO",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SERIAL_NO||"Serial_no",insert_allowed:true,update_allowed:true})   );
        this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0061F_NOTES",dataIndex:"NOTES",width:200,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
@@ -188,17 +189,19 @@
        this.fields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"MODIFIEDBY",id:"DC0061F_MODIFIEDBY",dataIndex:"MODIFIEDBY",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",disabled:true})   );
 
        this.layoutItems.add("Depreciation",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Depreciation||"Depreciation",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("WITH_DEPRECIATION"),this.fields.get("DEPREC_MONTHS"),this.fields.get("DEPREC_BASE_VALUE"),this.fields.get("DEPREC_MONTHS_REMAINED")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Depreciation||"Depreciation",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("WITH_DEPRECIATION"),this.fields.get("DEPREC_MONTHS"),this.fields.get("DEPREC_BASE_VALUE"),this.fields.get("DEPREC_MONTHS_REMAINED")] });
        this.layoutItems.add("Modified",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Modified||"Modified",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")]});
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Modified||"Modified",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")] });
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.3, items:[ this.layoutItems.get("Depreciation"),this.layoutItems.get("Modified")]}); 
+             { layout:"form",width:350,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("Depreciation"),this.layoutItems.get("Modified")]
+ }); 
        this.layoutItems.add("Status",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Status||"Status",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("IS_ACTIVE"),this.fields.get("IS_DEPRECIATED"),this.fields.get("IS_DISPOSED"),this.fields.get("IS_OWNED"),this.fields.get("IS_INPOSESSION")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Status||"Status",border:true,labelAlign:"left",width:"300"   ,items:[ this.fields.get("IS_ACTIVE"),this.fields.get("IS_DEPRECIATED"),this.fields.get("IS_DISPOSED"),this.fields.get("IS_OWNED"),this.fields.get("IS_INPOSESSION")] });
        this.layoutItems.add("Header",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Header||"Header",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("ID"),this.fields.get("CLIENT_ID"),this.fields.get("CLIORG_ID"),this.fields.get("PRODUCT_ID"),this.fields.get("ASSETGRP_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("NAME"),this.fields.get("ASSETGRP_NAME"),this.fields.get("QUANTITY"),this.fields.get("SERIAL_NO"),this.fields.get("NOTES")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Header||"Header",border:true,labelAlign:"left",width:"300"   ,items:[ this.fields.get("ID"),this.fields.get("CLIENT_ID"),this.fields.get("CLIORG_ID"),this.fields.get("PRODUCT_ID"),this.fields.get("ASSETGRP_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("NAME"),this.fields.get("ASSETGRP_NAME"),this.fields.get("QUANTITY"),this.fields.get("SERIAL_NO"),this.fields.get("NOTES")] });
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.4, items:[ this.layoutItems.get("Header"),this.layoutItems.get("Status")]}); 
+             { layout:"form",width:350,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("Header"),this.layoutItems.get("Status")]
+ }); 
 
 
        Ext.apply(this, {

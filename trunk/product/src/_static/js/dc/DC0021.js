@@ -21,9 +21,9 @@
        
          this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0021_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
          this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0021_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("NBS_STANDARD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_NBS_STANDARD",id:"DC0021_QRY_NBS_STANDARD",width:100,fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard"})  );
-         this.queryFields.add("USER_BUILD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_USER_BUILD",id:"DC0021_QRY_USER_BUILD",width:100,fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build"})  );
-         this.queryFields.add("DEPRECATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_DEPRECATED",id:"DC0021_QRY_DEPRECATED",width:100,fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated"})  );
+         this.queryFields.add("NBS_STANDARD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_NBS_STANDARD",id:"DC0021_QRY_NBS_STANDARD",width:50,fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard"})  );
+         this.queryFields.add("USER_BUILD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_USER_BUILD",id:"DC0021_QRY_USER_BUILD",width:50,fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build"})  );
+         this.queryFields.add("DEPRECATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_DEPRECATED",id:"DC0021_QRY_DEPRECATED",width:50,fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated"})  );
          this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0021_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
   
        this.queryFieldsVisible = [  "CODE","NAME","NBS_STANDARD","USER_BUILD","DEPRECATED" ];
@@ -35,6 +35,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',sortable:true}
               ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:160,dataIndex:'NAME',sortable:true}

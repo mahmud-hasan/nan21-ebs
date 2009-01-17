@@ -9,33 +9,21 @@
      dataRecordMeta:    Ext.data.Record.create([
           {name:"_p_record_status", type:"string"}
          ,{name:"ID", type:"float" }
-         ,{name:"UOM_FROM", type:"string" }
          ,{name:"UOM_TO", type:"string" }
+         ,{name:"UOM_FROM", type:"string" }
+         ,{name:"CONVERSION_TYPE", type:"string" }
          ,{name:"CONVERSION_FACTOR", type:"float" }
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
-         ,{name:"CONVERSION_TYPE", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
+     ,columnMap: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
      ,queryPanelColCount:2
+     ,firstFocusFieldName:"UOM_TO"
     ,recordPk:[ "ID"]
+    ,layoutItems: new Ext.util.MixedCollection()
     ,initComponent:function() {
-         this.columns.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("UOM_FROM",{ id:'UOM_FROM',header:this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from",width:100,dataIndex:'UOM_FROM',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0002({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
-         this.columns.add("UOM_TO",{ id:'UOM_TO',header:this.resourceBundle.FieldLabel.UOM_TO||"Uom_to",width:100,dataIndex:'UOM_TO',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0002({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
-         this.columns.add("CONVERSION_FACTOR",{ id:'CONVERSION_FACTOR',header:this.resourceBundle.FieldLabel.CONVERSION_FACTOR||"Conversion_factor",width:100,dataIndex:'CONVERSION_FACTOR',insert_allowed:true,update_allowed:true,sortable:true,align:'right',editor:new Ext.form.NumberField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
-         this.columns.add("MODIFIEDBY",{ id:'MODIFIEDBY',header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
-         this.columns.add("CONVERSION_TYPE",{ id:'CONVERSION_TYPE',header:this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Conversion_type",width:50,dataIndex:'CONVERSION_TYPE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
-
-
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0011_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("UOM_FROM", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_FROM",id:"DC0011_QRY_UOM_FROM",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from"})  );
-         this.queryFields.add("UOM_TO", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_TO",id:"DC0011_QRY_UOM_TO",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_TO||"Uom_to"})  );
-         this.queryFields.add("CONVERSION_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CONVERSION_TYPE",id:"DC0011_QRY_CONVERSION_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Conversion_type"})  );
-
-       this.queryFieldsVisible = [  "UOM_FROM","UOM_TO","CONVERSION_TYPE" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0011"
@@ -45,7 +33,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
-          ,columns: [ this.columns.get("ID"),this.columns.get("UOM_FROM"),this.columns.get("UOM_TO"),this.columns.get("CONVERSION_FACTOR"),this.columns.get("MODIFIEDON"),this.columns.get("MODIFIEDBY"),this.columns.get("CONVERSION_TYPE")]
+           ,loadMask: true
           ,tbar: new Array(
           new Ext.Toolbar.Button({  id:"tlb_FILTER"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
           ,new Ext.Toolbar.Separator()
@@ -60,6 +48,24 @@
           ,queryArraySize:20
         });
 
+         this.columnMap.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("UOM_TO",{ id:'UOM_TO',header:this.resourceBundle.FieldLabel.UOM_TO||"Uom_to",width:100,dataIndex:'UOM_TO',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0002({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
+         this.columnMap.add("UOM_FROM",{ id:'UOM_FROM',header:this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from",width:100,dataIndex:'UOM_FROM',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0002({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
+         this.columnMap.add("CONVERSION_TYPE",{ id:'CONVERSION_TYPE',header:this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Operator",width:50,dataIndex:'CONVERSION_TYPE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({   store:['x',':'],allowBlank: true,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true})});
+         this.columnMap.add("CONVERSION_FACTOR",{ id:'CONVERSION_FACTOR',header:this.resourceBundle.FieldLabel.CONVERSION_FACTOR||"Factor",width:100,dataIndex:'CONVERSION_FACTOR',insert_allowed:true,update_allowed:true,sortable:true,align:'right',editor:new Ext.form.NumberField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
+         this.columnMap.add("MODIFIEDBY",{ id:'MODIFIEDBY',header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
+
+    this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
+
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0011_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("UOM_TO", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_TO",id:"DC0011_QRY_UOM_TO",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_TO||"Uom_to"})  );
+         this.queryFields.add("UOM_FROM", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_FROM",id:"DC0011_QRY_UOM_FROM",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from"})  );
+         this.queryFields.add("CONVERSION_TYPE", new Ext.form.ComboBox ({   store:['x',':'],name:"QRY_CONVERSION_TYPE",id:"DC0011_QRY_CONVERSION_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Operator"})  );
+
+
+
+       this.queryFieldsVisible = [  "UOM_TO","UOM_FROM","CONVERSION_TYPE" ];
        N21.DataComp.DC0011.superclass.initComponent.apply(this, arguments);
      }
 
@@ -70,12 +76,12 @@
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
-              ,UOM_FROM:""
               ,UOM_TO:""
+              ,UOM_FROM:""
+              ,CONVERSION_TYPE:""
               ,CONVERSION_FACTOR:""
               ,MODIFIEDON:""
-              ,MODIFIEDBY:""
-              ,CONVERSION_TYPE:""});
+              ,MODIFIEDBY:""});
      }
 
   });

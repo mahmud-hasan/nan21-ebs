@@ -17,29 +17,13 @@
          ,{name:"ACTIVE", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
+     ,columnMap: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
      ,queryPanelColCount:3
      ,firstFocusFieldName:"COUNTRY_CODE"
     ,recordPk:[ "ID"]
+    ,layoutItems: new Ext.util.MixedCollection()
     ,initComponent:function() {
-         this.columns.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("COUNTRY_CODE",{ id:'COUNTRY_CODE',header:this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country",width:100,dataIndex:'COUNTRY_CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0006({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
-         this.columns.add("REGION_CODE",{ id:'REGION_CODE',header:this.resourceBundle.FieldLabel.REGION_CODE||"Region",width:100,dataIndex:'REGION_CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0007({allowBlank: false,callFromGrid:this,paramMapping: [{param:"p_country_code",field:"COUNTRY_CODE"}],cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
-         this.columns.add("CITY_NAME",{ id:'CITY_NAME',header:this.resourceBundle.FieldLabel.CITY_NAME||"City",width:150,dataIndex:'CITY_NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0010({allowBlank: false,callFromGrid:this,fieldMapping: [{column:"ID",field:"CITY_ID"}],paramMapping: [{param:"p_region_code",field:"REGION_CODE"},{param:"p_country_code",field:"COUNTRY_CODE"}],cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"NAME"})});
-         this.columns.add("CITY_ID",{ id:'CITY_ID',header:this.resourceBundle.FieldLabel.CITY_ID||"City_id",width:100,dataIndex:'CITY_ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Street",width:200,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("ACTIVE",{ id:'ACTIVE',header:this.resourceBundle.FieldLabel.ACTIVE||"Active",width:50,dataIndex:'ACTIVE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
-
-
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0013_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("COUNTRY_CODE", new N21.DataComp.LOV0006({xtype: "LOV0006",name:"QRY_COUNTRY_CODE",id:"DC0013_QRY_COUNTRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country"})  );
-         this.queryFields.add("REGION_CODE", new N21.DataComp.LOV0007({xtype: "LOV0007",name:"QRY_REGION_CODE",id:"DC0013_QRY_REGION_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.REGION_CODE||"Region"})  );
-         this.queryFields.add("CITY_NAME", new N21.DataComp.LOV0010({xtype: "LOV0010",name:"QRY_CITY_NAME",id:"DC0013_QRY_CITY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY_NAME||"City"})  );
-         this.queryFields.add("CITY_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CITY_ID",id:"DC0013_QRY_CITY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY_ID||"City_id"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0013_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Street"})  );
-         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0013_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
-
-       this.queryFieldsVisible = [  "COUNTRY_CODE","REGION_CODE","CITY_NAME","NAME","ACTIVE" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0013"
@@ -49,7 +33,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
-          ,columns: [ this.columns.get("ID"),this.columns.get("COUNTRY_CODE"),this.columns.get("REGION_CODE"),this.columns.get("CITY_NAME"),this.columns.get("CITY_ID"),this.columns.get("NAME"),this.columns.get("ACTIVE")]
+           ,loadMask: true
           ,tbar: new Array(
           new Ext.Toolbar.Button({  id:"tlb_FILTER"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
           ,new Ext.Toolbar.Separator()
@@ -64,6 +48,27 @@
           ,queryArraySize:20
         });
 
+         this.columnMap.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("COUNTRY_CODE",{ id:'COUNTRY_CODE',header:this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country",width:100,dataIndex:'COUNTRY_CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0006({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
+         this.columnMap.add("REGION_CODE",{ id:'REGION_CODE',header:this.resourceBundle.FieldLabel.REGION_CODE||"Region",width:100,dataIndex:'REGION_CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0007({allowBlank: false,callFromGrid:this,paramMapping: [{param:"p_country_code",field:"COUNTRY_CODE"}],cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
+         this.columnMap.add("CITY_NAME",{ id:'CITY_NAME',header:this.resourceBundle.FieldLabel.CITY_NAME||"City",width:150,dataIndex:'CITY_NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0010({allowBlank: false,callFromGrid:this,fieldMapping: [{column:"ID",field:"CITY_ID"}],paramMapping: [{param:"p_region_code",field:"REGION_CODE"},{param:"p_country_code",field:"COUNTRY_CODE"}],cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"NAME"})});
+         this.columnMap.add("CITY_ID",{ id:'CITY_ID',header:this.resourceBundle.FieldLabel.CITY_ID||"City_id",width:100,dataIndex:'CITY_ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Street",width:200,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("ACTIVE",{ id:'ACTIVE',header:this.resourceBundle.FieldLabel.ACTIVE||"Active",width:50,dataIndex:'ACTIVE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
+
+    this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
+
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0013_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("COUNTRY_CODE", new N21.DataComp.LOV0006({xtype: "LOV0006",name:"QRY_COUNTRY_CODE",id:"DC0013_QRY_COUNTRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country"})  );
+         this.queryFields.add("REGION_CODE", new N21.DataComp.LOV0007({xtype: "LOV0007",paramMapping: [{param:"p_country_code",field:"DC0013_QRY_COUNTRY_CODE"}],name:"QRY_REGION_CODE",id:"DC0013_QRY_REGION_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.REGION_CODE||"Region"})  );
+         this.queryFields.add("CITY_NAME", new N21.DataComp.LOV0010({xtype: "LOV0010",fieldMapping: [{column:"ID",field:"DC0013_QRY_CITY_ID"}],paramMapping: [{param:"p_region_code",field:"DC0013_QRY_REGION_CODE"},{param:"p_country_code",field:"DC0013_QRY_COUNTRY_CODE"}],name:"QRY_CITY_NAME",id:"DC0013_QRY_CITY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY_NAME||"City"})  );
+         this.queryFields.add("CITY_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CITY_ID",id:"DC0013_QRY_CITY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY_ID||"City_id"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0013_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Street"})  );
+         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0013_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+
+
+
+       this.queryFieldsVisible = [  "COUNTRY_CODE","REGION_CODE","CITY_NAME","NAME","ACTIVE" ];
        N21.DataComp.DC0013.superclass.initComponent.apply(this, arguments);
      }
 

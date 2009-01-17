@@ -77,6 +77,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
@@ -160,7 +161,7 @@
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0044F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0044F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PAYDOCTYPE_CODE", new N21.DataComp.LOV0012({xtype: "LOV0012",selectOnFocus:true,name:"PAYDOCTYPE_CODE",id:"DC0044F_PAYDOCTYPE_CODE",dataIndex:"PAYDOCTYPE_CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PAYDOCTYPE_CODE||"Paydoctype_code",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("PAYDOCTYPE_CODE", new N21.DataComp.LOV0012({xtype: "LOV0012",selectOnFocus:true,name:"PAYDOCTYPE_CODE",id:"DC0044F_PAYDOCTYPE_CODE",dataIndex:"PAYDOCTYPE_CODE",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PAYDOCTYPE_CODE||"Paydoctype_code",insert_allowed:true,update_allowed:true})   );
        this.fields.add("DOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"DOC_NO",id:"DC0044F_DOC_NO",dataIndex:"DOC_NO",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Doc_no",insert_allowed:true,update_allowed:true})   );
        this.fields.add("DOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"DOC_DATE",id:"DC0044F_DOC_DATE",dataIndex:"DOC_DATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Doc_date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
        this.fields.add("BPARTNER_FROM", new Ext.form.Hidden ({xtype: "hidden",name:"BPARTNER_FROM",id:"DC0044F_BPARTNER_FROM",dataIndex:"BPARTNER_FROM",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_FROM||"Bpartner_from",insert_allowed:true,update_allowed:true})   );

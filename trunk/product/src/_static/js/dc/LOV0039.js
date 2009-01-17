@@ -7,12 +7,14 @@
   Ext.ns("N21.DataComp");
   N21.DataComp.LOV0039 = Ext.extend(N21.Base.Lov, {
      displayField:"NAME"
+    ,queryArraySize:40
     ,initComponent:function() {
        Ext.apply(this, {
            lovTitle:"Business partner with adress (LOV0039)"
           ,view: new Ext.grid.GridPanel({
              store: new Ext.data.JsonStore({
                id:"storeLOV0039"
+              ,totalProperty:"totalCount"
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0039&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
@@ -32,6 +34,7 @@
           ,displayField:this.displayField
           ,lovWidth:600
           ,lovHeight:350
+          ,queryFields:[["CITY", this.resourceBundle.FieldLabel.CITY||"City"],["COUNTRY_CODE", this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country"],["NAME", this.resourceBundle.FieldLabel.NAME||"Name"],["REGION_CODE", this.resourceBundle.FieldLabel.REGION_CODE||"Region"]]
         });
        N21.DataComp.LOV0039.superclass.initComponent.apply(this, arguments);
      }

@@ -35,6 +35,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"LOGIN_CODE",header:this.resourceBundle.FieldLabel.LOGIN_CODE||"Login_code",width:100,dataIndex:'LOGIN_CODE',sortable:true}
@@ -96,11 +97,13 @@
        this.layoutItems.add("DC0068",
              { xtype:"DC0068",id:"DC0068",width:"100%",height:160, parentDcRelation:{name:"DC0031F",relation:[{parent:"ID",child:"USER_ID"}]}   });
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:1, items:[ this.layoutItems.get("DC0068")]}); 
+             { layout:"form",columnWidth:1, items:[ this.layoutItems.get("DC0068")]
+ }); 
        this.layoutItems.add("Modified",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Modified||"Modified",autoHeight:true,collapsible: true,collapsed:true,width:"90%",items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")]});
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")] });
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:1, items:[ this.fields.get("ID"),this.fields.get("LOGIN_CODE"),this.fields.get("ACCOUNT_LOCKED"),this.fields.get("ACCOUNT_EXPIRED"),this.fields.get("DBUSER"),this.layoutItems.get("Modified")]}); 
+             { layout:"form",columnWidth:1, items:[ this.fields.get("ID"),this.fields.get("LOGIN_CODE"),this.fields.get("ACCOUNT_LOCKED"),this.fields.get("ACCOUNT_EXPIRED"),this.fields.get("DBUSER"),this.layoutItems.get("Modified")]
+ }); 
 
 
        Ext.apply(this, {

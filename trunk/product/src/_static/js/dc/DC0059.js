@@ -40,7 +40,7 @@
     ,initComponent:function() {
        
          this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0059_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",name:"QRY_CLIENT_CODE",id:"DC0059_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
+         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0059_QRY_CLIENT_ID"}],name:"QRY_CLIENT_CODE",id:"DC0059_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
          this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0059_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
          this.queryFields.add("DOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DOC_NO",id:"DC0059_QRY_DOC_NO",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Order no."})  );
          this.queryFields.add("DOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"QRY_DOC_DATE",id:"DC0059_QRY_DOC_DATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Date",format:Ext.DATE_FORMAT})  );
@@ -70,6 +70,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"CLIENT_CODE",header:this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",width:100,dataIndex:'CLIENT_CODE',sortable:true}
@@ -151,7 +152,7 @@
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0059F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0059F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0059F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0059F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0059F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0059F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("DOC_NO", new Ext.form.TextField ({xtype: "textfield",name:"DOC_NO",id:"DC0059F_DOC_NO",dataIndex:"DOC_NO",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.DOC_NO||"Order no.",insert_allowed:true,update_allowed:true})   );
        this.fields.add("DOC_DATE", new Ext.form.DateField ({xtype: "datefield",name:"DOC_DATE",id:"DC0059F_DOC_DATE",dataIndex:"DOC_DATE",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.DOC_DATE||"Date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
@@ -172,23 +173,25 @@
        this.fields.add("DELIV_BPARTNER_CONTACT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"DELIV_BPARTNER_CONTACT_ID",id:"DC0059F_DELIV_BPARTNER_CONTACT_ID",dataIndex:"DELIV_BPARTNER_CONTACT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DELIV_BPARTNER_CONTACT_ID||"Deliv_bpartner_contact_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PAY_BPARTNER_CONTACT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PAY_BPARTNER_CONTACT_ID",id:"DC0059F_PAY_BPARTNER_CONTACT_ID",dataIndex:"PAY_BPARTNER_CONTACT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PAY_BPARTNER_CONTACT_ID||"Pay_bpartner_contact_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("REF_SORDER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"REF_SORDER_ID",id:"DC0059F_REF_SORDER_ID",dataIndex:"REF_SORDER_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.REF_SORDER_ID||"Ref_order_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"CURRENCY",id:"DC0059F_CURRENCY",dataIndex:"CURRENCY",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"CURRENCY",id:"DC0059F_CURRENCY",dataIndex:"CURRENCY",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PAYMETHOD_CODE", new Ext.form.TextField ({xtype: "textfield",name:"PAYMETHOD_CODE",id:"DC0059F_PAYMETHOD_CODE",dataIndex:"PAYMETHOD_CODE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PAYMETHOD_CODE||"Paymethod_code",insert_allowed:true,update_allowed:true})   );
        this.fields.add("SALESREP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"SALESREP_ID",id:"DC0059F_SALESREP_ID",dataIndex:"SALESREP_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SALESREP_ID||"Salesrep_id",insert_allowed:true,update_allowed:true})   );
        this.fields.add("TOTAL_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"TOTAL_AMOUNT",id:"DC0059F_TOTAL_AMOUNT",dataIndex:"TOTAL_AMOUNT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.TOTAL_AMOUNT||"Total amount",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
 
        this.layoutItems.add("Modified",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.Modified||"Modified",autoHeight:true,collapsible: true,collapsed:true,width:"90%",items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")]});
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("CREATEDON"),this.fields.get("CREATEDBY"),this.fields.get("MODIFIEDON"),this.fields.get("MODIFIEDBY")] });
        this.layoutItems.add("C2",
-             { layout:"form",columnWidth:.3, items:[ this.layoutItems.get("Modified")]}); 
+             { layout:"form",columnWidth:.3, items:[ this.layoutItems.get("Modified")]
+ }); 
        this.layoutItems.add("DocHeader",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.DocHeader||"DocHeader",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("CLIENT_CODE"),this.fields.get("CLIENT_ID"),this.fields.get("DOC_NO"),this.fields.get("DOC_DATE"),this.fields.get("BPARTNER_NAME"),this.fields.get("BPARTNER_ID"),this.fields.get("REF_SORDER_ID"),this.fields.get("CURRENCY"),this.fields.get("TOTAL_AMOUNT")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("CLIENT_CODE"),this.fields.get("CLIENT_ID"),this.fields.get("DOC_NO"),this.fields.get("DOC_DATE"),this.fields.get("BPARTNER_NAME"),this.fields.get("BPARTNER_ID"),this.fields.get("REF_SORDER_ID"),this.fields.get("CURRENCY"),this.fields.get("TOTAL_AMOUNT")] });
        this.layoutItems.add("ThirdParties",
-             { xtype:"fieldset", title:this.resourceBundle.FieldsetTitle.ThirdParties||"ThirdParties",autoHeight:true,collapsible: true,width:"90%",items:[ this.fields.get("BILL_BPARTNER_ID"),this.fields.get("BILL_BPARTNER_NAME"),this.fields.get("DELIV_BPARTNER_ID"),this.fields.get("DELIV_BPARTNER_NAME"),this.fields.get("PAY_BPARTNER_ID"),this.fields.get("PAY_BPARTNER_NAME")]});
+             { xtype:"fieldset", autoHeight:true,collapsible: false,border:true,width:"90%"   ,items:[ this.fields.get("BILL_BPARTNER_ID"),this.fields.get("BILL_BPARTNER_NAME"),this.fields.get("DELIV_BPARTNER_ID"),this.fields.get("DELIV_BPARTNER_NAME"),this.fields.get("PAY_BPARTNER_ID"),this.fields.get("PAY_BPARTNER_NAME")] });
        this.layoutItems.add("C1",
-             { layout:"form",columnWidth:.4, items:[ this.fields.get("ID"),this.layoutItems.get("DocHeader"),this.layoutItems.get("ThirdParties")]}); 
+             { layout:"form",columnWidth:.4, items:[ this.fields.get("ID"),this.layoutItems.get("DocHeader"),this.layoutItems.get("ThirdParties")]
+ }); 
        this.layoutItems.add("DC0060",
-             new Ext.Window({ xtype:"window", modal:true, title:N21.DataComp.DC0060.prototype.resourceBundle.DcProperty.Title,  closeAction:"hide",closable:true,layout:"fit", width:700, height:450, items:{xtype:"DC0060",id:"DC0060", parentDcRelation:{name:"DC0059F",relation:[{parent:"ID",child:"SORDER_ID"}]}         }} ) ); 
+             new Ext.Window({ xtype:"window", modal:true, title: "DC0060 - "+(N21.DataComp.DC0060.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:700, height:450, items:{xtype:"DC0060",id:"DC0060", parentDcRelation:{name:"DC0059F",relation:[{parent:"ID",child:"SORDER_ID"}]}         }} ) ); 
 
 
        Ext.apply(this, {

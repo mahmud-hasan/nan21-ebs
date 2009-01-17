@@ -7,8 +7,8 @@
      dataRecordMeta:    Ext.data.Record.create([
           {name:"_p_record_status", type:"string"}
          ,{name:"ID", type:"float" }
-         ,{name:"CLIENT_ID", type:"float" }
          ,{name:"CLIENT_NAME", type:"string" }
+         ,{name:"CLIENT_ID", type:"float" }
          ,{name:"CODE", type:"string" }
          ,{name:"NAME", type:"string" }
          ,{name:"PRODCATEG_CODE", type:"string" }
@@ -20,6 +20,8 @@
          ,{name:"REVENUE_ACCOUNT", type:"string" }
          ,{name:"PROD_TYPE", type:"string" }
          ,{name:"SUMMARY", type:"string" }
+         ,{name:"ATTRGRP_NAME", type:"string" }
+         ,{name:"ATTRGRP_ID", type:"float" }
          ,{name:"VOLUME", type:"float" }
          ,{name:"WEIGHT", type:"float" }
          ,{name:"CREATEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
@@ -36,15 +38,17 @@
        
          this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0039_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
          this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0039_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
-         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",name:"QRY_CLIENT_NAME",id:"DC0039_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
+         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0039_QRY_CLIENT_ID"}],name:"QRY_CLIENT_NAME",id:"DC0039_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
          this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0039_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
          this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0039_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("PRODCATEG_CODE", new N21.DataComp.LOV0014({xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039_QRY_PRODCATEG_ID"}],selectOnFocus:true,name:"QRY_PRODCATEG_CODE",id:"DC0039_QRY_PRODCATEG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category"})  );
          this.queryFields.add("PRODCATEG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODCATEG_ID",id:"DC0039_QRY_PRODCATEG_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id"})  );
+         this.queryFields.add("PRODCATEG_CODE", new N21.DataComp.LOV0014({xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039_QRY_PRODCATEG_ID"}],selectOnFocus:true,name:"QRY_PRODCATEG_CODE",id:"DC0039_QRY_PRODCATEG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category"})  );
          this.queryFields.add("PROD_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_PROD_TYPE",id:"DC0039_QRY_PROD_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_TYPE||"Prod_type"})  );
-         this.queryFields.add("SUMMARY", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_SUMMARY",id:"DC0039_QRY_SUMMARY",width:100,fieldLabel: this.resourceBundle.FieldLabel.SUMMARY||"Summary"})  );
+         this.queryFields.add("SUMMARY", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_SUMMARY",id:"DC0039_QRY_SUMMARY",width:40,fieldLabel: this.resourceBundle.FieldLabel.SUMMARY||"Summary"})  );
+         this.queryFields.add("ATTRGRP_NAME", new N21.DataComp.LOV0046({xtype: "LOV0046",fieldMapping: [{column:"ID",field:"DC0039_QRY_ATTRGRP_ID"},{column:"NAME",field:"DC0039_QRY_ATTRGRP_NAME"}],selectOnFocus:true,name:"QRY_ATTRGRP_NAME",id:"DC0039_QRY_ATTRGRP_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ATTRGRP_NAME||"Attribute group"})  );
+         this.queryFields.add("ATTRGRP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ATTRGRP_ID",id:"DC0039_QRY_ATTRGRP_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ATTRGRP_ID||"Attribute group ID"})  );
   
-       this.queryFieldsVisible = [  "CLIENT_NAME","CODE","NAME","PRODCATEG_CODE","PROD_TYPE","SUMMARY" ];
+       this.queryFieldsVisible = [  "CLIENT_NAME","CODE","NAME","PRODCATEG_CODE","PROD_TYPE","SUMMARY","ATTRGRP_NAME" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0039"
@@ -54,10 +58,11 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
+           ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
-              ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
               ,{ id:"CLIENT_NAME",header:this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",width:100,dataIndex:'CLIENT_NAME',sortable:true}
+              ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
               ,{ id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:120,dataIndex:'CODE',sortable:true}
               ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:200,dataIndex:'NAME',sortable:true}
               ,{ id:"PRODCATEG_CODE",header:this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category",width:150,dataIndex:'PRODCATEG_CODE',sortable:true}
@@ -69,6 +74,8 @@
               ,{ id:"REVENUE_ACCOUNT",header:this.resourceBundle.FieldLabel.REVENUE_ACCOUNT||"Revenue_account",width:100,dataIndex:'REVENUE_ACCOUNT',hidden:true,sortable:true}
               ,{ id:"PROD_TYPE",header:this.resourceBundle.FieldLabel.PROD_TYPE||"Prod_type",width:100,dataIndex:'PROD_TYPE',hidden:true,sortable:true}
               ,{ id:"SUMMARY",header:this.resourceBundle.FieldLabel.SUMMARY||"Summary",width:50,dataIndex:'SUMMARY',hidden:true,sortable:true}
+              ,{ id:"ATTRGRP_NAME",header:this.resourceBundle.FieldLabel.ATTRGRP_NAME||"Attribute group",width:100,dataIndex:'ATTRGRP_NAME',hidden:true,sortable:true}
+              ,{ id:"ATTRGRP_ID",header:this.resourceBundle.FieldLabel.ATTRGRP_ID||"Attribute group ID",width:100,dataIndex:'ATTRGRP_ID',hidden:true,sortable:true}
               ,{ id:"VOLUME",header:this.resourceBundle.FieldLabel.VOLUME||"Volume",width:100,dataIndex:'VOLUME',hidden:true,sortable:true,align:'right'}
               ,{ id:"WEIGHT",header:this.resourceBundle.FieldLabel.WEIGHT||"Weight",width:100,dataIndex:'WEIGHT',hidden:true,sortable:true,align:'right'}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
@@ -89,8 +96,8 @@
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
-              ,CLIENT_ID:""
               ,CLIENT_NAME:""
+              ,CLIENT_ID:""
               ,CODE:""
               ,NAME:""
               ,PRODCATEG_CODE:""
@@ -102,6 +109,8 @@
               ,REVENUE_ACCOUNT:""
               ,PROD_TYPE:""
               ,SUMMARY:""
+              ,ATTRGRP_NAME:""
+              ,ATTRGRP_ID:""
               ,VOLUME:""
               ,WEIGHT:""
               ,CREATEDON:""
@@ -125,45 +134,51 @@
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0039F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0039F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_NAME",id:"DC0039F_CLIENT_NAME",dataIndex:"CLIENT_NAME",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",insert_allowed:true,update_allowed:true})   );
        this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0039F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0039F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_NAME",id:"DC0039F_CLIENT_NAME",dataIndex:"CLIENT_NAME",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0039F_CODE",dataIndex:"CODE",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0039F_NAME",dataIndex:"NAME",width:250,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PRODCATEG_CODE", new N21.DataComp.LOV0014({xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039F_PRODCATEG_ID"}],selectOnFocus:true,name:"PRODCATEG_CODE",id:"DC0039F_PRODCATEG_CODE",dataIndex:"PRODCATEG_CODE",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0039F_CODE",dataIndex:"CODE",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;"})   );
+       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0039F_NAME",dataIndex:"NAME",width:400,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PRODCATEG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PRODCATEG_ID",id:"DC0039F_PRODCATEG_ID",dataIndex:"PRODCATEG_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("PRODCATEG_CODE", new N21.DataComp.LOV0014({xtype: "LOV0014",fieldMapping: [{column:"ID",field:"DC0039F_PRODCATEG_ID"}],selectOnFocus:true,name:"PRODCATEG_CODE",id:"DC0039F_PRODCATEG_CODE",dataIndex:"PRODCATEG_CODE",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_CODE||"Product Category",insert_allowed:true,update_allowed:true})   );
        this.fields.add("STORABLE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"STORABLE",id:"DC0039F_STORABLE",dataIndex:"STORABLE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STORABLE||"Storable",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("UOM_CODE", new N21.DataComp.LOV0002({xtype: "LOV0002",selectOnFocus:true,name:"UOM_CODE",id:"DC0039F_UOM_CODE",dataIndex:"UOM_CODE",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"UoM",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0039F_DESCRIPTION",dataIndex:"DESCRIPTION",width:250,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("UOM_CODE", new N21.DataComp.LOV0002({xtype: "LOV0002",selectOnFocus:true,name:"UOM_CODE",id:"DC0039F_UOM_CODE",dataIndex:"UOM_CODE",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.UOM_CODE||"UoM",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0039F_DESCRIPTION",dataIndex:"DESCRIPTION",width:400,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
        this.fields.add("EXPENSE_ACCOUNT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"EXPENSE_ACCOUNT",id:"DC0039F_EXPENSE_ACCOUNT",dataIndex:"EXPENSE_ACCOUNT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EXPENSE_ACCOUNT||"Expense_account",insert_allowed:true,update_allowed:true})   );
        this.fields.add("REVENUE_ACCOUNT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"REVENUE_ACCOUNT",id:"DC0039F_REVENUE_ACCOUNT",dataIndex:"REVENUE_ACCOUNT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.REVENUE_ACCOUNT||"Revenue_account",insert_allowed:true,update_allowed:true})   );
        this.fields.add("PROD_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"PROD_TYPE",id:"DC0039F_PROD_TYPE",dataIndex:"PROD_TYPE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PROD_TYPE||"Prod_type",insert_allowed:true,update_allowed:true})   );
        this.fields.add("SUMMARY", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"SUMMARY",id:"DC0039F_SUMMARY",dataIndex:"SUMMARY",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SUMMARY||"Summary",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ATTRGRP_NAME", new N21.DataComp.LOV0046({xtype: "LOV0046",fieldMapping: [{column:"ID",field:"DC0039F_ATTRGRP_ID"},{column:"NAME",field:"DC0039F_ATTRGRP_NAME"}],selectOnFocus:true,name:"ATTRGRP_NAME",id:"DC0039F_ATTRGRP_NAME",dataIndex:"ATTRGRP_NAME",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ATTRGRP_NAME||"Attribute group",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ATTRGRP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"ATTRGRP_ID",id:"DC0039F_ATTRGRP_ID",dataIndex:"ATTRGRP_ID",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ATTRGRP_ID||"Attribute group ID",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("FOR_SALE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"FOR_SALE",id:"DC0039F_FOR_SALE",dataIndex:"FOR_SALE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FOR_SALE||"For_sale",insert_allowed:true,update_allowed:true})   );
 
+       this.layoutItems.add("DC0077",
+             new Ext.Window({ xtype:"window", modal:true, title: "DC0077 - "+(N21.DataComp.DC0077.prototype.resourceBundle.DcProperty.Title||"Product attributes"),  closeAction:"hide",closable:true,layout:"fit", width:600, height:500, items:{xtype:"DC0077",id:"DC0077", parentDcRelation:{name:"DC0039F",relation:[{parent:"ID",child:"PRODUCT_ID"},{parent:"NAME",child:"PRODUCT_NAME"}]}         }} ) ); 
+       this.layoutItems.add("R2C2",
+             { layout:"form",width:320, items:[ this.fields.get("EXPENSE_ACCOUNT"),this.fields.get("REVENUE_ACCOUNT"),this.fields.get("PROD_TYPE"),this.fields.get("ATTRGRP_ID"),this.fields.get("ATTRGRP_NAME")]
+ }); 
+       this.layoutItems.add("R2C1",
+             { layout:"form",width:320, items:[ this.fields.get("CLIENT_NAME"),this.fields.get("CLIENT_ID"),this.fields.get("CODE"),this.fields.get("STORABLE"),this.fields.get("UOM_CODE"),this.fields.get("SUMMARY"),this.fields.get("FOR_SALE")]
+ }); 
+       this.layoutItems.add("R2",
+             { layout:"column",columnWidth:1, items:[ this.layoutItems.get("R2C1"),this.layoutItems.get("R2C2")]
+ }); 
+       this.layoutItems.add("R1",
+             { layout:"form",columnWidth:1, items:[ this.fields.get("ID"),this.fields.get("NAME"),this.fields.get("PRODCATEG_CODE"),this.fields.get("PRODCATEG_ID"),this.fields.get("DESCRIPTION")]
+ }); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.fields.get("_p_record_status")
-                 ,this.fields.get("ID")
-                 ,this.fields.get("CLIENT_ID")
-                 ,this.fields.get("CLIENT_NAME")
-                 ,this.fields.get("CODE")
-                 ,this.fields.get("NAME")
-                 ,this.fields.get("PRODCATEG_CODE")
-                 ,this.fields.get("PRODCATEG_ID")
-                 ,this.fields.get("STORABLE")
-                 ,this.fields.get("UOM_CODE")
-                 ,this.fields.get("DESCRIPTION")
-                 ,this.fields.get("EXPENSE_ACCOUNT")
-                 ,this.fields.get("REVENUE_ACCOUNT")
-                 ,this.fields.get("PROD_TYPE")
-                 ,this.fields.get("SUMMARY")
-]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("R1"),this.layoutItems.get("R2")]
           ,border:false
+          ,layout:"column"
           ,defaults:{labelWidth:110}
           ,frame:true
           ,width: "100%"
           ,dataComponentName:"DC0039F"
-          ,firstFocusFieldName:"CODE"
+          ,firstFocusFieldName:"NAME"
+          ,childDCs: [{name:"DC0077",relation:[{parent:"ID",child:"PRODUCT_ID"},{parent:"NAME",child:"PRODUCT_NAME"}]}]
+          ,buttons: [{xtype:"button",text:"Attributes",scope:this,handler:function() {this.show_window("DC0077");}  }]
+          ,buttonAlign:"left"
           ,toolbarConfig:"STANDARD"
         });
 
@@ -178,8 +193,8 @@
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
-              ,CLIENT_ID:""
               ,CLIENT_NAME:""
+              ,CLIENT_ID:""
               ,CODE:""
               ,NAME:""
               ,PRODCATEG_CODE:""
@@ -191,6 +206,8 @@
               ,REVENUE_ACCOUNT:""
               ,PROD_TYPE:""
               ,SUMMARY:""
+              ,ATTRGRP_NAME:""
+              ,ATTRGRP_ID:""
               ,VOLUME:""
               ,WEIGHT:""
               ,CREATEDON:""

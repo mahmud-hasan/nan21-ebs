@@ -19,27 +19,12 @@
          ,{name:"MODIFIEDBY", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
+     ,columnMap: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
      ,queryPanelColCount:2
     ,recordPk:[ "ID"]
+    ,layoutItems: new Ext.util.MixedCollection()
     ,initComponent:function() {
-         this.columns.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:false,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("CODE",{ id:'CODE',header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Name",width:180,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columns.add("SWIFTCODE",{ id:'SWIFTCODE',header:this.resourceBundle.FieldLabel.SWIFTCODE||"Swiftcode",width:100,dataIndex:'SWIFTCODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
-         this.columns.add("LOCATION_ID",{ id:'LOCATION_ID',header:this.resourceBundle.FieldLabel.LOCATION_ID||"Location_id",width:100,dataIndex:'LOCATION_ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,align:'right',editor:new Ext.form.NumberField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
-         this.columns.add("CREATEDON",{ id:'CREATEDON',header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
-         this.columns.add("CREATEDBY",{ id:'CREATEDBY',header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',insert_allowed:false,update_allowed:false,hidden:true,sortable:true});
-         this.columns.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
-         this.columns.add("MODIFIEDBY",{ id:'MODIFIEDBY',header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',insert_allowed:false,update_allowed:false,hidden:true,sortable:true});
-
-
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0005_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0005_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0005_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("SWIFTCODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_SWIFTCODE",id:"DC0005_QRY_SWIFTCODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.SWIFTCODE||"Swiftcode"})  );
-
-       this.queryFieldsVisible = [  "CODE","NAME","SWIFTCODE" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0005"
@@ -49,7 +34,7 @@
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
-          ,columns: [ this.columns.get("ID"),this.columns.get("CODE"),this.columns.get("NAME"),this.columns.get("SWIFTCODE"),this.columns.get("LOCATION_ID"),this.columns.get("CREATEDON"),this.columns.get("CREATEDBY"),this.columns.get("MODIFIEDON"),this.columns.get("MODIFIEDBY")]
+           ,loadMask: true
           ,tbar: new Array(
           new Ext.Toolbar.Button({  id:"tlb_FILTER"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_src.png" ,tooltip:"" ,handler: this.executeQuery ,scope :this})
           ,new Ext.Toolbar.Separator()
@@ -62,8 +47,32 @@
           ,dataComponentName:"DC0005"
           ,frame:true
           ,queryArraySize:20
+          ,childDCs: [{name:"DC0006",relation:[{parent:"CODE",child:"BANK_CODE"}]}]
+          ,buttons: [{xtype:"button",text:"Bank agencies",scope:this,handler:function() {this.show_window("DC0006");}  }]
         });
 
+         this.columnMap.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:false,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("CODE",{ id:'CODE',header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Name",width:180,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("SWIFTCODE",{ id:'SWIFTCODE',header:this.resourceBundle.FieldLabel.SWIFTCODE||"Swiftcode",width:100,dataIndex:'SWIFTCODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("LOCATION_ID",{ id:'LOCATION_ID',header:this.resourceBundle.FieldLabel.LOCATION_ID||"Location_id",width:100,dataIndex:'LOCATION_ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,align:'right',editor:new Ext.form.NumberField({selectOnFocus:true,allowBlank: true,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("CREATEDON",{ id:'CREATEDON',header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
+         this.columnMap.add("CREATEDBY",{ id:'CREATEDBY',header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',insert_allowed:false,update_allowed:false,hidden:true,sortable:true});
+         this.columnMap.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
+         this.columnMap.add("MODIFIEDBY",{ id:'MODIFIEDBY',header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',insert_allowed:false,update_allowed:false,hidden:true,sortable:true});
+
+    this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
+
+         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0005_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0005_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
+         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0005_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
+         this.queryFields.add("SWIFTCODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_SWIFTCODE",id:"DC0005_QRY_SWIFTCODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.SWIFTCODE||"Swiftcode"})  );
+
+       this.layoutItems.add("DC0006",
+             new Ext.Window({ xtype:"window", modal:true, title: "DC0006 - "+(N21.DataComp.DC0006.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:500, height:400, items:{xtype:"DC0006",id:"DC0006", parentDcRelation:{name:"DC0005",relation:[{parent:"CODE",child:"BANK_CODE"}]}         }} ) ); 
+
+
+       this.queryFieldsVisible = [  "CODE","NAME","SWIFTCODE" ];
        N21.DataComp.DC0005.superclass.initComponent.apply(this, arguments);
      }
 

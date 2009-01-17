@@ -7,12 +7,14 @@
   Ext.ns("N21.DataComp");
   N21.DataComp.LOV0027 = Ext.extend(N21.Base.Lov, {
      displayField:"DOC_NO_DATE"
+    ,queryArraySize:-1
     ,initComponent:function() {
        Ext.apply(this, {
            lovTitle:"Received invoice (LOV0027)"
           ,view: new Ext.grid.GridPanel({
              store: new Ext.data.JsonStore({
                id:"storeLOV0027"
+              ,totalProperty:"totalCount"
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0027&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
@@ -34,6 +36,7 @@
           ,displayField:this.displayField
           ,lovWidth:520
           ,lovHeight:300
+          ,queryFields:[["DOC_NO", this.resourceBundle.FieldLabel.DOC_NO||"Doc_no"]]
         });
        N21.DataComp.LOV0027.superclass.initComponent.apply(this, arguments);
      }
