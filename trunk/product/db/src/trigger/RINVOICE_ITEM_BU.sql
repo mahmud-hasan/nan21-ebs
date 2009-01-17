@@ -5,6 +5,11 @@ begin
     raise_error('CantUpdPostedDoc');
   end if;
 
+
+  if :new.price is null and ( :new.net_amount is not null and :new.quantity is not null) then 
+    :new.price := :new.net_amount/:new.quantity;  
+  end if;
+  
   if :new.modifiedon is null then
     :new.modifiedon := sysdate;
   end if;

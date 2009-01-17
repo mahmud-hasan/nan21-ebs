@@ -1,4 +1,4 @@
-create or replace trigger SYS_USER_LOGIN_BI before insert on SYS_USER_LOGIN
+create or replace trigger SYS_USER_LOGIN_BI before insert on USR_LOGIN
 for each row
 begin
   if :new.id is null then
