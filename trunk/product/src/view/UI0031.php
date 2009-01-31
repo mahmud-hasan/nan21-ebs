@@ -17,10 +17,8 @@
   <script type="text/javascript" src="_static/locale/LOV0001_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0003.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0003_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0025.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0025_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0009.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0009_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0064.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0064_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0041.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0041_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/DC0020.js"></script>
@@ -33,10 +31,6 @@
   <script type="text/javascript" src="_static/locale/LOV0017_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0001.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0001_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0025.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0025_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/DC0042.js"></script>
-  <script type="text/javascript" src="_static/locale/DC0042_<?php print $_SESSION["user"]["language"];?>.js"></script>
 
 </head>
 <body  style="margin:0;padding:0;" >

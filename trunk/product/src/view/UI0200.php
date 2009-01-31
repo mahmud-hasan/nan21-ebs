@@ -11,6 +11,8 @@
   <script type="text/javascript" src="_static/locale/DC0023_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0008.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0011.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0011_<?php print $_SESSION["user"]["language"];?>.js"></script>
 
 </head>
 <body  style="margin:0;padding:0;" >
@@ -34,8 +36,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0023]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-800}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0023.prototype.resourceBundle.DcProperty.Title||"Accounting years")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0200&gt;</div>"}
    ]
 });

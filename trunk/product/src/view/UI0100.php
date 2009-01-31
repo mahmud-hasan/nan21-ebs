@@ -9,18 +9,18 @@
 ?>
   <script type="text/javascript" src="_static/js/dc/DC0016.js"></script>
   <script type="text/javascript" src="_static/locale/DC0016_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0006.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0006_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0008.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0006.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0006_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0007.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0007_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0016.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0016_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0039.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0039_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0010.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0010_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/LOV0039.js"></script>
+  <script type="text/javascript" src="_static/locale/LOV0039_<?php print $_SESSION["user"]["language"];?>.js"></script>
 
 </head>
 <body  style="margin:0;padding:0;" >
@@ -44,8 +44,8 @@
         ,bodyStyle:bodyStyle
         ,items: [DC0016]
        })
-    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:1}
-    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:1}
+    ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
+    ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-950}
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0016.prototype.resourceBundle.DcProperty.Title||"Parcel Master data")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0100&gt;</div>"}
    ]
 });

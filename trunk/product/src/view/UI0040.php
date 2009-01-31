@@ -2,29 +2,25 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * UI0040: Business Partners
+ * UI0040: Business partner master data
  */
   require_once(PATH_CTRL_FRMWK."/gui_lib.php");
   print print_page_header();
 ?>
   <script type="text/javascript" src="_static/js/dc/DC0014.js"></script>
   <script type="text/javascript" src="_static/locale/DC0014_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0008.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/DC0015.js"></script>
   <script type="text/javascript" src="_static/locale/DC0015_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0006.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0006_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0007.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0007_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/DC0057.js"></script>
-  <script type="text/javascript" src="_static/locale/DC0057_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/DC0056.js"></script>
-  <script type="text/javascript" src="_static/locale/DC0056_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/DC0100.js"></script>
+  <script type="text/javascript" src="_static/locale/DC0100_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0008.js"></script>
   <script type="text/javascript" src="_static/locale/LOV0008_<?php print $_SESSION["user"]["language"];?>.js"></script>
-  <script type="text/javascript" src="_static/js/dc/LOV0043.js"></script>
-  <script type="text/javascript" src="_static/locale/LOV0043_<?php print $_SESSION["user"]["language"];?>.js"></script>
+  <script type="text/javascript" src="_static/js/dc/DC0057.js"></script>
+  <script type="text/javascript" src="_static/locale/DC0057_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/DC0018.js"></script>
   <script type="text/javascript" src="_static/locale/DC0018_<?php print $_SESSION["user"]["language"];?>.js"></script>
   <script type="text/javascript" src="_static/js/dc/LOV0005.js"></script>
@@ -60,7 +56,7 @@
        })
     ,{ region: "south",border: false, minHeight:1,bodyStyle:bodyStyle,split: true,height:getWindowInnerHeight()-600}
     ,{ region: "east" ,border: false, minWidth:1, bodyStyle:bodyStyle,split: true,width:getWindowInnerWidth()-800}
-    ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0014.prototype.resourceBundle.DcProperty.Title||"Business Partners")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0040&gt;</div>"}
+    ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0014.prototype.resourceBundle.DcProperty.Title||"Business partner master data")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0040&gt;</div>"}
    ]
 });
 gui.findById("DC0014").executeQuery();
