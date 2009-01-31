@@ -16,15 +16,15 @@ private function preQuery(&$params, &$where) {
       $where .= "ur.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_USER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ur.USER_ID like :USER_ID";
-      $params["USER_ID"] = $_REQUEST["QRY_USER_ID"];
-    }
     if (!empty($_REQUEST["QRY_ROLE_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ur.ROLE_NAME like :ROLE_NAME";
       $params["ROLE_NAME"] = $_REQUEST["QRY_ROLE_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_USER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ur.USER_ID like :USER_ID";
+      $params["USER_ID"] = $_REQUEST["QRY_USER_ID"];
     }
 }
 
@@ -40,22 +40,22 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ur.ID
-                ,ur.USER_ID
-                ,ur.ROLE_NAME
+                ur.CREATEDBY
                 ,ur.CREATEDON
-                ,ur.CREATEDBY
+                ,ur.ID
+                ,ur.ROLE_NAME
+                ,ur.USER_ID
             from SYS_USER_ROLE ur $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"USER_ID"
-      ,"ROLE_NAME"
+      "CREATEDBY"
       ,"CREATEDON"
-      ,"CREATEDBY"
+      ,"ID"
+      ,"ROLE_NAME"
+      ,"USER_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -100,13 +100,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -143,12 +147,12 @@ public function doInsert() {
     $RECORD["USER_ID"] = $this->getRequestParam("USER_ID");
     $sql = "insert into SYS_USER_ROLE(
                  ID
-                ,USER_ID
                 ,ROLE_NAME
+                ,USER_ID
             ) values ( 
                  :ID
-                ,:USER_ID
                 ,:ROLE_NAME
+                ,:USER_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_USRROL_ID.nextval seq_val from dual")->fetchRow();
@@ -227,11 +231,11 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ur.ID
-                ,ur.USER_ID
-                ,ur.ROLE_NAME
+                ur.CREATEDBY
                 ,ur.CREATEDON
-                ,ur.CREATEDBY
+                ,ur.ID
+                ,ur.ROLE_NAME
+                ,ur.USER_ID
             from SYS_USER_ROLE ur
          where 
            ur.ID= :ID
@@ -242,11 +246,11 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"USER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  ,"USER_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

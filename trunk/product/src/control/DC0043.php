@@ -16,15 +16,15 @@ private function preQuery(&$params, &$where) {
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MENUITEM_ID like :MENUITEM_ID";
-      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
-    }
     if (!empty($_REQUEST["QRY_LANG"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "LANG like :LANG";
       $params["LANG"] = $_REQUEST["QRY_LANG"];
+    }
+    if (!empty($_REQUEST["QRY_MENUITEM_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MENUITEM_ID like :MENUITEM_ID";
+      $params["MENUITEM_ID"] = $_REQUEST["QRY_MENUITEM_ID"];
     }
     if (!empty($_REQUEST["QRY_TRANSLATION"])) {
       $where .= (!empty($where))?" and ":"";
@@ -46,8 +46,8 @@ public function doQuery() {
     }
     $sql = "select 
                 ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             from MENUITEM_TRL  $where $orderByClause ";
     $this->logger->debug($sql);
@@ -56,8 +56,8 @@ public function doQuery() {
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"MENUITEM_ID"
       ,"LANG"
+      ,"MENUITEM_ID"
       ,"TRANSLATION"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -101,13 +101,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -147,13 +151,13 @@ public function doInsert() {
     $RECORD["TRANSLATION"] = $this->getRequestParam("TRANSLATION");
     $sql = "insert into MENUITEM_TRL(
                  ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             ) values ( 
                  :ID
-                ,:MENUITEM_ID
                 ,:LANG
+                ,:MENUITEM_ID
                 ,:TRANSLATION
     )";
     $stmt = $this->db->prepare($sql);
@@ -235,8 +239,8 @@ public function initNewRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 ID
-                ,MENUITEM_ID
                 ,LANG
+                ,MENUITEM_ID
                 ,TRANSLATION
             from MENUITEM_TRL 
          where 
@@ -249,8 +253,8 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
   ,"LANG" => array("DATA_TYPE" => "STRING")
+  ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
   ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
 );
 

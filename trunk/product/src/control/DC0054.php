@@ -11,25 +11,25 @@ class DC0054 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_PROJECT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PROJECT_ID like :PROJECT_ID";
-      $params["PROJECT_ID"] = $_REQUEST["QRY_PROJECT_ID"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_PROJECT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "PROJECT_ID like :PROJECT_ID";
+      $params["PROJECT_ID"] = $_REQUEST["QRY_PROJECT_ID"];
     }
 }
 
@@ -47,10 +47,10 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,PROJECT_ID
-                ,CODE
+                CODE
+                ,ID
                 ,NAME
+                ,PROJECT_ID
                 ,(select name from project where id = project_id) PROJECT_NAME
             from PROJECT_CMP_TYPE  $where $orderByClause ";
     $this->logger->debug($sql);
@@ -58,10 +58,10 @@ public function doQuery() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"PROJECT_ID"
-      ,"CODE"
+      "CODE"
+      ,"ID"
       ,"NAME"
+      ,"PROJECT_ID"
       ,"PROJECT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -107,13 +107,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -149,15 +153,15 @@ public function doInsert() {
     $RECORD["PROJECT_ID"] = $this->getRequestParam("PROJECT_ID");
     $RECORD["PROJECT_NAME"] = $this->getRequestParam("PROJECT_NAME");
     $sql = "insert into PROJECT_CMP_TYPE(
-                 ID
-                ,PROJECT_ID
-                ,CODE
+                 CODE
+                ,ID
                 ,NAME
+                ,PROJECT_ID
             ) values ( 
-                 :ID
-                ,:PROJECT_ID
-                ,:CODE
+                 :CODE
+                ,:ID
                 ,:NAME
+                ,:PROJECT_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_prjcmptyp_id.nextval seq_val from dual")->fetchRow();
@@ -235,10 +239,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,PROJECT_ID
-                ,CODE
+                CODE
+                ,ID
                 ,NAME
+                ,PROJECT_ID
                 ,(select name from project where id = project_id) PROJECT_NAME
             from PROJECT_CMP_TYPE 
          where 
@@ -250,10 +254,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PROJECT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
+  "CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"PROJECT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PROJECT_NAME" => array("DATA_TYPE" => "STRING")
 );
 

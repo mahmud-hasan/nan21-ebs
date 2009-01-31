@@ -11,25 +11,25 @@ class DC0076 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "pl.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pl.CURRENCY like :CURRENCY";
-      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
+      $where .= "pl.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_COPY_FROM_LIST_IS"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pl.COPY_FROM_LIST_IS like :COPY_FROM_LIST_IS";
       $params["COPY_FROM_LIST_IS"] = $_REQUEST["QRY_COPY_FROM_LIST_IS"];
     }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+    if (!empty($_REQUEST["QRY_CURRENCY"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "pl.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+      $where .= "pl.CURRENCY like :CURRENCY";
+      $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pl.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
 }
 
@@ -47,34 +47,34 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                pl.ID
+                pbo_client.get_code_by_id(pl.client_id, 'N') CLIENT_CODE
+                ,pl.CLIENT_ID
+                ,pl.COPY_FROM_LIST_IS
+                ,pl.CREATEDBY
+                ,pl.CREATEDON
+                ,pl.CURRENCY
+                ,pl.ID
+                ,pl.MODIFIEDBY
+                ,pl.MODIFIEDON
                 ,pl.VALID_FROM
                 ,pl.VALID_TO
-                ,pl.CURRENCY
-                ,pl.CREATEDON
-                ,pl.CREATEDBY
-                ,pl.MODIFIEDON
-                ,pl.MODIFIEDBY
-                ,pl.COPY_FROM_LIST_IS
-                ,pl.CLIENT_ID
-                ,pbo_client.get_code_by_id(pl.client_id, 'N') CLIENT_CODE
             from MM_PRICE_LIST pl $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CLIENT_CODE"
+      ,"CLIENT_ID"
+      ,"COPY_FROM_LIST_IS"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"CURRENCY"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"VALID_FROM"
       ,"VALID_TO"
-      ,"CURRENCY"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"COPY_FROM_LIST_IS"
-      ,"CLIENT_ID"
-      ,"CLIENT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -131,13 +131,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -179,19 +183,19 @@ public function doInsert() {
     $RECORD["VALID_FROM"] = $this->getRequestParam("VALID_FROM");
     $RECORD["VALID_TO"] = $this->getRequestParam("VALID_TO");
     $sql = "insert into MM_PRICE_LIST(
-                 ID
+                 CLIENT_ID
+                ,COPY_FROM_LIST_IS
+                ,CURRENCY
+                ,ID
                 ,VALID_FROM
                 ,VALID_TO
-                ,CURRENCY
-                ,COPY_FROM_LIST_IS
-                ,CLIENT_ID
             ) values ( 
-                 :ID
+                 :CLIENT_ID
+                ,:COPY_FROM_LIST_IS
+                ,:CURRENCY
+                ,:ID
                 ,:VALID_FROM
                 ,:VALID_TO
-                ,:CURRENCY
-                ,:COPY_FROM_LIST_IS
-                ,:CLIENT_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PRICELST_ID.nextval seq_val from dual")->fetchRow();
@@ -287,17 +291,17 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                pl.ID
+                pbo_client.get_code_by_id(pl.client_id, 'N') CLIENT_CODE
+                ,pl.CLIENT_ID
+                ,pl.COPY_FROM_LIST_IS
+                ,pl.CREATEDBY
+                ,pl.CREATEDON
+                ,pl.CURRENCY
+                ,pl.ID
+                ,pl.MODIFIEDBY
+                ,pl.MODIFIEDON
                 ,pl.VALID_FROM
                 ,pl.VALID_TO
-                ,pl.CURRENCY
-                ,pl.CREATEDON
-                ,pl.CREATEDBY
-                ,pl.MODIFIEDON
-                ,pl.MODIFIEDBY
-                ,pl.COPY_FROM_LIST_IS
-                ,pl.CLIENT_ID
-                ,pbo_client.get_code_by_id(pl.client_id, 'N') CLIENT_CODE
             from MM_PRICE_LIST pl
          where 
            pl.ID= :ID
@@ -308,17 +312,17 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"COPY_FROM_LIST_IS" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"VALID_FROM" => array("DATA_TYPE" => "DATE")
   ,"VALID_TO" => array("DATA_TYPE" => "DATE")
-  ,"CURRENCY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"COPY_FROM_LIST_IS" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

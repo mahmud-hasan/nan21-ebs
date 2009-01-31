@@ -11,6 +11,11 @@ class DC0045 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
@@ -20,11 +25,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_STATUS_CODE"])) {
       $where .= (!empty($where))?" and ":"";
@@ -52,15 +52,15 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,NAME
-                ,CLIENT_ID
-                ,STATUS_CODE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
+                CLIENT_ID
                 ,(select code from client where id = client_id) CLIENT_NAME
+                ,CREATEDBY
+                ,CREATEDON
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NAME
+                ,STATUS_CODE
                 ,TYPE_CODE
             from PROJECT  $where $orderByClause ";
     $this->logger->debug($sql);
@@ -68,15 +68,15 @@ public function doQuery() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"NAME"
-      ,"CLIENT_ID"
-      ,"STATUS_CODE"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
+      "CLIENT_ID"
       ,"CLIENT_NAME"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NAME"
+      ,"STATUS_CODE"
       ,"TYPE_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -104,8 +104,8 @@ public function doExport() {
     }
     $sql = "select 
                 ID
-                ,CLIENT_ID
                 ,(select code from client where id = client_id) CLIENT_NAME
+                ,CLIENT_ID
                 ,NAME
                 ,TYPE_CODE
                 ,STATUS_CODE
@@ -119,8 +119,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_NAME"
+     ,"CLIENT_ID"
      ,"NAME"
      ,"TYPE_CODE"
      ,"STATUS_CODE"
@@ -132,13 +132,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -177,15 +181,15 @@ public function doInsert() {
     $RECORD["STATUS_CODE"] = $this->getRequestParam("STATUS_CODE");
     $RECORD["TYPE_CODE"] = $this->getRequestParam("TYPE_CODE");
     $sql = "insert into PROJECT(
-                 ID
+                 CLIENT_ID
+                ,ID
                 ,NAME
-                ,CLIENT_ID
                 ,STATUS_CODE
                 ,TYPE_CODE
             ) values ( 
-                 :ID
+                 :CLIENT_ID
+                ,:ID
                 ,:NAME
-                ,:CLIENT_ID
                 ,:STATUS_CODE
                 ,:TYPE_CODE
     )";
@@ -220,9 +224,9 @@ public function doUpdate() {
     $RECORD["TYPE_CODE"] = $this->getRequestParam("TYPE_CODE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0045.doUpdate().");}
     $sql = "update PROJECT set 
-                 ID=:ID
+                 CLIENT_ID=:CLIENT_ID
+                ,ID=:ID
                 ,NAME=:NAME
-                ,CLIENT_ID=:CLIENT_ID
                 ,STATUS_CODE=:STATUS_CODE
                 ,TYPE_CODE=:TYPE_CODE
     where 
@@ -281,15 +285,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,NAME
-                ,CLIENT_ID
-                ,STATUS_CODE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
+                CLIENT_ID
                 ,(select code from client where id = client_id) CLIENT_NAME
+                ,CREATEDBY
+                ,CREATEDON
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,NAME
+                ,STATUS_CODE
                 ,TYPE_CODE
             from PROJECT 
          where 
@@ -301,15 +305,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"STATUS_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"STATUS_CODE" => array("DATA_TYPE" => "STRING")
   ,"TYPE_CODE" => array("DATA_TYPE" => "STRING")
 );
 

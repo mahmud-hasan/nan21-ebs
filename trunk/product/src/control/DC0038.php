@@ -11,15 +11,20 @@ class DC0038 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "pc.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "pc.ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pc.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pc.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -30,16 +35,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pc.PRODCATEG_ID like :PRODCATEG_ID";
       $params["PRODCATEG_ID"] = $_REQUEST["QRY_PRODCATEG_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pc.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pc.ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -57,18 +52,16 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                pc.ID
+                pc.ACTIVE
                 ,pc.CODE
+                ,pc.CREATEDBY
+                ,pc.CREATEDON
+                ,pc.DESCRIPTION
+                ,pc.ID
+                ,pc.MODIFIEDBY
+                ,pc.MODIFIEDON
                 ,pc.NAME
                 ,pc.PRODCATEG_ID
-                ,pc.DESCRIPTION
-                ,pc.CREATEDON
-                ,pc.CREATEDBY
-                ,pc.MODIFIEDON
-                ,pc.MODIFIEDBY
-                ,pc.CLIENT_ID
-                ,pc.ACTIVE
-                ,(select t.code from client t where t.id = pc.client_id) CLIENT_NAME
                 ,pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME
             from MM_PRODUCT_CATEGORY pc $where $orderByClause ";
     $this->logger->debug($sql);
@@ -76,18 +69,16 @@ public function doQuery() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "ACTIVE"
       ,"CODE"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"DESCRIPTION"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"NAME"
       ,"PRODCATEG_ID"
-      ,"DESCRIPTION"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"CLIENT_ID"
-      ,"ACTIVE"
-      ,"CLIENT_NAME"
       ,"PRODCATEG_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -115,12 +106,10 @@ public function doExport() {
     }
     $sql = "select 
                 pc.ID
-                ,pc.CLIENT_ID
-                ,(select t.code from client t where t.id = pc.client_id) CLIENT_NAME
                 ,pc.CODE
                 ,pc.NAME
-                ,pc.PRODCATEG_ID
                 ,pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME
+                ,pc.PRODCATEG_ID
                 ,pc.DESCRIPTION
                 ,pc.ACTIVE
                 ,pc.CREATEDON
@@ -133,12 +122,10 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
-     ,"CLIENT_NAME"
      ,"CODE"
      ,"NAME"
-     ,"PRODCATEG_ID"
      ,"PRODCATEG_NAME"
+     ,"PRODCATEG_ID"
      ,"DESCRIPTION"
      ,"ACTIVE"
      ,"CREATEDON"
@@ -149,13 +136,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -184,8 +175,6 @@ public function doInsert() {
   try {
     $RECORD = array();
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
-    $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
@@ -197,25 +186,23 @@ public function doInsert() {
     $RECORD["PRODCATEG_ID"] = $this->getRequestParam("PRODCATEG_ID");
     $RECORD["PRODCATEG_NAME"] = $this->getRequestParam("PRODCATEG_NAME");
     $sql = "insert into MM_PRODUCT_CATEGORY(
-                 ID
+                 ACTIVE
                 ,CODE
+                ,CREATEDBY
+                ,DESCRIPTION
+                ,ID
+                ,MODIFIEDBY
                 ,NAME
                 ,PRODCATEG_ID
-                ,DESCRIPTION
-                ,CREATEDBY
-                ,MODIFIEDBY
-                ,CLIENT_ID
-                ,ACTIVE
             ) values ( 
-                 :ID
+                 :ACTIVE
                 ,:CODE
+                ,:CREATEDBY
+                ,:DESCRIPTION
+                ,:ID
+                ,:MODIFIEDBY
                 ,:NAME
                 ,:PRODCATEG_ID
-                ,:DESCRIPTION
-                ,:CREATEDBY
-                ,:MODIFIEDBY
-                ,:CLIENT_ID
-                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_prodcateg_id.nextval seq_val from dual")->fetchRow();
@@ -237,7 +224,6 @@ public function doUpdate() {
   try {
     $RECORD = array();
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
-    $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
@@ -245,12 +231,11 @@ public function doUpdate() {
     $RECORD["PRODCATEG_NAME"] = $this->getRequestParam("PRODCATEG_NAME");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0038.doUpdate().");}
     $sql = "update MM_PRODUCT_CATEGORY set 
-                 ID=:ID
-                ,CODE=:CODE
+                 ACTIVE=:ACTIVE
+                ,DESCRIPTION=:DESCRIPTION
+                ,ID=:ID
                 ,NAME=:NAME
                 ,PRODCATEG_ID=:PRODCATEG_ID
-                ,DESCRIPTION=:DESCRIPTION
-                ,ACTIVE=:ACTIVE
     where 
            ID= :ID
     ";
@@ -288,8 +273,6 @@ public function doDelete() {
 public function initNewRecord() {
   try {
     $RECORD["ACTIVE"] = $this->getRequestParam("ACTIVE");
-    $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
@@ -310,18 +293,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                pc.ID
+                pc.ACTIVE
                 ,pc.CODE
+                ,pc.CREATEDBY
+                ,pc.CREATEDON
+                ,pc.DESCRIPTION
+                ,pc.ID
+                ,pc.MODIFIEDBY
+                ,pc.MODIFIEDON
                 ,pc.NAME
                 ,pc.PRODCATEG_ID
-                ,pc.DESCRIPTION
-                ,pc.CREATEDON
-                ,pc.CREATEDBY
-                ,pc.MODIFIEDON
-                ,pc.MODIFIEDBY
-                ,pc.CLIENT_ID
-                ,pc.ACTIVE
-                ,(select t.code from client t where t.id = pc.client_id) CLIENT_NAME
                 ,pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME
             from MM_PRODUCT_CATEGORY pc
          where 
@@ -333,26 +314,22 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"PRODCATEG_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
   ,"PRODCATEG_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 
 private function readRequest(&$RECORD) {
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
-     if (isset($_REQUEST["CLIENT_ID"] )) { $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID"); }
-     if (isset($_REQUEST["CLIENT_NAME"] )) { $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME"); }
      if (isset($_REQUEST["CODE"] )) { $RECORD["CODE"] = $this->getRequestParam("CODE"); }
      if (isset($_REQUEST["CREATEDBY"] )) { $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY"); }
      if (isset($_REQUEST["CREATEDON"] )) { $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON"); }

@@ -40,26 +40,26 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                mir.MODIFIEDBY
+                mir.CREATEDBY
+                ,mir.CREATEDON
                 ,mir.ID
                 ,mir.MENUITEM_ID
-                ,mir.ROLE_NAME
-                ,mir.CREATEDON
-                ,mir.CREATEDBY
+                ,mir.MODIFIEDBY
                 ,mir.MODIFIEDON
+                ,mir.ROLE_NAME
             from MENUITEM_ROLE mir $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "MODIFIEDBY"
+      "CREATEDBY"
+      ,"CREATEDON"
       ,"ID"
       ,"MENUITEM_ID"
-      ,"ROLE_NAME"
-      ,"CREATEDON"
-      ,"CREATEDBY"
+      ,"MODIFIEDBY"
       ,"MODIFIEDON"
+      ,"ROLE_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -108,13 +108,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -243,13 +247,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                mir.MODIFIEDBY
+                mir.CREATEDBY
+                ,mir.CREATEDON
                 ,mir.ID
                 ,mir.MENUITEM_ID
-                ,mir.ROLE_NAME
-                ,mir.CREATEDON
-                ,mir.CREATEDBY
+                ,mir.MODIFIEDBY
                 ,mir.MODIFIEDON
+                ,mir.ROLE_NAME
             from MENUITEM_ROLE mir
          where 
            mir.ID= :ID
@@ -260,13 +264,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MENUITEM_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
   ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

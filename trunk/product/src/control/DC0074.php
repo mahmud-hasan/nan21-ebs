@@ -11,6 +11,11 @@ class DC0074 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_DATA_TYPE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "a.DATA_TYPE like :DATA_TYPE";
+      $params["DATA_TYPE"] = $_REQUEST["QRY_DATA_TYPE"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "a.ID like :ID";
@@ -20,11 +25,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "a.NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_DATA_TYPE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "a.DATA_TYPE like :DATA_TYPE";
-      $params["DATA_TYPE"] = $_REQUEST["QRY_DATA_TYPE"];
     }
     if (!empty($_REQUEST["QRY_PRODATTRGRP_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -47,32 +47,32 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME
-                ,a.ID
-                ,a.NAME
-                ,a.DESCRIPTION
-                ,a.DATA_TYPE
+                a.CREATEDBY
                 ,a.CREATEDON
-                ,a.CREATEDBY
-                ,a.MODIFIEDON
+                ,a.DATA_TYPE
+                ,a.DESCRIPTION
+                ,a.ID
                 ,a.MODIFIEDBY
+                ,a.MODIFIEDON
+                ,a.NAME
                 ,a.PRODATTRGRP_ID
+                ,( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME
             from MM_PROD_ATTR a $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "PRODATTRGRP_NAME"
-      ,"ID"
-      ,"NAME"
-      ,"DESCRIPTION"
-      ,"DATA_TYPE"
+      "CREATEDBY"
       ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"DATA_TYPE"
+      ,"DESCRIPTION"
+      ,"ID"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NAME"
       ,"PRODATTRGRP_ID"
+      ,"PRODATTRGRP_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -101,8 +101,8 @@ public function doExport() {
                 a.ID
                 ,a.NAME
                 ,a.DATA_TYPE
-                ,a.PRODATTRGRP_ID
                 ,( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME
+                ,a.PRODATTRGRP_ID
                 ,a.DESCRIPTION
                 ,a.CREATEDON
                 ,a.CREATEDBY
@@ -116,8 +116,8 @@ public function doExport() {
      "ID"
      ,"NAME"
      ,"DATA_TYPE"
-     ,"PRODATTRGRP_ID"
      ,"PRODATTRGRP_NAME"
+     ,"PRODATTRGRP_ID"
      ,"DESCRIPTION"
      ,"CREATEDON"
      ,"CREATEDBY"
@@ -127,13 +127,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -174,16 +178,16 @@ public function doInsert() {
     $RECORD["PRODATTRGRP_ID"] = $this->getRequestParam("PRODATTRGRP_ID");
     $RECORD["PRODATTRGRP_NAME"] = $this->getRequestParam("PRODATTRGRP_NAME");
     $sql = "insert into MM_PROD_ATTR(
-                 ID
-                ,NAME
+                 DATA_TYPE
                 ,DESCRIPTION
-                ,DATA_TYPE
+                ,ID
+                ,NAME
                 ,PRODATTRGRP_ID
             ) values ( 
-                 :ID
-                ,:NAME
+                 :DATA_TYPE
                 ,:DESCRIPTION
-                ,:DATA_TYPE
+                ,:ID
+                ,:NAME
                 ,:PRODATTRGRP_ID
     )";
     $stmt = $this->db->prepare($sql);
@@ -277,16 +281,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME
-                ,a.ID
-                ,a.NAME
-                ,a.DESCRIPTION
-                ,a.DATA_TYPE
+                a.CREATEDBY
                 ,a.CREATEDON
-                ,a.CREATEDBY
-                ,a.MODIFIEDON
+                ,a.DATA_TYPE
+                ,a.DESCRIPTION
+                ,a.ID
                 ,a.MODIFIEDBY
+                ,a.MODIFIEDON
+                ,a.NAME
                 ,a.PRODATTRGRP_ID
+                ,( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME
             from MM_PROD_ATTR a
          where 
            a.ID= :ID
@@ -297,16 +301,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "PRODATTRGRP_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"DATA_TYPE" => array("DATA_TYPE" => "STRING")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"DATA_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"PRODATTRGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODATTRGRP_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

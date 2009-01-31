@@ -11,40 +11,45 @@ class DC0078 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_NO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.DOC_NO like :DOC_NO";
-      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
     if (!empty($_REQUEST["QRY_DOC_DATE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.DOC_DATE like :DOC_DATE";
       $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
     }
-    if (!empty($_REQUEST["QRY_FROM_BPARTNER_ID"])) {
+    if (!empty($_REQUEST["QRY_DOC_NO"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "t.FROM_BPARTNER_ID like :FROM_BPARTNER_ID";
-      $params["FROM_BPARTNER_ID"] = $_REQUEST["QRY_FROM_BPARTNER_ID"];
+      $where .= "t.DOC_NO like :DOC_NO";
+      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
     }
     if (!empty($_REQUEST["QRY_DOC_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.DOC_TYPE like :DOC_TYPE";
       $params["DOC_TYPE"] = $_REQUEST["QRY_DOC_TYPE"];
     }
-    if (!empty($_REQUEST["QRY_RINV_ID"])) {
+    if (!empty($_REQUEST["QRY_FROM_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "t.RINV_ID like :RINV_ID";
-      $params["RINV_ID"] = $_REQUEST["QRY_RINV_ID"];
+      $where .= "t.FROM_BPARTNER_ID like :FROM_BPARTNER_ID";
+      $params["FROM_BPARTNER_ID"] = $_REQUEST["QRY_FROM_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ORGINV_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ORGINV_ID like :ORGINV_ID";
+      $params["ORGINV_ID"] = $_REQUEST["QRY_ORGINV_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ORG_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ORG_ID like :ORG_ID";
+      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
     }
     if (!empty($_REQUEST["QRY_QTY_CHECK"])) {
       $where .= (!empty($where))?" and ":"";
@@ -56,20 +61,15 @@ private function preQuery(&$params, &$where) {
       $where .= "t.QUALITY_CHECK like :QUALITY_CHECK";
       $params["QUALITY_CHECK"] = $_REQUEST["QRY_QUALITY_CHECK"];
     }
+    if (!empty($_REQUEST["QRY_RINV_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.RINV_ID like :RINV_ID";
+      $params["RINV_ID"] = $_REQUEST["QRY_RINV_ID"];
+    }
     if (!empty($_REQUEST["QRY_VALUE_CHECK"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.VALUE_CHECK like :VALUE_CHECK";
       $params["VALUE_CHECK"] = $_REQUEST["QRY_VALUE_CHECK"];
-    }
-    if (!empty($_REQUEST["QRY_ORG_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ORG_ID like :ORG_ID";
-      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ORGINV_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ORGINV_ID like :ORGINV_ID";
-      $params["ORGINV_ID"] = $_REQUEST["QRY_ORGINV_ID"];
     }
 }
 
@@ -87,64 +87,64 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                t.ID
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
                 ,t.CLIENT_ID
-                ,t.DOC_NO
-                ,t.DOC_DATE
-                ,t.FROM_BPARTNER_ID
-                ,t.NOTES
-                ,t.DOC_TYPE
-                ,t.RINV_ID
-                ,t.QTY_CHECK
-                ,t.QTY_CHECK_ON
-                ,t.QTY_CHECK_BY
-                ,t.QUALITY_CHECK
-                ,t.QUALITY_CHECK_ON
-                ,t.QUALITY_CHECK_BY
-                ,t.VALUE_CHECK
-                ,t.VALUE_CHECK_ON
-                ,t.VALUE_CHECK_BY
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
+                ,t.CREATEDON
+                ,t.DOC_DATE
+                ,t.DOC_NO
+                ,t.DOC_TYPE
+                ,t.FROM_BPARTNER_ID
+                ,t.ID
                 ,t.MODIFIEDBY
-                ,t.ORG_ID
+                ,t.MODIFIEDON
+                ,t.NOTES
                 ,t.ORGINV_ID
-                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
-                ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
                 ,pbo_org.get_orginv_code_by_id(t.orginv_id) ORGINV_NAME
+                ,t.ORG_ID
+                ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
+                ,t.QTY_CHECK
+                ,t.QTY_CHECK_BY
+                ,t.QTY_CHECK_ON
+                ,t.QUALITY_CHECK
+                ,t.QUALITY_CHECK_BY
+                ,t.QUALITY_CHECK_ON
+                ,t.RINV_ID
+                ,t.VALUE_CHECK
+                ,t.VALUE_CHECK_BY
+                ,t.VALUE_CHECK_ON
             from MM_MOVEMENT_IN_DOC t $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CLIENT_CODE"
       ,"CLIENT_ID"
-      ,"DOC_NO"
-      ,"DOC_DATE"
-      ,"FROM_BPARTNER_ID"
-      ,"NOTES"
-      ,"DOC_TYPE"
-      ,"RINV_ID"
-      ,"QTY_CHECK"
-      ,"QTY_CHECK_ON"
-      ,"QTY_CHECK_BY"
-      ,"QUALITY_CHECK"
-      ,"QUALITY_CHECK_ON"
-      ,"QUALITY_CHECK_BY"
-      ,"VALUE_CHECK"
-      ,"VALUE_CHECK_ON"
-      ,"VALUE_CHECK_BY"
-      ,"CREATEDON"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"CREATEDON"
+      ,"DOC_DATE"
+      ,"DOC_NO"
+      ,"DOC_TYPE"
+      ,"FROM_BPARTNER_ID"
+      ,"ID"
       ,"MODIFIEDBY"
-      ,"ORG_ID"
+      ,"MODIFIEDON"
+      ,"NOTES"
       ,"ORGINV_ID"
-      ,"CLIENT_CODE"
-      ,"ORG_NAME"
       ,"ORGINV_NAME"
+      ,"ORG_ID"
+      ,"ORG_NAME"
+      ,"QTY_CHECK"
+      ,"QTY_CHECK_BY"
+      ,"QTY_CHECK_ON"
+      ,"QUALITY_CHECK"
+      ,"QUALITY_CHECK_BY"
+      ,"QUALITY_CHECK_ON"
+      ,"RINV_ID"
+      ,"VALUE_CHECK"
+      ,"VALUE_CHECK_BY"
+      ,"VALUE_CHECK_ON"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -171,8 +171,8 @@ public function doExport() {
     }
     $sql = "select 
                 t.ID
-                ,t.CLIENT_ID
                 ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
                 ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
                 ,t.ORG_ID
                 ,t.ORGINV_ID
@@ -202,8 +202,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_CODE"
+     ,"CLIENT_ID"
      ,"ORG_NAME"
      ,"ORG_ID"
      ,"ORGINV_ID"
@@ -231,13 +231,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -284,29 +288,29 @@ public function doInsert() {
     $RECORD["QUALITY_CHECK"] = $this->getRequestParamBoolean("QUALITY_CHECK");
     $RECORD["RINV_ID"] = $this->getRequestParam("RINV_ID");
     $sql = "insert into MM_MOVEMENT_IN_DOC(
-                 ID
-                ,CLIENT_ID
-                ,DOC_NO
+                 CLIENT_ID
                 ,DOC_DATE
-                ,FROM_BPARTNER_ID
-                ,NOTES
+                ,DOC_NO
                 ,DOC_TYPE
-                ,RINV_ID
-                ,QUALITY_CHECK
-                ,ORG_ID
+                ,FROM_BPARTNER_ID
+                ,ID
+                ,NOTES
                 ,ORGINV_ID
+                ,ORG_ID
+                ,QUALITY_CHECK
+                ,RINV_ID
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
-                ,:DOC_NO
+                 :CLIENT_ID
                 ,:DOC_DATE
-                ,:FROM_BPARTNER_ID
-                ,:NOTES
+                ,:DOC_NO
                 ,:DOC_TYPE
-                ,:RINV_ID
-                ,:QUALITY_CHECK
-                ,:ORG_ID
+                ,:FROM_BPARTNER_ID
+                ,:ID
+                ,:NOTES
                 ,:ORGINV_ID
+                ,:ORG_ID
+                ,:QUALITY_CHECK
+                ,:RINV_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_mvmntindoc_id.nextval seq_val from dual")->fetchRow();
@@ -345,19 +349,19 @@ public function doUpdate() {
     $RECORD["VALUE_CHECK"] = $this->getRequestParamBoolean("VALUE_CHECK");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0078.doUpdate().");}
     $sql = "update MM_MOVEMENT_IN_DOC set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,DOC_NO=:DOC_NO
+                 CLIENT_ID=:CLIENT_ID
                 ,DOC_DATE=:DOC_DATE
-                ,FROM_BPARTNER_ID=:FROM_BPARTNER_ID
-                ,NOTES=:NOTES
+                ,DOC_NO=:DOC_NO
                 ,DOC_TYPE=:DOC_TYPE
-                ,RINV_ID=:RINV_ID
+                ,FROM_BPARTNER_ID=:FROM_BPARTNER_ID
+                ,ID=:ID
+                ,NOTES=:NOTES
+                ,ORGINV_ID=:ORGINV_ID
+                ,ORG_ID=:ORG_ID
                 ,QTY_CHECK=:QTY_CHECK
                 ,QUALITY_CHECK=:QUALITY_CHECK
+                ,RINV_ID=:RINV_ID
                 ,VALUE_CHECK=:VALUE_CHECK
-                ,ORG_ID=:ORG_ID
-                ,ORGINV_ID=:ORGINV_ID
     where 
            ID= :ID
     ";
@@ -430,32 +434,32 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                t.ID
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
                 ,t.CLIENT_ID
-                ,t.DOC_NO
-                ,t.DOC_DATE
-                ,t.FROM_BPARTNER_ID
-                ,t.NOTES
-                ,t.DOC_TYPE
-                ,t.RINV_ID
-                ,t.QTY_CHECK
-                ,t.QTY_CHECK_ON
-                ,t.QTY_CHECK_BY
-                ,t.QUALITY_CHECK
-                ,t.QUALITY_CHECK_ON
-                ,t.QUALITY_CHECK_BY
-                ,t.VALUE_CHECK
-                ,t.VALUE_CHECK_ON
-                ,t.VALUE_CHECK_BY
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
+                ,t.CREATEDON
+                ,t.DOC_DATE
+                ,t.DOC_NO
+                ,t.DOC_TYPE
+                ,t.FROM_BPARTNER_ID
+                ,t.ID
                 ,t.MODIFIEDBY
-                ,t.ORG_ID
+                ,t.MODIFIEDON
+                ,t.NOTES
                 ,t.ORGINV_ID
-                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
-                ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
                 ,pbo_org.get_orginv_code_by_id(t.orginv_id) ORGINV_NAME
+                ,t.ORG_ID
+                ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
+                ,t.QTY_CHECK
+                ,t.QTY_CHECK_BY
+                ,t.QTY_CHECK_ON
+                ,t.QUALITY_CHECK
+                ,t.QUALITY_CHECK_BY
+                ,t.QUALITY_CHECK_ON
+                ,t.RINV_ID
+                ,t.VALUE_CHECK
+                ,t.VALUE_CHECK_BY
+                ,t.VALUE_CHECK_ON
             from MM_MOVEMENT_IN_DOC t
          where 
            t.ID= :ID
@@ -466,32 +470,32 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DOC_NO" => array("DATA_TYPE" => "NUMBER")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
-  ,"FROM_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"DOC_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"RINV_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY_CHECK" => array("DATA_TYPE" => "BOOLEAN")
-  ,"QTY_CHECK_ON" => array("DATA_TYPE" => "DATE")
-  ,"QTY_CHECK_BY" => array("DATA_TYPE" => "STRING")
-  ,"QUALITY_CHECK" => array("DATA_TYPE" => "BOOLEAN")
-  ,"QUALITY_CHECK_ON" => array("DATA_TYPE" => "DATE")
-  ,"QUALITY_CHECK_BY" => array("DATA_TYPE" => "STRING")
-  ,"VALUE_CHECK" => array("DATA_TYPE" => "BOOLEAN")
-  ,"VALUE_CHECK_ON" => array("DATA_TYPE" => "DATE")
-  ,"VALUE_CHECK_BY" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"DOC_NO" => array("DATA_TYPE" => "NUMBER")
+  ,"DOC_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"FROM_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
   ,"ORGINV_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"ORG_NAME" => array("DATA_TYPE" => "STRING")
   ,"ORGINV_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ORG_NAME" => array("DATA_TYPE" => "STRING")
+  ,"QTY_CHECK" => array("DATA_TYPE" => "BOOLEAN")
+  ,"QTY_CHECK_BY" => array("DATA_TYPE" => "STRING")
+  ,"QTY_CHECK_ON" => array("DATA_TYPE" => "DATE")
+  ,"QUALITY_CHECK" => array("DATA_TYPE" => "BOOLEAN")
+  ,"QUALITY_CHECK_BY" => array("DATA_TYPE" => "STRING")
+  ,"QUALITY_CHECK_ON" => array("DATA_TYPE" => "DATE")
+  ,"RINV_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"VALUE_CHECK" => array("DATA_TYPE" => "BOOLEAN")
+  ,"VALUE_CHECK_BY" => array("DATA_TYPE" => "STRING")
+  ,"VALUE_CHECK_ON" => array("DATA_TYPE" => "DATE")
 );
 
 

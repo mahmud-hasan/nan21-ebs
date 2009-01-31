@@ -11,40 +11,40 @@ class DC0071 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_DELETE_ALLOWED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_UI_DC"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "UI_DC like :UI_DC";
-      $params["UI_DC"] = $_REQUEST["QRY_UI_DC"];
-    }
-    if (!empty($_REQUEST["QRY_ROLE_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ROLE_NAME like :ROLE_NAME";
-      $params["ROLE_NAME"] = $_REQUEST["QRY_ROLE_NAME"];
+      $where .= "DELETE_ALLOWED like :DELETE_ALLOWED";
+      $params["DELETE_ALLOWED"] = $_REQUEST["QRY_DELETE_ALLOWED"];
     }
     if (!empty($_REQUEST["QRY_FETCH_ALLOWED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "FETCH_ALLOWED like :FETCH_ALLOWED";
       $params["FETCH_ALLOWED"] = $_REQUEST["QRY_FETCH_ALLOWED"];
     }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_INSERT_ALLOWED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "INSERT_ALLOWED like :INSERT_ALLOWED";
       $params["INSERT_ALLOWED"] = $_REQUEST["QRY_INSERT_ALLOWED"];
     }
+    if (!empty($_REQUEST["QRY_ROLE_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ROLE_NAME like :ROLE_NAME";
+      $params["ROLE_NAME"] = $_REQUEST["QRY_ROLE_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_UI_DC"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "UI_DC like :UI_DC";
+      $params["UI_DC"] = $_REQUEST["QRY_UI_DC"];
+    }
     if (!empty($_REQUEST["QRY_UPDATE_ALLOWED"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "UPDATE_ALLOWED like :UPDATE_ALLOWED";
       $params["UPDATE_ALLOWED"] = $_REQUEST["QRY_UPDATE_ALLOWED"];
-    }
-    if (!empty($_REQUEST["QRY_DELETE_ALLOWED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DELETE_ALLOWED like :DELETE_ALLOWED";
-      $params["DELETE_ALLOWED"] = $_REQUEST["QRY_DELETE_ALLOWED"];
     }
 }
 
@@ -62,34 +62,34 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,UI_DC
-                ,ROLE_NAME
-                ,FETCH_ALLOWED
-                ,INSERT_ALLOWED
-                ,UPDATE_ALLOWED
-                ,DELETE_ALLOWED
+                CREATEDBY
                 ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,DELETE_ALLOWED
+                ,FETCH_ALLOWED
+                ,ID
+                ,INSERT_ALLOWED
                 ,MODIFIEDBY
+                ,MODIFIEDON
+                ,ROLE_NAME
+                ,UI_DC
+                ,UPDATE_ALLOWED
             from UI_DC_ROLE_PERMISSION  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"UI_DC"
-      ,"ROLE_NAME"
-      ,"FETCH_ALLOWED"
-      ,"INSERT_ALLOWED"
-      ,"UPDATE_ALLOWED"
-      ,"DELETE_ALLOWED"
+      "CREATEDBY"
       ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"DELETE_ALLOWED"
+      ,"FETCH_ALLOWED"
+      ,"ID"
+      ,"INSERT_ALLOWED"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"ROLE_NAME"
+      ,"UI_DC"
+      ,"UPDATE_ALLOWED"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -146,13 +146,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -194,21 +198,21 @@ public function doInsert() {
     $RECORD["UI_DC"] = $this->getRequestParam("UI_DC");
     $RECORD["UPDATE_ALLOWED"] = $this->getRequestParamBoolean("UPDATE_ALLOWED");
     $sql = "insert into UI_DC_ROLE_PERMISSION(
-                 ID
-                ,UI_DC
-                ,ROLE_NAME
+                 DELETE_ALLOWED
                 ,FETCH_ALLOWED
+                ,ID
                 ,INSERT_ALLOWED
+                ,ROLE_NAME
+                ,UI_DC
                 ,UPDATE_ALLOWED
-                ,DELETE_ALLOWED
             ) values ( 
-                 :ID
-                ,:UI_DC
-                ,:ROLE_NAME
+                 :DELETE_ALLOWED
                 ,:FETCH_ALLOWED
+                ,:ID
                 ,:INSERT_ALLOWED
+                ,:ROLE_NAME
+                ,:UI_DC
                 ,:UPDATE_ALLOWED
-                ,:DELETE_ALLOWED
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_UIDCROLEPRMS_ID.nextval seq_val from dual")->fetchRow();
@@ -275,17 +279,17 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,UI_DC
-                ,ROLE_NAME
-                ,FETCH_ALLOWED
-                ,INSERT_ALLOWED
-                ,UPDATE_ALLOWED
-                ,DELETE_ALLOWED
+                CREATEDBY
                 ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,DELETE_ALLOWED
+                ,FETCH_ALLOWED
+                ,ID
+                ,INSERT_ALLOWED
                 ,MODIFIEDBY
+                ,MODIFIEDON
+                ,ROLE_NAME
+                ,UI_DC
+                ,UPDATE_ALLOWED
             from UI_DC_ROLE_PERMISSION 
          where 
            ID= :ID
@@ -296,17 +300,17 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"UI_DC" => array("DATA_TYPE" => "STRING")
-  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
-  ,"FETCH_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"INSERT_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"UPDATE_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"DELETE_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"DELETE_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"FETCH_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"INSERT_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ROLE_NAME" => array("DATA_TYPE" => "STRING")
+  ,"UI_DC" => array("DATA_TYPE" => "STRING")
+  ,"UPDATE_ALLOWED" => array("DATA_TYPE" => "BOOLEAN")
 );
 
 

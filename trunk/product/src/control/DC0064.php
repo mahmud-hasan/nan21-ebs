@@ -11,20 +11,55 @@ class DC0064 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_CURRENCY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.CURRENCY_CODE like :CURRENCY_CODE";
+      $params["CURRENCY_CODE"] = $_REQUEST["QRY_CURRENCY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_DATE_DELIVERED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.DATE_DELIVERED like :DATE_DELIVERED";
+      $params["DATE_DELIVERED"] = $_REQUEST["QRY_DATE_DELIVERED"];
+    }
+    if (!empty($_REQUEST["QRY_DATE_PROMISED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.DATE_PROMISED like :DATE_PROMISED";
+      $params["DATE_PROMISED"] = $_REQUEST["QRY_DATE_PROMISED"];
+    }
+    if (!empty($_REQUEST["QRY_DATE_REQUESTED"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.DATE_REQUESTED like :DATE_REQUESTED";
+      $params["DATE_REQUESTED"] = $_REQUEST["QRY_DATE_REQUESTED"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pol.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_LINE_NR"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.LINE_NR like :LINE_NR";
+      $params["LINE_NR"] = $_REQUEST["QRY_LINE_NR"];
+    }
+    if (!empty($_REQUEST["QRY_NET_AMOUNT"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.NET_AMOUNT like :NET_AMOUNT";
+      $params["NET_AMOUNT"] = $_REQUEST["QRY_NET_AMOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_NOTES"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "pol.NOTES like :NOTES";
+      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
     }
     if (!empty($_REQUEST["QRY_PORDER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pol.PORDER_ID like :PORDER_ID";
       $params["PORDER_ID"] = $_REQUEST["QRY_PORDER_ID"];
     }
-    if (!empty($_REQUEST["QRY_LINE_NR"])) {
+    if (!empty($_REQUEST["QRY_PRICE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "pol.LINE_NR like :LINE_NR";
-      $params["LINE_NR"] = $_REQUEST["QRY_LINE_NR"];
+      $where .= "pol.PRICE like :PRICE";
+      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
     }
     if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -40,41 +75,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "pol.UOM_CODE like :UOM_CODE";
       $params["UOM_CODE"] = $_REQUEST["QRY_UOM_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_PRICE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.PRICE like :PRICE";
-      $params["PRICE"] = $_REQUEST["QRY_PRICE"];
-    }
-    if (!empty($_REQUEST["QRY_NET_AMOUNT"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.NET_AMOUNT like :NET_AMOUNT";
-      $params["NET_AMOUNT"] = $_REQUEST["QRY_NET_AMOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_CURRENCY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.CURRENCY_CODE like :CURRENCY_CODE";
-      $params["CURRENCY_CODE"] = $_REQUEST["QRY_CURRENCY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_NOTES"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.NOTES like :NOTES";
-      $params["NOTES"] = $_REQUEST["QRY_NOTES"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_REQUESTED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.DATE_REQUESTED like :DATE_REQUESTED";
-      $params["DATE_REQUESTED"] = $_REQUEST["QRY_DATE_REQUESTED"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_PROMISED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.DATE_PROMISED like :DATE_PROMISED";
-      $params["DATE_PROMISED"] = $_REQUEST["QRY_DATE_PROMISED"];
-    }
-    if (!empty($_REQUEST["QRY_DATE_DELIVERED"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "pol.DATE_DELIVERED like :DATE_DELIVERED";
-      $params["DATE_DELIVERED"] = $_REQUEST["QRY_DATE_DELIVERED"];
     }
 }
 
@@ -92,40 +92,40 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                pol.ID
-                ,pol.PORDER_ID
+                pol.CURRENCY_CODE
+                ,pol.DATE_DELIVERED
+                ,pol.DATE_PROMISED
+                ,pol.DATE_REQUESTED
+                ,pol.ID
                 ,pol.LINE_NR
+                ,pol.NET_AMOUNT
+                ,pol.NOTES
+                ,pol.PORDER_ID
+                ,pol.PRICE
                 ,pol.PRODUCT_ID
+                ,pbo_product.get_name_by_id(pol.product_id,'N') PRODUCT_NAME
                 ,pol.QTY
                 ,pol.UOM_CODE
-                ,pol.PRICE
-                ,pol.NET_AMOUNT
-                ,pol.CURRENCY_CODE
-                ,pol.NOTES
-                ,pol.DATE_REQUESTED
-                ,pol.DATE_PROMISED
-                ,pol.DATE_DELIVERED
-                ,pbo_product.get_name_by_id(pol.product_id,'N') PRODUCT_NAME
             from PURCHASE_ORDER_LINE pol $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"PORDER_ID"
+      "CURRENCY_CODE"
+      ,"DATE_DELIVERED"
+      ,"DATE_PROMISED"
+      ,"DATE_REQUESTED"
+      ,"ID"
       ,"LINE_NR"
+      ,"NET_AMOUNT"
+      ,"NOTES"
+      ,"PORDER_ID"
+      ,"PRICE"
       ,"PRODUCT_ID"
+      ,"PRODUCT_NAME"
       ,"QTY"
       ,"UOM_CODE"
-      ,"PRICE"
-      ,"NET_AMOUNT"
-      ,"CURRENCY_CODE"
-      ,"NOTES"
-      ,"DATE_REQUESTED"
-      ,"DATE_PROMISED"
-      ,"DATE_DELIVERED"
-      ,"PRODUCT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -154,8 +154,8 @@ public function doExport() {
                 pol.ID
                 ,pol.PORDER_ID
                 ,pol.LINE_NR
-                ,pol.PRODUCT_ID
                 ,pbo_product.get_name_by_id(pol.product_id,'N') PRODUCT_NAME
+                ,pol.PRODUCT_ID
                 ,pol.QTY
                 ,pol.UOM_CODE
                 ,pol.PRICE
@@ -173,8 +173,8 @@ public function doExport() {
      "ID"
      ,"PORDER_ID"
      ,"LINE_NR"
-     ,"PRODUCT_ID"
      ,"PRODUCT_NAME"
+     ,"PRODUCT_ID"
      ,"QTY"
      ,"UOM_CODE"
      ,"PRICE"
@@ -188,13 +188,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -241,33 +245,33 @@ public function doInsert() {
     $RECORD["QTY"] = $this->getRequestParam("QTY");
     $RECORD["UOM_CODE"] = strtoupper($this->getRequestParam("UOM_CODE"));
     $sql = "insert into PURCHASE_ORDER_LINE(
-                 ID
-                ,PORDER_ID
+                 CURRENCY_CODE
+                ,DATE_DELIVERED
+                ,DATE_PROMISED
+                ,DATE_REQUESTED
+                ,ID
                 ,LINE_NR
+                ,NET_AMOUNT
+                ,NOTES
+                ,PORDER_ID
+                ,PRICE
                 ,PRODUCT_ID
                 ,QTY
                 ,UOM_CODE
-                ,PRICE
-                ,NET_AMOUNT
-                ,CURRENCY_CODE
-                ,NOTES
-                ,DATE_REQUESTED
-                ,DATE_PROMISED
-                ,DATE_DELIVERED
             ) values ( 
-                 :ID
-                ,:PORDER_ID
+                 :CURRENCY_CODE
+                ,:DATE_DELIVERED
+                ,:DATE_PROMISED
+                ,:DATE_REQUESTED
+                ,:ID
                 ,:LINE_NR
+                ,:NET_AMOUNT
+                ,:NOTES
+                ,:PORDER_ID
+                ,:PRICE
                 ,:PRODUCT_ID
                 ,:QTY
                 ,:UOM_CODE
-                ,:PRICE
-                ,:NET_AMOUNT
-                ,:CURRENCY_CODE
-                ,:NOTES
-                ,:DATE_REQUESTED
-                ,:DATE_PROMISED
-                ,:DATE_DELIVERED
     )";
     $stmt = $this->db->prepare($sql);
     $this->logger->debug("insert of RECORD: ".$this->logger->map2string($RECORD) );
@@ -302,19 +306,19 @@ public function doUpdate() {
     $RECORD["UOM_CODE"] = strtoupper($this->getRequestParam("UOM_CODE"));
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0064.doUpdate().");}
     $sql = "update PURCHASE_ORDER_LINE set 
-                 ID=:ID
-                ,PORDER_ID=:PORDER_ID
+                 CURRENCY_CODE=:CURRENCY_CODE
+                ,DATE_DELIVERED=:DATE_DELIVERED
+                ,DATE_PROMISED=:DATE_PROMISED
+                ,DATE_REQUESTED=:DATE_REQUESTED
+                ,ID=:ID
                 ,LINE_NR=:LINE_NR
+                ,NET_AMOUNT=:NET_AMOUNT
+                ,NOTES=:NOTES
+                ,PORDER_ID=:PORDER_ID
+                ,PRICE=:PRICE
                 ,PRODUCT_ID=:PRODUCT_ID
                 ,QTY=:QTY
                 ,UOM_CODE=:UOM_CODE
-                ,PRICE=:PRICE
-                ,NET_AMOUNT=:NET_AMOUNT
-                ,CURRENCY_CODE=:CURRENCY_CODE
-                ,NOTES=:NOTES
-                ,DATE_REQUESTED=:DATE_REQUESTED
-                ,DATE_PROMISED=:DATE_PROMISED
-                ,DATE_DELIVERED=:DATE_DELIVERED
     where 
            ID= :ID
     ";
@@ -379,20 +383,20 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                pol.ID
-                ,pol.PORDER_ID
+                pol.CURRENCY_CODE
+                ,pol.DATE_DELIVERED
+                ,pol.DATE_PROMISED
+                ,pol.DATE_REQUESTED
+                ,pol.ID
                 ,pol.LINE_NR
+                ,pol.NET_AMOUNT
+                ,pol.NOTES
+                ,pol.PORDER_ID
+                ,pol.PRICE
                 ,pol.PRODUCT_ID
+                ,pbo_product.get_name_by_id(pol.product_id,'N') PRODUCT_NAME
                 ,pol.QTY
                 ,pol.UOM_CODE
-                ,pol.PRICE
-                ,pol.NET_AMOUNT
-                ,pol.CURRENCY_CODE
-                ,pol.NOTES
-                ,pol.DATE_REQUESTED
-                ,pol.DATE_PROMISED
-                ,pol.DATE_DELIVERED
-                ,pbo_product.get_name_by_id(pol.product_id,'N') PRODUCT_NAME
             from PURCHASE_ORDER_LINE pol
          where 
            pol.ID= :ID
@@ -403,20 +407,20 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PORDER_ID" => array("DATA_TYPE" => "NUMBER")
+  "CURRENCY_CODE" => array("DATA_TYPE" => "STRING")
+  ,"DATE_DELIVERED" => array("DATA_TYPE" => "DATE")
+  ,"DATE_PROMISED" => array("DATA_TYPE" => "DATE")
+  ,"DATE_REQUESTED" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"LINE_NR" => array("DATA_TYPE" => "NUMBER")
+  ,"NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PORDER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
   ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
   ,"QTY" => array("DATA_TYPE" => "NUMBER")
   ,"UOM_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PRICE" => array("DATA_TYPE" => "NUMBER")
-  ,"NET_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"CURRENCY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"DATE_REQUESTED" => array("DATA_TYPE" => "DATE")
-  ,"DATE_PROMISED" => array("DATA_TYPE" => "DATE")
-  ,"DATE_DELIVERED" => array("DATA_TYPE" => "DATE")
-  ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 

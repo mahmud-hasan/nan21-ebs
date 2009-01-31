@@ -16,15 +16,15 @@ private function preQuery(&$params, &$where) {
       $where .= "av.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "av.PRODUCT_ID like :PRODUCT_ID";
-      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
-    }
     if (!empty($_REQUEST["QRY_PRDATTR_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "av.PRDATTR_ID like :PRDATTR_ID";
       $params["PRDATTR_ID"] = $_REQUEST["QRY_PRDATTR_ID"];
+    }
+    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "av.PRODUCT_ID like :PRODUCT_ID";
+      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
     }
 }
 
@@ -42,15 +42,15 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                av.ID
-                ,av.PRODUCT_ID
-                ,av.PRDATTR_ID
-                ,av.ATTR_VAL
-                ,av.CREATEDON
+                av.ATTR_VAL
                 ,av.CREATEDBY
-                ,av.MODIFIEDON
+                ,av.CREATEDON
+                ,av.ID
                 ,av.MODIFIEDBY
+                ,av.MODIFIEDON
+                ,av.PRDATTR_ID
                 ,pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME
+                ,av.PRODUCT_ID
                 ,pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME
             from MM_PROD_ATTR_VAL av $where $orderByClause ";
     $this->logger->debug($sql);
@@ -58,15 +58,15 @@ public function doQuery() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"PRODUCT_ID"
-      ,"PRDATTR_ID"
-      ,"ATTR_VAL"
-      ,"CREATEDON"
+      "ATTR_VAL"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"CREATEDON"
+      ,"ID"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"PRDATTR_ID"
       ,"PRDATTR_NAME"
+      ,"PRODUCT_ID"
       ,"PRODUCT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -122,13 +122,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -208,15 +212,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                av.ID
-                ,av.PRODUCT_ID
-                ,av.PRDATTR_ID
-                ,av.ATTR_VAL
-                ,av.CREATEDON
+                av.ATTR_VAL
                 ,av.CREATEDBY
-                ,av.MODIFIEDON
+                ,av.CREATEDON
+                ,av.ID
                 ,av.MODIFIEDBY
+                ,av.MODIFIEDON
+                ,av.PRDATTR_ID
                 ,pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME
+                ,av.PRODUCT_ID
                 ,pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME
             from MM_PROD_ATTR_VAL av
          where 
@@ -228,15 +232,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRDATTR_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ATTR_VAL" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  "ATTR_VAL" => array("DATA_TYPE" => "STRING")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"PRDATTR_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRDATTR_NAME" => array("DATA_TYPE" => "STRING")
+  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
 );
 

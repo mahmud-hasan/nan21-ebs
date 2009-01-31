@@ -11,11 +11,6 @@ class DC0058 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "BPARTNER_ID like :BPARTNER_ID";
@@ -31,6 +26,11 @@ private function preQuery(&$params, &$where) {
       $where .= "CMNCT_VALUE like :CMNCT_VALUE";
       $params["CMNCT_VALUE"] = $_REQUEST["QRY_CMNCT_VALUE"];
     }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
 }
 
 public function doQuery() {
@@ -45,20 +45,20 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,BPARTNER_ID
+                BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
+                ,ID
             from BP_PHONE  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"BPARTNER_ID"
+      "BPARTNER_ID"
       ,"CMNCT_TYPE"
       ,"CMNCT_VALUE"
+      ,"ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -101,13 +101,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -146,15 +150,15 @@ public function doInsert() {
     $RECORD["MODIFIEDBY"] = $this->getRequestParam("MODIFIEDBY");
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $sql = "insert into BP_PHONE(
-                 ID
-                ,BPARTNER_ID
+                 BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
+                ,ID
             ) values ( 
-                 :ID
-                ,:BPARTNER_ID
+                 :BPARTNER_ID
                 ,:CMNCT_TYPE
                 ,:CMNCT_VALUE
+                ,:ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_BPPHONE_ID.nextval seq_val from dual")->fetchRow();
@@ -238,10 +242,10 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,BPARTNER_ID
+                BPARTNER_ID
                 ,CMNCT_TYPE
                 ,CMNCT_VALUE
+                ,ID
             from BP_PHONE 
          where 
            ID= :ID
@@ -252,10 +256,10 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  "BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CMNCT_TYPE" => array("DATA_TYPE" => "STRING")
   ,"CMNCT_VALUE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

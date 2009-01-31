@@ -37,18 +37,18 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                r.ID
+                r.DESCRIPTION
+                ,r.ID
                 ,r.NAME
-                ,r.DESCRIPTION
             from SYS_ROLE r $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "DESCRIPTION"
+      ,"ID"
       ,"NAME"
-      ,"DESCRIPTION"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -89,13 +89,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -133,13 +137,13 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into SYS_ROLE(
-                 ID
+                 DESCRIPTION
+                ,ID
                 ,NAME
-                ,DESCRIPTION
             ) values ( 
-                 :ID
+                 :DESCRIPTION
+                ,:ID
                 ,:NAME
-                ,:DESCRIPTION
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ROLE_ID.nextval seq_val from dual")->fetchRow();
@@ -220,9 +224,9 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                r.ID
+                r.DESCRIPTION
+                ,r.ID
                 ,r.NAME
-                ,r.DESCRIPTION
             from SYS_ROLE r
          where 
            r.ID= :ID
@@ -233,9 +237,9 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
 );
 
 

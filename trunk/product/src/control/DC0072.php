@@ -16,20 +16,20 @@ private function preQuery(&$params, &$where) {
       $where .= "ul.ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_USERNAME"])) {
+    if (!empty($_REQUEST["QRY_IP_ADRESS"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ul.USERNAME like :USERNAME";
-      $params["USERNAME"] = $_REQUEST["QRY_USERNAME"];
+      $where .= "ul.IP_ADRESS like :IP_ADRESS";
+      $params["IP_ADRESS"] = $_REQUEST["QRY_IP_ADRESS"];
     }
     if (!empty($_REQUEST["QRY_LOGIN"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ul.LOGIN like :LOGIN";
       $params["LOGIN"] = $_REQUEST["QRY_LOGIN"];
     }
-    if (!empty($_REQUEST["QRY_IP_ADRESS"])) {
+    if (!empty($_REQUEST["QRY_USERNAME"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ul.IP_ADRESS like :IP_ADRESS";
-      $params["IP_ADRESS"] = $_REQUEST["QRY_IP_ADRESS"];
+      $where .= "ul.USERNAME like :USERNAME";
+      $params["USERNAME"] = $_REQUEST["QRY_USERNAME"];
     }
 }
 
@@ -48,10 +48,10 @@ public function doQuery() {
     }
     $sql = "select 
                 ul.ID
-                ,ul.USERNAME
+                ,ul.IP_ADRESS
                 ,ul.LOGIN
                 ,ul.LOGOUT
-                ,ul.IP_ADRESS
+                ,ul.USERNAME
             from USR_LOGIN ul $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
@@ -59,10 +59,10 @@ public function doQuery() {
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"USERNAME"
+      ,"IP_ADRESS"
       ,"LOGIN"
       ,"LOGOUT"
-      ,"IP_ADRESS"
+      ,"USERNAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -107,13 +107,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -139,10 +143,10 @@ public function fetchRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 ul.ID
-                ,ul.USERNAME
+                ,ul.IP_ADRESS
                 ,ul.LOGIN
                 ,ul.LOGOUT
-                ,ul.IP_ADRESS
+                ,ul.USERNAME
             from USR_LOGIN ul
          where 
            ul.ID= :ID
@@ -154,10 +158,10 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"USERNAME" => array("DATA_TYPE" => "STRING")
+  ,"IP_ADRESS" => array("DATA_TYPE" => "STRING")
   ,"LOGIN" => array("DATA_TYPE" => "DATE")
   ,"LOGOUT" => array("DATA_TYPE" => "DATE")
-  ,"IP_ADRESS" => array("DATA_TYPE" => "STRING")
+  ,"USERNAME" => array("DATA_TYPE" => "STRING")
 );
 
 

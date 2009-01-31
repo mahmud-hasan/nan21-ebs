@@ -11,80 +11,80 @@ class DC0059 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_BILL_BPARTNER_CONTACT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ord.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_NO"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.DOC_NO like :DOC_NO";
-      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
-    }
-    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.DOC_DATE like :DOC_DATE";
-      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.BPARTNER_ID like :BPARTNER_ID";
-      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
+      $where .= "ord.BILL_BPARTNER_CONTACT_ID like :BILL_BPARTNER_CONTACT_ID";
+      $params["BILL_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_BILL_BPARTNER_CONTACT_ID"];
     }
     if (!empty($_REQUEST["QRY_BILL_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ord.BILL_BPARTNER_ID like :BILL_BPARTNER_ID";
       $params["BILL_BPARTNER_ID"] = $_REQUEST["QRY_BILL_BPARTNER_ID"];
     }
-    if (!empty($_REQUEST["QRY_DELIV_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.DELIV_BPARTNER_ID like :DELIV_BPARTNER_ID";
-      $params["DELIV_BPARTNER_ID"] = $_REQUEST["QRY_DELIV_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_PAY_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.PAY_BPARTNER_ID like :PAY_BPARTNER_ID";
-      $params["PAY_BPARTNER_ID"] = $_REQUEST["QRY_PAY_BPARTNER_ID"];
-    }
     if (!empty($_REQUEST["QRY_BPARTNER_CONTACT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ord.BPARTNER_CONTACT_ID like :BPARTNER_CONTACT_ID";
       $params["BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_BPARTNER_CONTACT_ID"];
     }
-    if (!empty($_REQUEST["QRY_BILL_BPARTNER_CONTACT_ID"])) {
+    if (!empty($_REQUEST["QRY_BPARTNER_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ord.BILL_BPARTNER_CONTACT_ID like :BILL_BPARTNER_CONTACT_ID";
-      $params["BILL_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_BILL_BPARTNER_CONTACT_ID"];
+      $where .= "ord.BPARTNER_ID like :BPARTNER_ID";
+      $params["BPARTNER_ID"] = $_REQUEST["QRY_BPARTNER_ID"];
     }
-    if (!empty($_REQUEST["QRY_DELIV_BPARTNER_CONTACT_ID"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ord.DELIV_BPARTNER_CONTACT_ID like :DELIV_BPARTNER_CONTACT_ID";
-      $params["DELIV_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_DELIV_BPARTNER_CONTACT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_PAY_BPARTNER_CONTACT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.PAY_BPARTNER_CONTACT_ID like :PAY_BPARTNER_CONTACT_ID";
-      $params["PAY_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_PAY_BPARTNER_CONTACT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_REF_SORDER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ord.REF_SORDER_ID like :REF_SORDER_ID";
-      $params["REF_SORDER_ID"] = $_REQUEST["QRY_REF_SORDER_ID"];
+      $where .= "ord.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_CURRENCY"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ord.CURRENCY like :CURRENCY";
       $params["CURRENCY"] = $_REQUEST["QRY_CURRENCY"];
     }
+    if (!empty($_REQUEST["QRY_DELIV_BPARTNER_CONTACT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.DELIV_BPARTNER_CONTACT_ID like :DELIV_BPARTNER_CONTACT_ID";
+      $params["DELIV_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_DELIV_BPARTNER_CONTACT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_DELIV_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.DELIV_BPARTNER_ID like :DELIV_BPARTNER_ID";
+      $params["DELIV_BPARTNER_ID"] = $_REQUEST["QRY_DELIV_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_DOC_DATE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.DOC_DATE like :DOC_DATE";
+      $params["DOC_DATE"] = $_REQUEST["QRY_DOC_DATE"];
+    }
+    if (!empty($_REQUEST["QRY_DOC_NO"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.DOC_NO like :DOC_NO";
+      $params["DOC_NO"] = $_REQUEST["QRY_DOC_NO"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_PAYMETHOD_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ord.PAYMETHOD_CODE like :PAYMETHOD_CODE";
       $params["PAYMETHOD_CODE"] = $_REQUEST["QRY_PAYMETHOD_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_PAY_BPARTNER_CONTACT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.PAY_BPARTNER_CONTACT_ID like :PAY_BPARTNER_CONTACT_ID";
+      $params["PAY_BPARTNER_CONTACT_ID"] = $_REQUEST["QRY_PAY_BPARTNER_CONTACT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_PAY_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.PAY_BPARTNER_ID like :PAY_BPARTNER_ID";
+      $params["PAY_BPARTNER_ID"] = $_REQUEST["QRY_PAY_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_REF_SORDER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ord.REF_SORDER_ID like :REF_SORDER_ID";
+      $params["REF_SORDER_ID"] = $_REQUEST["QRY_REF_SORDER_ID"];
     }
 }
 
@@ -102,64 +102,64 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ord.ID
-                ,ord.DOC_NO
-                ,ord.DOC_DATE
-                ,ord.CLIENT_ID
-                ,ord.CREATEDON
-                ,ord.CREATEDBY
-                ,ord.MODIFIEDON
-                ,ord.MODIFIEDBY
-                ,ord.BPARTNER_ID
+                ord.BILL_BPARTNER_CONTACT_ID
                 ,ord.BILL_BPARTNER_ID
-                ,ord.DELIV_BPARTNER_ID
-                ,ord.PAY_BPARTNER_ID
+                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
                 ,ord.BPARTNER_CONTACT_ID
-                ,ord.BILL_BPARTNER_CONTACT_ID
-                ,ord.DELIV_BPARTNER_CONTACT_ID
-                ,ord.PAY_BPARTNER_CONTACT_ID
-                ,ord.REF_SORDER_ID
+                ,ord.BPARTNER_ID
+                ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME
+                ,(select code from client where id = ord.client_id) CLIENT_CODE
+                ,ord.CLIENT_ID
+                ,ord.CREATEDBY
+                ,ord.CREATEDON
                 ,ord.CURRENCY
+                ,ord.DELIV_BPARTNER_CONTACT_ID
+                ,ord.DELIV_BPARTNER_ID
+                ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME
+                ,ord.DOC_DATE
+                ,ord.DOC_NO
+                ,ord.ID
+                ,ord.MODIFIEDBY
+                ,ord.MODIFIEDON
                 ,ord.PAYMETHOD_CODE
+                ,ord.PAY_BPARTNER_CONTACT_ID
+                ,ord.PAY_BPARTNER_ID
+                ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME
+                ,ord.REF_SORDER_ID
                 ,ord.SALESREP_ID
                 ,ord.TOTAL_AMOUNT
-                ,(select code from client where id = ord.client_id) CLIENT_CODE
-                ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME
-                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
-                ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME
-                ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME
             from SALES_ORDER ord $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"DOC_NO"
-      ,"DOC_DATE"
-      ,"CLIENT_ID"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"BPARTNER_ID"
+      "BILL_BPARTNER_CONTACT_ID"
       ,"BILL_BPARTNER_ID"
-      ,"DELIV_BPARTNER_ID"
-      ,"PAY_BPARTNER_ID"
+      ,"BILL_BPARTNER_NAME"
       ,"BPARTNER_CONTACT_ID"
-      ,"BILL_BPARTNER_CONTACT_ID"
-      ,"DELIV_BPARTNER_CONTACT_ID"
-      ,"PAY_BPARTNER_CONTACT_ID"
-      ,"REF_SORDER_ID"
+      ,"BPARTNER_ID"
+      ,"BPARTNER_NAME"
+      ,"CLIENT_CODE"
+      ,"CLIENT_ID"
+      ,"CREATEDBY"
+      ,"CREATEDON"
       ,"CURRENCY"
+      ,"DELIV_BPARTNER_CONTACT_ID"
+      ,"DELIV_BPARTNER_ID"
+      ,"DELIV_BPARTNER_NAME"
+      ,"DOC_DATE"
+      ,"DOC_NO"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"PAYMETHOD_CODE"
+      ,"PAY_BPARTNER_CONTACT_ID"
+      ,"PAY_BPARTNER_ID"
+      ,"PAY_BPARTNER_NAME"
+      ,"REF_SORDER_ID"
       ,"SALESREP_ID"
       ,"TOTAL_AMOUNT"
-      ,"CLIENT_CODE"
-      ,"BPARTNER_NAME"
-      ,"BILL_BPARTNER_NAME"
-      ,"DELIV_BPARTNER_NAME"
-      ,"PAY_BPARTNER_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -196,10 +196,10 @@ public function doExport() {
                 ,ord.CREATEDBY
                 ,ord.MODIFIEDON
                 ,ord.MODIFIEDBY
-                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
                 ,ord.BILL_BPARTNER_ID
-                ,ord.DELIV_BPARTNER_ID
+                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
                 ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME
+                ,ord.DELIV_BPARTNER_ID
                 ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME
                 ,ord.PAY_BPARTNER_ID
                 ,ord.BPARTNER_CONTACT_ID
@@ -227,10 +227,10 @@ public function doExport() {
      ,"CREATEDBY"
      ,"MODIFIEDON"
      ,"MODIFIEDBY"
-     ,"BILL_BPARTNER_NAME"
      ,"BILL_BPARTNER_ID"
-     ,"DELIV_BPARTNER_ID"
+     ,"BILL_BPARTNER_NAME"
      ,"DELIV_BPARTNER_NAME"
+     ,"DELIV_BPARTNER_ID"
      ,"PAY_BPARTNER_NAME"
      ,"PAY_BPARTNER_ID"
      ,"BPARTNER_CONTACT_ID"
@@ -246,13 +246,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -307,39 +311,39 @@ public function doInsert() {
     $RECORD["SALESREP_ID"] = $this->getRequestParam("SALESREP_ID");
     $RECORD["TOTAL_AMOUNT"] = $this->getRequestParam("TOTAL_AMOUNT");
     $sql = "insert into SALES_ORDER(
-                 ID
-                ,DOC_NO
-                ,DOC_DATE
-                ,CLIENT_ID
-                ,BPARTNER_ID
+                 BILL_BPARTNER_CONTACT_ID
                 ,BILL_BPARTNER_ID
-                ,DELIV_BPARTNER_ID
-                ,PAY_BPARTNER_ID
                 ,BPARTNER_CONTACT_ID
-                ,BILL_BPARTNER_CONTACT_ID
-                ,DELIV_BPARTNER_CONTACT_ID
-                ,PAY_BPARTNER_CONTACT_ID
-                ,REF_SORDER_ID
+                ,BPARTNER_ID
+                ,CLIENT_ID
                 ,CURRENCY
+                ,DELIV_BPARTNER_CONTACT_ID
+                ,DELIV_BPARTNER_ID
+                ,DOC_DATE
+                ,DOC_NO
+                ,ID
                 ,PAYMETHOD_CODE
+                ,PAY_BPARTNER_CONTACT_ID
+                ,PAY_BPARTNER_ID
+                ,REF_SORDER_ID
                 ,SALESREP_ID
                 ,TOTAL_AMOUNT
             ) values ( 
-                 :ID
-                ,:DOC_NO
-                ,:DOC_DATE
-                ,:CLIENT_ID
-                ,:BPARTNER_ID
+                 :BILL_BPARTNER_CONTACT_ID
                 ,:BILL_BPARTNER_ID
-                ,:DELIV_BPARTNER_ID
-                ,:PAY_BPARTNER_ID
                 ,:BPARTNER_CONTACT_ID
-                ,:BILL_BPARTNER_CONTACT_ID
-                ,:DELIV_BPARTNER_CONTACT_ID
-                ,:PAY_BPARTNER_CONTACT_ID
-                ,:REF_SORDER_ID
+                ,:BPARTNER_ID
+                ,:CLIENT_ID
                 ,:CURRENCY
+                ,:DELIV_BPARTNER_CONTACT_ID
+                ,:DELIV_BPARTNER_ID
+                ,:DOC_DATE
+                ,:DOC_NO
+                ,:ID
                 ,:PAYMETHOD_CODE
+                ,:PAY_BPARTNER_CONTACT_ID
+                ,:PAY_BPARTNER_ID
+                ,:REF_SORDER_ID
                 ,:SALESREP_ID
                 ,:TOTAL_AMOUNT
     )";
@@ -390,21 +394,21 @@ public function doUpdate() {
     $RECORD["TOTAL_AMOUNT"] = $this->getRequestParam("TOTAL_AMOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0059.doUpdate().");}
     $sql = "update SALES_ORDER set 
-                 ID=:ID
-                ,DOC_NO=:DOC_NO
-                ,DOC_DATE=:DOC_DATE
-                ,CLIENT_ID=:CLIENT_ID
-                ,BPARTNER_ID=:BPARTNER_ID
+                 BILL_BPARTNER_CONTACT_ID=:BILL_BPARTNER_CONTACT_ID
                 ,BILL_BPARTNER_ID=:BILL_BPARTNER_ID
-                ,DELIV_BPARTNER_ID=:DELIV_BPARTNER_ID
-                ,PAY_BPARTNER_ID=:PAY_BPARTNER_ID
                 ,BPARTNER_CONTACT_ID=:BPARTNER_CONTACT_ID
-                ,BILL_BPARTNER_CONTACT_ID=:BILL_BPARTNER_CONTACT_ID
-                ,DELIV_BPARTNER_CONTACT_ID=:DELIV_BPARTNER_CONTACT_ID
-                ,PAY_BPARTNER_CONTACT_ID=:PAY_BPARTNER_CONTACT_ID
-                ,REF_SORDER_ID=:REF_SORDER_ID
+                ,BPARTNER_ID=:BPARTNER_ID
+                ,CLIENT_ID=:CLIENT_ID
                 ,CURRENCY=:CURRENCY
+                ,DELIV_BPARTNER_CONTACT_ID=:DELIV_BPARTNER_CONTACT_ID
+                ,DELIV_BPARTNER_ID=:DELIV_BPARTNER_ID
+                ,DOC_DATE=:DOC_DATE
+                ,DOC_NO=:DOC_NO
+                ,ID=:ID
                 ,PAYMETHOD_CODE=:PAYMETHOD_CODE
+                ,PAY_BPARTNER_CONTACT_ID=:PAY_BPARTNER_CONTACT_ID
+                ,PAY_BPARTNER_ID=:PAY_BPARTNER_ID
+                ,REF_SORDER_ID=:REF_SORDER_ID
                 ,SALESREP_ID=:SALESREP_ID
                 ,TOTAL_AMOUNT=:TOTAL_AMOUNT
     where 
@@ -479,32 +483,32 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ord.ID
-                ,ord.DOC_NO
-                ,ord.DOC_DATE
-                ,ord.CLIENT_ID
-                ,ord.CREATEDON
-                ,ord.CREATEDBY
-                ,ord.MODIFIEDON
-                ,ord.MODIFIEDBY
-                ,ord.BPARTNER_ID
+                ord.BILL_BPARTNER_CONTACT_ID
                 ,ord.BILL_BPARTNER_ID
-                ,ord.DELIV_BPARTNER_ID
-                ,ord.PAY_BPARTNER_ID
+                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
                 ,ord.BPARTNER_CONTACT_ID
-                ,ord.BILL_BPARTNER_CONTACT_ID
-                ,ord.DELIV_BPARTNER_CONTACT_ID
-                ,ord.PAY_BPARTNER_CONTACT_ID
-                ,ord.REF_SORDER_ID
+                ,ord.BPARTNER_ID
+                ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME
+                ,(select code from client where id = ord.client_id) CLIENT_CODE
+                ,ord.CLIENT_ID
+                ,ord.CREATEDBY
+                ,ord.CREATEDON
                 ,ord.CURRENCY
+                ,ord.DELIV_BPARTNER_CONTACT_ID
+                ,ord.DELIV_BPARTNER_ID
+                ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME
+                ,ord.DOC_DATE
+                ,ord.DOC_NO
+                ,ord.ID
+                ,ord.MODIFIEDBY
+                ,ord.MODIFIEDON
                 ,ord.PAYMETHOD_CODE
+                ,ord.PAY_BPARTNER_CONTACT_ID
+                ,ord.PAY_BPARTNER_ID
+                ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME
+                ,ord.REF_SORDER_ID
                 ,ord.SALESREP_ID
                 ,ord.TOTAL_AMOUNT
-                ,(select code from client where id = ord.client_id) CLIENT_CODE
-                ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME
-                ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME
-                ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME
-                ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME
             from SALES_ORDER ord
          where 
            ord.ID= :ID
@@ -515,32 +519,32 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
-  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  "BILL_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"BILL_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DELIV_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PAY_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BILL_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
   ,"BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"BILL_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DELIV_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PAY_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"REF_SORDER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"DELIV_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"DELIV_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"DELIV_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"DOC_DATE" => array("DATA_TYPE" => "DATE")
+  ,"DOC_NO" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"PAYMETHOD_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PAY_BPARTNER_CONTACT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PAY_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PAY_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
+  ,"REF_SORDER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"SALESREP_ID" => array("DATA_TYPE" => "NUMBER")
   ,"TOTAL_AMOUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"BILL_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"DELIV_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
-  ,"PAY_BPARTNER_NAME" => array("DATA_TYPE" => "STRING")
 );
 
 
