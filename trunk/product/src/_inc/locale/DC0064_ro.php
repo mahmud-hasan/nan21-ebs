@@ -1,27 +1,27 @@
 <?php
 $resourceBundle = array( 
 "DcProperty"=>array( 
-  "Title"=>"DC0064"
+  "Title"=>"Linii comanda furnizor"
     )
 ,"FieldLabel"=>array( 
-      "CREATEDBY" => "Created by"
-     ,"CREATEDON" => "Created on"
-     ,"CURRENCY_CODE" => "Currency"
-     ,"DATE_DELIVERED" => "Delivered on"
-     ,"DATE_PROMISED" => "Promised for"
-     ,"DATE_REQUESTED" => "Requested for"
+      "CREATEDBY" => "Creat de"
+     ,"CREATEDON" => "Creat la"
+     ,"CURRENCY_CODE" => "Moneda"
+     ,"DATE_DELIVERED" => "Predat la"
+     ,"DATE_PROMISED" => "Promis pentru"
+     ,"DATE_REQUESTED" => "Solicitat pentru"
      ,"ID" => "Id"
      ,"LINE_NR" => "No"
-     ,"MODIFIEDBY" => "Modified by"
-     ,"MODIFIEDON" => "Modified on"
-     ,"NET_AMOUNT" => "Net amount"
-     ,"NOTES" => "Notes"
-     ,"PORDER_ID" => "Porder_id"
-     ,"PRICE" => "Price"
-     ,"PRODUCT_ID" => "Product_id"
-     ,"PRODUCT_NAME" => "Product"
-     ,"QTY" => "Qty"
-     ,"UOM_CODE" => "UoM"
+     ,"MODIFIEDBY" => "Modificat de"
+     ,"MODIFIEDON" => "Modificat la"
+     ,"NET_AMOUNT" => "Valoare neta"
+     ,"NOTES" => "Observatii"
+     ,"PORDER_ID" => "ID comanda furnizor"
+     ,"PRICE" => "Pret"
+     ,"PRODUCT_ID" => "ID produs"
+     ,"PRODUCT_NAME" => "Produs"
+     ,"QTY" => "Cantitate"
+     ,"UOM_CODE" => "UM"
     )
   );
 ?>

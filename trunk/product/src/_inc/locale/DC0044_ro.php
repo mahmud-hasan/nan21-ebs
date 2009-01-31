@@ -4,18 +4,18 @@ $resourceBundle = array(
   "Title"=>"Plati factura furnizor"
     )
 ,"FieldLabel"=>array( 
-      "ACCDOC_ID" => "ID NC"
+      "ACCDOC_ID" => "ID nota contabila"
      ,"AMOUNT" => "Valoare"
      ,"BPARTNER_FROM" => "Platitor"
      ,"BPARTNER_TO" => "Beneficiar"
-     ,"CLIENT_ID" => "Client_id"
+     ,"CLIENT_ID" => "ID unitate"
      ,"CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
      ,"CURRENCY" => "Moneda"
      ,"DOC_DATE" => "Data"
      ,"DOC_NO" => "Nr. doc."
-     ,"ID" => "Id"
-     ,"IINV_ID" => "Iinv_id"
+     ,"ID" => "ID"
+     ,"IINV_ID" => "ID factura"
      ,"IS_APPROVED" => "Aprobat"
      ,"IS_GENERATED" => "Generat"
      ,"IS_INSERTED" => "Introdus"
@@ -30,7 +30,7 @@ $resourceBundle = array(
      ,"PAYDOCTYPE_CODE" => "Tip plata"
      ,"PAYMNT_ACCT" => "Cont plata"
      ,"PREPAY_ACCT" => "Cont plata avans"
-     ,"RINV_ID" => "Rinv_id"
+     ,"RINV_ID" => "ID factura"
     )
   );
 ?>

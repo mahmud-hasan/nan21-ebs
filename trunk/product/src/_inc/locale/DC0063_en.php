@@ -1,7 +1,7 @@
 <?php
 $resourceBundle = array( 
 "DcProperty"=>array( 
-  "Title"=>"DC0063"
+  "Title"=>"Purchase orders"
     )
 ,"FieldLabel"=>array( 
       "BPARTNER_CONTACT_ID" => "Bpartner_contact_id"

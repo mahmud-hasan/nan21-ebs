@@ -15,7 +15,7 @@ $resourceBundle = array(
      ,"MODIFIEDBY" => "Modified by"
      ,"MODIFIEDON" => "Modified on"
      ,"NAME" => "Name"
-     ,"UOM_TYPE" => "UoM type"
+     ,"UOM_TYPE" => "Type"
     )
   );
 ?>

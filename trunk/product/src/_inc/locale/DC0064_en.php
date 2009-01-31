@@ -1,7 +1,7 @@
 <?php
 $resourceBundle = array( 
 "DcProperty"=>array( 
-  "Title"=>"DC0064"
+  "Title"=>"Purchase order items"
     )
 ,"FieldLabel"=>array( 
       "CREATEDBY" => "Created by"

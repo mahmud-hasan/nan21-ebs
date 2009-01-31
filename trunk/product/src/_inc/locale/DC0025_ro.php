@@ -6,7 +6,7 @@ $resourceBundle = array(
 ,"FieldLabel"=>array( 
       "CODE" => "Cod"
      ,"DESCRIPTION" => "Descriere"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"NAME" => "Denumire"
     )
   );

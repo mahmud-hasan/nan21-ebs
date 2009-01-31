@@ -5,11 +5,11 @@ $resourceBundle = array(
     )
 ,"FieldLabel"=>array( 
       "CLIENT_CODE" => "Unitate"
-     ,"CLIENT_ID" => "Id unitate"
+     ,"CLIENT_ID" => "ID unitate"
      ,"CODE" => "Cod"
      ,"CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"MODIFIEDBY" => "Modificat de"
      ,"MODIFIEDON" => "Modificat la"
      ,"NAME" => "Denumire"

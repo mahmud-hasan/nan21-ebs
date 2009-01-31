@@ -4,9 +4,9 @@ $resourceBundle = array(
   "Title"=>"Stari proiect"
     )
 ,"FieldLabel"=>array( 
-      "CODE" => "Code"
-     ,"ID" => "Id"
-     ,"NAME" => "Name"
+      "CODE" => "Cod"
+     ,"ID" => "ID"
+     ,"NAME" => "Denumire"
     )
   );
 ?>

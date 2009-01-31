@@ -7,7 +7,7 @@ $resourceBundle = array(
       "ACTIVE" => "Utilizat"
      ,"CODE" => "Cod"
      ,"COUNTRY_CODE" => "Tara"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"NAME" => "Denumire"
     )
   );

@@ -5,7 +5,10 @@ $resourceBundle = array(
     )
 ,"FieldLabel"=>array( 
       "CODE" => "Cod"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
+     ,"IS_PERIOD" => "Perioada?"
+     ,"IS_VOLUME" => "Volum?"
+     ,"IS_WEIGHT" => "Masa?"
      ,"NAME" => "Denumire"
     )
   );

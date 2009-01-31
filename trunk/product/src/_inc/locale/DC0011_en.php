@@ -4,8 +4,8 @@ $resourceBundle = array(
   "Title"=>"UoM conversions"
     )
 ,"FieldLabel"=>array( 
-      "CONVERSION_FACTOR" => "Conversion factor"
-     ,"CONVERSION_TYPE" => "Conversion type"
+      "CONVERSION_FACTOR" => "Factor"
+     ,"CONVERSION_TYPE" => "Operator"
      ,"CREATEDBY" => "Created by"
      ,"CREATEDON" => "Created on"
      ,"ID" => "Id"

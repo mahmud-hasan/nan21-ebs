@@ -4,19 +4,21 @@ $resourceBundle = array(
   "Title"=>"Ani fiscali"
     )
 ,"FieldLabel"=>array( 
-      "CLIENT_ID" => "Client_id"
-     ,"CLIENT_NAME" => "Unitate"
+      "CLIENT_CODE" => "Unitate"
+     ,"CLIENT_ID" => "ID unitate"
      ,"CLOSED" => "Inchis"
+     ,"CODE" => "Denumire"
      ,"CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
      ,"ENDDATE" => "Pana la"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
+     ,"IS_FIRST_YEAR" => "Is first year?"
      ,"MODIFIEDBY" => "Modificat de"
      ,"MODIFIEDON" => "Modificat la"
-     ,"NAME" => "Denumire"
      ,"NEXT_YEAR_NAME" => "An urmator"
      ,"NOTES" => "Observatii"
-     ,"PREV_YEAR_NAME" => "An anterior"
+     ,"OPENED" => "Opened"
+     ,"PREV_YEAR_CODE" => "An anterior"
      ,"STARTDATE" => "De la"
     )
   );

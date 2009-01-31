@@ -8,7 +8,7 @@ $resourceBundle = array(
      ,"ACCOUNT_LOSS" => "Cont pierdere"
      ,"ACTIVE" => "Utilizat"
      ,"CODE" => "Cod"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"NAME" => "Denumire"
     )
   );

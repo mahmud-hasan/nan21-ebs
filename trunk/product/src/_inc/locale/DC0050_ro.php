@@ -4,9 +4,9 @@ $resourceBundle = array(
   "Title"=>"Tipuri gravitate incident"
     )
 ,"FieldLabel"=>array( 
-      "CODE" => "Code"
-     ,"ID" => "Id"
-     ,"NAME" => "Name"
+      "CODE" => "Cod"
+     ,"ID" => "ID"
+     ,"NAME" => "Denumire"
     )
   );
 ?>

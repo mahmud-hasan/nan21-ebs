@@ -6,12 +6,12 @@ $resourceBundle = array(
 ,"FieldLabel"=>array( 
       "BANKAG_CODE" => "Agentie banca"
      ,"BANK_CODE" => "Banca"
-     ,"BPARTNER_ID" => "Bpartner_id"
+     ,"BPARTNER_ID" => "ID tert"
      ,"CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
      ,"CURRENCY" => "Moneda"
-     ,"IBAN" => "Cod IBAN"
-     ,"ID" => "Id"
+     ,"IBAN" => "Cont IBAN"
+     ,"ID" => "ID"
      ,"MODIFIEDBY" => "Modificat de"
      ,"MODIFIEDON" => "Modificat la"
     )

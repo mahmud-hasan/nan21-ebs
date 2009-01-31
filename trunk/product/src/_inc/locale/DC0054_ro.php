@@ -4,11 +4,11 @@ $resourceBundle = array(
   "Title"=>"Tipuri componente proiect"
     )
 ,"FieldLabel"=>array( 
-      "CODE" => "Code"
-     ,"ID" => "Id"
-     ,"NAME" => "Name"
-     ,"PROJECT_ID" => "Project_id"
-     ,"PROJECT_NAME" => "Project"
+      "CODE" => "Cod"
+     ,"ID" => "ID"
+     ,"NAME" => "Denumire"
+     ,"PROJECT_ID" => "ID proiect"
+     ,"PROJECT_NAME" => "Proiect"
     )
   );
 ?>

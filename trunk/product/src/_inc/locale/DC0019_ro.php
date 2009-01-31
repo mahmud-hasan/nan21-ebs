@@ -9,13 +9,13 @@ $resourceBundle = array(
      ,"CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
      ,"FINISH_DATE" => "Data sfarsit"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"MODIFIEDBY" => "Modificat de"
      ,"MODIFIEDON" => "Modificat la"
      ,"NOTES" => "Observatii"
      ,"START_DATE" => "Data inceput"
      ,"STATUS" => "Stadiu"
-     ,"TITLE" => "Title"
+     ,"TITLE" => "Titlu"
     )
   );
 ?>

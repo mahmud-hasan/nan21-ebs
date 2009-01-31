@@ -6,11 +6,11 @@ $resourceBundle = array(
 ,"FieldLabel"=>array( 
       "CREATEDBY" => "Creat de"
      ,"CREATEDON" => "Creat la"
-     ,"ID" => "Id"
+     ,"ID" => "ID"
      ,"MODIFIEDBY" => "Modificat de"
      ,"MODIFIEDON" => "Modificat la"
      ,"NOTE" => "Comentarii"
-     ,"PROJECT_ISSUE_ID" => "Id incident"
+     ,"PROJECT_ISSUE_ID" => "ID incident"
     )
   );
 ?>
