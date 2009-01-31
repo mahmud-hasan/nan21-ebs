@@ -29,7 +29,7 @@
      ,columnMap: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
      ,queryPanelColCount:0
-     ,firstFocusFieldName:"COUNTRY_CODE"
+     ,firstFocusFieldName:"NAME"
     ,recordPk:[ "ID"]
     ,layoutItems: new Ext.util.MixedCollection()
     ,initComponent:function() {
@@ -49,8 +49,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0015</span>"          )
           ,dataComponentName:"DC0015"
           ,frame:true
           ,queryArraySize:-1
@@ -75,22 +76,22 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0015_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0015_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0015_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("COUNTRY_CODE", new N21.DataComp.LOV0006({xtype: "LOV0006",name:"QRY_COUNTRY_CODE",id:"DC0015_QRY_COUNTRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country_code"})  );
-         this.queryFields.add("REGION_CODE", new N21.DataComp.LOV0007({xtype: "LOV0007",paramMapping: [{param:"p_country_code",field:"DC0015_QRY_COUNTRY_CODE"}],name:"QRY_REGION_CODE",id:"DC0015_QRY_REGION_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.REGION_CODE||"Region_code"})  );
-         this.queryFields.add("CITY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CITY",id:"DC0015_QRY_CITY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY||"City"})  );
-         this.queryFields.add("CITY_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_CITY_ID",id:"DC0015_QRY_CITY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CITY_ID||"City_id",style: "text-align:right;"})  );
-         this.queryFields.add("IS_DETAILED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DETAILED",id:"DC0015_QRY_IS_DETAILED",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DETAILED||"Detailed"})  );
-         this.queryFields.add("ADRESS", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ADRESS",id:"DC0015_QRY_ADRESS",width:100,fieldLabel: this.resourceBundle.FieldLabel.ADRESS||"Adress"})  );
-         this.queryFields.add("ZIP", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ZIP",id:"DC0015_QRY_ZIP",width:100,fieldLabel: this.resourceBundle.FieldLabel.ZIP||"Zip"})  );
-         this.queryFields.add("STREET_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_STREET_ID",id:"DC0015_QRY_STREET_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.STREET_ID||"Street_id",style: "text-align:right;"})  );
-         this.queryFields.add("STREET", new Ext.form.TextField ({xtype: "textfield",name:"QRY_STREET",id:"DC0015_QRY_STREET",width:100,fieldLabel: this.resourceBundle.FieldLabel.STREET||"Street"})  );
-         this.queryFields.add("ENTRANCE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ENTRANCE",id:"DC0015_QRY_ENTRANCE",width:100,fieldLabel: this.resourceBundle.FieldLabel.ENTRANCE||"Entrance"})  );
-         this.queryFields.add("IS_BILLING", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_BILLING",id:"DC0015_QRY_IS_BILLING",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_BILLING||"Billing"})  );
-         this.queryFields.add("IS_DELIVERY", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_DELIVERY",id:"DC0015_QRY_IS_DELIVERY",width:100,fieldLabel: this.resourceBundle.FieldLabel.IS_DELIVERY||"Delivery"})  );
-         this.queryFields.add("NOTES", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NOTES",id:"DC0015_QRY_NOTES",width:100,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"})  );
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0015F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:true,width:100}));
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0015F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0015F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("COUNTRY_CODE",new  N21.DataComp.LOV0006({name:"QRY_COUNTRY_CODE",id:"DC0015F_QRY_COUNTRY_CODE",fieldLabel: this.resourceBundle.FieldLabel.COUNTRY_CODE||"Country_code",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("REGION_CODE",new  N21.DataComp.LOV0007({name:"QRY_REGION_CODE",id:"DC0015F_QRY_REGION_CODE",fieldLabel: this.resourceBundle.FieldLabel.REGION_CODE||"Region_code",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,paramMapping: [{param:"p_country_code",field:"DC0015F_QRY_COUNTRY_CODE"}]}));
+       this.queryFields.add("CITY",new Ext.form.TextField({name:"QRY_CITY",id:"DC0015F_QRY_CITY",fieldLabel: this.resourceBundle.FieldLabel.CITY||"City",allowBlank:true,width:100}));
+       this.queryFields.add("CITY_ID",new Ext.form.NumberField({name:"QRY_CITY_ID",id:"DC0015F_QRY_CITY_ID",fieldLabel: this.resourceBundle.FieldLabel.CITY_ID||"City_id",allowBlank:true,width:100}));
+       this.queryFields.add("IS_DETAILED",new Ext.form.ComboBox({name:"QRY_IS_DETAILED",id:"DC0015F_QRY_IS_DETAILED",fieldLabel: this.resourceBundle.FieldLabel.IS_DETAILED||"Detailed",allowBlank:true,width:100,store:["Y","N"]}));
+       this.queryFields.add("ADRESS",new Ext.form.TextField({name:"QRY_ADRESS",id:"DC0015F_QRY_ADRESS",fieldLabel: this.resourceBundle.FieldLabel.ADRESS||"Adress",allowBlank:true,width:100}));
+       this.queryFields.add("ZIP",new Ext.form.TextField({name:"QRY_ZIP",id:"DC0015F_QRY_ZIP",fieldLabel: this.resourceBundle.FieldLabel.ZIP||"Zip",allowBlank:true,width:100}));
+       this.queryFields.add("STREET_ID",new Ext.form.NumberField({name:"QRY_STREET_ID",id:"DC0015F_QRY_STREET_ID",fieldLabel: this.resourceBundle.FieldLabel.STREET_ID||"Street_id",allowBlank:true,width:100}));
+       this.queryFields.add("STREET",new Ext.form.TextField({name:"QRY_STREET",id:"DC0015F_QRY_STREET",fieldLabel: this.resourceBundle.FieldLabel.STREET||"Street",allowBlank:true,width:100}));
+       this.queryFields.add("ENTRANCE",new Ext.form.TextField({name:"QRY_ENTRANCE",id:"DC0015F_QRY_ENTRANCE",fieldLabel: this.resourceBundle.FieldLabel.ENTRANCE||"Entrance",allowBlank:true,width:100}));
+       this.queryFields.add("IS_BILLING",new Ext.form.ComboBox({name:"QRY_IS_BILLING",id:"DC0015F_QRY_IS_BILLING",fieldLabel: this.resourceBundle.FieldLabel.IS_BILLING||"Billing",allowBlank:true,width:100,store:["Y","N"]}));
+       this.queryFields.add("IS_DELIVERY",new Ext.form.ComboBox({name:"QRY_IS_DELIVERY",id:"DC0015F_QRY_IS_DELIVERY",fieldLabel: this.resourceBundle.FieldLabel.IS_DELIVERY||"Delivery",allowBlank:true,width:100,store:["Y","N"]}));
+       this.queryFields.add("NOTES",new Ext.form.TextField({name:"QRY_NOTES",id:"DC0015F_QRY_NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:100}));
 
 
 

@@ -19,12 +19,12 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0021_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0021_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("NBS_STANDARD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_NBS_STANDARD",id:"DC0021_QRY_NBS_STANDARD",width:50,fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard"})  );
-         this.queryFields.add("USER_BUILD", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_USER_BUILD",id:"DC0021_QRY_USER_BUILD",width:50,fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build"})  );
-         this.queryFields.add("DEPRECATED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_DEPRECATED",id:"DC0021_QRY_DEPRECATED",width:50,fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated"})  );
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0021_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+       this.queryFields.add("CODE",new Ext.form.TextField({name:"QRY_CODE",id:"DC0021F_QRY_CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:true,width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0021F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("NBS_STANDARD",new Ext.form.ComboBox({name:"QRY_NBS_STANDARD",id:"DC0021F_QRY_NBS_STANDARD",fieldLabel: this.resourceBundle.FieldLabel.NBS_STANDARD||"Standard",allowBlank:true,width:50,store:["Y","N"]}));
+       this.queryFields.add("USER_BUILD",new Ext.form.ComboBox({name:"QRY_USER_BUILD",id:"DC0021F_QRY_USER_BUILD",fieldLabel: this.resourceBundle.FieldLabel.USER_BUILD||"User build",allowBlank:true,width:50,store:["Y","N"]}));
+       this.queryFields.add("DEPRECATED",new Ext.form.ComboBox({name:"QRY_DEPRECATED",id:"DC0021F_QRY_DEPRECATED",fieldLabel: this.resourceBundle.FieldLabel.DEPRECATED||"Deprecated",allowBlank:true,width:50,store:["Y","N"]}));
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0021F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "CODE","NAME","NBS_STANDARD","USER_BUILD","DEPRECATED" ];
        Ext.apply(this, {
@@ -76,9 +76,9 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0021F_CODE",dataIndex:"CODE",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0021F_NAME",dataIndex:"NAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0021F_ID",dataIndex:"ID",width:30,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0021F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0021F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0021F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:30,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -154,8 +154,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0021</span>"          )
         }); 
 
        N21.DataComp.DC0021.superclass.initComponent.apply(this, arguments);

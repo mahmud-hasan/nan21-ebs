@@ -38,8 +38,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0047</span>"          )
           ,dataComponentName:"DC0047"
           ,frame:true
           ,queryArraySize:20
@@ -54,12 +55,12 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_ID",id:"DC0047_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",style: "text-align:right;"})  );
-         this.queryFields.add("PROJECT_ISSUE_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_PROJECT_ISSUE_ID",id:"DC0047_QRY_PROJECT_ISSUE_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id",style: "text-align:right;"})  );
-         this.queryFields.add("FILE_NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_FILE_NAME",id:"DC0047_QRY_FILE_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.FILE_NAME||"File_name"})  );
-         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0047_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"Createdon",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0047_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"Createdby"})  );
-         this.queryFields.add("NOTES", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NOTES",id:"DC0047_QRY_NOTES",width:100,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"})  );
+       this.queryFields.add("ID",new Ext.form.NumberField({name:"QRY_ID",id:"DC0047F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("PROJECT_ISSUE_ID",new Ext.form.NumberField({name:"QRY_PROJECT_ISSUE_ID",id:"DC0047F_QRY_PROJECT_ISSUE_ID",fieldLabel: this.resourceBundle.FieldLabel.PROJECT_ISSUE_ID||"Project_issue_id",allowBlank:true,width:100}));
+       this.queryFields.add("FILE_NAME",new Ext.form.TextField({name:"QRY_FILE_NAME",id:"DC0047F_QRY_FILE_NAME",fieldLabel: this.resourceBundle.FieldLabel.FILE_NAME||"File_name",allowBlank:true,width:100}));
+       this.queryFields.add("CREATEDON",new Ext.form.DateField({name:"QRY_CREATEDON",id:"DC0047F_QRY_CREATEDON",fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"Createdon",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("CREATEDBY",new Ext.form.TextField({name:"QRY_CREATEDBY",id:"DC0047F_QRY_CREATEDBY",fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"Createdby",allowBlank:true,width:100}));
+       this.queryFields.add("NOTES",new Ext.form.TextField({name:"QRY_NOTES",id:"DC0047F_QRY_NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:100}));
 
 
 

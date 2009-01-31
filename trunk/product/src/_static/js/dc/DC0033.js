@@ -21,14 +21,14 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0033_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("PROPERTY_NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_PROPERTY_NAME",id:"DC0033_QRY_PROPERTY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_NAME||"Property_name"})  );
-         this.queryFields.add("PROPERTY_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_PROPERTY_TYPE",id:"DC0033_QRY_PROPERTY_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_TYPE||"Property_type"})  );
-         this.queryFields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"QRY_DESCRIPTION",id:"DC0033_QRY_DESCRIPTION",width:100,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description"})  );
-         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0033_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0033_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
-         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0033_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0033_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0033F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("PROPERTY_NAME",new Ext.form.TextField({name:"QRY_PROPERTY_NAME",id:"DC0033F_QRY_PROPERTY_NAME",fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_NAME||"Property_name",allowBlank:true,width:100}));
+       this.queryFields.add("PROPERTY_TYPE",new Ext.form.TextField({name:"QRY_PROPERTY_TYPE",id:"DC0033F_QRY_PROPERTY_TYPE",fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_TYPE||"Property_type",allowBlank:true,width:100}));
+       this.queryFields.add("DESCRIPTION",new Ext.form.TextArea({name:"QRY_DESCRIPTION",id:"DC0033F_QRY_DESCRIPTION",fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",allowBlank:true,width:100}));
+       this.queryFields.add("CREATEDON",new Ext.form.DateField({name:"QRY_CREATEDON",id:"DC0033F_QRY_CREATEDON",fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("CREATEDBY",new Ext.form.TextField({name:"QRY_CREATEDBY",id:"DC0033F_QRY_CREATEDBY",fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",allowBlank:true,width:100}));
+       this.queryFields.add("MODIFIEDON",new Ext.form.DateField({name:"QRY_MODIFIEDON",id:"DC0033F_QRY_MODIFIEDON",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("MODIFIEDBY",new Ext.form.TextField({name:"QRY_MODIFIEDBY",id:"DC0033F_QRY_MODIFIEDBY",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "PROPERTY_NAME","PROPERTY_TYPE","DESCRIPTION","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY" ];
        Ext.apply(this, {
@@ -84,10 +84,10 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0033F_ID",dataIndex:"ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PROPERTY_NAME", new Ext.form.TextField ({xtype: "textfield",name:"PROPERTY_NAME",id:"DC0033F_PROPERTY_NAME",dataIndex:"PROPERTY_NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_NAME||"Property_name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PROPERTY_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"PROPERTY_TYPE",id:"DC0033F_PROPERTY_TYPE",dataIndex:"PROPERTY_TYPE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_TYPE||"Property_type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0033F_DESCRIPTION",dataIndex:"DESCRIPTION",width:200,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0033F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PROPERTY_NAME",new Ext.form.TextField({name:"PROPERTY_NAME",id:"DC0033F_PROPERTY_NAME",dataIndex:"PROPERTY_NAME",fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_NAME||"Property_name",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PROPERTY_TYPE",new Ext.form.TextField({name:"PROPERTY_TYPE",id:"DC0033F_PROPERTY_TYPE",dataIndex:"PROPERTY_TYPE",fieldLabel: this.resourceBundle.FieldLabel.PROPERTY_TYPE||"Property_type",allowBlank:true,width:120,insert_allowed:true,update_allowed:true}));
+       this.fields.add("DESCRIPTION",new Ext.form.TextArea({name:"DESCRIPTION",id:"DC0033F_DESCRIPTION",dataIndex:"DESCRIPTION",fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",allowBlank:true,width:200,height:40,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -166,8 +166,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0033</span>"          )
         }); 
 
        N21.DataComp.DC0033.superclass.initComponent.apply(this, arguments);

@@ -37,8 +37,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0058</span>"          )
           ,dataComponentName:"DC0058"
           ,frame:true
           ,queryArraySize:-1
@@ -51,10 +52,10 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_ID",id:"DC0058_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",style: "text-align:right;"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_BPARTNER_ID",id:"DC0058_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",style: "text-align:right;"})  );
-         this.queryFields.add("CMNCT_TYPE", new N21.DataComp.LOV0038({xtype: "LOV0038",name:"QRY_CMNCT_TYPE",id:"DC0058_QRY_CMNCT_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CMNCT_TYPE||"Type"})  );
-         this.queryFields.add("CMNCT_VALUE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CMNCT_VALUE",id:"DC0058_QRY_CMNCT_VALUE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CMNCT_VALUE||"Value"})  );
+       this.queryFields.add("ID",new Ext.form.NumberField({name:"QRY_ID",id:"DC0058F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.NumberField({name:"QRY_BPARTNER_ID",id:"DC0058F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:true,width:100}));
+       this.queryFields.add("CMNCT_TYPE",new  N21.DataComp.LOV0038({name:"QRY_CMNCT_TYPE",id:"DC0058F_QRY_CMNCT_TYPE",fieldLabel: this.resourceBundle.FieldLabel.CMNCT_TYPE||"Type",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("CMNCT_VALUE",new Ext.form.TextField({name:"QRY_CMNCT_VALUE",id:"DC0058F_QRY_CMNCT_VALUE",fieldLabel: this.resourceBundle.FieldLabel.CMNCT_VALUE||"Value",allowBlank:true,width:100}));
 
 
 

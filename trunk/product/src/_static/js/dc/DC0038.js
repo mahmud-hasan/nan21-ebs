@@ -7,12 +7,10 @@
      dataRecordMeta:    Ext.data.Record.create([
           {name:"_p_record_status", type:"string"}
          ,{name:"ID", type:"float" }
-         ,{name:"CLIENT_ID", type:"float" }
-         ,{name:"CLIENT_NAME", type:"string" }
          ,{name:"CODE", type:"string" }
          ,{name:"NAME", type:"string" }
-         ,{name:"PRODCATEG_ID", type:"float" }
          ,{name:"PRODCATEG_NAME", type:"string" }
+         ,{name:"PRODCATEG_ID", type:"float" }
          ,{name:"DESCRIPTION", type:"string" }
          ,{name:"ACTIVE", type:"string" }
          ,{name:"CREATEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
@@ -26,16 +24,14 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0038_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0038_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
-         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0038_QRY_CLIENT_ID"}],name:"QRY_CLIENT_NAME",id:"DC0038_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
-         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0038_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0038_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("PRODCATEG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODCATEG_ID",id:"DC0038_QRY_PRODCATEG_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id"})  );
-         this.queryFields.add("PRODCATEG_NAME", new N21.DataComp.LOV0014({xtype: "LOV0014",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0038_QRY_PRODCATEG_ID"}],selectOnFocus:true,name:"QRY_PRODCATEG_NAME",id:"DC0038_QRY_PRODCATEG_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_NAME||"Parent Categ."})  );
-         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0038_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0038F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CODE",new Ext.form.TextField({name:"QRY_CODE",id:"DC0038F_QRY_CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:true,style: "text-transform:uppercase;",width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0038F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("PRODCATEG_NAME",new  N21.DataComp.LOV0014({name:"QRY_PRODCATEG_NAME",id:"DC0038F_QRY_PRODCATEG_NAME",fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_NAME||"Parent Categ.",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0038F_QRY_PRODCATEG_ID"}],displayColumn: "CODE"}));
+       this.queryFields.add("PRODCATEG_ID",new Ext.form.Hidden({name:"QRY_PRODCATEG_ID",id:"DC0038F_QRY_PRODCATEG_ID",fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",allowBlank:true,width:100}));
+       this.queryFields.add("ACTIVE",new Ext.form.ComboBox({name:"QRY_ACTIVE",id:"DC0038F_QRY_ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:true,width:40,store:["Y","N"]}));
   
-       this.queryFieldsVisible = [  "CLIENT_NAME","CODE","NAME","PRODCATEG_NAME","ACTIVE" ];
+       this.queryFieldsVisible = [  "CODE","NAME","PRODCATEG_NAME","ACTIVE" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0038"
@@ -48,12 +44,10 @@
            ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
-              ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
-              ,{ id:"CLIENT_NAME",header:this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",width:100,dataIndex:'CLIENT_NAME',hidden:true,sortable:true}
               ,{ id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',sortable:true}
               ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:180,dataIndex:'NAME',sortable:true}
-              ,{ id:"PRODCATEG_ID",header:this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",width:100,dataIndex:'PRODCATEG_ID',hidden:true,sortable:true}
               ,{ id:"PRODCATEG_NAME",header:this.resourceBundle.FieldLabel.PRODCATEG_NAME||"Parent Categ.",width:150,dataIndex:'PRODCATEG_NAME',sortable:true}
+              ,{ id:"PRODCATEG_ID",header:this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",width:100,dataIndex:'PRODCATEG_ID',hidden:true,sortable:true}
               ,{ id:"DESCRIPTION",header:this.resourceBundle.FieldLabel.DESCRIPTION||"Description",width:100,dataIndex:'DESCRIPTION',hidden:true,sortable:true}
               ,{ id:"ACTIVE",header:this.resourceBundle.FieldLabel.ACTIVE||"Active",width:50,dataIndex:'ACTIVE',sortable:true}
               ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
@@ -73,12 +67,10 @@
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
-              ,CLIENT_ID:""
-              ,CLIENT_NAME:""
               ,CODE:""
               ,NAME:""
-              ,PRODCATEG_ID:""
               ,PRODCATEG_NAME:""
+              ,PRODCATEG_ID:""
               ,DESCRIPTION:""
               ,ACTIVE:""
               ,CREATEDON:""
@@ -100,27 +92,23 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0038F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0038F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:false})   );
-       this.fields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0038F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_NAME",id:"DC0038F_CLIENT_NAME",dataIndex:"CLIENT_NAME",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",insert_allowed:true,update_allowed:false})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0038F_CODE",dataIndex:"CODE",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;"})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0038F_NAME",dataIndex:"NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PRODCATEG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PRODCATEG_ID",id:"DC0038F_PRODCATEG_ID",dataIndex:"PRODCATEG_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PRODCATEG_NAME", new N21.DataComp.LOV0014({xtype: "LOV0014",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0038F_PRODCATEG_ID"}],selectOnFocus:true,name:"PRODCATEG_NAME",id:"DC0038F_PRODCATEG_NAME",dataIndex:"PRODCATEG_NAME",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_NAME||"Parent Categ.",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0038F_DESCRIPTION",dataIndex:"DESCRIPTION",width:200,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ACTIVE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"ACTIVE",id:"DC0038F_ACTIVE",dataIndex:"ACTIVE",width:50,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0038F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0038F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:false,style: "text-transform:uppercase;"}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0038F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PRODCATEG_NAME",new  N21.DataComp.LOV0014({name:"PRODCATEG_NAME",id:"DC0038F_PRODCATEG_NAME",dataIndex:"PRODCATEG_NAME",fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_NAME||"Parent Categ.",allowBlank:true,width:200,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0038F_PRODCATEG_ID"}],displayColumn: "CODE"}));
+       this.fields.add("PRODCATEG_ID",new Ext.form.Hidden({name:"PRODCATEG_ID",id:"DC0038F_PRODCATEG_ID",dataIndex:"PRODCATEG_ID",fieldLabel: this.resourceBundle.FieldLabel.PRODCATEG_ID||"Prodcateg_id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("DESCRIPTION",new Ext.form.TextArea({name:"DESCRIPTION",id:"DC0038F_DESCRIPTION",dataIndex:"DESCRIPTION",fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",allowBlank:true,width:200,height:40,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ACTIVE",new Ext.ux.form.XCheckbox({name:"ACTIVE",id:"DC0038F_ACTIVE",dataIndex:"ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:false,labelSeparator:":*",width:50,insert_allowed:true,update_allowed:true}));
 
 
 
        Ext.apply(this, {
            items:[this.fields.get("_p_record_status"),this.fields.get("_p_record_status")
                  ,this.fields.get("ID")
-                 ,this.fields.get("CLIENT_ID")
-                 ,this.fields.get("CLIENT_NAME")
                  ,this.fields.get("CODE")
                  ,this.fields.get("NAME")
-                 ,this.fields.get("PRODCATEG_ID")
                  ,this.fields.get("PRODCATEG_NAME")
+                 ,this.fields.get("PRODCATEG_ID")
                  ,this.fields.get("DESCRIPTION")
                  ,this.fields.get("ACTIVE")
 ]
@@ -129,7 +117,8 @@
           ,frame:true
           ,width: "100%"
           ,dataComponentName:"DC0038F"
-          ,firstFocusFieldName:"CODE"
+          ,firstFocusFieldName:"NAME"
+          ,firstFocusFieldNameInsert:"CODE"
           ,toolbarConfig:"STANDARD"
         });
 
@@ -144,12 +133,10 @@
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
               ,ID:""
-              ,CLIENT_ID:""
-              ,CLIENT_NAME:""
               ,CODE:""
               ,NAME:""
-              ,PRODCATEG_ID:""
               ,PRODCATEG_NAME:""
+              ,PRODCATEG_ID:""
               ,DESCRIPTION:""
               ,ACTIVE:""
               ,CREATEDON:""
@@ -197,8 +184,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0038</span>"          )
         }); 
 
        N21.DataComp.DC0038.superclass.initComponent.apply(this, arguments);

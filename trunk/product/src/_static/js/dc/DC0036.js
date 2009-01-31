@@ -22,15 +22,15 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0036_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("UIDC_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_UIDC_CODE",id:"DC0036_QRY_UIDC_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code"})  );
-         this.queryFields.add("MSG_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MSG_TYPE",id:"DC0036_QRY_MSG_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type"})  );
-         this.queryFields.add("MSG_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MSG_CODE",id:"DC0036_QRY_MSG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code"})  );
-         this.queryFields.add("MAINTAINED_BY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MAINTAINED_BY",id:"DC0036_QRY_MAINTAINED_BY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by"})  );
-         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0036_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0036_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
-         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0036_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0036_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0036F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("UIDC_CODE",new Ext.form.TextField({name:"QRY_UIDC_CODE",id:"DC0036F_QRY_UIDC_CODE",fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",allowBlank:true,width:100}));
+       this.queryFields.add("MSG_TYPE",new Ext.form.TextField({name:"QRY_MSG_TYPE",id:"DC0036F_QRY_MSG_TYPE",fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type",allowBlank:true,width:100}));
+       this.queryFields.add("MSG_CODE",new Ext.form.TextField({name:"QRY_MSG_CODE",id:"DC0036F_QRY_MSG_CODE",fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code",allowBlank:true,width:100}));
+       this.queryFields.add("MAINTAINED_BY",new Ext.form.TextField({name:"QRY_MAINTAINED_BY",id:"DC0036F_QRY_MAINTAINED_BY",fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by",allowBlank:true,width:100}));
+       this.queryFields.add("CREATEDON",new Ext.form.DateField({name:"QRY_CREATEDON",id:"DC0036F_QRY_CREATEDON",fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("CREATEDBY",new Ext.form.TextField({name:"QRY_CREATEDBY",id:"DC0036F_QRY_CREATEDBY",fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",allowBlank:true,width:100}));
+       this.queryFields.add("MODIFIEDON",new Ext.form.DateField({name:"QRY_MODIFIEDON",id:"DC0036F_QRY_MODIFIEDON",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("MODIFIEDBY",new Ext.form.TextField({name:"QRY_MODIFIEDBY",id:"DC0036F_QRY_MODIFIEDBY",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "UIDC_CODE","MSG_TYPE","MSG_CODE","MAINTAINED_BY","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY" ];
        Ext.apply(this, {
@@ -88,13 +88,13 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0036F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("UIDC_CODE", new Ext.form.TextField ({xtype: "textfield",name:"UIDC_CODE",id:"DC0036F_UIDC_CODE",dataIndex:"UIDC_CODE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MSG_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"MSG_TYPE",id:"DC0036F_MSG_TYPE",dataIndex:"MSG_TYPE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MSG_CODE", new Ext.form.TextField ({xtype: "textfield",name:"MSG_CODE",id:"DC0036F_MSG_CODE",dataIndex:"MSG_CODE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MAINTAINED_BY", new Ext.form.TextField ({xtype: "textfield",name:"MAINTAINED_BY",id:"DC0036F_MAINTAINED_BY",dataIndex:"MAINTAINED_BY",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"MODIFIEDON",id:"DC0036F_MODIFIEDON",dataIndex:"MODIFIEDON",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",disabled:true,format:Ext.DATE_FORMAT})   );
-       this.fields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"MODIFIEDBY",id:"DC0036F_MODIFIEDBY",dataIndex:"MODIFIEDBY",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0036F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("UIDC_CODE",new Ext.form.TextField({name:"UIDC_CODE",id:"DC0036F_UIDC_CODE",dataIndex:"UIDC_CODE",fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"Uidc_code",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MSG_TYPE",new Ext.form.TextField({name:"MSG_TYPE",id:"DC0036F_MSG_TYPE",dataIndex:"MSG_TYPE",fieldLabel: this.resourceBundle.FieldLabel.MSG_TYPE||"Msg_type",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MSG_CODE",new Ext.form.TextField({name:"MSG_CODE",id:"DC0036F_MSG_CODE",dataIndex:"MSG_CODE",fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Msg_code",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MAINTAINED_BY",new Ext.form.TextField({name:"MAINTAINED_BY",id:"DC0036F_MAINTAINED_BY",dataIndex:"MAINTAINED_BY",fieldLabel: this.resourceBundle.FieldLabel.MAINTAINED_BY||"Maintained_by",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MODIFIEDON",new Ext.form.DateField({name:"MODIFIEDON",id:"DC0036F_MODIFIEDON",dataIndex:"MODIFIEDON",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",allowBlank:true,width:100,disabled:true,format:Ext.DATE_FORMAT}));
+       this.fields.add("MODIFIEDBY",new Ext.form.TextField({name:"MODIFIEDBY",id:"DC0036F_MODIFIEDBY",dataIndex:"MODIFIEDBY",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -171,8 +171,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0036</span>"          )
         }); 
 
        N21.DataComp.DC0036.superclass.initComponent.apply(this, arguments);

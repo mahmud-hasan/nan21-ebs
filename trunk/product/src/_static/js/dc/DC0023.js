@@ -6,20 +6,17 @@
   N21.DataComp.DC0023G = Ext.extend(N21.Base.GridView, {
      dataRecordMeta:    Ext.data.Record.create([
           {name:"_p_record_status", type:"string"}
+         ,{name:"ID", type:"float" }
+         ,{name:"CODE", type:"string" }
          ,{name:"CLIENT_ID", type:"float" }
-         ,{name:"CLIENT_NAME", type:"string" }
-         ,{name:"NAME", type:"string" }
+         ,{name:"CLIENT_CODE", type:"string" }
          ,{name:"STARTDATE", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"ENDDATE", type:"date",dateFormat:Ext.DATE_FORMAT }
+         ,{name:"PREV_YEAR_CODE", type:"string" }
+         ,{name:"OPENED", type:"string" }
          ,{name:"CLOSED", type:"string" }
-         ,{name:"ID", type:"float" }
-         ,{name:"PREV_YEAR_NAME", type:"string" }
-         ,{name:"NEXT_YEAR_NAME", type:"string" }
-         ,{name:"CREATEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
-         ,{name:"CREATEDBY", type:"string" }
-         ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
-         ,{name:"MODIFIEDBY", type:"string" }
          ,{name:"NOTES", type:"string" }
+         ,{name:"IS_FIRST_YEAR", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
@@ -27,13 +24,14 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0023_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
-         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0023_QRY_CLIENT_ID"}],name:"QRY_CLIENT_NAME",id:"DC0023_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0023_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("CLOSED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_CLOSED",id:"DC0023_QRY_CLOSED",width:40,fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Is open"})  );
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0023_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0023F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CODE",new Ext.form.TextField({name:"QRY_CODE",id:"DC0023F_QRY_CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0023F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"QRY_CLIENT_CODE",id:"DC0023F_QRY_CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0023F_QRY_CLIENT_ID"}]}));
+       this.queryFields.add("OPENED",new Ext.form.ComboBox({name:"QRY_OPENED",id:"DC0023F_QRY_OPENED",fieldLabel: this.resourceBundle.FieldLabel.OPENED||"Opened",allowBlank:true,width:40,store:["Y","N"]}));
+       this.queryFields.add("CLOSED",new Ext.form.ComboBox({name:"QRY_CLOSED",id:"DC0023F_QRY_CLOSED",fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",allowBlank:true,width:40,store:["Y","N"]}));
   
-       this.queryFieldsVisible = [  "CLIENT_NAME","NAME","CLOSED" ];
+       this.queryFieldsVisible = [  "CODE","CLIENT_CODE","OPENED","CLOSED" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0023"
@@ -45,20 +43,17 @@
            })
            ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
-               { id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
-              ,{ id:"CLIENT_NAME",header:this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",width:100,dataIndex:'CLIENT_NAME',sortable:true}
-              ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:100,dataIndex:'NAME',sortable:true}
+               { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
+              ,{ id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Name",width:100,dataIndex:'CODE',sortable:true}
+              ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
+              ,{ id:"CLIENT_CODE",header:this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",width:100,dataIndex:'CLIENT_CODE',sortable:true}
               ,{ id:"STARTDATE",header:this.resourceBundle.FieldLabel.STARTDATE||"Startdate",width:100,dataIndex:'STARTDATE',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"ENDDATE",header:this.resourceBundle.FieldLabel.ENDDATE||"Enddate",width:100,dataIndex:'ENDDATE',sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"CLOSED",header:this.resourceBundle.FieldLabel.CLOSED||"Is open",width:50,dataIndex:'CLOSED',sortable:true}
-              ,{ id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
-              ,{ id:"PREV_YEAR_NAME",header:this.resourceBundle.FieldLabel.PREV_YEAR_NAME||"Prev_year_name",width:100,dataIndex:'PREV_YEAR_NAME',hidden:true,sortable:true}
-              ,{ id:"NEXT_YEAR_NAME",header:this.resourceBundle.FieldLabel.NEXT_YEAR_NAME||"Next_year_name",width:100,dataIndex:'NEXT_YEAR_NAME',hidden:true,sortable:true}
-              ,{ id:"CREATEDON",header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
-              ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
+              ,{ id:"PREV_YEAR_CODE",header:this.resourceBundle.FieldLabel.PREV_YEAR_CODE||"Previous year",width:100,dataIndex:'PREV_YEAR_CODE',hidden:true,sortable:true}
+              ,{ id:"OPENED",header:this.resourceBundle.FieldLabel.OPENED||"Opened",width:100,dataIndex:'OPENED',hidden:true,sortable:true}
+              ,{ id:"CLOSED",header:this.resourceBundle.FieldLabel.CLOSED||"Closed",width:50,dataIndex:'CLOSED',hidden:true,sortable:true}
               ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"Notes",width:100,dataIndex:'NOTES',hidden:true,sortable:true}
+              ,{ id:"IS_FIRST_YEAR",header:this.resourceBundle.FieldLabel.IS_FIRST_YEAR||"Is first year?",width:100,dataIndex:'IS_FIRST_YEAR',hidden:true,sortable:true}
           ]
           ,dataComponentName:"DC0023G"
           ,queryArraySize:20
@@ -71,20 +66,17 @@
      }
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
+              ,ID:""
+              ,CODE:""
               ,CLIENT_ID:""
-              ,CLIENT_NAME:""
-              ,NAME:""
+              ,CLIENT_CODE:""
               ,STARTDATE:""
               ,ENDDATE:""
+              ,PREV_YEAR_CODE:""
+              ,OPENED:""
               ,CLOSED:""
-              ,ID:""
-              ,PREV_YEAR_NAME:""
-              ,NEXT_YEAR_NAME:""
-              ,CREATEDON:""
-              ,CREATEDBY:""
-              ,MODIFIEDON:""
-              ,MODIFIEDBY:""
-              ,NOTES:""});
+              ,NOTES:""
+              ,IS_FIRST_YEAR:""});
      }
   });
   Ext.reg("DC0023G", N21.DataComp.DC0023G);
@@ -100,35 +92,34 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0023F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0023F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_NAME",id:"DC0023F_CLIENT_NAME",dataIndex:"CLIENT_NAME",width:200,listWidth:218,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0023F_NAME",dataIndex:"NAME",width:80,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("STARTDATE", new Ext.form.DateField ({xtype: "datefield",name:"STARTDATE",id:"DC0023F_STARTDATE",dataIndex:"STARTDATE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.STARTDATE||"Startdate",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
-       this.fields.add("ENDDATE", new Ext.form.DateField ({xtype: "datefield",name:"ENDDATE",id:"DC0023F_ENDDATE",dataIndex:"ENDDATE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ENDDATE||"Enddate",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
-       this.fields.add("CLOSED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"CLOSED",id:"DC0023F_CLOSED",dataIndex:"CLOSED",width:30,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Is open",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PREV_YEAR_NAME", new Ext.form.TextField ({xtype: "textfield",name:"PREV_YEAR_NAME",id:"DC0023F_PREV_YEAR_NAME",dataIndex:"PREV_YEAR_NAME",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PREV_YEAR_NAME||"Prev_year_name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NEXT_YEAR_NAME", new Ext.form.TextField ({xtype: "textfield",name:"NEXT_YEAR_NAME",id:"DC0023F_NEXT_YEAR_NAME",dataIndex:"NEXT_YEAR_NAME",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NEXT_YEAR_NAME||"Next_year_name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0023F_NOTES",dataIndex:"NOTES",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0023F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0023F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Name",allowBlank:false,labelSeparator:":*",width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CLIENT_ID",new Ext.form.Hidden({name:"CLIENT_ID",id:"DC0023F_CLIENT_ID",dataIndex:"CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"CLIENT_CODE",id:"DC0023F_CLIENT_CODE",dataIndex:"CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:false,labelSeparator:":*",width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0023F_CLIENT_ID"}]}));
+       this.fields.add("STARTDATE",new Ext.form.DateField({name:"STARTDATE",id:"DC0023F_STARTDATE",dataIndex:"STARTDATE",fieldLabel: this.resourceBundle.FieldLabel.STARTDATE||"Startdate",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
+       this.fields.add("ENDDATE",new Ext.form.DateField({name:"ENDDATE",id:"DC0023F_ENDDATE",dataIndex:"ENDDATE",fieldLabel: this.resourceBundle.FieldLabel.ENDDATE||"Enddate",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
+       this.fields.add("PREV_YEAR_CODE",new  N21.DataComp.LOV0011({name:"PREV_YEAR_CODE",id:"DC0023F_PREV_YEAR_CODE",dataIndex:"PREV_YEAR_CODE",fieldLabel: this.resourceBundle.FieldLabel.PREV_YEAR_CODE||"Previous year",allowBlank:true,width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"CODE",field:"DC0023F_PREV_YEAR_CODE"}],paramMapping: [{param:"p_client_id",field:"DC0023F.CLIENT_ID"}]}));
+       this.fields.add("OPENED",new Ext.ux.form.XCheckbox({name:"OPENED",id:"DC0023F_OPENED",dataIndex:"OPENED",fieldLabel: this.resourceBundle.FieldLabel.OPENED||"Opened",allowBlank:true,width:30,insert_allowed:false,update_allowed:false}));
+       this.fields.add("CLOSED",new Ext.ux.form.XCheckbox({name:"CLOSED",id:"DC0023F_CLOSED",dataIndex:"CLOSED",fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",allowBlank:true,width:30,insert_allowed:false,update_allowed:false}));
+       this.fields.add("NOTES",new Ext.form.TextArea({name:"NOTES",id:"DC0023F_NOTES",dataIndex:"NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("IS_FIRST_YEAR",new Ext.ux.form.XCheckbox({name:"IS_FIRST_YEAR",id:"DC0023F_IS_FIRST_YEAR",dataIndex:"IS_FIRST_YEAR",fieldLabel: this.resourceBundle.FieldLabel.IS_FIRST_YEAR||"Is first year?",allowBlank:true,width:30,insert_allowed:true,update_allowed:true}));
 
+       this.layoutItems.add("C1",
+             { layout:"form",columnWidth:1,labelAlign:"left",labelWidth:100, items:[ this.fields.get("ID"),this.fields.get("CODE"),this.fields.get("CLIENT_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("STARTDATE"),this.fields.get("ENDDATE"),this.fields.get("PREV_YEAR_CODE"),this.fields.get("OPENED"),this.fields.get("CLOSED"),this.fields.get("NOTES"),this.fields.get("IS_FIRST_YEAR")]
+ }); 
 
 
        Ext.apply(this, {
-           items:[this.fields.get("_p_record_status"),this.fields.get("_p_record_status")
-                 ,this.fields.get("CLIENT_ID")
-                 ,this.fields.get("CLIENT_NAME")
-                 ,this.fields.get("NAME")
-                 ,this.fields.get("STARTDATE")
-                 ,this.fields.get("ENDDATE")
-                 ,this.fields.get("CLOSED")
-                 ,this.fields.get("PREV_YEAR_NAME")
-                 ,this.fields.get("NEXT_YEAR_NAME")
-                 ,this.fields.get("NOTES")
-]
+           items:[this.fields.get("_p_record_status"),this.layoutItems.get("C1")]
           ,border:false
+          ,layout:"column"
           ,defaults:{labelWidth:110}
           ,frame:true
           ,width: "100%"
           ,dataComponentName:"DC0023F"
+          ,firstFocusFieldName:"NAME"
+          ,buttons: [{xtype:"button",scope:this,text:"Open year",handler:function() {this.callProcedure("OpenYear");}}]
+          ,buttonAlign:"left"
           ,toolbarConfig:"STANDARD"
         });
 
@@ -142,20 +133,17 @@
 
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
+              ,ID:""
+              ,CODE:""
               ,CLIENT_ID:""
-              ,CLIENT_NAME:""
-              ,NAME:""
+              ,CLIENT_CODE:""
               ,STARTDATE:""
               ,ENDDATE:""
+              ,PREV_YEAR_CODE:""
+              ,OPENED:""
               ,CLOSED:""
-              ,ID:""
-              ,PREV_YEAR_NAME:""
-              ,NEXT_YEAR_NAME:""
-              ,CREATEDON:""
-              ,CREATEDBY:""
-              ,MODIFIEDON:""
-              ,MODIFIEDBY:""
-              ,NOTES:""});
+              ,NOTES:""
+              ,IS_FIRST_YEAR:""});
      }
 
 
@@ -181,7 +169,7 @@
           ,mdLayout:"row"
           ,border: false
           ,items: [
-              {xtype: "DC0023G",id: "DC0023G",region:"west"  ,split:true,width:"60%",minWidth:0}
+              {xtype: "DC0023G",id: "DC0023G",region:"west"  ,split:true,width:"54%",minWidth:0}
              ,{xtype: "DC0023F",id: "DC0023F",region:"center",split:true,autoScroll:true}
             ]
           ,tbar: new Array(
@@ -197,8 +185,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0023</span>"          )
         }); 
 
        N21.DataComp.DC0023.superclass.initComponent.apply(this, arguments);

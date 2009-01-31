@@ -27,13 +27,13 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0022_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("MENUBAR_CODE", new N21.DataComp.LOV0021({xtype: "LOV0021",name:"QRY_MENUBAR_CODE",id:"DC0022_QRY_MENUBAR_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUBAR_CODE||"Menubar"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0022_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("LINK", new N21.DataComp.LOV0020({xtype: "LOV0020",displayColumn: "CODE",fieldMapping: [{column:"CODE",field:"DC0022_QRY_LINK"}],selectOnFocus:true,name:"QRY_LINK",id:"DC0022_QRY_LINK",width:100,fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link"})  );
-         this.queryFields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0022_QRY_MENUITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Parent menu id"})  );
-         this.queryFields.add("PARENT_MENU", new N21.DataComp.LOV0022({xtype: "LOV0022",displayColumn: "NAME",fieldMapping: [{column:"ID",field:"DC0022_QRY_MENUITEM_ID"}],selectOnFocus:true,name:"QRY_PARENT_MENU",id:"DC0022_QRY_PARENT_MENU",width:100,fieldLabel: this.resourceBundle.FieldLabel.PARENT_MENU||"Parent menu"})  );
-         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0022_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0022F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("MENUBAR_CODE",new  N21.DataComp.LOV0021({name:"QRY_MENUBAR_CODE",id:"DC0022F_QRY_MENUBAR_CODE",fieldLabel: this.resourceBundle.FieldLabel.MENUBAR_CODE||"Menubar",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0022F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("LINK",new  N21.DataComp.LOV0020({name:"QRY_LINK",id:"DC0022F_QRY_LINK",fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"CODE",field:"DC0022F_QRY_LINK"}],displayColumn: "CODE"}));
+       this.queryFields.add("MENUITEM_ID",new Ext.form.Hidden({name:"QRY_MENUITEM_ID",id:"DC0022F_QRY_MENUITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Parent menu id",allowBlank:true,width:100}));
+       this.queryFields.add("PARENT_MENU",new  N21.DataComp.LOV0022({name:"QRY_PARENT_MENU",id:"DC0022F_QRY_PARENT_MENU",fieldLabel: this.resourceBundle.FieldLabel.PARENT_MENU||"Parent menu",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0022F_QRY_MENUITEM_ID"}],displayColumn: "NAME"}));
+       this.queryFields.add("ACTIVE",new Ext.form.ComboBox({name:"QRY_ACTIVE",id:"DC0022F_QRY_ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:true,width:40,store:["Y","N"]}));
   
        this.queryFieldsVisible = [  "MENUBAR_CODE","NAME","LINK","PARENT_MENU","ACTIVE" ];
        Ext.apply(this, {
@@ -102,15 +102,15 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0022F_ID",dataIndex:"ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MENUBAR_CODE", new N21.DataComp.LOV0021({xtype: "LOV0021",selectOnFocus:true,name:"MENUBAR_CODE",id:"DC0022F_MENUBAR_CODE",dataIndex:"MENUBAR_CODE",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.MENUBAR_CODE||"Menubar",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("POSITION", new Ext.form.NumberField ({xtype: "numberfield",name:"POSITION",id:"DC0022F_POSITION",dataIndex:"POSITION",width:60,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0022F_NAME",dataIndex:"NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("LINK", new N21.DataComp.LOV0020({xtype: "LOV0020",displayColumn: "CODE",fieldMapping: [{column:"CODE",field:"DC0022F_LINK"}],selectOnFocus:true,name:"LINK",id:"DC0022F_LINK",dataIndex:"LINK",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"MENUITEM_ID",id:"DC0022F_MENUITEM_ID",dataIndex:"MENUITEM_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Parent menu id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PARENT_MENU", new N21.DataComp.LOV0022({xtype: "LOV0022",displayColumn: "NAME",fieldMapping: [{column:"ID",field:"DC0022F_MENUITEM_ID"}],selectOnFocus:true,name:"PARENT_MENU",id:"DC0022F_PARENT_MENU",dataIndex:"PARENT_MENU",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PARENT_MENU||"Parent menu",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0022F_CODE",dataIndex:"CODE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ACTIVE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"ACTIVE",id:"DC0022F_ACTIVE",dataIndex:"ACTIVE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0022F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MENUBAR_CODE",new  N21.DataComp.LOV0021({name:"MENUBAR_CODE",id:"DC0022F_MENUBAR_CODE",dataIndex:"MENUBAR_CODE",fieldLabel: this.resourceBundle.FieldLabel.MENUBAR_CODE||"Menubar",allowBlank:false,labelSeparator:":*",width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
+       this.fields.add("POSITION",new Ext.form.NumberField({name:"POSITION",id:"DC0022F_POSITION",dataIndex:"POSITION",fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",allowBlank:false,labelSeparator:":*",width:60,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0022F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("LINK",new  N21.DataComp.LOV0020({name:"LINK",id:"DC0022F_LINK",dataIndex:"LINK",fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link",allowBlank:true,width:120,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"CODE",field:"DC0022F_LINK"}],displayColumn: "CODE"}));
+       this.fields.add("MENUITEM_ID",new Ext.form.Hidden({name:"MENUITEM_ID",id:"DC0022F_MENUITEM_ID",dataIndex:"MENUITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Parent menu id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PARENT_MENU",new  N21.DataComp.LOV0022({name:"PARENT_MENU",id:"DC0022F_PARENT_MENU",dataIndex:"PARENT_MENU",fieldLabel: this.resourceBundle.FieldLabel.PARENT_MENU||"Parent menu",allowBlank:true,width:200,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0022F_MENUITEM_ID"}],displayColumn: "NAME"}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0022F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ACTIVE",new Ext.ux.form.XCheckbox({name:"ACTIVE",id:"DC0022F_ACTIVE",dataIndex:"ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:true,width:50,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("DC0070",
              new Ext.Window({ xtype:"window", modal:true, title: "DC0070 - "+(N21.DataComp.DC0070.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:200, height:200, items:{xtype:"DC0070",id:"DC0070", parentDcRelation:{name:"DC0022F",relation:[{parent:"ID",child:"MENUITEM_ID"}]}         }} ) ); 
@@ -131,7 +131,7 @@
           ,dataComponentName:"DC0022F"
           ,firstFocusFieldName:"POSITION"
           ,childDCs: [{name:"DC0043",relation:[{parent:"ID",child:"MENUITEM_ID"}],commitChildWithParent:true},{name:"DC0070",relation:[{parent:"ID",child:"MENUITEM_ID"}]}]
-          ,buttons: [{xtype:"button",text:"Roles",scope:this,handler:function() {this.show_window("DC0070");}  }]
+          ,buttons: [{xtype:"button",scope:this,text:"Roles",handler:function() {this.show_window("DC0070");}}]
           ,buttonAlign:"left"
           ,toolbarConfig:"STANDARD"
         });
@@ -201,8 +201,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0022</span>"          )
         }); 
 
        N21.DataComp.DC0022.superclass.initComponent.apply(this, arguments);

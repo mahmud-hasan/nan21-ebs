@@ -41,7 +41,8 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
           )
           ,dataComponentName:"DC0056"
           ,frame:true
@@ -60,15 +61,15 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("CLIENT_NAME", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0056_QRY_CLIENT_ID"}],name:"QRY_CLIENT_NAME",id:"DC0056_QRY_CLIENT_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client"})  );
-         this.queryFields.add("ACCSCHEMA_NAME", new N21.DataComp.LOV0043({xtype: "LOV0043",fieldMapping: [{column:"ID",field:"DC0056_QRY_ACCSCHEMA_ID"}],paramMapping: [{param:"p_client_id",field:"DC0056_QRY_CLIENT_ID"}],name:"QRY_ACCSCHEMA_NAME",id:"DC0056_QRY_ACCSCHEMA_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_NAME||"Accounting schema"})  );
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0056_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0056_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0056_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
-         this.queryFields.add("ACCT_RECEIVABLE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ACCT_RECEIVABLE",id:"DC0056_QRY_ACCT_RECEIVABLE",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCT_RECEIVABLE||"Acct. receivable"})  );
-         this.queryFields.add("ACCT_PREPAYMENT", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ACCT_PREPAYMENT",id:"DC0056_QRY_ACCT_PREPAYMENT",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCT_PREPAYMENT||"Acct. prepayment"})  );
-         this.queryFields.add("ACCT_RECEVABLE_SRVC", new Ext.form.TextField ({xtype: "textfield",name:"QRY_ACCT_RECEVABLE_SRVC",id:"DC0056_QRY_ACCT_RECEVABLE_SRVC",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCT_RECEVABLE_SRVC||"Acct services"})  );
-         this.queryFields.add("ACCSCHEMA_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ACCSCHEMA_ID",id:"DC0056_QRY_ACCSCHEMA_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_ID||"Accschema_id"})  );
+       this.queryFields.add("CLIENT_NAME",new  N21.DataComp.LOV0008({name:"QRY_CLIENT_NAME",id:"DC0056F_QRY_CLIENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_NAME||"Client",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0056F_QRY_CLIENT_ID"}]}));
+       this.queryFields.add("ACCSCHEMA_NAME",new  N21.DataComp.LOV0043({name:"QRY_ACCSCHEMA_NAME",id:"DC0056F_QRY_ACCSCHEMA_NAME",fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_NAME||"Accounting schema",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0056F_QRY_ACCSCHEMA_ID"}],paramMapping: [{param:"p_client_id",field:"DC0056F_QRY_CLIENT_ID"}]}));
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0056F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0056F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0056F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",allowBlank:true,width:100}));
+       this.queryFields.add("ACCT_RECEIVABLE",new Ext.form.TextField({name:"QRY_ACCT_RECEIVABLE",id:"DC0056F_QRY_ACCT_RECEIVABLE",fieldLabel: this.resourceBundle.FieldLabel.ACCT_RECEIVABLE||"Acct. receivable",allowBlank:true,width:100}));
+       this.queryFields.add("ACCT_PREPAYMENT",new Ext.form.TextField({name:"QRY_ACCT_PREPAYMENT",id:"DC0056F_QRY_ACCT_PREPAYMENT",fieldLabel: this.resourceBundle.FieldLabel.ACCT_PREPAYMENT||"Acct. prepayment",allowBlank:true,width:100}));
+       this.queryFields.add("ACCT_RECEVABLE_SRVC",new Ext.form.TextField({name:"QRY_ACCT_RECEVABLE_SRVC",id:"DC0056F_QRY_ACCT_RECEVABLE_SRVC",fieldLabel: this.resourceBundle.FieldLabel.ACCT_RECEVABLE_SRVC||"Acct services",allowBlank:true,width:100}));
+       this.queryFields.add("ACCSCHEMA_ID",new Ext.form.Hidden({name:"QRY_ACCSCHEMA_ID",id:"DC0056F_QRY_ACCSCHEMA_ID",fieldLabel: this.resourceBundle.FieldLabel.ACCSCHEMA_ID||"Accschema_id",allowBlank:true,width:100}));
 
 
 

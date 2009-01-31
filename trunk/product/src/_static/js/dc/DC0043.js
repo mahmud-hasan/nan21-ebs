@@ -36,8 +36,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0043</span>"          )
           ,dataComponentName:"DC0043"
           ,frame:true
           ,queryArraySize:-1
@@ -50,10 +51,10 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0043_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0043_QRY_MENUITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id"})  );
-         this.queryFields.add("LANG", new N21.DataComp.LOV0044({xtype: "LOV0044",name:"QRY_LANG",id:"DC0043_QRY_LANG",width:100,fieldLabel: this.resourceBundle.FieldLabel.LANG||"Language"})  );
-         this.queryFields.add("TRANSLATION", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TRANSLATION",id:"DC0043_QRY_TRANSLATION",width:100,fieldLabel: this.resourceBundle.FieldLabel.TRANSLATION||"Translation"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0043F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("MENUITEM_ID",new Ext.form.Hidden({name:"QRY_MENUITEM_ID",id:"DC0043F_QRY_MENUITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id",allowBlank:true,width:100}));
+       this.queryFields.add("LANG",new  N21.DataComp.LOV0044({name:"QRY_LANG",id:"DC0043F_QRY_LANG",fieldLabel: this.resourceBundle.FieldLabel.LANG||"Language",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("TRANSLATION",new Ext.form.TextField({name:"QRY_TRANSLATION",id:"DC0043F_QRY_TRANSLATION",fieldLabel: this.resourceBundle.FieldLabel.TRANSLATION||"Translation",allowBlank:true,width:100}));
 
 
 

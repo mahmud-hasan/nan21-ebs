@@ -41,8 +41,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0011</span>"          )
           ,dataComponentName:"DC0011"
           ,frame:true
           ,queryArraySize:20
@@ -58,10 +59,10 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0011_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("UOM_TO", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_TO",id:"DC0011_QRY_UOM_TO",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_TO||"Uom_to"})  );
-         this.queryFields.add("UOM_FROM", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_UOM_FROM",id:"DC0011_QRY_UOM_FROM",width:100,fieldLabel: this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from"})  );
-         this.queryFields.add("CONVERSION_TYPE", new Ext.form.ComboBox ({   store:['x',':'],name:"QRY_CONVERSION_TYPE",id:"DC0011_QRY_CONVERSION_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Operator"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0011F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("UOM_TO",new  N21.DataComp.LOV0002({name:"QRY_UOM_TO",id:"DC0011F_QRY_UOM_TO",fieldLabel: this.resourceBundle.FieldLabel.UOM_TO||"Uom_to",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("UOM_FROM",new  N21.DataComp.LOV0002({name:"QRY_UOM_FROM",id:"DC0011F_QRY_UOM_FROM",fieldLabel: this.resourceBundle.FieldLabel.UOM_FROM||"Uom_from",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("CONVERSION_TYPE",new Ext.form.ComboBox({name:"QRY_CONVERSION_TYPE",id:"DC0011F_QRY_CONVERSION_TYPE",fieldLabel: this.resourceBundle.FieldLabel.CONVERSION_TYPE||"Operator",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,store:['x',':']}));
 
 
 

@@ -25,10 +25,10 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TITLE",id:"DC0019_QRY_TITLE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title"})  );
-         this.queryFields.add("STATUS", new Ext.form.TextField ({xtype: "textfield",name:"QRY_STATUS",id:"DC0019_QRY_STATUS",width:100,fieldLabel: this.resourceBundle.FieldLabel.STATUS||"Status"})  );
-         this.queryFields.add("CLOSED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_CLOSED",id:"DC0019_QRY_CLOSED",width:40,fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed"})  );
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0019_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
+       this.queryFields.add("TITLE",new Ext.form.TextField({name:"QRY_TITLE",id:"DC0019F_QRY_TITLE",fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",allowBlank:true,width:100}));
+       this.queryFields.add("STATUS",new Ext.form.TextField({name:"QRY_STATUS",id:"DC0019F_QRY_STATUS",fieldLabel: this.resourceBundle.FieldLabel.STATUS||"Status",allowBlank:true,width:100}));
+       this.queryFields.add("CLOSED",new Ext.form.ComboBox({name:"QRY_CLOSED",id:"DC0019F_QRY_CLOSED",fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",allowBlank:true,width:40,store:["Y","N"]}));
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0019F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "TITLE","STATUS","CLOSED" ];
        Ext.apply(this, {
@@ -93,14 +93,14 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"TITLE",id:"DC0019F_TITLE",dataIndex:"TITLE",width:420,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ASSIGNED_TO", new Ext.form.TextField ({xtype: "textfield",name:"ASSIGNED_TO",id:"DC0019F_ASSIGNED_TO",dataIndex:"ASSIGNED_TO",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ASSIGNED_TO||"Assigned to",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("START_DATE", new Ext.form.DateField ({xtype: "datefield",name:"START_DATE",id:"DC0019F_START_DATE",dataIndex:"START_DATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.START_DATE||"Start date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
-       this.fields.add("FINISH_DATE", new Ext.form.DateField ({xtype: "datefield",name:"FINISH_DATE",id:"DC0019F_FINISH_DATE",dataIndex:"FINISH_DATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FINISH_DATE||"Finish date",insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT})   );
-       this.fields.add("STATUS", new Ext.form.TextField ({xtype: "textfield",name:"STATUS",id:"DC0019F_STATUS",dataIndex:"STATUS",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STATUS||"Status",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLOSED", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"CLOSED",id:"DC0019F_CLOSED",dataIndex:"CLOSED",width:20,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0019F_NOTES",dataIndex:"NOTES",width:420,height:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0019F_ID",dataIndex:"ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("TITLE",new Ext.form.TextField({name:"TITLE",id:"DC0019F_TITLE",dataIndex:"TITLE",fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",allowBlank:true,width:420,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ASSIGNED_TO",new Ext.form.TextField({name:"ASSIGNED_TO",id:"DC0019F_ASSIGNED_TO",dataIndex:"ASSIGNED_TO",fieldLabel: this.resourceBundle.FieldLabel.ASSIGNED_TO||"Assigned to",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("START_DATE",new Ext.form.DateField({name:"START_DATE",id:"DC0019F_START_DATE",dataIndex:"START_DATE",fieldLabel: this.resourceBundle.FieldLabel.START_DATE||"Start date",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
+       this.fields.add("FINISH_DATE",new Ext.form.DateField({name:"FINISH_DATE",id:"DC0019F_FINISH_DATE",dataIndex:"FINISH_DATE",fieldLabel: this.resourceBundle.FieldLabel.FINISH_DATE||"Finish date",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
+       this.fields.add("STATUS",new Ext.form.TextField({name:"STATUS",id:"DC0019F_STATUS",dataIndex:"STATUS",fieldLabel: this.resourceBundle.FieldLabel.STATUS||"Status",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CLOSED",new Ext.ux.form.XCheckbox({name:"CLOSED",id:"DC0019F_CLOSED",dataIndex:"CLOSED",fieldLabel: this.resourceBundle.FieldLabel.CLOSED||"Closed",allowBlank:true,width:20,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NOTES",new Ext.form.TextArea({name:"NOTES",id:"DC0019F_NOTES",dataIndex:"NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:420,height:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0019F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("c2",
              { layout:"form",width:260,labelAlign:"right",labelWidth:100, items:[ this.fields.get("START_DATE"),this.fields.get("ID"),this.fields.get("FINISH_DATE"),this.fields.get("STATUS"),this.fields.get("ASSIGNED_TO"),this.fields.get("CLOSED")]
@@ -185,8 +185,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0019</span>"          )
         }); 
 
        N21.DataComp.DC0019.superclass.initComponent.apply(this, arguments);

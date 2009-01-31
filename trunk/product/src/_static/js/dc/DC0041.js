@@ -9,9 +9,8 @@
          ,{name:"ID", type:"float" }
          ,{name:"RINV_ID", type:"float" }
          ,{name:"PROD_CODE", type:"string" }
-         ,{name:"NOTES", type:"string" }
          ,{name:"PROD_ID", type:"float" }
-         ,{name:"PURCHASE_ACCT", type:"string" }
+         ,{name:"NOTES", type:"string" }
          ,{name:"NET_AMOUNT", type:"float" }
          ,{name:"CURRENCY", type:"string" }
          ,{name:"TAX_NAME", type:"string" }
@@ -37,32 +36,31 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0041_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("RINV_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_RINV_ID",id:"DC0041_QRY_RINV_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.RINV_ID||"Rinv_id"})  );
-         this.queryFields.add("PROD_CODE", new N21.DataComp.LOV0017({xtype: "LOV0017",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0041_QRY_PROD_ID"},{column:"NAME",field:"DC0041_QRY_NOTES"},{column:"EXPENSE_ACCOUNT",field:"DC0041_QRY_PURCHASE_ACCT"}],selectOnFocus:true,name:"QRY_PROD_CODE",id:"DC0041_QRY_PROD_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod_code"})  );
-         this.queryFields.add("NOTES", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NOTES",id:"DC0041_QRY_NOTES",width:100,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes"})  );
-         this.queryFields.add("PROD_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PROD_ID",id:"DC0041_QRY_PROD_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id"})  );
-         this.queryFields.add("PURCHASE_ACCT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"QRY_PURCHASE_ACCT",id:"DC0041_QRY_PURCHASE_ACCT",width:100,fieldLabel: this.resourceBundle.FieldLabel.PURCHASE_ACCT||"Purchase_acct"})  );
-         this.queryFields.add("NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_NET_AMOUNT",id:"DC0041_QRY_NET_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",style: "text-align:right;"})  );
-         this.queryFields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_CURRENCY",id:"DC0041_QRY_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"})  );
-         this.queryFields.add("TAX_NAME", new N21.DataComp.LOV0024({xtype: "LOV0024",displayColumn: "NAME",fieldMapping: [{column:"VALUE",field:"DC0041_QRY_TAX_RATE"},{column:"ID",field:"DC0041_QRY_TAX_ID"}],name:"QRY_TAX_NAME",id:"DC0041_QRY_TAX_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"VAT class"})  );
-         this.queryFields.add("TAX_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_TAX_ID",id:"DC0041_QRY_TAX_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id"})  );
-         this.queryFields.add("TAX_RATE", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_TAX_RATE",id:"DC0041_QRY_TAX_RATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Tax_rate"})  );
-         this.queryFields.add("TAX_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_TAX_AMOUNT",id:"DC0041_QRY_TAX_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Tax_amount",style: "text-align:right;"})  );
-         this.queryFields.add("TAX_AMOUNT_NR", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_TAX_AMOUNT_NR",id:"DC0041_QRY_TAX_AMOUNT_NR",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT_NR||"Non-refund tax",style: "text-align:right;"})  );
-         this.queryFields.add("ORIG_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_ORIG_AMOUNT",id:"DC0041_QRY_ORIG_AMOUNT",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",style: "text-align:right;"})  );
-         this.queryFields.add("ORIG_CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_ORIG_CURRENCY",id:"DC0041_QRY_ORIG_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency"})  );
-         this.queryFields.add("CURRENCY_XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_CURRENCY_XRATE",id:"DC0041_QRY_CURRENCY_XRATE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",style: "text-align:right;"})  );
-         this.queryFields.add("QUANTITY", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_QUANTITY",id:"DC0041_QRY_QUANTITY",width:100,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",style: "text-align:right;"})  );
-         this.queryFields.add("QUANTITY_UNIT", new N21.DataComp.LOV0002({xtype: "LOV0002",name:"QRY_QUANTITY_UNIT",id:"DC0041_QRY_QUANTITY_UNIT",width:100,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"UOM"})  );
-         this.queryFields.add("PRICE", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_PRICE",id:"DC0041_QRY_PRICE",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Price",style: "text-align:right;"})  );
-         this.queryFields.add("CREATEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_CREATEDON",id:"DC0041_QRY_CREATEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("CREATEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CREATEDBY",id:"DC0041_QRY_CREATEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy"})  );
-         this.queryFields.add("MODIFIEDON", new Ext.form.DateField ({xtype: "datefield",name:"QRY_MODIFIEDON",id:"DC0041_QRY_MODIFIEDON",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("MODIFIEDBY", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MODIFIEDBY",id:"DC0041_QRY_MODIFIEDBY",width:100,fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy"})  );
-         this.queryFields.add("RINVITEM_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_RINVITEM_ID",id:"DC0041_QRY_RINVITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.RINVITEM_ID||"Rinvitem_id",style: "text-align:right;"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0041F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("RINV_ID",new Ext.form.Hidden({name:"QRY_RINV_ID",id:"DC0041F_QRY_RINV_ID",fieldLabel: this.resourceBundle.FieldLabel.RINV_ID||"Rinv_id",allowBlank:true,width:100}));
+       this.queryFields.add("PROD_CODE",new  N21.DataComp.LOV0017({name:"QRY_PROD_CODE",id:"DC0041F_QRY_PROD_CODE",fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod_code",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0041F_QRY_PROD_ID"},{column:"NAME",field:"DC0041F_QRY_NOTES"}],displayColumn: "CODE"}));
+       this.queryFields.add("PROD_ID",new Ext.form.Hidden({name:"QRY_PROD_ID",id:"DC0041F_QRY_PROD_ID",fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id",allowBlank:true,width:100}));
+       this.queryFields.add("NOTES",new Ext.form.TextField({name:"QRY_NOTES",id:"DC0041F_QRY_NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:100}));
+       this.queryFields.add("NET_AMOUNT",new Ext.form.NumberField({name:"QRY_NET_AMOUNT",id:"DC0041F_QRY_NET_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",allowBlank:true,width:100}));
+       this.queryFields.add("CURRENCY",new  N21.DataComp.LOV0001({name:"QRY_CURRENCY",id:"DC0041F_QRY_CURRENCY",fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("TAX_NAME",new  N21.DataComp.LOV0024({name:"QRY_TAX_NAME",id:"DC0041F_QRY_TAX_NAME",fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"VAT class",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"VALUE",field:"DC0041F_QRY_TAX_RATE"},{column:"ID",field:"DC0041F_QRY_TAX_ID"}],displayColumn: "NAME"}));
+       this.queryFields.add("TAX_ID",new Ext.form.Hidden({name:"QRY_TAX_ID",id:"DC0041F_QRY_TAX_ID",fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id",allowBlank:true,width:100}));
+       this.queryFields.add("TAX_RATE",new Ext.form.Hidden({name:"QRY_TAX_RATE",id:"DC0041F_QRY_TAX_RATE",fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Tax_rate",allowBlank:true,width:100}));
+       this.queryFields.add("TAX_AMOUNT",new Ext.form.NumberField({name:"QRY_TAX_AMOUNT",id:"DC0041F_QRY_TAX_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Tax_amount",allowBlank:true,width:100}));
+       this.queryFields.add("TAX_AMOUNT_NR",new Ext.form.NumberField({name:"QRY_TAX_AMOUNT_NR",id:"DC0041F_QRY_TAX_AMOUNT_NR",fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT_NR||"Non-refund tax",allowBlank:true,width:100}));
+       this.queryFields.add("ORIG_AMOUNT",new Ext.form.NumberField({name:"QRY_ORIG_AMOUNT",id:"DC0041F_QRY_ORIG_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",allowBlank:true,width:100}));
+       this.queryFields.add("ORIG_CURRENCY",new  N21.DataComp.LOV0001({name:"QRY_ORIG_CURRENCY",id:"DC0041F_QRY_ORIG_CURRENCY",fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("CURRENCY_XRATE",new Ext.form.NumberField({name:"QRY_CURRENCY_XRATE",id:"DC0041F_QRY_CURRENCY_XRATE",fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",allowBlank:true,width:100}));
+       this.queryFields.add("QUANTITY",new Ext.form.NumberField({name:"QRY_QUANTITY",id:"DC0041F_QRY_QUANTITY",fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",allowBlank:true,width:100}));
+       this.queryFields.add("QUANTITY_UNIT",new  N21.DataComp.LOV0002({name:"QRY_QUANTITY_UNIT",id:"DC0041F_QRY_QUANTITY_UNIT",fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"UOM",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("PRICE",new Ext.form.NumberField({name:"QRY_PRICE",id:"DC0041F_QRY_PRICE",fieldLabel: this.resourceBundle.FieldLabel.PRICE||"Price",allowBlank:true,width:100}));
+       this.queryFields.add("CREATEDON",new Ext.form.DateField({name:"QRY_CREATEDON",id:"DC0041F_QRY_CREATEDON",fieldLabel: this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("CREATEDBY",new Ext.form.TextField({name:"QRY_CREATEDBY",id:"DC0041F_QRY_CREATEDBY",fieldLabel: this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",allowBlank:true,width:100}));
+       this.queryFields.add("MODIFIEDON",new Ext.form.DateField({name:"QRY_MODIFIEDON",id:"DC0041F_QRY_MODIFIEDON",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("MODIFIEDBY",new Ext.form.TextField({name:"QRY_MODIFIEDBY",id:"DC0041F_QRY_MODIFIEDBY",fieldLabel: this.resourceBundle.FieldLabel.MODIFIEDBY||"ModifiedBy",allowBlank:true,width:100}));
+       this.queryFields.add("RINVITEM_ID",new Ext.form.NumberField({name:"QRY_RINVITEM_ID",id:"DC0041F_QRY_RINVITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.RINVITEM_ID||"Rinvitem_id",allowBlank:true,width:100}));
   
-       this.queryFieldsVisible = [  "PROD_CODE","NOTES","PURCHASE_ACCT","NET_AMOUNT","CURRENCY","TAX_NAME","TAX_AMOUNT","TAX_AMOUNT_NR","ORIG_AMOUNT","ORIG_CURRENCY","CURRENCY_XRATE","QUANTITY","QUANTITY_UNIT","PRICE","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY","RINVITEM_ID" ];
+       this.queryFieldsVisible = [  "PROD_CODE","NOTES","NET_AMOUNT","CURRENCY","TAX_NAME","TAX_AMOUNT","TAX_AMOUNT_NR","ORIG_AMOUNT","ORIG_CURRENCY","CURRENCY_XRATE","QUANTITY","QUANTITY_UNIT","PRICE","CREATEDON","CREATEDBY","MODIFIEDON","MODIFIEDBY","RINVITEM_ID" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0041"
@@ -77,9 +75,8 @@
                { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"RINV_ID",header:this.resourceBundle.FieldLabel.RINV_ID||"Rinv_id",width:100,dataIndex:'RINV_ID',hidden:true,sortable:true}
               ,{ id:"PROD_CODE",header:this.resourceBundle.FieldLabel.PROD_CODE||"Prod_code",width:100,dataIndex:'PROD_CODE',sortable:true}
-              ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"Notes",width:100,dataIndex:'NOTES',sortable:true}
               ,{ id:"PROD_ID",header:this.resourceBundle.FieldLabel.PROD_ID||"Prod_id",width:100,dataIndex:'PROD_ID',hidden:true,sortable:true}
-              ,{ id:"PURCHASE_ACCT",header:this.resourceBundle.FieldLabel.PURCHASE_ACCT||"Purchase_acct",width:100,dataIndex:'PURCHASE_ACCT',sortable:true}
+              ,{ id:"NOTES",header:this.resourceBundle.FieldLabel.NOTES||"Notes",width:100,dataIndex:'NOTES',sortable:true}
               ,{ id:"NET_AMOUNT",header:this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",width:100,dataIndex:'NET_AMOUNT',sortable:true,align:'right',decimalPrecision:4}
               ,{ id:"CURRENCY",header:this.resourceBundle.FieldLabel.CURRENCY||"Currency",width:100,dataIndex:'CURRENCY',sortable:true}
               ,{ id:"TAX_NAME",header:this.resourceBundle.FieldLabel.TAX_NAME||"VAT class",width:100,dataIndex:'TAX_NAME',sortable:true}
@@ -113,9 +110,8 @@
               ,ID:""
               ,RINV_ID:""
               ,PROD_CODE:""
-              ,NOTES:""
               ,PROD_ID:""
-              ,PURCHASE_ACCT:""
+              ,NOTES:""
               ,NET_AMOUNT:""
               ,CURRENCY:""
               ,TAX_NAME:""
@@ -149,29 +145,28 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0041F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("RINV_ID", new Ext.form.Hidden ({xtype: "hidden",name:"RINV_ID",id:"DC0041F_RINV_ID",dataIndex:"RINV_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.RINV_ID||"Rinv_id",insert_allowed:true,update_allowed:true,copyValueFrom:"DC0026F_ID"})   );
-       this.fields.add("PROD_CODE", new N21.DataComp.LOV0017({xtype: "LOV0017",displayColumn: "CODE",fieldMapping: [{column:"ID",field:"DC0041F_PROD_ID"},{column:"NAME",field:"DC0041F_NOTES"},{column:"EXPENSE_ACCOUNT",field:"DC0041F_PURCHASE_ACCT"}],selectOnFocus:true,name:"PROD_CODE",id:"DC0041F_PROD_CODE",dataIndex:"PROD_CODE",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod_code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextField ({xtype: "textfield",name:"NOTES",id:"DC0041F_NOTES",dataIndex:"NOTES",width:200,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PROD_ID", new Ext.form.Hidden ({xtype: "hidden",name:"PROD_ID",id:"DC0041F_PROD_ID",dataIndex:"PROD_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PURCHASE_ACCT", new N21.DataComp.LOV0025({xtype: "LOV0025",selectOnFocus:true,name:"PURCHASE_ACCT",id:"DC0041F_PURCHASE_ACCT",dataIndex:"PURCHASE_ACCT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PURCHASE_ACCT||"Purchase_acct",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NET_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"NET_AMOUNT",id:"DC0041F_NET_AMOUNT",dataIndex:"NET_AMOUNT",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",insert_allowed:true,update_allowed:true,decimalPrecision:4,style: "text-align:right;",listeners:{  "change":{scope:this, fn:this.change_NET_AMOUNT}  }})   );
-       this.fields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"CURRENCY",id:"DC0041F_CURRENCY",dataIndex:"CURRENCY",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",insert_allowed:true,update_allowed:true,copyValueFrom:"DC0026F_DOC_CURRENCY"})   );
-       this.fields.add("TAX_NAME", new N21.DataComp.LOV0024({xtype: "LOV0024",displayColumn: "NAME",fieldMapping: [{column:"VALUE",field:"DC0041F_TAX_RATE"},{column:"ID",field:"DC0041F_TAX_ID"}],selectOnFocus:true,name:"TAX_NAME",id:"DC0041F_TAX_NAME",dataIndex:"TAX_NAME",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"VAT class",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("TAX_RATE", new Ext.form.Hidden ({xtype: "hidden",name:"TAX_RATE",id:"DC0041F_TAX_RATE",dataIndex:"TAX_RATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Tax_rate",insert_allowed:true,update_allowed:true,listeners:{  "change":{scope:this, fn:this.change_TAX_RATE}  }})   );
-       this.fields.add("TAX_ID", new Ext.form.Hidden ({xtype: "hidden",name:"TAX_ID",id:"DC0041F_TAX_ID",dataIndex:"TAX_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("TAX_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"TAX_AMOUNT",id:"DC0041F_TAX_AMOUNT",dataIndex:"TAX_AMOUNT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Tax_amount",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("TAX_AMOUNT_NR", new Ext.form.NumberField ({xtype: "numberfield",name:"TAX_AMOUNT_NR",id:"DC0041F_TAX_AMOUNT_NR",dataIndex:"TAX_AMOUNT_NR",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT_NR||"Non-refund tax",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("ORIG_AMOUNT", new Ext.form.NumberField ({xtype: "numberfield",name:"ORIG_AMOUNT",id:"DC0041F_ORIG_AMOUNT",dataIndex:"ORIG_AMOUNT",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("ORIG_CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",selectOnFocus:true,name:"ORIG_CURRENCY",id:"DC0041F_ORIG_CURRENCY",dataIndex:"ORIG_CURRENCY",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CURRENCY_XRATE", new Ext.form.NumberField ({xtype: "numberfield",name:"CURRENCY_XRATE",id:"DC0041F_CURRENCY_XRATE",dataIndex:"CURRENCY_XRATE",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",insert_allowed:true,update_allowed:true,decimalPrecision:4,style: "text-align:right;"})   );
-       this.fields.add("QUANTITY", new Ext.form.NumberField ({xtype: "numberfield",name:"QUANTITY",id:"DC0041F_QUANTITY",dataIndex:"QUANTITY",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",insert_allowed:true,update_allowed:true,decimalPrecision:2,style: "text-align:right;"})   );
-       this.fields.add("QUANTITY_UNIT", new N21.DataComp.LOV0002({xtype: "LOV0002",selectOnFocus:true,name:"QUANTITY_UNIT",id:"DC0041F_QUANTITY_UNIT",dataIndex:"QUANTITY_UNIT",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"UOM",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0041F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("RINV_ID",new Ext.form.Hidden({name:"RINV_ID",id:"DC0041F_RINV_ID",dataIndex:"RINV_ID",fieldLabel: this.resourceBundle.FieldLabel.RINV_ID||"Rinv_id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true,copyValueFrom:"DC0026F_ID"}));
+       this.fields.add("PROD_CODE",new  N21.DataComp.LOV0017({name:"PROD_CODE",id:"DC0041F_PROD_CODE",dataIndex:"PROD_CODE",fieldLabel: this.resourceBundle.FieldLabel.PROD_CODE||"Prod_code",allowBlank:true,width:200,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0041F_PROD_ID"},{column:"NAME",field:"DC0041F_NOTES"}],displayColumn: "CODE"}));
+       this.fields.add("NOTES",new Ext.form.TextField({name:"NOTES",id:"DC0041F_NOTES",dataIndex:"NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PROD_ID",new Ext.form.Hidden({name:"PROD_ID",id:"DC0041F_PROD_ID",dataIndex:"PROD_ID",fieldLabel: this.resourceBundle.FieldLabel.PROD_ID||"Prod_id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NET_AMOUNT",new Ext.form.NumberField({name:"NET_AMOUNT",id:"DC0041F_NET_AMOUNT",dataIndex:"NET_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.NET_AMOUNT||"Net_amount",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:4,listeners:{  "change":{scope:this, fn:this.change_NET_AMOUNT}  }}));
+       this.fields.add("CURRENCY",new  N21.DataComp.LOV0001({name:"CURRENCY",id:"DC0041F_CURRENCY",dataIndex:"CURRENCY",fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",allowBlank:true,width:80,listWidth:98,insert_allowed:true,update_allowed:true,copyValueFrom:"DC0026F_DOC_CURRENCY",selectOnFocus:true}));
+       this.fields.add("TAX_NAME",new  N21.DataComp.LOV0024({name:"TAX_NAME",id:"DC0041F_TAX_NAME",dataIndex:"TAX_NAME",fieldLabel: this.resourceBundle.FieldLabel.TAX_NAME||"VAT class",allowBlank:false,labelSeparator:":*",width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"VALUE",field:"DC0041F_TAX_RATE"},{column:"ID",field:"DC0041F_TAX_ID"}],displayColumn: "NAME"}));
+       this.fields.add("TAX_RATE",new Ext.form.Hidden({name:"TAX_RATE",id:"DC0041F_TAX_RATE",dataIndex:"TAX_RATE",fieldLabel: this.resourceBundle.FieldLabel.TAX_RATE||"Tax_rate",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,listeners:{  "change":{scope:this, fn:this.change_TAX_RATE}  }}));
+       this.fields.add("TAX_ID",new Ext.form.Hidden({name:"TAX_ID",id:"DC0041F_TAX_ID",dataIndex:"TAX_ID",fieldLabel: this.resourceBundle.FieldLabel.TAX_ID||"Tax_id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("TAX_AMOUNT",new Ext.form.NumberField({name:"TAX_AMOUNT",id:"DC0041F_TAX_AMOUNT",dataIndex:"TAX_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT||"Tax_amount",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
+       this.fields.add("TAX_AMOUNT_NR",new Ext.form.NumberField({name:"TAX_AMOUNT_NR",id:"DC0041F_TAX_AMOUNT_NR",dataIndex:"TAX_AMOUNT_NR",fieldLabel: this.resourceBundle.FieldLabel.TAX_AMOUNT_NR||"Non-refund tax",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
+       this.fields.add("ORIG_AMOUNT",new Ext.form.NumberField({name:"ORIG_AMOUNT",id:"DC0041F_ORIG_AMOUNT",dataIndex:"ORIG_AMOUNT",fieldLabel: this.resourceBundle.FieldLabel.ORIG_AMOUNT||"Orig_amount",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
+       this.fields.add("ORIG_CURRENCY",new  N21.DataComp.LOV0001({name:"ORIG_CURRENCY",id:"DC0041F_ORIG_CURRENCY",dataIndex:"ORIG_CURRENCY",fieldLabel: this.resourceBundle.FieldLabel.ORIG_CURRENCY||"Orig_currency",allowBlank:true,width:80,listWidth:98,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
+       this.fields.add("CURRENCY_XRATE",new Ext.form.NumberField({name:"CURRENCY_XRATE",id:"DC0041F_CURRENCY_XRATE",dataIndex:"CURRENCY_XRATE",fieldLabel: this.resourceBundle.FieldLabel.CURRENCY_XRATE||"Currency_xrate",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:4}));
+       this.fields.add("QUANTITY",new Ext.form.NumberField({name:"QUANTITY",id:"DC0041F_QUANTITY",dataIndex:"QUANTITY",fieldLabel: this.resourceBundle.FieldLabel.QUANTITY||"Quantity",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
+       this.fields.add("QUANTITY_UNIT",new  N21.DataComp.LOV0002({name:"QUANTITY_UNIT",id:"DC0041F_QUANTITY_UNIT",dataIndex:"QUANTITY_UNIT",fieldLabel: this.resourceBundle.FieldLabel.QUANTITY_UNIT||"UOM",allowBlank:true,width:80,listWidth:98,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
 
        this.layoutItems.add("OrigCost",
              { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.OrigCost||"OrigCost",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("ORIG_AMOUNT"),this.fields.get("ORIG_CURRENCY"),this.fields.get("CURRENCY_XRATE")] });
        this.layoutItems.add("Product",
-             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Product||"Product",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("ID"),this.fields.get("RINV_ID"),this.fields.get("PROD_CODE"),this.fields.get("NOTES"),this.fields.get("PROD_ID"),this.fields.get("PURCHASE_ACCT"),this.fields.get("QUANTITY"),this.fields.get("QUANTITY_UNIT")] });
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Product||"Product",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("ID"),this.fields.get("RINV_ID"),this.fields.get("PROD_CODE"),this.fields.get("NOTES"),this.fields.get("PROD_ID"),this.fields.get("QUANTITY"),this.fields.get("QUANTITY_UNIT")] });
        this.layoutItems.add("Cost",
              { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Cost||"Cost",border:true,labelAlign:"left",width:"250"   ,items:[ this.fields.get("NET_AMOUNT"),this.fields.get("CURRENCY"),this.fields.get("TAX_NAME"),this.fields.get("TAX_RATE"),this.fields.get("TAX_ID"),this.fields.get("TAX_AMOUNT"),this.fields.get("TAX_AMOUNT_NR")] });
        this.layoutItems.add("C2",
@@ -210,9 +205,8 @@
               ,ID:""
               ,RINV_ID:""
               ,PROD_CODE:""
-              ,NOTES:""
               ,PROD_ID:""
-              ,PURCHASE_ACCT:""
+              ,NOTES:""
               ,NET_AMOUNT:""
               ,CURRENCY:""
               ,TAX_NAME:""
@@ -292,8 +286,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0041</span>"          )
         }); 
 
        N21.DataComp.DC0041.superclass.initComponent.apply(this, arguments);

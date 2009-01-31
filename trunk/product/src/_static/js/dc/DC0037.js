@@ -41,8 +41,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0037</span>"          )
           ,dataComponentName:"DC0037"
           ,frame:true
           ,queryArraySize:20
@@ -59,12 +60,12 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0037_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("UIDICT_ID", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_UIDICT_ID",id:"DC0037_QRY_UIDICT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.UIDICT_ID||"Dictionary id",style: "text-align:right;"})  );
-         this.queryFields.add("UIDC_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_UIDC_CODE",id:"DC0037_QRY_UIDC_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"DataControl"})  );
-         this.queryFields.add("MSG_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_MSG_CODE",id:"DC0037_QRY_MSG_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Message Code"})  );
-         this.queryFields.add("LANGUAGE_CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_LANGUAGE_CODE",id:"DC0037_QRY_LANGUAGE_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.LANGUAGE_CODE||"Language_code"})  );
-         this.queryFields.add("TRANSLATION", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TRANSLATION",id:"DC0037_QRY_TRANSLATION",width:100,fieldLabel: this.resourceBundle.FieldLabel.TRANSLATION||"Translation"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0037F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("UIDICT_ID",new Ext.form.NumberField({name:"QRY_UIDICT_ID",id:"DC0037F_QRY_UIDICT_ID",fieldLabel: this.resourceBundle.FieldLabel.UIDICT_ID||"Dictionary id",allowBlank:true,width:100}));
+       this.queryFields.add("UIDC_CODE",new Ext.form.TextField({name:"QRY_UIDC_CODE",id:"DC0037F_QRY_UIDC_CODE",fieldLabel: this.resourceBundle.FieldLabel.UIDC_CODE||"DataControl",allowBlank:true,width:100}));
+       this.queryFields.add("MSG_CODE",new Ext.form.TextField({name:"QRY_MSG_CODE",id:"DC0037F_QRY_MSG_CODE",fieldLabel: this.resourceBundle.FieldLabel.MSG_CODE||"Message Code",allowBlank:true,width:100}));
+       this.queryFields.add("LANGUAGE_CODE",new Ext.form.TextField({name:"QRY_LANGUAGE_CODE",id:"DC0037F_QRY_LANGUAGE_CODE",fieldLabel: this.resourceBundle.FieldLabel.LANGUAGE_CODE||"Language_code",allowBlank:true,width:100}));
+       this.queryFields.add("TRANSLATION",new Ext.form.TextField({name:"QRY_TRANSLATION",id:"DC0037F_QRY_TRANSLATION",fieldLabel: this.resourceBundle.FieldLabel.TRANSLATION||"Translation",allowBlank:true,width:100}));
 
 
 

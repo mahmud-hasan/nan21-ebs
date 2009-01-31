@@ -1,13 +1,11 @@
 /** 
- * Data Component: DC0014G, Title: Business partners
+ * Data Component: DC0014G, Title: Business partner master data
  */ 
 
   Ext.ns("N21.DataComp");
   N21.DataComp.DC0014G = Ext.extend(N21.Base.GridView, {
      dataRecordMeta:    Ext.data.Record.create([
           {name:"_p_record_status", type:"string"}
-         ,{name:"CLIENT_CODE", type:"string" }
-         ,{name:"CLIENT_ID", type:"float" }
          ,{name:"ID", type:"float" }
          ,{name:"CODE", type:"string" }
          ,{name:"NAME", type:"string" }
@@ -24,35 +22,20 @@
          ,{name:"CREATEDBY", type:"string" }
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
-         ,{name:"CUSTGROUP_CODE", type:"string" }
-         ,{name:"CREDITCLASS_CODE", type:"string" }
-         ,{name:"PAYMETHOD_CODE", type:"string" }
-         ,{name:"PAYTERMCLASS_CODE", type:"string" }
-         ,{name:"MAX_CREDIT_LIMIT", type:"float" }
-         ,{name:"MAX_PAYMENT_TERM", type:"float" }
-         ,{name:"IS_CUSTOMER", type:"string" }
-         ,{name:"IS_VENDOR", type:"string" }
-         ,{name:"IS_EMPLOYEE", type:"string" }
-         ,{name:"IS_ONETIME", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
-     ,queryPanelColCount:4 
+     ,queryPanelColCount:3 
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0014_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0014_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0014_QRY_CLIENT_ID"}],name:"QRY_CLIENT_CODE",id:"DC0014_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
-         this.queryFields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_CODE",id:"DC0014_QRY_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0014_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("TAX_NUMBER", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TAX_NUMBER",id:"DC0014_QRY_TAX_NUMBER",width:100,fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0014_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
-         this.queryFields.add("IS_CUSTOMER", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_CUSTOMER",id:"DC0014_QRY_IS_CUSTOMER",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_CUSTOMER||"Customer?"})  );
-         this.queryFields.add("IS_VENDOR", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_VENDOR",id:"DC0014_QRY_IS_VENDOR",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_VENDOR||"Vendor?"})  );
-         this.queryFields.add("IS_EMPLOYEE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_IS_EMPLOYEE",id:"DC0014_QRY_IS_EMPLOYEE",width:50,fieldLabel: this.resourceBundle.FieldLabel.IS_EMPLOYEE||"Employee?"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0014F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CODE",new Ext.form.TextField({name:"QRY_CODE",id:"DC0014F_QRY_CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:true,width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0014F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("TAX_NUMBER",new Ext.form.TextField({name:"QRY_TAX_NUMBER",id:"DC0014F_QRY_TAX_NUMBER",fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0014F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:true,width:100}));
   
-       this.queryFieldsVisible = [  "CLIENT_CODE","CODE","NAME","TAX_NUMBER","IS_CUSTOMER","IS_VENDOR","IS_EMPLOYEE" ];
+       this.queryFieldsVisible = [  "CODE","NAME","TAX_NUMBER" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0014"
@@ -64,16 +47,14 @@
            })
            ,loadMask :true
           ,columns: [new Ext.grid.RowNumberer(),
-               { id:"CLIENT_CODE",header:this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",width:80,dataIndex:'CLIENT_CODE',sortable:true}
-              ,{ id:"CLIENT_ID",header:this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",width:100,dataIndex:'CLIENT_ID',hidden:true,sortable:true}
-              ,{ id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
+               { id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',hidden:true,sortable:true}
               ,{ id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',sortable:true}
-              ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:180,dataIndex:'NAME',sortable:true}
+              ,{ id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:220,dataIndex:'NAME',sortable:true}
               ,{ id:"TAX_NUMBER_TYPE",header:this.resourceBundle.FieldLabel.TAX_NUMBER_TYPE||"Tax no type",width:100,dataIndex:'TAX_NUMBER_TYPE',hidden:true,sortable:true}
-              ,{ id:"TAX_NUMBER",header:this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",width:100,dataIndex:'TAX_NUMBER',hidden:true,sortable:true}
+              ,{ id:"TAX_NUMBER",header:this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",width:100,dataIndex:'TAX_NUMBER',sortable:true}
               ,{ id:"COMPANY_REG_NR",header:this.resourceBundle.FieldLabel.COMPANY_REG_NR||"Registration no",width:100,dataIndex:'COMPANY_REG_NR',hidden:true,sortable:true}
-              ,{ id:"PHONE",header:this.resourceBundle.FieldLabel.PHONE||"Phone",width:100,dataIndex:'PHONE',hidden:true,sortable:true}
-              ,{ id:"EMAIL",header:this.resourceBundle.FieldLabel.EMAIL||"Email",width:100,dataIndex:'EMAIL',hidden:true,sortable:true}
+              ,{ id:"PHONE",header:this.resourceBundle.FieldLabel.PHONE||"Phone",width:100,dataIndex:'PHONE',sortable:true}
+              ,{ id:"EMAIL",header:this.resourceBundle.FieldLabel.EMAIL||"Email",width:100,dataIndex:'EMAIL',sortable:true}
               ,{ id:"FAX",header:this.resourceBundle.FieldLabel.FAX||"Fax",width:100,dataIndex:'FAX',hidden:true,sortable:true}
               ,{ id:"BPARTNER_TYPE",header:this.resourceBundle.FieldLabel.BPARTNER_TYPE||"Type",width:100,dataIndex:'BPARTNER_TYPE',hidden:true,sortable:true}
               ,{ id:"BPARTNER_ID",header:this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",width:100,dataIndex:'BPARTNER_ID',hidden:true,sortable:true}
@@ -82,16 +63,6 @@
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Created by",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
-              ,{ id:"CUSTGROUP_CODE",header:this.resourceBundle.FieldLabel.CUSTGROUP_CODE||"Custgroup_code",width:100,dataIndex:'CUSTGROUP_CODE',hidden:true,sortable:true}
-              ,{ id:"CREDITCLASS_CODE",header:this.resourceBundle.FieldLabel.CREDITCLASS_CODE||"Creditclass_code",width:100,dataIndex:'CREDITCLASS_CODE',hidden:true,sortable:true}
-              ,{ id:"PAYMETHOD_CODE",header:this.resourceBundle.FieldLabel.PAYMETHOD_CODE||"Paymethod_code",width:100,dataIndex:'PAYMETHOD_CODE',hidden:true,sortable:true}
-              ,{ id:"PAYTERMCLASS_CODE",header:this.resourceBundle.FieldLabel.PAYTERMCLASS_CODE||"Paytermclass_code",width:100,dataIndex:'PAYTERMCLASS_CODE',hidden:true,sortable:true}
-              ,{ id:"MAX_CREDIT_LIMIT",header:this.resourceBundle.FieldLabel.MAX_CREDIT_LIMIT||"Max_credit_limit",width:100,dataIndex:'MAX_CREDIT_LIMIT',hidden:true,sortable:true,align:'right'}
-              ,{ id:"MAX_PAYMENT_TERM",header:this.resourceBundle.FieldLabel.MAX_PAYMENT_TERM||"Max_payment_term",width:100,dataIndex:'MAX_PAYMENT_TERM',hidden:true,sortable:true,align:'right'}
-              ,{ id:"IS_CUSTOMER",header:this.resourceBundle.FieldLabel.IS_CUSTOMER||"Customer?",width:50,dataIndex:'IS_CUSTOMER',sortable:true}
-              ,{ id:"IS_VENDOR",header:this.resourceBundle.FieldLabel.IS_VENDOR||"Vendor?",width:50,dataIndex:'IS_VENDOR',sortable:true}
-              ,{ id:"IS_EMPLOYEE",header:this.resourceBundle.FieldLabel.IS_EMPLOYEE||"Employee?",width:50,dataIndex:'IS_EMPLOYEE',sortable:true}
-              ,{ id:"IS_ONETIME",header:this.resourceBundle.FieldLabel.IS_ONETIME||"Is_onetime",width:50,dataIndex:'IS_ONETIME',hidden:true,sortable:true}
           ]
           ,dataComponentName:"DC0014G"
           ,queryArraySize:20
@@ -104,8 +75,6 @@
      }
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
-              ,CLIENT_CODE:""
-              ,CLIENT_ID:""
               ,ID:""
               ,CODE:""
               ,NAME:""
@@ -121,22 +90,12 @@
               ,CREATEDON:""
               ,CREATEDBY:""
               ,MODIFIEDON:""
-              ,MODIFIEDBY:""
-              ,CUSTGROUP_CODE:""
-              ,CREDITCLASS_CODE:""
-              ,PAYMETHOD_CODE:""
-              ,PAYTERMCLASS_CODE:""
-              ,MAX_CREDIT_LIMIT:""
-              ,MAX_PAYMENT_TERM:""
-              ,IS_CUSTOMER:""
-              ,IS_VENDOR:""
-              ,IS_EMPLOYEE:""
-              ,IS_ONETIME:""});
+              ,MODIFIEDBY:""});
      }
   });
   Ext.reg("DC0014G", N21.DataComp.DC0014G);
 /** 
- * Data Component: DC0014F, Title: Business partners
+ * Data Component: DC0014F, Title: Business partner master data
  */ 
 
   Ext.ns("N21.DataComp");
@@ -147,29 +106,22 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0014F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0014F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:120,listWidth:138,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0014F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0014F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0014F_CODE",dataIndex:"CODE",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0014F_NAME",dataIndex:"NAME",width:300,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("TAX_NUMBER_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"TAX_NUMBER_TYPE",id:"DC0014F_TAX_NUMBER_TYPE",dataIndex:"TAX_NUMBER_TYPE",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER_TYPE||"Tax no type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("TAX_NUMBER", new Ext.form.TextField ({xtype: "textfield",name:"TAX_NUMBER",id:"DC0014F_TAX_NUMBER",dataIndex:"TAX_NUMBER",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("COMPANY_REG_NR", new Ext.form.TextField ({xtype: "textfield",name:"COMPANY_REG_NR",id:"DC0014F_COMPANY_REG_NR",dataIndex:"COMPANY_REG_NR",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.COMPANY_REG_NR||"Registration no",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PHONE", new Ext.form.TextField ({xtype: "textfield",name:"PHONE",id:"DC0014F_PHONE",dataIndex:"PHONE",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PHONE||"Phone",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("EMAIL", new Ext.form.TextField ({xtype: "textfield",name:"EMAIL",id:"DC0014F_EMAIL",dataIndex:"EMAIL",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("FAX", new Ext.form.TextField ({xtype: "textfield",name:"FAX",id:"DC0014F_FAX",dataIndex:"FAX",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FAX||"Fax",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("IS_CUSTOMER", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_CUSTOMER",id:"DC0014F_IS_CUSTOMER",dataIndex:"IS_CUSTOMER",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_CUSTOMER||"Customer?",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("IS_VENDOR", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_VENDOR",id:"DC0014F_IS_VENDOR",dataIndex:"IS_VENDOR",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_VENDOR||"Vendor?",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("IS_EMPLOYEE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_EMPLOYEE",id:"DC0014F_IS_EMPLOYEE",dataIndex:"IS_EMPLOYEE",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.IS_EMPLOYEE||"Employee?",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0014F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0014F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0014F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:300,insert_allowed:true,update_allowed:true}));
+       this.fields.add("TAX_NUMBER_TYPE",new Ext.form.TextField({name:"TAX_NUMBER_TYPE",id:"DC0014F_TAX_NUMBER_TYPE",dataIndex:"TAX_NUMBER_TYPE",fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER_TYPE||"Tax no type",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("TAX_NUMBER",new Ext.form.TextField({name:"TAX_NUMBER",id:"DC0014F_TAX_NUMBER",dataIndex:"TAX_NUMBER",fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("COMPANY_REG_NR",new Ext.form.TextField({name:"COMPANY_REG_NR",id:"DC0014F_COMPANY_REG_NR",dataIndex:"COMPANY_REG_NR",fieldLabel: this.resourceBundle.FieldLabel.COMPANY_REG_NR||"Registration no",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PHONE",new Ext.form.TextField({name:"PHONE",id:"DC0014F_PHONE",dataIndex:"PHONE",fieldLabel: this.resourceBundle.FieldLabel.PHONE||"Phone",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("EMAIL",new Ext.form.TextField({name:"EMAIL",id:"DC0014F_EMAIL",dataIndex:"EMAIL",fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("FAX",new Ext.form.TextField({name:"FAX",id:"DC0014F_FAX",dataIndex:"FAX",fieldLabel: this.resourceBundle.FieldLabel.FAX||"Fax",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("DC0058",
              new Ext.Window({ xtype:"window", modal:true, title: "DC0058 - "+(N21.DataComp.DC0058.prototype.resourceBundle.DcProperty.Title||"WINDOW"),  closeAction:"hide",closable:true,layout:"fit", width:300, height:200, items:{xtype:"DC0058",id:"DC0058", parentDcRelation:{name:"DC0014F",relation:[{parent:"ID",child:"BPARTNER_ID"}]}         }} ) ); 
-       this.layoutItems.add("Communication",
-             { layout:"form" ,height:200,buttons:[ {xtype:"button",text:"More...",scope:this,handler:function() {this.show_window("DC0058");} }], title:"Communication", items:[ this.fields.get("PHONE"),this.fields.get("EMAIL"),this.fields.get("FAX")] }); 
-       this.layoutItems.add("DC0056",
-             { xtype:"DC0056",id:"DC0056",width:"100%",height:200, parentDcRelation:{name:"DC0014F",relation:[{parent:"ID",child:"BPARTNER_ID"}]}   });
-       this.layoutItems.add("TabCustomerAcct",
-             { layout:"form" ,autoHeight:true, title:"Customer Account", items:[ this.layoutItems.get("DC0056")] }); 
+       this.layoutItems.add("DC0100",
+             { xtype:"DC0100",id:"DC0100",width:"100%",height:200, parentDcRelation:{name:"DC0014F",relation:[{parent:"ID",child:"BPARTNER_ID"}]}   });
+       this.layoutItems.add("TabClients",
+             { layout:"form" ,autoHeight:true, title:"Clients", items:[ this.layoutItems.get("DC0100")] }); 
        this.layoutItems.add("DC0057",
              { xtype:"DC0057",id:"DC0057",width:"100%",height:200, parentDcRelation:{name:"DC0014F",relation:[{parent:"ID",child:"BPARTNER_ID"}]}   });
        this.layoutItems.add("TabContactPerson",
@@ -183,21 +135,21 @@
        this.layoutItems.add("TabAdress",
              { layout:"form" ,height:200, title:"Adress", items:[ this.layoutItems.get("DC0015")] }); 
        this.layoutItems.add("Tabs",
-             { xtype:"tabpanel", plain:true,layoutOnTabChange :true,activeItem:0,width:"100%", items:[ this.layoutItems.get("TabAdress"),this.layoutItems.get("Communication"),this.layoutItems.get("TabBankAccount"),this.layoutItems.get("TabContactPerson"),this.layoutItems.get("TabCustomerAcct")]}); 
+             { xtype:"tabpanel", plain:true,layoutOnTabChange :true,activeItem:0,width:"100%", items:[ this.layoutItems.get("TabAdress"),this.layoutItems.get("TabBankAccount"),this.layoutItems.get("TabContactPerson"),this.layoutItems.get("TabClients")]}); 
        this.layoutItems.add("R3",
              { layout:"form",width:750,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("Tabs")]
  }); 
        this.layoutItems.add("R2C2",
-             { layout:"form",columnWidth:.5,labelAlign:"left",labelWidth:100, items:[ this.fields.get("IS_CUSTOMER"),this.fields.get("IS_VENDOR"),this.fields.get("IS_EMPLOYEE")]
+             { layout:"form",columnWidth:.5,labelAlign:"right",labelWidth:100,buttons:[{xtype:"button",scope:this,text:"More...",handler:function() {this.show_window("DC0058");}}], items:[ this.fields.get("PHONE"),this.fields.get("EMAIL"),this.fields.get("FAX")]
  }); 
        this.layoutItems.add("R2C1",
-             { layout:"form",columnWidth:.5,labelAlign:"left",labelWidth:100, items:[ this.fields.get("CLIENT_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("CODE"),this.fields.get("TAX_NUMBER_TYPE"),this.fields.get("TAX_NUMBER"),this.fields.get("COMPANY_REG_NR")]
+             { layout:"form",columnWidth:.5,labelAlign:"right",labelWidth:100, items:[ this.fields.get("CODE"),this.fields.get("TAX_NUMBER_TYPE"),this.fields.get("TAX_NUMBER"),this.fields.get("COMPANY_REG_NR")]
  }); 
        this.layoutItems.add("R2",
              { layout:"column",width:750,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("R2C1"),this.layoutItems.get("R2C2")]
  }); 
        this.layoutItems.add("R1",
-             { layout:"form",width:750,labelAlign:"left",labelWidth:100, items:[ this.fields.get("ID"),this.fields.get("NAME")]
+             { layout:"form",width:750,labelAlign:"right",labelWidth:100, items:[ this.fields.get("ID"),this.fields.get("NAME")]
  }); 
 
 
@@ -210,7 +162,7 @@
           ,width: "100%"
           ,dataComponentName:"DC0014F"
           ,firstFocusFieldName:"NAME"
-          ,childDCs: [{name:"DC0057",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0015",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0018",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0056",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0058",relation:[{parent:"ID",child:"BPARTNER_ID"}]}]
+          ,childDCs: [{name:"DC0057",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0100",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0015",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0018",relation:[{parent:"ID",child:"BPARTNER_ID"}]},{name:"DC0058",relation:[{parent:"ID",child:"BPARTNER_ID"}]}]
           ,toolbarConfig:"STANDARD"
         });
 
@@ -224,8 +176,6 @@
 
     ,newDataRecord:function() {
        return new this.dataRecordMeta({_p_record_status:"insert"
-              ,CLIENT_CODE:""
-              ,CLIENT_ID:""
               ,ID:""
               ,CODE:""
               ,NAME:""
@@ -241,17 +191,7 @@
               ,CREATEDON:""
               ,CREATEDBY:""
               ,MODIFIEDON:""
-              ,MODIFIEDBY:""
-              ,CUSTGROUP_CODE:""
-              ,CREDITCLASS_CODE:""
-              ,PAYMETHOD_CODE:""
-              ,PAYTERMCLASS_CODE:""
-              ,MAX_CREDIT_LIMIT:""
-              ,MAX_PAYMENT_TERM:""
-              ,IS_CUSTOMER:""
-              ,IS_VENDOR:""
-              ,IS_EMPLOYEE:""
-              ,IS_ONETIME:""});
+              ,MODIFIEDBY:""});
      }
 
 
@@ -261,7 +201,7 @@
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0014
- * Title: Business partners
+ * Title: Business partner master data
  */ 
 
   Ext.ns("N21.DataComp");
@@ -313,8 +253,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0014</span>"          )
         }); 
 
        N21.DataComp.DC0014.superclass.initComponent.apply(this, arguments);
