@@ -1,10 +1,6 @@
 create or replace trigger RINVOICE_ITEM_BI before insert on RINVOICE_ITEM
 for each row
 begin
-  if pk_rinv.is_posted(:new.rinv_id) then
-    raise_error('CantUpdPostedDoc');
-  end if;
-
 
   if :new.price is null and ( :new.net_amount is not null and :new.quantity is not null) then 
     :new.price := :new.net_amount/:new.quantity;  

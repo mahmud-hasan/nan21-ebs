@@ -9,13 +9,14 @@ begin
   
  
   -- un post document, i.e delete accounting document and accruals
+  /*
   if :old.is_posted = 'Y' and :new.is_posted = 'N' then
   	delete from accounting_doc where id = :old.accdoc_id;
     :new.accdoc_id := null;
     :new.postedon  := null;
     :new.postedby  := null;
   end if;  
-  
+  */
   
 
   -- post document, i.e create accounting document and accruals

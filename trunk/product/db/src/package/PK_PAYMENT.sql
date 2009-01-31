@@ -44,10 +44,12 @@ create or replace package body pk_payment is
       select * from rinvoice r where r.id = pr_paym.rinv_id;
     r c%rowtype;
     
-    pr_accdoc pk_acc.accdoc_t;   
-    pr_accdocitem pk_acc.accdocitem_t; 
+    --pr_accdoc pk_acc.accdoc_t;   
+    --pr_accdocitem pk_acc.accdocitem_t; 
     
   begin
+    null;
+    /*
     -- create the acc. doc. 
     pr_accdoc.client_id := pr_paym.client_id;                                        
     pr_accdoc.doc_no    := null;
@@ -99,6 +101,7 @@ create or replace package body pk_payment is
     pk_acc.gen_accdoc_item(pr_accdocitem);
     
     p_accdoc_id := pr_accdoc.id;    
+    */
   end;
   
   

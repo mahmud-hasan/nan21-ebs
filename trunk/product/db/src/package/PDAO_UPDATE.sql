@@ -7,21 +7,21 @@ create or replace package PDAO_UPDATE as
  * Generated content.
  */
 
-  procedure account_t(p_record in out account%rowtype);
-  procedure accounting_doc_t(p_record in out accounting_doc%rowtype);
-  procedure accounting_doc_line_t(p_record in out accounting_doc_line%rowtype);
-  procedure accounting_journal_t(p_record in out accounting_journal%rowtype);
-  procedure accounting_period_t(p_record in out accounting_period%rowtype);
-  procedure accounting_year_t(p_record in out accounting_year%rowtype);
-  procedure account_balance_t(p_record in out account_balance%rowtype);
-  procedure account_group_t(p_record in out account_group%rowtype);
-  procedure account_movement_t(p_record in out account_movement%rowtype);
-  procedure accrual_t(p_record in out accrual%rowtype);
-  procedure acc_schema_t(p_record in out acc_schema%rowtype);
-  procedure acc_schema_acct_t(p_record in out acc_schema_acct%rowtype);
-  procedure acc_schema_attr_t(p_record in out acc_schema_attr%rowtype);
-  procedure acc_schema_attr_def_t(p_record in out acc_schema_attr_def%rowtype);
-  procedure acc_schema_attr_type_t(p_record in out acc_schema_attr_type%rowtype);
+  procedure ac_accdoc_t(p_record in out ac_accdoc%rowtype);
+  procedure ac_accdoc_line_t(p_record in out ac_accdoc_line%rowtype);
+  procedure ac_accschema_t(p_record in out ac_accschema%rowtype);
+  procedure ac_accschema_acct_t(p_record in out ac_accschema_acct%rowtype);
+  procedure ac_accschema_param_t(p_record in out ac_accschema_param%rowtype);
+  procedure ac_acct_t(p_record in out ac_acct%rowtype);
+  procedure ac_acct_balance_t(p_record in out ac_acct_balance%rowtype);
+  procedure ac_acct_grp_t(p_record in out ac_acct_grp%rowtype);
+  procedure ac_acct_movement_t(p_record in out ac_acct_movement%rowtype);
+  procedure ac_acc_journal_t(p_record in out ac_acc_journal%rowtype);
+  procedure ac_acc_period_t(p_record in out ac_acc_period%rowtype);
+  procedure ac_acc_year_t(p_record in out ac_acc_year%rowtype);
+  procedure ac_cliaccschema_paramacct_t(p_record in out ac_cliaccschema_paramacct%rowtype);
+  procedure ac_cliaccschema_paramval_t(p_record in out ac_cliaccschema_paramval%rowtype);
+  procedure ac_client_accschema_t(p_record in out ac_client_accschema%rowtype);
   procedure asset_t(p_record in out asset%rowtype);
   procedure bank_t(p_record in out bank%rowtype);
   procedure bank_agency_t(p_record in out bank_agency%rowtype);
@@ -29,12 +29,12 @@ create or replace package PDAO_UPDATE as
   procedure billing_cycle_class_t(p_record in out billing_cycle_class%rowtype);
   procedure bpartner_t(p_record in out bpartner%rowtype);
   procedure bpcontact_phone_t(p_record in out bpcontact_phone%rowtype);
-  procedure bp_account_customer_t(p_record in out bp_account_customer%rowtype);
-  procedure bp_account_internal_t(p_record in out bp_account_internal%rowtype);
-  procedure bp_account_vendor_t(p_record in out bp_account_vendor%rowtype);
+  procedure bp_account_t(p_record in out bp_account%rowtype);
   procedure bp_adress_t(p_record in out bp_adress%rowtype);
+  procedure bp_amount_t(p_record in out bp_amount%rowtype);
   procedure bp_balance_t(p_record in out bp_balance%rowtype);
   procedure bp_bankaccount_t(p_record in out bp_bankaccount%rowtype);
+  procedure bp_client_t(p_record in out bp_client%rowtype);
   procedure bp_contact_t(p_record in out bp_contact%rowtype);
   procedure bp_contract_t(p_record in out bp_contract%rowtype);
   procedure bp_phone_t(p_record in out bp_phone%rowtype);
@@ -81,6 +81,7 @@ create or replace package PDAO_UPDATE as
   procedure mm_product_account_t(p_record in out mm_product_account%rowtype);
   procedure mm_product_category_t(p_record in out mm_product_category%rowtype);
   procedure mm_product_category_account_t(p_record in out mm_product_category_account%rowtype);
+  procedure mm_product_client_t(p_record in out mm_product_client%rowtype);
   procedure mm_product_price_t(p_record in out mm_product_price%rowtype);
   procedure mm_prod_attr_t(p_record in out mm_prod_attr%rowtype);
   procedure mm_prod_attr_grp_t(p_record in out mm_prod_attr_grp%rowtype);
@@ -94,7 +95,6 @@ create or replace package PDAO_UPDATE as
   procedure mm_stock_loc_type_t(p_record in out mm_stock_loc_type%rowtype);
   procedure organization_t(p_record in out organization%rowtype);
   procedure org_type_t(p_record in out org_type%rowtype);
-  procedure parcel_t(p_record in out parcel%rowtype);
   procedure payment_t(p_record in out payment%rowtype);
   procedure payment_doctype_attr_t(p_record in out payment_doctype_attr%rowtype);
   procedure payment_doc_type_t(p_record in out payment_doc_type%rowtype);
@@ -142,6 +142,12 @@ create or replace package PDAO_UPDATE as
   procedure tax_type_t(p_record in out tax_type%rowtype);
   procedure test_t(p_record in out test%rowtype);
   procedure timesheet_t(p_record in out timesheet%rowtype);
+  procedure tr_parcel_t(p_record in out tr_parcel%rowtype);
+  procedure tr_transport_t(p_record in out tr_transport%rowtype);
+  procedure tr_transport_status_t(p_record in out tr_transport_status%rowtype);
+  procedure tr_transport_type_t(p_record in out tr_transport_type%rowtype);
+  procedure tr_vehicle_t(p_record in out tr_vehicle%rowtype);
+  procedure tr_vehicle_type_t(p_record in out tr_vehicle_type%rowtype);
   procedure ui_dc_t(p_record in out ui_dc%rowtype);
   procedure ui_dc_field_t(p_record in out ui_dc_field%rowtype);
   procedure ui_dc_field_initval_t(p_record in out ui_dc_field_initval%rowtype);
@@ -162,93 +168,93 @@ show errors package PDAO_UPDATE;
 
 create or replace package body PDAO_UPDATE as
 
-procedure account_t(p_record in out account%rowtype) is
+procedure ac_accdoc_t(p_record in out ac_accdoc%rowtype) is
 begin
-  update account set row = p_record where id = p_record.id;
+  update ac_accdoc set row = p_record where id = p_record.id;
 end;
 
 
-procedure accounting_doc_t(p_record in out accounting_doc%rowtype) is
+procedure ac_accdoc_line_t(p_record in out ac_accdoc_line%rowtype) is
 begin
-  update accounting_doc set row = p_record where id = p_record.id;
+  update ac_accdoc_line set row = p_record where id = p_record.id;
 end;
 
 
-procedure accounting_doc_line_t(p_record in out accounting_doc_line%rowtype) is
+procedure ac_accschema_t(p_record in out ac_accschema%rowtype) is
 begin
-  update accounting_doc_line set row = p_record where id = p_record.id;
+  update ac_accschema set row = p_record where id = p_record.id;
 end;
 
 
-procedure accounting_journal_t(p_record in out accounting_journal%rowtype) is
+procedure ac_accschema_acct_t(p_record in out ac_accschema_acct%rowtype) is
 begin
-  update accounting_journal set row = p_record where id = p_record.id;
+  update ac_accschema_acct set row = p_record where id = p_record.id;
 end;
 
 
-procedure accounting_period_t(p_record in out accounting_period%rowtype) is
+procedure ac_accschema_param_t(p_record in out ac_accschema_param%rowtype) is
 begin
-  update accounting_period set row = p_record where id = p_record.id;
+  update ac_accschema_param set row = p_record where id = p_record.id;
 end;
 
 
-procedure accounting_year_t(p_record in out accounting_year%rowtype) is
+procedure ac_acct_t(p_record in out ac_acct%rowtype) is
 begin
-  update accounting_year set row = p_record where id = p_record.id;
+  update ac_acct set row = p_record where id = p_record.id;
 end;
 
 
-procedure account_balance_t(p_record in out account_balance%rowtype) is
+procedure ac_acct_balance_t(p_record in out ac_acct_balance%rowtype) is
 begin
-  update account_balance set row = p_record where id = p_record.id;
+  update ac_acct_balance set row = p_record where id = p_record.id;
 end;
 
 
-procedure account_group_t(p_record in out account_group%rowtype) is
+procedure ac_acct_grp_t(p_record in out ac_acct_grp%rowtype) is
 begin
-  update account_group set row = p_record where id = p_record.id;
+  update ac_acct_grp set row = p_record where id = p_record.id;
 end;
 
 
-procedure account_movement_t(p_record in out account_movement%rowtype) is
+procedure ac_acct_movement_t(p_record in out ac_acct_movement%rowtype) is
 begin
-  update account_movement set row = p_record where id = p_record.id;
+  update ac_acct_movement set row = p_record where id = p_record.id;
 end;
 
 
-procedure accrual_t(p_record in out accrual%rowtype) is
+procedure ac_acc_journal_t(p_record in out ac_acc_journal%rowtype) is
 begin
-  update accrual set row = p_record where id = p_record.id;
+  update ac_acc_journal set row = p_record where id = p_record.id;
 end;
 
 
-procedure acc_schema_t(p_record in out acc_schema%rowtype) is
+procedure ac_acc_period_t(p_record in out ac_acc_period%rowtype) is
 begin
-  update acc_schema set row = p_record where id = p_record.id;
+  update ac_acc_period set row = p_record where id = p_record.id;
 end;
 
 
-procedure acc_schema_acct_t(p_record in out acc_schema_acct%rowtype) is
+procedure ac_acc_year_t(p_record in out ac_acc_year%rowtype) is
 begin
-  update acc_schema_acct set row = p_record where id = p_record.id;
+  update ac_acc_year set row = p_record where id = p_record.id;
 end;
 
 
-procedure acc_schema_attr_t(p_record in out acc_schema_attr%rowtype) is
+procedure ac_cliaccschema_paramacct_t(p_record in out ac_cliaccschema_paramacct%rowtype) is
 begin
-  update acc_schema_attr set row = p_record where id = p_record.id;
+  update ac_cliaccschema_paramacct set row = p_record where id = p_record.id;
 end;
 
 
-procedure acc_schema_attr_def_t(p_record in out acc_schema_attr_def%rowtype) is
+procedure ac_cliaccschema_paramval_t(p_record in out ac_cliaccschema_paramval%rowtype) is
 begin
-  update acc_schema_attr_def set row = p_record where id = p_record.id;
+  update ac_cliaccschema_paramval set row = p_record where id = p_record.id;
 end;
 
 
-procedure acc_schema_attr_type_t(p_record in out acc_schema_attr_type%rowtype) is
+procedure ac_client_accschema_t(p_record in out ac_client_accschema%rowtype) is
 begin
-  update acc_schema_attr_type set row = p_record where id = p_record.id;
+  update ac_client_accschema set row = p_record where id = p_record.id;
 end;
 
 
@@ -294,27 +300,21 @@ begin
 end;
 
 
-procedure bp_account_customer_t(p_record in out bp_account_customer%rowtype) is
+procedure bp_account_t(p_record in out bp_account%rowtype) is
 begin
-  update bp_account_customer set row = p_record where id = p_record.id;
-end;
-
-
-procedure bp_account_internal_t(p_record in out bp_account_internal%rowtype) is
-begin
-  update bp_account_internal set row = p_record where id = p_record.id;
-end;
-
-
-procedure bp_account_vendor_t(p_record in out bp_account_vendor%rowtype) is
-begin
-  update bp_account_vendor set row = p_record where id = p_record.id;
+  update bp_account set row = p_record where id = p_record.id;
 end;
 
 
 procedure bp_adress_t(p_record in out bp_adress%rowtype) is
 begin
   update bp_adress set row = p_record where id = p_record.id;
+end;
+
+
+procedure bp_amount_t(p_record in out bp_amount%rowtype) is
+begin
+  update bp_amount set row = p_record where id = p_record.id;
 end;
 
 
@@ -327,6 +327,12 @@ end;
 procedure bp_bankaccount_t(p_record in out bp_bankaccount%rowtype) is
 begin
   update bp_bankaccount set row = p_record where id = p_record.id;
+end;
+
+
+procedure bp_client_t(p_record in out bp_client%rowtype) is
+begin
+  update bp_client set row = p_record where id = p_record.id;
 end;
 
 
@@ -606,6 +612,12 @@ begin
 end;
 
 
+procedure mm_product_client_t(p_record in out mm_product_client%rowtype) is
+begin
+  update mm_product_client set row = p_record where id = p_record.id;
+end;
+
+
 procedure mm_product_price_t(p_record in out mm_product_price%rowtype) is
 begin
   update mm_product_price set row = p_record where id = p_record.id;
@@ -681,12 +693,6 @@ end;
 procedure org_type_t(p_record in out org_type%rowtype) is
 begin
   update org_type set row = p_record where id = p_record.id;
-end;
-
-
-procedure parcel_t(p_record in out parcel%rowtype) is
-begin
-  update parcel set row = p_record where id = p_record.id;
 end;
 
 
@@ -969,6 +975,42 @@ end;
 procedure timesheet_t(p_record in out timesheet%rowtype) is
 begin
   update timesheet set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_parcel_t(p_record in out tr_parcel%rowtype) is
+begin
+  update tr_parcel set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_transport_t(p_record in out tr_transport%rowtype) is
+begin
+  update tr_transport set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_transport_status_t(p_record in out tr_transport_status%rowtype) is
+begin
+  update tr_transport_status set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_transport_type_t(p_record in out tr_transport_type%rowtype) is
+begin
+  update tr_transport_type set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_vehicle_t(p_record in out tr_vehicle%rowtype) is
+begin
+  update tr_vehicle set row = p_record where id = p_record.id;
+end;
+
+
+procedure tr_vehicle_type_t(p_record in out tr_vehicle_type%rowtype) is
+begin
+  update tr_vehicle_type set row = p_record where id = p_record.id;
 end;
 
 
