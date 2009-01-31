@@ -12,18 +12,15 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
   ,mdLayout:'card' // can be : row/column/tab/window/card
   ,detailTabRendered:false
   ,mainToolbar: null
+
   ,initComponent:function() {
-
      Ext.apply(this, arguments); // eo apply
-
-
      N21.Base.GridEditForm.superclass.initComponent.apply(this, arguments);
      if (this.parentDcRelation != null) {
         for (var j=0;j<this.parentDcRelation.relation.length; j++ ) {
           this.getRecordEditor().fields.get(this.parentDcRelation.relation[j].child).copyValueFrom =  this.parentDcRelation.name+'_'+ this.parentDcRelation.relation[j].parent;
         }
      }
-
    }
 
   ,initEvents: function() {
@@ -43,10 +40,11 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
     this.getRecordEditor().on('deleteRecord',this.deleteRecord, this);
 
     var keyMap = new Ext.KeyMap( this.body, [
-        { key: 81, fn: this.close_detail,  ctrl:true, scope:this }/* Alt+Q */
-       ,{ key: 70, fn: this.enterQuery,   ctrl:true, scope:this }/* Alt+F */
-       ,{ key: 78, fn: this.createNewRecord, ctrl:true, scope:this }/* Alt+N */
-      // ,{ key: 83, fn: this.commitForm,   ctrl:true, scope:this }/* Alt+S */
+        { key: Ext.EventObject.Q, fn: this.close_detail,  ctrl:true, scope:this }
+       ,{ key: Ext.EventObject.F7, fn: this.enterQuery,   ctrl:false, scope:this }
+       ,{ key: Ext.EventObject.F8, fn: this.executeQuery,   ctrl:false, scope:this }
+       ,{ key: Ext.EventObject.N, fn: this.createNewRecord, ctrl:true, scope:this }
+       ,{ key: Ext.EventObject.S, fn: this.commitForm, ctrl:true, scope:this }
     ]);
     keyMap.stopEvent = true;
 
@@ -85,9 +83,10 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
       if (fetchedRecCount>0) {
          this.loadRecord(firstRec);
       }else {
-          if (this.mdLayout == 'row' || this.mdLayout == 'column' ) {
-             this.createNewRecord();
-          }
+          this.getRecordEditor().disableAllFields();
+          //if (this.mdLayout == 'row' || this.mdLayout == 'column' ) {
+          //   this.createNewRecord();
+          //}
       }
   }
 
@@ -293,10 +292,16 @@ N21.Base.GridEditForm = Ext.extend(Ext.Panel, {
       this.getRecordList().executeQuery();
    }
 
-  ,exportList: function() {
-     this.getRecordList().export_data();
+  ,exportHtml: function() {
+     this.exportList("html");
   }
-  
+  ,exportCsv: function() {
+     this.exportList("csv");
+  }
+  ,exportList: function(pFormat) {
+     this.getRecordList().export_data(pFormat);
+  }
+
   ,urldecode: function ( str ) {
     var ret = str;
     ret = ret.replace(/\+/g, "%20");

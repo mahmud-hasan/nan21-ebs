@@ -6,6 +6,7 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
    dataRecord: null
   ,dataComponentName:null
   ,firstFocusFieldName:null
+  ,firstFocusFieldNameInsert:null
   ,fields: new Ext.util.MixedCollection()
   ,childDCs:new Array()   //Array
 
@@ -53,6 +54,9 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
        }
 
      }
+  }
+  ,disableAllFields: function() {
+    this.fields.each( this.disable);
   }
   ,deleteRecord: function() {
      if (this.dataRecord.data._p_record_status == "insert") {
@@ -125,7 +129,11 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
           }
         }
        if (blockRelationIndex != -1 ) {
-         Ext.getCmp(detailBlock).clear_records();
+         try {
+           Ext.getCmp(detailBlock).clear_records();
+         } catch (e) {
+            Ext.Msg.alert('Framework error', 'Cannot clear detail block: '+detailBlock);
+         }
        }
   }
   ,clear_block_details:function(detailBlock) {
@@ -145,6 +153,9 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
      this.synchronizeMasterDetail();
   }
   
+  ,getRecordStatus: function() {
+     if ( this.getForm().findField("_p_record_status").getValue() == "insert") return "insert";   else return "update";
+  }
 
 // --------------------------- commitForm ----------------------
 
@@ -202,9 +213,18 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
 
 
   ,setDefaultFormFocus: function() {
-    if (this.firstFocusFieldName != null) {
-       this.getForm().findField(this.firstFocusFieldName).focus();
+    if (this.getRecordStatus() == "insert") {
+      if (this.firstFocusFieldNameInsert != null) {
+         this.getForm().findField(this.firstFocusFieldNameInsert).focus();
+       }else if (this.firstFocusFieldName != null) {
+         this.getForm().findField(this.firstFocusFieldName).focus();
+       }
+    } else {
+       if (this.firstFocusFieldName != null) {
+         this.getForm().findField(this.firstFocusFieldName).focus();
+       }
     }
+
   }
 
 

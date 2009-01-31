@@ -11,6 +11,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   ,queryArraySize:20
   ,parentDcRelation: null
   ,firstFocusFieldName:null
+  ,firstFocusFieldNameInsert:null
   ,recordPk: new Array()
   ,columnMap: new Ext.util.MixedCollection()
   ,dcToolbar: null
@@ -63,7 +64,17 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
         }
      }
+     
+     
+     this.keys = [
+        { key: Ext.EventObject.F7, fn: this.enterQuery,   ctrl:false, scope:this,stopEvent:true }
+       ,{ key: Ext.EventObject.F8, fn: this.executeQuery,   ctrl:false, scope:this,stopEvent:true }
+       ,{ key: Ext.EventObject.N, fn: this.createNewRecord, ctrl:true, scope:this ,stopEvent:true}
+       ,{ key: Ext.EventObject.S, fn: this.commitForm, ctrl:true, scope:this ,stopEvent:true}
+    ];
+
    }
+
 
    ,sentCommitRecCount:0
    ,doneCommitRecCount:0
@@ -182,8 +193,13 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
         Ext.Msg.alert('Error', this.urldecode(Ext.decode(response.responseText).message));
   }
 
-
-  ,exportList:function() {
+  ,exportHtml:function() {
+    this.exportList("html");
+  }
+  ,exportCsv:function() {
+    this.exportList("csv");
+  }
+  ,exportList:function(pFormat) {
      var qs = '';
 
      var qf = this.queryFields;
@@ -207,11 +223,15 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
           ss += '&groupBy='+ this.getStore().getGroupState();
        }
      }
-     var v = window.open("frmMain.php?_p_action=export&_p_exp_format=csv&_p_form="+this.dataComponentName+''+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
+     var v = window.open("frmMain.php?_p_action=export&_p_exp_format="+((pFormat)?pFormat:"html")+"&_p_form="+this.dataComponentName+''+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
      v.focus();
   }
 
-  ,enterQuery:function() {  return ;
+  ,enterQuery:function() { 
+     var qf = this.queryFields;
+     for(var i = 0, len = qf.keys.length; i < len; i++){
+        qf.items[i].setValue("");
+     }
   }
 
    ,resetQuery: function() {
@@ -269,9 +289,10 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
               this.getStore().getById(p["_p_store_recId"]).set(this.dataRecordMeta.prototype.fields.items[j].name,p[this.dataRecordMeta.prototype.fields.items[j].name] );
            }
          }
-      }
-        this.store.commitChanges();
-      }
+       }
+       this.getStore().getById(p["_p_store_recId"]).set("_p_record_status","");
+       this.store.commitChanges();
+     }
 
       if (this.sentCommitRecCount==this.doneCommitRecCount) {
          this.sentCommitRecCount=0;
@@ -328,7 +349,9 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
               this.getStore().getAt(this.getStore().getCount()-1).set(this.dataRecordMeta.prototype.fields.items[i].name,p[this.dataRecordMeta.prototype.fields.items[i].name] );
            }
       }
-     if (this.firstFocusFieldName != null ) {
+     if (this.firstFocusFieldNameInsert != null ) {
+       this.startEditing(this.getStore().getCount()-1, this.getColumnModel().getIndexById(this.firstFocusFieldNameInsert) );
+     }else if (this.firstFocusFieldName!= null ) {
        this.startEditing(this.getStore().getCount()-1, this.getColumnModel().getIndexById(this.firstFocusFieldName) );
      }
   }

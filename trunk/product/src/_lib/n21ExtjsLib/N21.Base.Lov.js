@@ -266,7 +266,11 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
        for(var i=0;i<this.paramMapping.length; i++ ) {
          if (this.paramMapping[i].field) {
            if (this.paramMapping[i].field.indexOf(".")<0) {
-             newParamVal = Ext.getCmp(this.paramMapping[i].field).getValue();
+             if (!Ext.isEmpty(this.callFromGrid)) {
+               newParamVal = this.callFromGrid.store.getAt(this.callFromGridRow).get(this.paramMapping[i].field);
+             } else {
+               newParamVal = Ext.getCmp(this.paramMapping[i].field).getValue();
+             }
            }else {
             var dc = this.paramMapping[i].field.substring(0,this.paramMapping[i].field.indexOf("."));
             var fld = this.paramMapping[i].field.substring(this.paramMapping[i].field.indexOf(".")+1);
@@ -311,11 +315,15 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
   ,onBlur:function () {
      if (!this.getValue()) {
         for (var i=0;i<this.fieldMapping.length;i++ ) {
-          Ext.getCmp(this.fieldMapping[i].field).setValue("");
+          if (!Ext.isEmpty(this.callFromGrid)) {
+             //this.callFromGrid.store.getAt(this.callFromGridRow).set(this.fieldMapping[i].field,"");
+           } else {
+             Ext.getCmp(this.fieldMapping[i].field).setValue("");
+           }
         }
      }
   }
-  
+
 
     ,onDoSelect: function(){
 

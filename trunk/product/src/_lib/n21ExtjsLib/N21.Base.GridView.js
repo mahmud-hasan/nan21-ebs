@@ -199,7 +199,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
      this.queryFields.get(fieldName).setValue(fieldValue);
    }
 
-  ,export_data:function() {
+  ,export_data:function(p_format) {
      var qs = '';
      
      var qf = this.queryFields;
@@ -226,7 +226,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
      }
 
 
-     var v = window.open("frmMain.php?_p_form="+this.dataComponentName.replace('G','')+"&_p_action=export&_p_exp_format=csv"+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
+     var v = window.open("frmMain.php?_p_form="+this.dataComponentName.replace('G','')+"&_p_action=export&_p_exp_format="+((p_format)?p_format:"csv")+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
      v.focus();
   }
 
