@@ -2,10 +2,10 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * LOV0011: Accounting year
+ * LOV0061: Means of transport
  */
 require_once(PATH_CTRL_FRMWK."/Controller.php");
-class LOV0011 extends Controller {
+class LOV0061 extends Controller {
   public function doQuery() {
     try {
       $params = array();
@@ -21,13 +21,12 @@ class LOV0011 extends Controller {
       $orderBy = (!empty($_REQUEST["sort"]))?$_REQUEST["sort"]:"";
       $orderSense = (!empty($_REQUEST["dir"]))?$_REQUEST["dir"]:"";
       $orderByClause = (!empty($orderBy))? "order by $orderBy $orderSense " : "" ;
-      $params["p_client_id"] = (isset($_REQUEST["p_client_id"]))?  $_REQUEST["p_client_id"] : "-1";
-      $sql = "select tsql.* from (select id,code from ac_acc_year where client_id = :p_client_id order by startdate desc) tsql ".$where." ".$orderByClause;
+      $sql = "select tsql.* from (select id, reg_no from tr_vehicle order by 1) tsql ".$where." ".$orderByClause;
       $stmt = $this->db->prepare($sql);
       $rs = $this->db->Execute($stmt, $params);
       $columns = array(
-       "CODE"
-      ,"ID"
+       "ID"
+      ,"REG_NO"
       );
       $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
       if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
