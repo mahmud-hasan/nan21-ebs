@@ -99,13 +99,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -135,7 +139,7 @@ public function doInsert() {
     $RECORD = array();
     $RECORD["BPARTNER_ID"] = $this->getRequestParam("BPARTNER_ID");
     $RECORD["BPARTNER_NAME"] = $this->getRequestParam("BPARTNER_NAME");
-    $RECORD["CODE"] = $this->getRequestParam("CODE");
+    $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["DEFAULT_CLIENT"] = $this->getRequestParamBoolean("DEFAULT_CLIENT");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
@@ -173,7 +177,7 @@ public function doUpdate() {
     $RECORD = array();
     $RECORD["BPARTNER_ID"] = $this->getRequestParam("BPARTNER_ID");
     $RECORD["BPARTNER_NAME"] = $this->getRequestParam("BPARTNER_NAME");
-    $RECORD["CODE"] = $this->getRequestParam("CODE");
+    $RECORD["CODE"] = strtoupper($this->getRequestParam("CODE"));
     $RECORD["DEFAULT_CLIENT"] = $this->getRequestParamBoolean("DEFAULT_CLIENT");
     $RECORD["ID"] = $this->getRequestParam("ID");
     $RECORD["NAME"] = $this->getRequestParam("NAME");

@@ -11,10 +11,10 @@ class DC0083 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "cc.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "cc.ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
@@ -26,15 +26,15 @@ private function preQuery(&$params, &$where) {
       $where .= "cc.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "cc.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "cc.NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "cc.ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
 }
 
@@ -52,32 +52,32 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                cc.CREATEDON
-                ,cc.CREATEDBY
-                ,cc.MODIFIEDON
-                ,cc.MODIFIEDBY
-                ,cc.ID
+                cc.ACTIVE
+                ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE
                 ,cc.CLIENT_ID
                 ,cc.CODE
+                ,cc.CREATEDBY
+                ,cc.CREATEDON
+                ,cc.ID
+                ,cc.MODIFIEDBY
+                ,cc.MODIFIEDON
                 ,cc.NAME
-                ,cc.ACTIVE
-                ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE
             from COST_CENTER cc $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"ID"
+      "ACTIVE"
+      ,"CLIENT_CODE"
       ,"CLIENT_ID"
       ,"CODE"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"NAME"
-      ,"ACTIVE"
-      ,"CLIENT_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -104,8 +104,8 @@ public function doExport() {
     }
     $sql = "select 
                 cc.ID
-                ,cc.CLIENT_ID
                 ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE
+                ,cc.CLIENT_ID
                 ,cc.CODE
                 ,cc.NAME
                 ,cc.ACTIVE
@@ -119,8 +119,8 @@ public function doExport() {
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_ID"
      ,"CLIENT_CODE"
+     ,"CLIENT_ID"
      ,"CODE"
      ,"NAME"
      ,"ACTIVE"
@@ -132,13 +132,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -179,17 +183,17 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $sql = "insert into COST_CENTER(
-                 ID
+                 ACTIVE
                 ,CLIENT_ID
                 ,CODE
+                ,ID
                 ,NAME
-                ,ACTIVE
             ) values ( 
-                 :ID
+                 :ACTIVE
                 ,:CLIENT_ID
                 ,:CODE
+                ,:ID
                 ,:NAME
-                ,:ACTIVE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_COSTCENTER_ID.nextval seq_val from dual")->fetchRow();
@@ -282,16 +286,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                cc.CREATEDON
-                ,cc.CREATEDBY
-                ,cc.MODIFIEDON
-                ,cc.MODIFIEDBY
-                ,cc.ID
+                cc.ACTIVE
+                ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE
                 ,cc.CLIENT_ID
                 ,cc.CODE
+                ,cc.CREATEDBY
+                ,cc.CREATEDON
+                ,cc.ID
+                ,cc.MODIFIEDBY
+                ,cc.MODIFIEDON
                 ,cc.NAME
-                ,cc.ACTIVE
-                ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE
             from COST_CENTER cc
          where 
            cc.ID= :ID
@@ -302,16 +306,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

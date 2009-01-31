@@ -21,15 +21,15 @@ private function preQuery(&$params, &$where) {
       $where .= "t.PRICELIST_ID like :PRICELIST_ID";
       $params["PRICELIST_ID"] = $_REQUEST["QRY_PRICELIST_ID"];
     }
-    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.PRODUCT_ID like :PRODUCT_ID";
-      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
-    }
     if (!empty($_REQUEST["QRY_PRICELVL_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.PRICELVL_ID like :PRICELVL_ID";
       $params["PRICELVL_ID"] = $_REQUEST["QRY_PRICELVL_ID"];
+    }
+    if (!empty($_REQUEST["QRY_PRODUCT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.PRODUCT_ID like :PRODUCT_ID";
+      $params["PRODUCT_ID"] = $_REQUEST["QRY_PRODUCT_ID"];
     }
 }
 
@@ -48,11 +48,11 @@ public function doQuery() {
     }
     $sql = "select 
                 t.ID
-                ,t.PRICELIST_ID
-                ,t.PRODUCT_ID
-                ,t.PRICELVL_ID
                 ,t.PRICE
+                ,t.PRICELIST_ID
+                ,t.PRICELVL_ID
                 ,pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME
+                ,t.PRODUCT_ID
                 ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME
             from MM_PRODUCT_PRICE t $where $orderByClause ";
     $this->logger->debug($sql);
@@ -61,11 +61,11 @@ public function doQuery() {
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"PRICELIST_ID"
-      ,"PRODUCT_ID"
-      ,"PRICELVL_ID"
       ,"PRICE"
+      ,"PRICELIST_ID"
+      ,"PRICELVL_ID"
       ,"PRICELVL_NAME"
+      ,"PRODUCT_ID"
       ,"PRODUCT_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -96,8 +96,8 @@ public function doExport() {
                 ,t.PRICELIST_ID
                 ,t.PRODUCT_ID
                 ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME
-                ,t.PRICELVL_ID
                 ,pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME
+                ,t.PRICELVL_ID
                 ,t.PRICE
             from MM_PRODUCT_PRICE t $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
@@ -108,20 +108,24 @@ public function doExport() {
      ,"PRICELIST_ID"
      ,"PRODUCT_ID"
      ,"PRODUCT_NAME"
-     ,"PRICELVL_ID"
      ,"PRICELVL_NAME"
+     ,"PRICELVL_ID"
      ,"PRICE"
       );
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -160,16 +164,16 @@ public function doInsert() {
     $RECORD["PRODUCT_NAME"] = $this->getRequestParam("PRODUCT_NAME");
     $sql = "insert into MM_PRODUCT_PRICE(
                  ID
-                ,PRICELIST_ID
-                ,PRODUCT_ID
-                ,PRICELVL_ID
                 ,PRICE
+                ,PRICELIST_ID
+                ,PRICELVL_ID
+                ,PRODUCT_ID
             ) values ( 
                  :ID
-                ,:PRICELIST_ID
-                ,:PRODUCT_ID
-                ,:PRICELVL_ID
                 ,:PRICE
+                ,:PRICELIST_ID
+                ,:PRICELVL_ID
+                ,:PRODUCT_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_PRODPRICE_ID.nextval seq_val from dual")->fetchRow();
@@ -253,11 +257,11 @@ public function initNewRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 t.ID
-                ,t.PRICELIST_ID
-                ,t.PRODUCT_ID
-                ,t.PRICELVL_ID
                 ,t.PRICE
+                ,t.PRICELIST_ID
+                ,t.PRICELVL_ID
                 ,pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME
+                ,t.PRODUCT_ID
                 ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME
             from MM_PRODUCT_PRICE t
          where 
@@ -270,11 +274,11 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRICELIST_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRICELVL_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRICE" => array("DATA_TYPE" => "NUMBER")
+  ,"PRICELIST_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"PRICELVL_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRICELVL_NAME" => array("DATA_TYPE" => "STRING")
+  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
 );
 

@@ -47,42 +47,42 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                t.ID
+                t.BASE_DOC_CURRENCY
+                ,t.BASE_DOC_PRICE
+                ,t.BASE_DOC_QTY
+                ,t.ID
+                ,t.INVENTORY_QTY
                 ,t.LINE_NO
                 ,t.MVMNTINDOC_ID
-                ,t.PRODUCT_ID
-                ,t.QTY
-                ,t.BASE_DOC_QTY
-                ,t.RECEIVED_QTY
-                ,t.INVENTORY_QTY
-                ,t.BASE_DOC_PRICE
-                ,t.BASE_DOC_CURRENCY
                 ,t.NOTES
-                ,t.UOM
+                ,t.PRODUCT_ID
                 ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME
-                ,t.STOCKLOC_ID
+                ,t.QTY
+                ,t.RECEIVED_QTY
                 ,pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE
+                ,t.STOCKLOC_ID
+                ,t.UOM
             from MM_MOVEMENT_IN_LINE t $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "BASE_DOC_CURRENCY"
+      ,"BASE_DOC_PRICE"
+      ,"BASE_DOC_QTY"
+      ,"ID"
+      ,"INVENTORY_QTY"
       ,"LINE_NO"
       ,"MVMNTINDOC_ID"
-      ,"PRODUCT_ID"
-      ,"QTY"
-      ,"BASE_DOC_QTY"
-      ,"RECEIVED_QTY"
-      ,"INVENTORY_QTY"
-      ,"BASE_DOC_PRICE"
-      ,"BASE_DOC_CURRENCY"
       ,"NOTES"
-      ,"UOM"
+      ,"PRODUCT_ID"
       ,"PRODUCT_NAME"
-      ,"STOCKLOC_ID"
+      ,"QTY"
+      ,"RECEIVED_QTY"
       ,"STOCKLOC_CODE"
+      ,"STOCKLOC_ID"
+      ,"UOM"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -147,13 +147,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -197,33 +201,33 @@ public function doInsert() {
     $RECORD["STOCKLOC_ID"] = $this->getRequestParam("STOCKLOC_ID");
     $RECORD["UOM"] = $this->getRequestParam("UOM");
     $sql = "insert into MM_MOVEMENT_IN_LINE(
-                 ID
+                 BASE_DOC_CURRENCY
+                ,BASE_DOC_PRICE
+                ,BASE_DOC_QTY
+                ,ID
+                ,INVENTORY_QTY
                 ,LINE_NO
                 ,MVMNTINDOC_ID
+                ,NOTES
                 ,PRODUCT_ID
                 ,QTY
-                ,BASE_DOC_QTY
                 ,RECEIVED_QTY
-                ,INVENTORY_QTY
-                ,BASE_DOC_PRICE
-                ,BASE_DOC_CURRENCY
-                ,NOTES
-                ,UOM
                 ,STOCKLOC_ID
+                ,UOM
             ) values ( 
-                 :ID
+                 :BASE_DOC_CURRENCY
+                ,:BASE_DOC_PRICE
+                ,:BASE_DOC_QTY
+                ,:ID
+                ,:INVENTORY_QTY
                 ,:LINE_NO
                 ,:MVMNTINDOC_ID
+                ,:NOTES
                 ,:PRODUCT_ID
                 ,:QTY
-                ,:BASE_DOC_QTY
                 ,:RECEIVED_QTY
-                ,:INVENTORY_QTY
-                ,:BASE_DOC_PRICE
-                ,:BASE_DOC_CURRENCY
-                ,:NOTES
-                ,:UOM
                 ,:STOCKLOC_ID
+                ,:UOM
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_MVMNTINLIN_ID.nextval seq_val from dual")->fetchRow();
@@ -261,19 +265,19 @@ public function doUpdate() {
     $RECORD["UOM"] = $this->getRequestParam("UOM");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0080.doUpdate().");}
     $sql = "update MM_MOVEMENT_IN_LINE set 
-                 ID=:ID
+                 BASE_DOC_CURRENCY=:BASE_DOC_CURRENCY
+                ,BASE_DOC_PRICE=:BASE_DOC_PRICE
+                ,BASE_DOC_QTY=:BASE_DOC_QTY
+                ,ID=:ID
+                ,INVENTORY_QTY=:INVENTORY_QTY
                 ,LINE_NO=:LINE_NO
                 ,MVMNTINDOC_ID=:MVMNTINDOC_ID
+                ,NOTES=:NOTES
                 ,PRODUCT_ID=:PRODUCT_ID
                 ,QTY=:QTY
-                ,BASE_DOC_QTY=:BASE_DOC_QTY
                 ,RECEIVED_QTY=:RECEIVED_QTY
-                ,INVENTORY_QTY=:INVENTORY_QTY
-                ,BASE_DOC_PRICE=:BASE_DOC_PRICE
-                ,BASE_DOC_CURRENCY=:BASE_DOC_CURRENCY
-                ,NOTES=:NOTES
-                ,UOM=:UOM
                 ,STOCKLOC_ID=:STOCKLOC_ID
+                ,UOM=:UOM
     where 
            ID= :ID
     ";
@@ -335,21 +339,21 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                t.ID
+                t.BASE_DOC_CURRENCY
+                ,t.BASE_DOC_PRICE
+                ,t.BASE_DOC_QTY
+                ,t.ID
+                ,t.INVENTORY_QTY
                 ,t.LINE_NO
                 ,t.MVMNTINDOC_ID
-                ,t.PRODUCT_ID
-                ,t.QTY
-                ,t.BASE_DOC_QTY
-                ,t.RECEIVED_QTY
-                ,t.INVENTORY_QTY
-                ,t.BASE_DOC_PRICE
-                ,t.BASE_DOC_CURRENCY
                 ,t.NOTES
-                ,t.UOM
+                ,t.PRODUCT_ID
                 ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME
-                ,t.STOCKLOC_ID
+                ,t.QTY
+                ,t.RECEIVED_QTY
                 ,pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE
+                ,t.STOCKLOC_ID
+                ,t.UOM
             from MM_MOVEMENT_IN_LINE t
          where 
            t.ID= :ID
@@ -360,21 +364,21 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "BASE_DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
+  ,"BASE_DOC_PRICE" => array("DATA_TYPE" => "NUMBER")
+  ,"BASE_DOC_QTY" => array("DATA_TYPE" => "NUMBER")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"INVENTORY_QTY" => array("DATA_TYPE" => "NUMBER")
   ,"LINE_NO" => array("DATA_TYPE" => "NUMBER")
   ,"MVMNTINDOC_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"QTY" => array("DATA_TYPE" => "NUMBER")
-  ,"BASE_DOC_QTY" => array("DATA_TYPE" => "NUMBER")
-  ,"RECEIVED_QTY" => array("DATA_TYPE" => "NUMBER")
-  ,"INVENTORY_QTY" => array("DATA_TYPE" => "NUMBER")
-  ,"BASE_DOC_PRICE" => array("DATA_TYPE" => "NUMBER")
-  ,"BASE_DOC_CURRENCY" => array("DATA_TYPE" => "STRING")
   ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"UOM" => array("DATA_TYPE" => "STRING")
+  ,"PRODUCT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"PRODUCT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"STOCKLOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"QTY" => array("DATA_TYPE" => "NUMBER")
+  ,"RECEIVED_QTY" => array("DATA_TYPE" => "NUMBER")
   ,"STOCKLOC_CODE" => array("DATA_TYPE" => "STRING")
+  ,"STOCKLOC_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"UOM" => array("DATA_TYPE" => "STRING")
 );
 
 

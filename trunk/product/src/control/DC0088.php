@@ -11,25 +11,25 @@ class DC0088 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
-    if (!empty($_REQUEST["QRY_ORG_ID"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "t.ORG_ID like :ORG_ID";
-      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
+      $where .= "t.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_ORGINV_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.ORGINV_ID like :ORGINV_ID";
       $params["ORGINV_ID"] = $_REQUEST["QRY_ORGINV_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ORG_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ORG_ID like :ORG_ID";
+      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
     }
 }
 
@@ -47,38 +47,38 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                t.ID
-                ,t.CLIENT_ID
-                ,t.ORG_ID
-                ,t.ORGINV_ID
+                t.CLIENT_ID
                 ,t.CODE
-                ,t.DESCRIPTION
-                ,t.IS_DEFAULT
-                ,t.STOCKLOC_TYPE
-                ,t.IS_VIRTUAL
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
+                ,t.CREATEDON
+                ,t.DESCRIPTION
+                ,t.ID
+                ,t.IS_DEFAULT
+                ,t.IS_VIRTUAL
                 ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.ORGINV_ID
+                ,t.ORG_ID
+                ,t.STOCKLOC_TYPE
             from MM_STOCK_LOC t $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CLIENT_ID"
-      ,"ORG_ID"
-      ,"ORGINV_ID"
+      "CLIENT_ID"
       ,"CODE"
-      ,"DESCRIPTION"
-      ,"IS_DEFAULT"
-      ,"STOCKLOC_TYPE"
-      ,"IS_VIRTUAL"
-      ,"CREATEDON"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"CREATEDON"
+      ,"DESCRIPTION"
+      ,"ID"
+      ,"IS_DEFAULT"
+      ,"IS_VIRTUAL"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"ORGINV_ID"
+      ,"ORG_ID"
+      ,"STOCKLOC_TYPE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -139,13 +139,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -187,25 +191,25 @@ public function doInsert() {
     $RECORD["ORG_ID"] = $this->getRequestParam("ORG_ID");
     $RECORD["STOCKLOC_TYPE"] = $this->getRequestParam("STOCKLOC_TYPE");
     $sql = "insert into MM_STOCK_LOC(
-                 ID
-                ,CLIENT_ID
-                ,ORG_ID
-                ,ORGINV_ID
+                 CLIENT_ID
                 ,CODE
                 ,DESCRIPTION
+                ,ID
                 ,IS_DEFAULT
-                ,STOCKLOC_TYPE
                 ,IS_VIRTUAL
+                ,ORGINV_ID
+                ,ORG_ID
+                ,STOCKLOC_TYPE
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
-                ,:ORG_ID
-                ,:ORGINV_ID
+                 :CLIENT_ID
                 ,:CODE
                 ,:DESCRIPTION
+                ,:ID
                 ,:IS_DEFAULT
-                ,:STOCKLOC_TYPE
                 ,:IS_VIRTUAL
+                ,:ORGINV_ID
+                ,:ORG_ID
+                ,:STOCKLOC_TYPE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_STOCKLOC_ID.nextval seq_val from dual")->fetchRow();
@@ -237,15 +241,15 @@ public function doUpdate() {
     $RECORD["STOCKLOC_TYPE"] = $this->getRequestParam("STOCKLOC_TYPE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0088.doUpdate().");}
     $sql = "update MM_STOCK_LOC set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,ORG_ID=:ORG_ID
-                ,ORGINV_ID=:ORGINV_ID
+                 CLIENT_ID=:CLIENT_ID
                 ,CODE=:CODE
                 ,DESCRIPTION=:DESCRIPTION
+                ,ID=:ID
                 ,IS_DEFAULT=:IS_DEFAULT
-                ,STOCKLOC_TYPE=:STOCKLOC_TYPE
                 ,IS_VIRTUAL=:IS_VIRTUAL
+                ,ORGINV_ID=:ORGINV_ID
+                ,ORG_ID=:ORG_ID
+                ,STOCKLOC_TYPE=:STOCKLOC_TYPE
     where 
            ID= :ID
     ";
@@ -305,19 +309,19 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                t.ID
-                ,t.CLIENT_ID
-                ,t.ORG_ID
-                ,t.ORGINV_ID
+                t.CLIENT_ID
                 ,t.CODE
-                ,t.DESCRIPTION
-                ,t.IS_DEFAULT
-                ,t.STOCKLOC_TYPE
-                ,t.IS_VIRTUAL
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
+                ,t.CREATEDON
+                ,t.DESCRIPTION
+                ,t.ID
+                ,t.IS_DEFAULT
+                ,t.IS_VIRTUAL
                 ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.ORGINV_ID
+                ,t.ORG_ID
+                ,t.STOCKLOC_TYPE
             from MM_STOCK_LOC t
          where 
            t.ID= :ID
@@ -328,19 +332,19 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ORGINV_ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"IS_DEFAULT" => array("DATA_TYPE" => "BOOLEAN")
-  ,"STOCKLOC_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"IS_VIRTUAL" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"IS_DEFAULT" => array("DATA_TYPE" => "BOOLEAN")
+  ,"IS_VIRTUAL" => array("DATA_TYPE" => "BOOLEAN")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ORGINV_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"STOCKLOC_TYPE" => array("DATA_TYPE" => "STRING")
 );
 
 

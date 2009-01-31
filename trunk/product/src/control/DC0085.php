@@ -11,35 +11,35 @@ class DC0085 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.CLIENT_ID like :CLIENT_ID";
       $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ORG_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "t.ORG_ID like :ORG_ID";
-      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
     }
-    if (!empty($_REQUEST["QRY_ORGINVTYPE_CODE"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "t.ORGINVTYPE_CODE like :ORGINVTYPE_CODE";
-      $params["ORGINVTYPE_CODE"] = $_REQUEST["QRY_ORGINVTYPE_CODE"];
+      $where .= "t.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_IS_DEFAULT"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "t.IS_DEFAULT like :IS_DEFAULT";
       $params["IS_DEFAULT"] = $_REQUEST["QRY_IS_DEFAULT"];
+    }
+    if (!empty($_REQUEST["QRY_ORGINVTYPE_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ORGINVTYPE_CODE like :ORGINVTYPE_CODE";
+      $params["ORGINVTYPE_CODE"] = $_REQUEST["QRY_ORGINVTYPE_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ORG_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ORG_ID like :ORG_ID";
+      $params["ORG_ID"] = $_REQUEST["QRY_ORG_ID"];
     }
 }
 
@@ -57,18 +57,18 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                t.ID
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
                 ,t.CLIENT_ID
-                ,t.ORG_ID
                 ,t.CODE
-                ,t.DESCRIPTION
-                ,t.ORGINVTYPE_CODE
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
-                ,t.MODIFIEDBY
+                ,t.CREATEDON
+                ,t.DESCRIPTION
+                ,t.ID
                 ,t.IS_DEFAULT
-                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.ORGINVTYPE_CODE
+                ,t.ORG_ID
                 ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
             from MM_ORG_INV t $where $orderByClause ";
     $this->logger->debug($sql);
@@ -76,18 +76,18 @@ public function doQuery() {
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CLIENT_CODE"
       ,"CLIENT_ID"
-      ,"ORG_ID"
       ,"CODE"
-      ,"DESCRIPTION"
-      ,"ORGINVTYPE_CODE"
-      ,"CREATEDON"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
+      ,"CREATEDON"
+      ,"DESCRIPTION"
+      ,"ID"
       ,"IS_DEFAULT"
-      ,"CLIENT_CODE"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"ORGINVTYPE_CODE"
+      ,"ORG_ID"
       ,"ORG_NAME"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
@@ -149,13 +149,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -197,21 +201,21 @@ public function doInsert() {
     $RECORD["ORG_ID"] = $this->getRequestParam("ORG_ID");
     $RECORD["ORG_NAME"] = $this->getRequestParam("ORG_NAME");
     $sql = "insert into MM_ORG_INV(
-                 ID
-                ,CLIENT_ID
-                ,ORG_ID
+                 CLIENT_ID
                 ,CODE
                 ,DESCRIPTION
-                ,ORGINVTYPE_CODE
+                ,ID
                 ,IS_DEFAULT
+                ,ORGINVTYPE_CODE
+                ,ORG_ID
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
-                ,:ORG_ID
+                 :CLIENT_ID
                 ,:CODE
                 ,:DESCRIPTION
-                ,:ORGINVTYPE_CODE
+                ,:ID
                 ,:IS_DEFAULT
+                ,:ORGINVTYPE_CODE
+                ,:ORG_ID
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ORGINV_ID.nextval seq_val from dual")->fetchRow();
@@ -243,13 +247,13 @@ public function doUpdate() {
     $RECORD["ORG_NAME"] = $this->getRequestParam("ORG_NAME");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0085.doUpdate().");}
     $sql = "update MM_ORG_INV set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
-                ,ORG_ID=:ORG_ID
+                 CLIENT_ID=:CLIENT_ID
                 ,CODE=:CODE
                 ,DESCRIPTION=:DESCRIPTION
-                ,ORGINVTYPE_CODE=:ORGINVTYPE_CODE
+                ,ID=:ID
                 ,IS_DEFAULT=:IS_DEFAULT
+                ,ORGINVTYPE_CODE=:ORGINVTYPE_CODE
+                ,ORG_ID=:ORG_ID
     where 
            ID= :ID
     ";
@@ -309,18 +313,18 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                t.ID
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
                 ,t.CLIENT_ID
-                ,t.ORG_ID
                 ,t.CODE
-                ,t.DESCRIPTION
-                ,t.ORGINVTYPE_CODE
-                ,t.CREATEDON
                 ,t.CREATEDBY
-                ,t.MODIFIEDON
-                ,t.MODIFIEDBY
+                ,t.CREATEDON
+                ,t.DESCRIPTION
+                ,t.ID
                 ,t.IS_DEFAULT
-                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.ORGINVTYPE_CODE
+                ,t.ORG_ID
                 ,pbo_org.get_name_by_id(t.org_id) ORG_NAME
             from MM_ORG_INV t
          where 
@@ -332,18 +336,18 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
   ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"ORGINVTYPE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"IS_DEFAULT" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ORGINVTYPE_CODE" => array("DATA_TYPE" => "STRING")
+  ,"ORG_ID" => array("DATA_TYPE" => "NUMBER")
   ,"ORG_NAME" => array("DATA_TYPE" => "STRING")
 );
 
