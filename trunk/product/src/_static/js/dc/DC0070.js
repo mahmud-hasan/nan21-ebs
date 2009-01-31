@@ -40,8 +40,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0070</span>"          )
           ,dataComponentName:"DC0070"
           ,frame:true
           ,queryArraySize:-1
@@ -57,9 +58,9 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0070_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0070_QRY_MENUITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem Id"})  );
-         this.queryFields.add("ROLE_NAME", new N21.DataComp.LOV0045({xtype: "LOV0045",name:"QRY_ROLE_NAME",id:"DC0070_QRY_ROLE_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0070F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("MENUITEM_ID",new Ext.form.Hidden({name:"QRY_MENUITEM_ID",id:"DC0070F_QRY_MENUITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem Id",allowBlank:true,width:100}));
+       this.queryFields.add("ROLE_NAME",new  N21.DataComp.LOV0045({name:"QRY_ROLE_NAME",id:"DC0070F_QRY_ROLE_NAME",fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
 
 
 

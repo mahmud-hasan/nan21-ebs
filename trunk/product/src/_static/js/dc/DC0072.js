@@ -38,8 +38,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0072</span>"          )
           ,dataComponentName:"DC0072"
           ,frame:true
           ,queryArraySize:20
@@ -53,10 +54,10 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0072_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("USERNAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_USERNAME",id:"DC0072_QRY_USERNAME",width:80,fieldLabel: this.resourceBundle.FieldLabel.USERNAME||"Username"})  );
-         this.queryFields.add("LOGIN", new Ext.form.DateField ({xtype: "datefield",name:"QRY_LOGIN",id:"DC0072_QRY_LOGIN",width:100,fieldLabel: this.resourceBundle.FieldLabel.LOGIN||"Login",format:Ext.DATE_FORMAT})  );
-         this.queryFields.add("IP_ADRESS", new Ext.form.TextField ({xtype: "textfield",name:"QRY_IP_ADRESS",id:"DC0072_QRY_IP_ADRESS",width:80,fieldLabel: this.resourceBundle.FieldLabel.IP_ADRESS||"Ip_adress"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0072F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("USERNAME",new Ext.form.TextField({name:"QRY_USERNAME",id:"DC0072F_QRY_USERNAME",fieldLabel: this.resourceBundle.FieldLabel.USERNAME||"Username",allowBlank:true,width:80}));
+       this.queryFields.add("LOGIN",new Ext.form.DateField({name:"QRY_LOGIN",id:"DC0072F_QRY_LOGIN",fieldLabel: this.resourceBundle.FieldLabel.LOGIN||"Login",allowBlank:true,width:100,format:Ext.DATE_FORMAT}));
+       this.queryFields.add("IP_ADRESS",new Ext.form.TextField({name:"QRY_IP_ADRESS",id:"DC0072F_QRY_IP_ADRESS",fieldLabel: this.resourceBundle.FieldLabel.IP_ADRESS||"Ip_adress",allowBlank:true,width:80}));
 
 
 

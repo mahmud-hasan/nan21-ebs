@@ -18,13 +18,13 @@
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0042&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
-              ,fields:[{name:"ACCT",type:"string"},{name:"CODE",type:"string"},{name:"ID",type:"float"},{name:"NAME",type:"string"}]
+              ,fields:[{name:"CODE",type:"string"},{name:"ID",type:"float"},{name:"NAME",type:"string"}]
+              ,baseParams: {p_client_id:"-1"}
              })
              ,columns: [new Ext.grid.RowNumberer(),
                {id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,hidden :true,dataIndex:'ID',sortable:true,align:'right'}
               ,{id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',sortable:true}
               ,{id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:200,dataIndex:'NAME',sortable:true}
-              ,{id:"ACCT",header:this.resourceBundle.FieldLabel.ACCT||"Account",width:100,dataIndex:'ACCT',sortable:true}
              ]
            })
           ,dataComponentName:"LOV0042"

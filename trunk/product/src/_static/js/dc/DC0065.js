@@ -38,8 +38,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0065</span>"          )
           ,dataComponentName:"DC0065"
           ,frame:true
           ,queryArraySize:20
@@ -53,11 +54,11 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0065_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0065_QRY_CLIENT_ID"}],name:"QRY_CLIENT_CODE",id:"DC0065_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0065_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client id"})  );
-         this.queryFields.add("DOCUMENT_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DOCUMENT_TYPE",id:"DC0065_QRY_DOCUMENT_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DOCUMENT_TYPE||"Doc. type"})  );
-         this.queryFields.add("SERIAL", new Ext.form.TextField ({xtype: "textfield",name:"QRY_SERIAL",id:"DC0065_QRY_SERIAL",width:100,fieldLabel: this.resourceBundle.FieldLabel.SERIAL||"Serial"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0065F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"QRY_CLIENT_CODE",id:"DC0065F_QRY_CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0065F_QRY_CLIENT_ID"}]}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0065F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client id",allowBlank:true,width:100}));
+       this.queryFields.add("DOCUMENT_TYPE",new Ext.form.TextField({name:"QRY_DOCUMENT_TYPE",id:"DC0065F_QRY_DOCUMENT_TYPE",fieldLabel: this.resourceBundle.FieldLabel.DOCUMENT_TYPE||"Doc. type",allowBlank:true,width:100}));
+       this.queryFields.add("SERIAL",new Ext.form.TextField({name:"QRY_SERIAL",id:"DC0065F_QRY_SERIAL",fieldLabel: this.resourceBundle.FieldLabel.SERIAL||"Serial",allowBlank:true,width:100}));
 
 
 

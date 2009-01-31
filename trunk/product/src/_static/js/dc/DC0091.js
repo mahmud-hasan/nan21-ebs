@@ -34,7 +34,7 @@
     ,recordPk:[ "SERIAL_","SID"]
     ,initComponent:function() {
        
-         this.queryFields.add("SQL_TEXT", new Ext.form.TextArea ({xtype: "textarea",name:"QRY_SQL_TEXT",id:"DC0091_QRY_SQL_TEXT",width:100,fieldLabel: this.resourceBundle.FieldLabel.SQL_TEXT||"Sql_text"})  );
+       this.queryFields.add("SQL_TEXT",new Ext.form.TextArea({name:"QRY_SQL_TEXT",id:"DC0091F_QRY_SQL_TEXT",fieldLabel: this.resourceBundle.FieldLabel.SQL_TEXT||"Sql_text",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "SQL_TEXT" ];
        Ext.apply(this, {
@@ -117,9 +117,9 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("SID", new Ext.form.Hidden ({xtype: "hidden",name:"SID",id:"DC0091F_SID",dataIndex:"SID",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SID||"Sid",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("SERIAL_", new Ext.form.TextField ({xtype: "textfield",name:"SERIAL_",id:"DC0091F_SERIAL_",dataIndex:"SERIAL_",width:80,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SERIAL_||"Serial_",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("SQL_TEXT", new Ext.form.TextArea ({xtype: "textarea",name:"SQL_TEXT",id:"DC0091F_SQL_TEXT",dataIndex:"SQL_TEXT",width:400,height:400,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.SQL_TEXT||"Sql_text",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("SID",new Ext.form.Hidden({name:"SID",id:"DC0091F_SID",dataIndex:"SID",fieldLabel: this.resourceBundle.FieldLabel.SID||"Sid",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("SERIAL_",new Ext.form.TextField({name:"SERIAL_",id:"DC0091F_SERIAL_",dataIndex:"SERIAL_",fieldLabel: this.resourceBundle.FieldLabel.SERIAL_||"Serial_",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("SQL_TEXT",new Ext.form.TextArea({name:"SQL_TEXT",id:"DC0091F_SQL_TEXT",dataIndex:"SQL_TEXT",fieldLabel: this.resourceBundle.FieldLabel.SQL_TEXT||"Sql_text",allowBlank:true,width:400,height:400,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -229,10 +229,14 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0091</span>"          )
         }); 
 
+       Ext.getCmp("tlb_NEW").disable();
+       Ext.getCmp("tlb_SAVE").disable();
+       Ext.getCmp("tlb_DELETE").disable();
        N21.DataComp.DC0091.superclass.initComponent.apply(this, arguments);
      } 
   });

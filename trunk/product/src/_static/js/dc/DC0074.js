@@ -44,8 +44,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0074</span>"          )
           ,dataComponentName:"DC0074"
           ,frame:true
           ,queryArraySize:20
@@ -64,11 +65,11 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0074_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0074_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Attribute Name"})  );
-         this.queryFields.add("DATA_TYPE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_DATA_TYPE",id:"DC0074_QRY_DATA_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.DATA_TYPE||"Data type"})  );
-         this.queryFields.add("PRODATTRGRP_NAME", new N21.DataComp.LOV0046({xtype: "LOV0046",fieldMapping: [{column:"ID",field:"DC0074_QRY_PRODATTRGRP_ID"},{column:"NAME",field:"DC0074_QRY_PRODATTRGRP_NAME"}],selectOnFocus:true,name:"QRY_PRODATTRGRP_NAME",id:"DC0074_QRY_PRODATTRGRP_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODATTRGRP_NAME||"Attribute group"})  );
-         this.queryFields.add("PRODATTRGRP_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODATTRGRP_ID",id:"DC0074_QRY_PRODATTRGRP_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODATTRGRP_ID||"Attribute group ID"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0074F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0074F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Attribute Name",allowBlank:true,width:100}));
+       this.queryFields.add("DATA_TYPE",new Ext.form.TextField({name:"QRY_DATA_TYPE",id:"DC0074F_QRY_DATA_TYPE",fieldLabel: this.resourceBundle.FieldLabel.DATA_TYPE||"Data type",allowBlank:true,width:100}));
+       this.queryFields.add("PRODATTRGRP_NAME",new  N21.DataComp.LOV0046({name:"QRY_PRODATTRGRP_NAME",id:"DC0074F_QRY_PRODATTRGRP_NAME",fieldLabel: this.resourceBundle.FieldLabel.PRODATTRGRP_NAME||"Attribute group",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0074F_QRY_PRODATTRGRP_ID"},{column:"NAME",field:"DC0074F_QRY_PRODATTRGRP_NAME"}]}));
+       this.queryFields.add("PRODATTRGRP_ID",new Ext.form.Hidden({name:"QRY_PRODATTRGRP_ID",id:"DC0074F_QRY_PRODATTRGRP_ID",fieldLabel: this.resourceBundle.FieldLabel.PRODATTRGRP_ID||"Attribute group ID",allowBlank:true,width:100}));
 
 
 

@@ -26,10 +26,10 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0088_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0088_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID"})  );
-         this.queryFields.add("ORG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ORG_ID",id:"DC0088_QRY_ORG_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Org. ID"})  );
-         this.queryFields.add("ORGINV_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ORGINV_ID",id:"DC0088_QRY_ORGINV_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORGINV_ID||"Org. inventory ID"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0088F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0088F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",allowBlank:true,width:100}));
+       this.queryFields.add("ORG_ID",new Ext.form.Hidden({name:"QRY_ORG_ID",id:"DC0088F_QRY_ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Org. ID",allowBlank:true,width:100}));
+       this.queryFields.add("ORGINV_ID",new Ext.form.Hidden({name:"QRY_ORGINV_ID",id:"DC0088F_QRY_ORGINV_ID",fieldLabel: this.resourceBundle.FieldLabel.ORGINV_ID||"Org. inventory ID",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  ];
        Ext.apply(this, {
@@ -96,15 +96,15 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0088F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0088F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ORG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"ORG_ID",id:"DC0088F_ORG_ID",dataIndex:"ORG_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Org. ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ORGINV_ID", new Ext.form.Hidden ({xtype: "hidden",name:"ORGINV_ID",id:"DC0088F_ORGINV_ID",dataIndex:"ORGINV_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ORGINV_ID||"Org. inventory ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0088F_CODE",dataIndex:"CODE",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DESCRIPTION", new Ext.form.TextArea ({xtype: "textarea",name:"DESCRIPTION",id:"DC0088F_DESCRIPTION",dataIndex:"DESCRIPTION",width:200,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("IS_DEFAULT", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_DEFAULT",id:"DC0088F_IS_DEFAULT",dataIndex:"IS_DEFAULT",width:50,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.IS_DEFAULT||"Default?",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("STOCKLOC_TYPE", new N21.DataComp.LOV0054({xtype: "LOV0054",selectOnFocus:true,name:"STOCKLOC_TYPE",id:"DC0088F_STOCKLOC_TYPE",dataIndex:"STOCKLOC_TYPE",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.STOCKLOC_TYPE||"Type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("IS_VIRTUAL", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"IS_VIRTUAL",id:"DC0088F_IS_VIRTUAL",dataIndex:"IS_VIRTUAL",width:50,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.IS_VIRTUAL||"Virtual?",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0088F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CLIENT_ID",new Ext.form.Hidden({name:"CLIENT_ID",id:"DC0088F_CLIENT_ID",dataIndex:"CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ORG_ID",new Ext.form.Hidden({name:"ORG_ID",id:"DC0088F_ORG_ID",dataIndex:"ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Org. ID",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ORGINV_ID",new Ext.form.Hidden({name:"ORGINV_ID",id:"DC0088F_ORGINV_ID",dataIndex:"ORGINV_ID",fieldLabel: this.resourceBundle.FieldLabel.ORGINV_ID||"Org. inventory ID",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0088F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",width:120,insert_allowed:true,update_allowed:true}));
+       this.fields.add("DESCRIPTION",new Ext.form.TextArea({name:"DESCRIPTION",id:"DC0088F_DESCRIPTION",dataIndex:"DESCRIPTION",fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",allowBlank:true,width:200,height:40,insert_allowed:true,update_allowed:true}));
+       this.fields.add("IS_DEFAULT",new Ext.ux.form.XCheckbox({name:"IS_DEFAULT",id:"DC0088F_IS_DEFAULT",dataIndex:"IS_DEFAULT",fieldLabel: this.resourceBundle.FieldLabel.IS_DEFAULT||"Default?",allowBlank:false,labelSeparator:":*",width:50,insert_allowed:true,update_allowed:true}));
+       this.fields.add("STOCKLOC_TYPE",new  N21.DataComp.LOV0054({name:"STOCKLOC_TYPE",id:"DC0088F_STOCKLOC_TYPE",dataIndex:"STOCKLOC_TYPE",fieldLabel: this.resourceBundle.FieldLabel.STOCKLOC_TYPE||"Type",allowBlank:true,width:80,listWidth:98,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
+       this.fields.add("IS_VIRTUAL",new Ext.ux.form.XCheckbox({name:"IS_VIRTUAL",id:"DC0088F_IS_VIRTUAL",dataIndex:"IS_VIRTUAL",fieldLabel: this.resourceBundle.FieldLabel.IS_VIRTUAL||"Virtual?",allowBlank:false,labelSeparator:":*",width:50,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("C2",
              { layout:"form",width:250,labelAlign:"top", items:[ this.fields.get("DESCRIPTION")]
@@ -189,8 +189,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0088</span>"          )
         }); 
 
        N21.DataComp.DC0088.superclass.initComponent.apply(this, arguments);

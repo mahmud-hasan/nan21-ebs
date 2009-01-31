@@ -39,8 +39,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0068</span>"          )
           ,dataComponentName:"DC0068"
           ,frame:true
           ,queryArraySize:-1
@@ -54,9 +55,9 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0068_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("USER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_USER_ID",id:"DC0068_QRY_USER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.USER_ID||"User_id"})  );
-         this.queryFields.add("ROLE_NAME", new N21.DataComp.LOV0045({xtype: "LOV0045",name:"QRY_ROLE_NAME",id:"DC0068_QRY_ROLE_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0068F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("USER_ID",new Ext.form.Hidden({name:"QRY_USER_ID",id:"DC0068F_QRY_USER_ID",fieldLabel: this.resourceBundle.FieldLabel.USER_ID||"User_id",allowBlank:true,width:100}));
+       this.queryFields.add("ROLE_NAME",new  N21.DataComp.LOV0045({name:"QRY_ROLE_NAME",id:"DC0068F_QRY_ROLE_NAME",fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
 
 
 

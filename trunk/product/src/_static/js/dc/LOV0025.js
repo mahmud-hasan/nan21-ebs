@@ -6,7 +6,7 @@
 
   Ext.ns("N21.DataComp");
   N21.DataComp.LOV0025 = Ext.extend(N21.Base.Lov, {
-     displayField:"CODE"
+     displayField:"ACCOUNT"
     ,queryArraySize:40
     ,initComponent:function() {
        Ext.apply(this, {
@@ -18,11 +18,12 @@
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0025&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
-              ,fields:[{name:"CODE",type:"string"},{name:"NAME",type:"string"}]
-              ,baseParams: {p_client_id:"-1"}
+              ,fields:[{name:"ACCOUNT",type:"string"},{name:"ID",type:"float"},{name:"NAME",type:"string"}]
+              ,baseParams: {p_client_id:"-1",p_accschema_id:"-1"}
              })
              ,columns: [new Ext.grid.RowNumberer(),
-               {id:"CODE",header:this.resourceBundle.FieldLabel.CODE||"Account",width:100,dataIndex:'CODE',sortable:true}
+               {id:"ID",header:this.resourceBundle.FieldLabel.ID||"Id",width:100,hidden :true,dataIndex:'ID',sortable:true,align:'right'}
+              ,{id:"ACCOUNT",header:this.resourceBundle.FieldLabel.ACCOUNT||"Account",width:100,dataIndex:'ACCOUNT',sortable:true}
               ,{id:"NAME",header:this.resourceBundle.FieldLabel.NAME||"Name",width:250,dataIndex:'NAME',sortable:true}
              ]
            })
@@ -30,7 +31,7 @@
           ,displayField:this.displayField
           ,lovWidth:450
           ,lovHeight:300
-          ,queryFields:[["CODE", this.resourceBundle.FieldLabel.CODE||"Account"],["NAME", this.resourceBundle.FieldLabel.NAME||"Name"]]
+          ,queryFields:[["ACCOUNT", this.resourceBundle.FieldLabel.ACCOUNT||"Account"],["NAME", this.resourceBundle.FieldLabel.NAME||"Name"]]
         });
        N21.DataComp.LOV0025.superclass.initComponent.apply(this, arguments);
      }

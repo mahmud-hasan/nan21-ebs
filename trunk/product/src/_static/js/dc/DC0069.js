@@ -28,11 +28,11 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0069_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0069_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id"})  );
-         this.queryFields.add("BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0069_QRY_BPARTNER_ID"},{column:"NAME",field:"DC0069_QRY_BPARTNER_NAME"}],selectOnFocus:true,name:"QRY_BPARTNER_NAME",id:"DC0069_QRY_BPARTNER_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Business partner"})  );
-         this.queryFields.add("FIRSTNAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_FIRSTNAME",id:"DC0069_QRY_FIRSTNAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.FIRSTNAME||"Firstname"})  );
-         this.queryFields.add("LASTNAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_LASTNAME",id:"DC0069_QRY_LASTNAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.LASTNAME||"Lastname"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0069F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0069F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_NAME",new  N21.DataComp.LOV0009({name:"QRY_BPARTNER_NAME",id:"DC0069F_QRY_BPARTNER_NAME",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Business partner",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0069F_QRY_BPARTNER_ID"},{column:"NAME",field:"DC0069F_QRY_BPARTNER_NAME"}]}));
+       this.queryFields.add("FIRSTNAME",new Ext.form.TextField({name:"QRY_FIRSTNAME",id:"DC0069F_QRY_FIRSTNAME",fieldLabel: this.resourceBundle.FieldLabel.FIRSTNAME||"Firstname",allowBlank:true,width:100}));
+       this.queryFields.add("LASTNAME",new Ext.form.TextField({name:"QRY_LASTNAME",id:"DC0069F_QRY_LASTNAME",fieldLabel: this.resourceBundle.FieldLabel.LASTNAME||"Lastname",allowBlank:true,width:100}));
   
        this.queryFieldsVisible = [  "BPARTNER_NAME","FIRSTNAME","LASTNAME" ];
        Ext.apply(this, {
@@ -103,16 +103,16 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0069F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"BPARTNER_ID",id:"DC0069F_BPARTNER_ID",dataIndex:"BPARTNER_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0069F_BPARTNER_ID"},{column:"NAME",field:"DC0069F_BPARTNER_NAME"}],selectOnFocus:true,name:"BPARTNER_NAME",id:"DC0069F_BPARTNER_NAME",dataIndex:"BPARTNER_NAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Business partner",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("FIRSTNAME", new Ext.form.TextField ({xtype: "textfield",name:"FIRSTNAME",id:"DC0069F_FIRSTNAME",dataIndex:"FIRSTNAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.FIRSTNAME||"Firstname",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("LASTNAME", new Ext.form.TextField ({xtype: "textfield",name:"LASTNAME",id:"DC0069F_LASTNAME",dataIndex:"LASTNAME",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.LASTNAME||"Lastname",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("PHONE", new Ext.form.TextField ({xtype: "textfield",name:"PHONE",id:"DC0069F_PHONE",dataIndex:"PHONE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.PHONE||"Phone",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("EMAIL", new Ext.form.TextField ({xtype: "textfield",name:"EMAIL",id:"DC0069F_EMAIL",dataIndex:"EMAIL",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("FAX", new Ext.form.TextField ({xtype: "textfield",name:"FAX",id:"DC0069F_FAX",dataIndex:"FAX",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.FAX||"Fax",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0069F_NOTES",dataIndex:"NOTES",width:250,height:60,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("MOBILE", new Ext.form.TextField ({xtype: "textfield",name:"MOBILE",id:"DC0069F_MOBILE",dataIndex:"MOBILE",width:120,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.MOBILE||"Mobile",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0069F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("BPARTNER_ID",new Ext.form.Hidden({name:"BPARTNER_ID",id:"DC0069F_BPARTNER_ID",dataIndex:"BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner_id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("BPARTNER_NAME",new  N21.DataComp.LOV0009({name:"BPARTNER_NAME",id:"DC0069F_BPARTNER_NAME",dataIndex:"BPARTNER_NAME",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Business partner",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0069F_BPARTNER_ID"},{column:"NAME",field:"DC0069F_BPARTNER_NAME"}]}));
+       this.fields.add("FIRSTNAME",new Ext.form.TextField({name:"FIRSTNAME",id:"DC0069F_FIRSTNAME",dataIndex:"FIRSTNAME",fieldLabel: this.resourceBundle.FieldLabel.FIRSTNAME||"Firstname",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("LASTNAME",new Ext.form.TextField({name:"LASTNAME",id:"DC0069F_LASTNAME",dataIndex:"LASTNAME",fieldLabel: this.resourceBundle.FieldLabel.LASTNAME||"Lastname",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("PHONE",new Ext.form.TextField({name:"PHONE",id:"DC0069F_PHONE",dataIndex:"PHONE",fieldLabel: this.resourceBundle.FieldLabel.PHONE||"Phone",allowBlank:true,width:120,insert_allowed:true,update_allowed:true}));
+       this.fields.add("EMAIL",new Ext.form.TextField({name:"EMAIL",id:"DC0069F_EMAIL",dataIndex:"EMAIL",fieldLabel: this.resourceBundle.FieldLabel.EMAIL||"Email",allowBlank:true,width:120,insert_allowed:true,update_allowed:true}));
+       this.fields.add("FAX",new Ext.form.TextField({name:"FAX",id:"DC0069F_FAX",dataIndex:"FAX",fieldLabel: this.resourceBundle.FieldLabel.FAX||"Fax",allowBlank:true,width:120,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NOTES",new Ext.form.TextArea({name:"NOTES",id:"DC0069F_NOTES",dataIndex:"NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:250,height:60,insert_allowed:true,update_allowed:true}));
+       this.fields.add("MOBILE",new Ext.form.TextField({name:"MOBILE",id:"DC0069F_MOBILE",dataIndex:"MOBILE",fieldLabel: this.resourceBundle.FieldLabel.MOBILE||"Mobile",allowBlank:true,width:120,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("C3",
              { layout:"form",width:260,labelAlign:"top",labelWidth:100, items:[ this.fields.get("NOTES")]
@@ -202,8 +202,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0069</span>"          )
         }); 
 
        N21.DataComp.DC0069.superclass.initComponent.apply(this, arguments);

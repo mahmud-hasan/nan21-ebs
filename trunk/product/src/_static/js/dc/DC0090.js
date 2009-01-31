@@ -40,8 +40,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0090</span>"          )
           ,dataComponentName:"DC0090"
           ,frame:true
           ,queryArraySize:20
@@ -57,12 +58,12 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0090_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("PRICELIST_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRICELIST_ID",id:"DC0090_QRY_PRICELIST_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICELIST_ID||"Pricelist_id"})  );
-         this.queryFields.add("PRODUCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRODUCT_ID",id:"DC0090_QRY_PRODUCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id"})  );
-         this.queryFields.add("PRODUCT_NAME", new N21.DataComp.LOV0017({xtype: "LOV0017",fieldMapping: [{column:"ID",field:"DC0090_QRY_PRODUCT_ID"},{column:"NAME",field:"DC0090_QRY_PRODUCT_NAME"}],selectOnFocus:true,name:"QRY_PRODUCT_NAME",id:"DC0090_QRY_PRODUCT_NAME",width:150,fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_NAME||"Product"})  );
-         this.queryFields.add("PRICELVL_NAME", new N21.DataComp.LOV0057({xtype: "LOV0057",fieldMapping: [{column:"ID",field:"DC0090_QRY_PRICELVL_ID"}],name:"QRY_PRICELVL_NAME",id:"DC0090_QRY_PRICELVL_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICELVL_NAME||"Price level"})  );
-         this.queryFields.add("PRICELVL_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_PRICELVL_ID",id:"DC0090_QRY_PRICELVL_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.PRICELVL_ID||"Pricelvl_id"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0090F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("PRICELIST_ID",new Ext.form.Hidden({name:"QRY_PRICELIST_ID",id:"DC0090F_QRY_PRICELIST_ID",fieldLabel: this.resourceBundle.FieldLabel.PRICELIST_ID||"Pricelist_id",allowBlank:true,width:100}));
+       this.queryFields.add("PRODUCT_ID",new Ext.form.Hidden({name:"QRY_PRODUCT_ID",id:"DC0090F_QRY_PRODUCT_ID",fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_ID||"Product_id",allowBlank:true,width:100}));
+       this.queryFields.add("PRODUCT_NAME",new  N21.DataComp.LOV0017({name:"QRY_PRODUCT_NAME",id:"DC0090F_QRY_PRODUCT_NAME",fieldLabel: this.resourceBundle.FieldLabel.PRODUCT_NAME||"Product",allowBlank:true,width:150,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0090F_QRY_PRODUCT_ID"},{column:"NAME",field:"DC0090F_QRY_PRODUCT_NAME"}]}));
+       this.queryFields.add("PRICELVL_NAME",new  N21.DataComp.LOV0057({name:"QRY_PRICELVL_NAME",id:"DC0090F_QRY_PRICELVL_NAME",fieldLabel: this.resourceBundle.FieldLabel.PRICELVL_NAME||"Price level",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0090F_QRY_PRICELVL_ID"}]}));
+       this.queryFields.add("PRICELVL_ID",new Ext.form.Hidden({name:"QRY_PRICELVL_ID",id:"DC0090F_QRY_PRICELVL_ID",fieldLabel: this.resourceBundle.FieldLabel.PRICELVL_ID||"Pricelvl_id",allowBlank:true,width:100}));
 
 
 

@@ -43,8 +43,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0066</span>"          )
           ,dataComponentName:"DC0066"
           ,frame:true
           ,queryArraySize:20
@@ -64,13 +65,13 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0066_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("POSITION", new Ext.form.NumberField ({xtype: "numberfield",name:"QRY_POSITION",id:"DC0066_QRY_POSITION",width:100,fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",style: "text-align:right;"})  );
-         this.queryFields.add("OWNER", new Ext.form.TextField ({xtype: "textfield",name:"QRY_OWNER",id:"DC0066_QRY_OWNER",width:100,fieldLabel: this.resourceBundle.FieldLabel.OWNER||"Owner"})  );
-         this.queryFields.add("TITLE", new Ext.form.TextField ({xtype: "textfield",name:"QRY_TITLE",id:"DC0066_QRY_TITLE",width:100,fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title"})  );
-         this.queryFields.add("LINK", new Ext.form.TextField ({xtype: "textfield",name:"QRY_LINK",id:"DC0066_QRY_LINK",width:100,fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link"})  );
-         this.queryFields.add("MENUSHRCT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUSHRCT_ID",id:"DC0066_QRY_MENUSHRCT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUSHRCT_ID||"Menushrct_id"})  );
-         this.queryFields.add("MENUITEM_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_MENUITEM_ID",id:"DC0066_QRY_MENUITEM_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0066F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("POSITION",new Ext.form.NumberField({name:"QRY_POSITION",id:"DC0066F_QRY_POSITION",fieldLabel: this.resourceBundle.FieldLabel.POSITION||"Position",allowBlank:true,width:100}));
+       this.queryFields.add("OWNER",new Ext.form.TextField({name:"QRY_OWNER",id:"DC0066F_QRY_OWNER",fieldLabel: this.resourceBundle.FieldLabel.OWNER||"Owner",allowBlank:true,width:100}));
+       this.queryFields.add("TITLE",new Ext.form.TextField({name:"QRY_TITLE",id:"DC0066F_QRY_TITLE",fieldLabel: this.resourceBundle.FieldLabel.TITLE||"Title",allowBlank:true,width:100}));
+       this.queryFields.add("LINK",new Ext.form.TextField({name:"QRY_LINK",id:"DC0066F_QRY_LINK",fieldLabel: this.resourceBundle.FieldLabel.LINK||"Link",allowBlank:true,width:100}));
+       this.queryFields.add("MENUSHRCT_ID",new Ext.form.Hidden({name:"QRY_MENUSHRCT_ID",id:"DC0066F_QRY_MENUSHRCT_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUSHRCT_ID||"Menushrct_id",allowBlank:true,width:100}));
+       this.queryFields.add("MENUITEM_ID",new Ext.form.Hidden({name:"QRY_MENUITEM_ID",id:"DC0066F_QRY_MENUITEM_ID",fieldLabel: this.resourceBundle.FieldLabel.MENUITEM_ID||"Menuitem_id",allowBlank:true,width:100}));
 
 
 

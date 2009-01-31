@@ -29,15 +29,15 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0082_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0082_QRY_CLIENT_ID"}],name:"QRY_CLIENT_CODE",id:"DC0082_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0082_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID"})  );
-         this.queryFields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"QRY_NAME",id:"DC0082_QRY_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name"})  );
-         this.queryFields.add("ORG_TYPE", new N21.DataComp.LOV0050({xtype: "LOV0050",name:"QRY_ORG_TYPE",id:"DC0082_QRY_ORG_TYPE",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORG_TYPE||"Org. type"})  );
-         this.queryFields.add("ORG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ORG_ID",id:"DC0082_QRY_ORG_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Parent org ID"})  );
-         this.queryFields.add("COSTCENTER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_COSTCENTER_ID",id:"DC0082_QRY_COSTCENTER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_ID||"Cost center ID"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0082_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID"})  );
-         this.queryFields.add("ACTIVE", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_ACTIVE",id:"DC0082_QRY_ACTIVE",width:40,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0082F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"QRY_CLIENT_CODE",id:"DC0082F_QRY_CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0082F_QRY_CLIENT_ID"}]}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0082F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",allowBlank:true,width:100}));
+       this.queryFields.add("NAME",new Ext.form.TextField({name:"QRY_NAME",id:"DC0082F_QRY_NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:true,width:100}));
+       this.queryFields.add("ORG_TYPE",new  N21.DataComp.LOV0050({name:"QRY_ORG_TYPE",id:"DC0082F_QRY_ORG_TYPE",fieldLabel: this.resourceBundle.FieldLabel.ORG_TYPE||"Org. type",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("ORG_ID",new Ext.form.Hidden({name:"QRY_ORG_ID",id:"DC0082F_QRY_ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Parent org ID",allowBlank:true,width:100}));
+       this.queryFields.add("COSTCENTER_ID",new Ext.form.Hidden({name:"QRY_COSTCENTER_ID",id:"DC0082F_QRY_COSTCENTER_ID",fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_ID||"Cost center ID",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0082F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",allowBlank:true,width:100}));
+       this.queryFields.add("ACTIVE",new Ext.form.ComboBox({name:"QRY_ACTIVE",id:"DC0082F_QRY_ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:true,width:40,store:["Y","N"]}));
   
        this.queryFieldsVisible = [  "CLIENT_CODE","NAME","ORG_TYPE","ACTIVE" ];
        Ext.apply(this, {
@@ -110,18 +110,18 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0082F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0082F_CLIENT_ID"}],selectOnFocus:true,name:"CLIENT_CODE",id:"DC0082F_CLIENT_CODE",dataIndex:"CLIENT_CODE",width:100,listWidth:118,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"CLIENT_ID",id:"DC0082F_CLIENT_ID",dataIndex:"CLIENT_ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0082F_NAME",dataIndex:"NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ORG_TYPE", new N21.DataComp.LOV0050({xtype: "LOV0050",selectOnFocus:true,name:"ORG_TYPE",id:"DC0082F_ORG_TYPE",dataIndex:"ORG_TYPE",width:80,listWidth:98,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ORG_TYPE||"Org. type",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ORG_ID", new Ext.form.Hidden ({xtype: "hidden",name:"ORG_ID",id:"DC0082F_ORG_ID",dataIndex:"ORG_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Parent org ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("COSTMETHOD_CODE", new N21.DataComp.LOV0049({xtype: "LOV0049",selectOnFocus:true,name:"COSTMETHOD_CODE",id:"DC0082F_COSTMETHOD_CODE",dataIndex:"COSTMETHOD_CODE",width:80,listWidth:98,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.COSTMETHOD_CODE||"Costing method",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("COSTCENTER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"COSTCENTER_ID",id:"DC0082F_COSTCENTER_ID",dataIndex:"COSTCENTER_ID",width:150,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_ID||"Cost center ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("COSTCENTER_NAME", new N21.DataComp.LOV0048({xtype: "LOV0048",fieldMapping: [{column:"ID",field:"DC0082F_COSTCENTER_ID"}],paramMapping: [{param:"p_client_id",field:"DC0082F.CLIENT_ID"}],selectOnFocus:true,name:"COSTCENTER_NAME",id:"DC0082F_COSTCENTER_NAME",dataIndex:"COSTCENTER_NAME",width:150,listWidth:168,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_NAME||"Cost center",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"BPARTNER_ID",id:"DC0082F_BPARTNER_ID",dataIndex:"BPARTNER_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NOTES", new Ext.form.TextArea ({xtype: "textarea",name:"NOTES",id:"DC0082F_NOTES",dataIndex:"NOTES",width:200,height:40,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("ACTIVE", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"ACTIVE",id:"DC0082F_ACTIVE",dataIndex:"ACTIVE",width:50,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0082F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"CLIENT_CODE",id:"DC0082F_CLIENT_CODE",dataIndex:"CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:false,labelSeparator:":*",width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0082F_CLIENT_ID"}]}));
+       this.fields.add("CLIENT_ID",new Ext.form.Hidden({name:"CLIENT_ID",id:"DC0082F_CLIENT_ID",dataIndex:"CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0082F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ORG_TYPE",new  N21.DataComp.LOV0050({name:"ORG_TYPE",id:"DC0082F_ORG_TYPE",dataIndex:"ORG_TYPE",fieldLabel: this.resourceBundle.FieldLabel.ORG_TYPE||"Org. type",allowBlank:false,labelSeparator:":*",width:80,listWidth:98,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
+       this.fields.add("ORG_ID",new Ext.form.Hidden({name:"ORG_ID",id:"DC0082F_ORG_ID",dataIndex:"ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.ORG_ID||"Parent org ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("COSTMETHOD_CODE",new  N21.DataComp.LOV0049({name:"COSTMETHOD_CODE",id:"DC0082F_COSTMETHOD_CODE",dataIndex:"COSTMETHOD_CODE",fieldLabel: this.resourceBundle.FieldLabel.COSTMETHOD_CODE||"Costing method",allowBlank:true,width:80,listWidth:98,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
+       this.fields.add("COSTCENTER_ID",new Ext.form.Hidden({name:"COSTCENTER_ID",id:"DC0082F_COSTCENTER_ID",dataIndex:"COSTCENTER_ID",fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_ID||"Cost center ID",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
+       this.fields.add("COSTCENTER_NAME",new  N21.DataComp.LOV0048({name:"COSTCENTER_NAME",id:"DC0082F_COSTCENTER_NAME",dataIndex:"COSTCENTER_NAME",fieldLabel: this.resourceBundle.FieldLabel.COSTCENTER_NAME||"Cost center",allowBlank:true,width:150,listWidth:168,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0082F_COSTCENTER_ID"}],paramMapping: [{param:"p_client_id",field:"DC0082F.CLIENT_ID"}]}));
+       this.fields.add("BPARTNER_ID",new Ext.form.Hidden({name:"BPARTNER_ID",id:"DC0082F_BPARTNER_ID",dataIndex:"BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("NOTES",new Ext.form.TextArea({name:"NOTES",id:"DC0082F_NOTES",dataIndex:"NOTES",fieldLabel: this.resourceBundle.FieldLabel.NOTES||"Notes",allowBlank:true,width:200,height:40,insert_allowed:true,update_allowed:true}));
+       this.fields.add("ACTIVE",new Ext.ux.form.XCheckbox({name:"ACTIVE",id:"DC0082F_ACTIVE",dataIndex:"ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:false,labelSeparator:":*",width:50,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -236,8 +236,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0082</span>"          )
         }); 
 
        N21.DataComp.DC0082.superclass.initComponent.apply(this, arguments);

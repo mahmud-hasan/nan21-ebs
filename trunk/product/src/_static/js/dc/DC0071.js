@@ -45,8 +45,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0071</span>"          )
           ,dataComponentName:"DC0071"
           ,frame:true
           ,queryArraySize:20
@@ -66,13 +67,13 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0071_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("UI_DC", new N21.DataComp.LOV0028({xtype: "LOV0028",selectOnFocus:true,name:"QRY_UI_DC",id:"DC0071_QRY_UI_DC",width:100,fieldLabel: this.resourceBundle.FieldLabel.UI_DC||"DC"})  );
-         this.queryFields.add("ROLE_NAME", new N21.DataComp.LOV0045({xtype: "LOV0045",name:"QRY_ROLE_NAME",id:"DC0071_QRY_ROLE_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role"})  );
-         this.queryFields.add("FETCH_ALLOWED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_FETCH_ALLOWED",id:"DC0071_QRY_FETCH_ALLOWED",width:40,fieldLabel: this.resourceBundle.FieldLabel.FETCH_ALLOWED||"Query allowed"})  );
-         this.queryFields.add("INSERT_ALLOWED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_INSERT_ALLOWED",id:"DC0071_QRY_INSERT_ALLOWED",width:40,fieldLabel: this.resourceBundle.FieldLabel.INSERT_ALLOWED||"Insert allowed"})  );
-         this.queryFields.add("UPDATE_ALLOWED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_UPDATE_ALLOWED",id:"DC0071_QRY_UPDATE_ALLOWED",width:40,fieldLabel: this.resourceBundle.FieldLabel.UPDATE_ALLOWED||"Update allowed"})  );
-         this.queryFields.add("DELETE_ALLOWED", new Ext.form.ComboBox ({xtype: "combo",store:["N","Y"],name:"QRY_DELETE_ALLOWED",id:"DC0071_QRY_DELETE_ALLOWED",width:40,fieldLabel: this.resourceBundle.FieldLabel.DELETE_ALLOWED||"Delete allowed"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0071F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("UI_DC",new  N21.DataComp.LOV0028({name:"QRY_UI_DC",id:"DC0071F_QRY_UI_DC",fieldLabel: this.resourceBundle.FieldLabel.UI_DC||"DC",allowBlank:true,width:100,selectOnFocus:true}));
+       this.queryFields.add("ROLE_NAME",new  N21.DataComp.LOV0045({name:"QRY_ROLE_NAME",id:"DC0071F_QRY_ROLE_NAME",fieldLabel: this.resourceBundle.FieldLabel.ROLE_NAME||"Role",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("FETCH_ALLOWED",new Ext.form.ComboBox({name:"QRY_FETCH_ALLOWED",id:"DC0071F_QRY_FETCH_ALLOWED",fieldLabel: this.resourceBundle.FieldLabel.FETCH_ALLOWED||"Query allowed",allowBlank:true,width:40,store:["Y","N"]}));
+       this.queryFields.add("INSERT_ALLOWED",new Ext.form.ComboBox({name:"QRY_INSERT_ALLOWED",id:"DC0071F_QRY_INSERT_ALLOWED",fieldLabel: this.resourceBundle.FieldLabel.INSERT_ALLOWED||"Insert allowed",allowBlank:true,width:40,store:["Y","N"]}));
+       this.queryFields.add("UPDATE_ALLOWED",new Ext.form.ComboBox({name:"QRY_UPDATE_ALLOWED",id:"DC0071F_QRY_UPDATE_ALLOWED",fieldLabel: this.resourceBundle.FieldLabel.UPDATE_ALLOWED||"Update allowed",allowBlank:true,width:40,store:["Y","N"]}));
+       this.queryFields.add("DELETE_ALLOWED",new Ext.form.ComboBox({name:"QRY_DELETE_ALLOWED",id:"DC0071F_QRY_DELETE_ALLOWED",fieldLabel: this.resourceBundle.FieldLabel.DELETE_ALLOWED||"Delete allowed",allowBlank:true,width:40,store:["Y","N"]}));
 
 
 

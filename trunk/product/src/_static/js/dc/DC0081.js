@@ -19,9 +19,9 @@
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0081_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_BPARTNER_ID",id:"DC0081_QRY_BPARTNER_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID"})  );
-         this.queryFields.add("BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0081_QRY_BPARTNER_ID"}],selectOnFocus:true,name:"QRY_BPARTNER_NAME",id:"DC0081_QRY_BPARTNER_NAME",width:100,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Linked business partner"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0081F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_ID",new Ext.form.Hidden({name:"QRY_BPARTNER_ID",id:"DC0081F_QRY_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",allowBlank:true,width:100}));
+       this.queryFields.add("BPARTNER_NAME",new  N21.DataComp.LOV0009({name:"QRY_BPARTNER_NAME",id:"DC0081F_QRY_BPARTNER_NAME",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Linked business partner",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0081F_QRY_BPARTNER_ID"}]}));
   
        this.queryFieldsVisible = [  "BPARTNER_NAME" ];
        Ext.apply(this, {
@@ -74,12 +74,12 @@
     ,initComponent:function() {
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
-       this.fields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"ID",id:"DC0081F_ID",dataIndex:"ID",width:100,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("CODE", new Ext.form.TextField ({xtype: "textfield",name:"CODE",id:"DC0081F_CODE",dataIndex:"CODE",width:120,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("NAME", new Ext.form.TextField ({xtype: "textfield",name:"NAME",id:"DC0081F_NAME",dataIndex:"NAME",width:200,allowBlank:false,labelSeparator:":*" ,fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("BPARTNER_ID", new Ext.form.Hidden ({xtype: "hidden",name:"BPARTNER_ID",id:"DC0081F_BPARTNER_ID",dataIndex:"BPARTNER_ID",width:100,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("BPARTNER_NAME", new N21.DataComp.LOV0009({xtype: "LOV0009",fieldMapping: [{column:"ID",field:"DC0081F_BPARTNER_ID"}],selectOnFocus:true,name:"BPARTNER_NAME",id:"DC0081F_BPARTNER_NAME",dataIndex:"BPARTNER_NAME",width:150,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Linked business partner",insert_allowed:true,update_allowed:true})   );
-       this.fields.add("DEFAULT_CLIENT", new Ext.ux.form.XCheckbox ({xtype: "xcheckbox",name:"DEFAULT_CLIENT",id:"DC0081F_DEFAULT_CLIENT",dataIndex:"DEFAULT_CLIENT",width:50,allowBlank:true,fieldLabel: this.resourceBundle.FieldLabel.DEFAULT_CLIENT||"Default?",insert_allowed:true,update_allowed:true})   );
+       this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0081F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0081F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",width:120,insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;"}));
+       this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0081F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
+       this.fields.add("BPARTNER_ID",new Ext.form.Hidden({name:"BPARTNER_ID",id:"DC0081F_BPARTNER_ID",dataIndex:"BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_ID||"Bpartner ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("BPARTNER_NAME",new  N21.DataComp.LOV0009({name:"BPARTNER_NAME",id:"DC0081F_BPARTNER_NAME",dataIndex:"BPARTNER_NAME",fieldLabel: this.resourceBundle.FieldLabel.BPARTNER_NAME||"Linked business partner",allowBlank:true,width:150,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0081F_BPARTNER_ID"}]}));
+       this.fields.add("DEFAULT_CLIENT",new Ext.ux.form.XCheckbox({name:"DEFAULT_CLIENT",id:"DC0081F_DEFAULT_CLIENT",dataIndex:"DEFAULT_CLIENT",fieldLabel: this.resourceBundle.FieldLabel.DEFAULT_CLIENT||"Default?",allowBlank:true,width:50,insert_allowed:true,update_allowed:true}));
 
 
 
@@ -97,7 +97,7 @@
           ,frame:true
           ,width: "100%"
           ,dataComponentName:"DC0081F"
-          ,firstFocusFieldName:"NAME"
+          ,firstFocusFieldName:"CODE"
           ,toolbarConfig:"STANDARD"
         });
 
@@ -158,8 +158,9 @@
           ,new Ext.Toolbar.Button({  id:"tlb_PREV_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_prev.gif" ,tooltip:"Previous record" ,handler: this.goToPrevRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0081</span>"          )
         }); 
 
        N21.DataComp.DC0081.superclass.initComponent.apply(this, arguments);

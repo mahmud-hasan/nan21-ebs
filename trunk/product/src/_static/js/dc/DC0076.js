@@ -44,13 +44,14 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEW"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_new.png" ,tooltip:"" ,handler: this.createNewRecord ,scope :this})
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
-          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportList ,scope :this})
-          )
+          ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
+          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:"_static/icon/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
+,"->","<span class='dcName'>DC0076</span>"          )
           ,dataComponentName:"DC0076"
           ,frame:true
           ,queryArraySize:20
           ,childDCs: [{name:"DC0090",relation:[{parent:"ID",child:"PRICELIST_ID"}]}]
-          ,buttons: [{xtype:"button",text:"Products price",scope:this,handler:function() {this.show_window("DC0090");}  }]
+          ,buttons: [{xtype:"button",scope:this,text:"Products price",handler:function() {this.show_window("DC0090");}}]
         });
 
          this.columnMap.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
@@ -67,11 +68,11 @@
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 
-         this.queryFields.add("ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_ID",id:"DC0076_QRY_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.ID||"Id"})  );
-         this.queryFields.add("CLIENT_CODE", new N21.DataComp.LOV0008({xtype: "LOV0008",fieldMapping: [{column:"ID",field:"DC0076_QRY_CLIENT_ID"},{column:"CODE",field:"DC0076_QRY_CLIENT_CODE"}],name:"QRY_CLIENT_CODE",id:"DC0076_QRY_CLIENT_CODE",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client"})  );
-         this.queryFields.add("CLIENT_ID", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_CLIENT_ID",id:"DC0076_QRY_CLIENT_ID",width:100,fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID"})  );
-         this.queryFields.add("CURRENCY", new N21.DataComp.LOV0001({xtype: "LOV0001",name:"QRY_CURRENCY",id:"DC0076_QRY_CURRENCY",width:100,fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency"})  );
-         this.queryFields.add("COPY_FROM_LIST_IS", new Ext.form.Hidden ({xtype: "hidden",name:"QRY_COPY_FROM_LIST_IS",id:"DC0076_QRY_COPY_FROM_LIST_IS",width:100,fieldLabel: this.resourceBundle.FieldLabel.COPY_FROM_LIST_IS||"Copy from ID"})  );
+       this.queryFields.add("ID",new Ext.form.Hidden({name:"QRY_ID",id:"DC0076F_QRY_ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:true,width:100}));
+       this.queryFields.add("CLIENT_CODE",new  N21.DataComp.LOV0008({name:"QRY_CLIENT_CODE",id:"DC0076F_QRY_CLIENT_CODE",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_CODE||"Client",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0076F_QRY_CLIENT_ID"},{column:"CODE",field:"DC0076F_QRY_CLIENT_CODE"}]}));
+       this.queryFields.add("CLIENT_ID",new Ext.form.Hidden({name:"QRY_CLIENT_ID",id:"DC0076F_QRY_CLIENT_ID",fieldLabel: this.resourceBundle.FieldLabel.CLIENT_ID||"Client ID",allowBlank:true,width:100}));
+       this.queryFields.add("CURRENCY",new  N21.DataComp.LOV0001({name:"QRY_CURRENCY",id:"DC0076F_QRY_CURRENCY",fieldLabel: this.resourceBundle.FieldLabel.CURRENCY||"Currency",allowBlank:true,width:100,listWidth:118,selectOnFocus:true}));
+       this.queryFields.add("COPY_FROM_LIST_IS",new Ext.form.Hidden({name:"QRY_COPY_FROM_LIST_IS",id:"DC0076F_QRY_COPY_FROM_LIST_IS",fieldLabel: this.resourceBundle.FieldLabel.COPY_FROM_LIST_IS||"Copy from ID",allowBlank:true,width:100}));
 
        this.layoutItems.add("DC0090",
              new Ext.Window({ xtype:"window", modal:true, title: "DC0090 - "+(N21.DataComp.DC0090.prototype.resourceBundle.DcProperty.Title||"Products"),  closeAction:"hide",closable:true,layout:"fit", width:500, height:500, items:{xtype:"DC0090",id:"DC0090", parentDcRelation:{name:"DC0076",relation:[{parent:"ID",child:"PRICELIST_ID"}]}         }} ) ); 

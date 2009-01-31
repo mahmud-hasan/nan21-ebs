@@ -6,7 +6,7 @@
 
   Ext.ns("N21.DataComp");
   N21.DataComp.LOV0011 = Ext.extend(N21.Base.Combo, {
-     displayColumn: "NAME"
+     displayColumn: "CODE"
     ,initComponent:function() {
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
@@ -15,7 +15,8 @@
               ,root:"records"
               ,url:"frmMain.php?_p_form=LOV0011&_p_action=fetch&_p_data_format=json"
               ,remoteSort:true
-              ,fields:[{name:"ID",type:"float"},{name:"NAME",type:"string"}]
+              ,fields:[{name:"CODE",type:"string"},{name:"ID",type:"float"}]
+              ,baseParams: {p_client_id:"-1"}
              })
           ,dataComponentName:"LOV0011"
           ,mode:"local"
