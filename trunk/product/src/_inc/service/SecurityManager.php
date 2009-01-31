@@ -2,27 +2,23 @@
 
  class SecurityManager {
 
-
-
    public static function authenticateUserFromDb(&$db, $pUserName, $pUserPassword) {
-
-      $sql = "select * from sys_user where login_code = :lc and login_password = :lp";
-      $params = array("lc"=>$pUserName,"lp"=>$pUserPassword);
-      $rs = $db->Execute($sql, $params);
-      if ($row = $rs->FetchRow()) {
-         return true; 
-      } else { 
-         return false; 
+      try {
+        $stmt = $db->PrepareSP("BEGIN pk_session.do_user_login(:usr, :pswd, :ip); END;");
+        $db->InParameter($stmt, $pUserName, 'usr');
+        $db->InParameter($stmt, $pUserPassword, 'pswd');
+        $db->InParameter($stmt, $_SERVER['REMOTE_ADDR'], 'ip');
+        $db->Execute($stmt);
+        return true;
+      } catch (Exception $e) {
+        return false;
       }
-
    }
 
 
    public static function authenticateUserFromLdap($pUserName, $pUserPassword) {
-
       return true;
-
    }
- 
+
  }
 ?>
