@@ -3,14 +3,15 @@ DcProperty:{
   Title:"Accounts chart"
     }
 ,FieldLabel:{ 
-      ACCGRP_ID:"Accgrp_id"
-     ,ACCJOURNAL_ID:"Accjournal_id"
+      ACCJOURNAL_ID:"Accjournal_id"
      ,ACCJOURNAL_NAME:"Journal"
      ,ACCOUNT:"Account"
      ,ACCSCHEMA_ID:"Accschema_id"
+     ,ACCSCHEMA_NAME:"Accounting schema"
+     ,ACCTGRP_ID:"Accgrp_id"
      ,ACTIVE:"Active"
+     ,CLIENT_CODE:"Client"
      ,CLIENT_ID:"Client ID"
-     ,CLIENT_NAME:"Client"
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created"
      ,CURRENCY:"Currency"

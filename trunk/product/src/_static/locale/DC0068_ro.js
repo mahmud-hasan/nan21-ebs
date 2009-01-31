@@ -3,8 +3,8 @@ DcProperty:{
   Title:"DC0068"
     }
 ,FieldLabel:{ 
-      CREATEDBY:"Created by"
-     ,CREATEDON:"Created on"
+      CREATEDBY:"Creat de"
+     ,CREATEDON:"Creat la"
      ,ID:"Id"
      ,ROLE_NAME:"Rol"
      ,USER_ID:"ID utilizator"

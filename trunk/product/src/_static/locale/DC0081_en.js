@@ -4,6 +4,7 @@ DcProperty:{
     }
 ,FieldLabel:{ 
       BPARTNER_ID:"Bpartner ID"
+     ,BPARTNER_NAME:"Linked business partner"
      ,CODE:"Code"
      ,DEFAULT_CLIENT:"Default?"
      ,ID:"Id"

@@ -3,8 +3,8 @@ DcProperty:{
   Title:"Colete"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"ID unitate"
-     ,CLIENT_NAME:"Unitate"
+      CLIENT_CODE:"Unitate"
+     ,CLIENT_ID:"ID unitate"
      ,CODE:"Cod"
      ,CONTENT:"Continut"
      ,CREATEDBY:"Creat de"

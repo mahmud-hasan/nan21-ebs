@@ -3,14 +3,16 @@ DcProperty:{
   Title:"Accounting periods"
     }
 ,FieldLabel:{ 
-      ACCYEAR:"Fiscal year"
+      ACCYEAR_CODE:"Fiscal year"
+     ,CLIENT_CODE:"Client"
      ,CLIENT_ID:"Client ID"
-     ,CLIENT_NAME:"Client"
      ,CLOSED:"Closed"
+     ,CODE:"Code"
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created on"
      ,ENDDATE:"End date"
      ,ID:"Id"
+     ,IS_FIRST_PERIOD:"Is first period?"
      ,MODIFIEDBY:"Modified by"
      ,MODIFIEDON:"Modified on"
      ,NAME:"Name"

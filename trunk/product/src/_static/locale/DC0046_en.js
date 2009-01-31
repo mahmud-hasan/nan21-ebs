@@ -31,6 +31,7 @@ DcProperty:{
     }
 ,FieldsetTitle:{ 
       Effort:"Effort"
+     ,Eval:"Eval"
      ,Impact:"Impact"
      ,Info:"Info"
      ,Modified:"Modified"

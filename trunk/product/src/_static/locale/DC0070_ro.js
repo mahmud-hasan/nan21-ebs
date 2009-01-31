@@ -4,7 +4,7 @@ DcProperty:{
     }
 ,FieldLabel:{ 
       CREATEDBY:"Creat de"
-     ,CREATEDON:"Created on"
+     ,CREATEDON:"Creat la"
      ,ID:"Id"
      ,MENUITEM_ID:"ID meniu"
      ,MODIFIEDBY:"Modificat de"

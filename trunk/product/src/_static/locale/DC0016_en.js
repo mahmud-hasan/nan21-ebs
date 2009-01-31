@@ -3,8 +3,8 @@ DcProperty:{
   Title:"Parcel master-data"
     }
 ,FieldLabel:{ 
-      CLIENT_ID:"Client_id"
-     ,CLIENT_NAME:"Client"
+      CLIENT_CODE:"Client"
+     ,CLIENT_ID:"Client_id"
      ,CODE:"Code"
      ,CONTENT:"Content"
      ,CREATEDBY:"Created by"

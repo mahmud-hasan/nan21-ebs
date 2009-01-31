@@ -11,7 +11,7 @@ DcProperty:{
      ,COSTCENTER_NAME:"Centru de cost"
      ,COSTMETHOD_CODE:"Metoda evaluare"
      ,CREATEDBY:"Creat de"
-     ,CREATEDON:"Created on"
+     ,CREATEDON:"Creat la"
      ,ID:"Id"
      ,MODIFIEDBY:"Modificat de"
      ,MODIFIEDON:"Modificat la"

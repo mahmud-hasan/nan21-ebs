@@ -12,7 +12,7 @@ DcProperty:{
      ,CR_AMOUNT:"Cr amount"
      ,CURRENCY:"Currency"
      ,DB_ACCT:"Debit acct."
-     ,DB_AMOUNT:"Amount"
+     ,DB_AMOUNT:"Dr amount"
      ,ID:"Id"
      ,IS_GENERATED:"Generated"
      ,MODIFIEDBY:"Modified by"

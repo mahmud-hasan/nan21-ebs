@@ -3,13 +3,15 @@ DcProperty:{
   Title:"Accounting documents"
     }
 ,FieldLabel:{ 
-      ACCPERIOD_NAME:"Accounting period"
+      ACCPERIOD_ID:"Accounting period"
+     ,ACCSCHEMA_ID:"Accschema_id"
+     ,ACCSCHEMA_NAME:"Accounting schema"
      ,BASEDOC_DATE:"Source doc. date"
      ,BASEDOC_ID:"Source doc. ID"
      ,BASEDOC_NO:"Source doc. no"
      ,BASEDOC_TYPE:"Source doc. type"
+     ,CLIENT_CODE:"Client"
      ,CLIENT_ID:"Client ID"
-     ,CLIENT_NAME:"Client"
      ,CREATEDBY:"Created by"
      ,CREATEDON:"Created on"
      ,CR_AMOUNT:"Credit amount"
