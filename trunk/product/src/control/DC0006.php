@@ -11,25 +11,25 @@ class DC0006 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
     if (!empty($_REQUEST["QRY_BANK_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "BANK_CODE like :BANK_CODE";
       $params["BANK_CODE"] = $_REQUEST["QRY_BANK_CODE"];
     }
-    if (!empty($_REQUEST["QRY_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "NAME like :NAME";
-      $params["NAME"] = $_REQUEST["QRY_NAME"];
-    }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "NAME like :NAME";
+      $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
 }
 
@@ -47,24 +47,24 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                ADRESS
                 ,BANK_CODE
+                ,CODE
+                ,ID
                 ,NAME
                 ,TYPE
-                ,CODE
-                ,ADRESS
             from BANK_AGENCY  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "ADRESS"
       ,"BANK_CODE"
+      ,"CODE"
+      ,"ID"
       ,"NAME"
       ,"TYPE"
-      ,"CODE"
-      ,"ADRESS"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -111,13 +111,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -154,19 +158,19 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["TYPE"] = $this->getRequestParam("TYPE");
     $sql = "insert into BANK_AGENCY(
-                 ID
+                 ADRESS
                 ,BANK_CODE
+                ,CODE
+                ,ID
                 ,NAME
                 ,TYPE
-                ,CODE
-                ,ADRESS
             ) values ( 
-                 :ID
+                 :ADRESS
                 ,:BANK_CODE
+                ,:CODE
+                ,:ID
                 ,:NAME
                 ,:TYPE
-                ,:CODE
-                ,:ADRESS
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_bankag_id.nextval seq_val from dual")->fetchRow();
@@ -248,12 +252,12 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                ADRESS
                 ,BANK_CODE
+                ,CODE
+                ,ID
                 ,NAME
                 ,TYPE
-                ,CODE
-                ,ADRESS
             from BANK_AGENCY 
          where 
            ID= :ID
@@ -264,12 +268,12 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "ADRESS" => array("DATA_TYPE" => "STRING")
   ,"BANK_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"NAME" => array("DATA_TYPE" => "STRING")
   ,"TYPE" => array("DATA_TYPE" => "STRING")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
-  ,"ADRESS" => array("DATA_TYPE" => "STRING")
 );
 
 

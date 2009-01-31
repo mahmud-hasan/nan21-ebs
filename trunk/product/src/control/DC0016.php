@@ -11,124 +11,79 @@ class DC0016 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
+      $where .= "t.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
     }
     if (!empty($_REQUEST["QRY_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CODE like :CODE";
+      $where .= "t.CODE like :CODE";
       $params["CODE"] = $_REQUEST["QRY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_BPARTNER_ID like :EXP_BPARTNER_ID";
-      $params["EXP_BPARTNER_ID"] = $_REQUEST["QRY_EXP_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_NAME like :EXP_NAME";
-      $params["EXP_NAME"] = $_REQUEST["QRY_EXP_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_BPADRESS_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_BPADRESS_ID like :EXP_BPADRESS_ID";
-      $params["EXP_BPADRESS_ID"] = $_REQUEST["QRY_EXP_BPADRESS_ID"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_BPADRESS"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_BPADRESS like :EXP_BPADRESS";
-      $params["EXP_BPADRESS"] = $_REQUEST["QRY_EXP_BPADRESS"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_COUNTRY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_COUNTRY like :EXP_COUNTRY";
-      $params["EXP_COUNTRY"] = $_REQUEST["QRY_EXP_COUNTRY"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_REGION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_REGION like :EXP_REGION";
-      $params["EXP_REGION"] = $_REQUEST["QRY_EXP_REGION"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_CITY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_CITY like :EXP_CITY";
-      $params["EXP_CITY"] = $_REQUEST["QRY_EXP_CITY"];
-    }
-    if (!empty($_REQUEST["QRY_EXP_CITY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "EXP_CITY_ID like :EXP_CITY_ID";
-      $params["EXP_CITY_ID"] = $_REQUEST["QRY_EXP_CITY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_BPARTNER_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_BPARTNER_ID like :DEST_BPARTNER_ID";
-      $params["DEST_BPARTNER_ID"] = $_REQUEST["QRY_DEST_BPARTNER_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_NAME like :DEST_NAME";
-      $params["DEST_NAME"] = $_REQUEST["QRY_DEST_NAME"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_BPADRESS_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_BPADRESS_ID like :DEST_BPADRESS_ID";
-      $params["DEST_BPADRESS_ID"] = $_REQUEST["QRY_DEST_BPADRESS_ID"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_COUNTRY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_COUNTRY like :DEST_COUNTRY";
-      $params["DEST_COUNTRY"] = $_REQUEST["QRY_DEST_COUNTRY"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_REGION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_REGION like :DEST_REGION";
-      $params["DEST_REGION"] = $_REQUEST["QRY_DEST_REGION"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_CITY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_CITY like :DEST_CITY";
-      $params["DEST_CITY"] = $_REQUEST["QRY_DEST_CITY"];
-    }
-    if (!empty($_REQUEST["QRY_DEST_CITY_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DEST_CITY_ID like :DEST_CITY_ID";
-      $params["DEST_CITY_ID"] = $_REQUEST["QRY_DEST_CITY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_PICKUP_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PICKUP_DATE like :PICKUP_DATE";
-      $params["PICKUP_DATE"] = $_REQUEST["QRY_PICKUP_DATE"];
-    }
-    if (!empty($_REQUEST["QRY_PICKUP_AGENT_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "PICKUP_AGENT_CODE like :PICKUP_AGENT_CODE";
-      $params["PICKUP_AGENT_CODE"] = $_REQUEST["QRY_PICKUP_AGENT_CODE"];
     }
     if (!empty($_REQUEST["QRY_DELIVERED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "DELIVERED like :DELIVERED";
+      $where .= "t.DELIVERED like :DELIVERED";
       $params["DELIVERED"] = $_REQUEST["QRY_DELIVERED"];
-    }
-    if (!empty($_REQUEST["QRY_DELIVERY_DATE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DELIVERY_DATE like :DELIVERY_DATE";
-      $params["DELIVERY_DATE"] = $_REQUEST["QRY_DELIVERY_DATE"];
     }
     if (!empty($_REQUEST["QRY_DELIVERY_AGENT_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "DELIVERY_AGENT_CODE like :DELIVERY_AGENT_CODE";
+      $where .= "t.DELIVERY_AGENT_CODE like :DELIVERY_AGENT_CODE";
       $params["DELIVERY_AGENT_CODE"] = $_REQUEST["QRY_DELIVERY_AGENT_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_DEST_BPADRESS_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.DEST_BPADRESS_ID like :DEST_BPADRESS_ID";
+      $params["DEST_BPADRESS_ID"] = $_REQUEST["QRY_DEST_BPADRESS_ID"];
+    }
+    if (!empty($_REQUEST["QRY_DEST_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.DEST_BPARTNER_ID like :DEST_BPARTNER_ID";
+      $params["DEST_BPARTNER_ID"] = $_REQUEST["QRY_DEST_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_DEST_CITY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.DEST_CITY_ID like :DEST_CITY_ID";
+      $params["DEST_CITY_ID"] = $_REQUEST["QRY_DEST_CITY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_DEST_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.DEST_NAME like :DEST_NAME";
+      $params["DEST_NAME"] = $_REQUEST["QRY_DEST_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_EXP_BPADRESS_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.EXP_BPADRESS_ID like :EXP_BPADRESS_ID";
+      $params["EXP_BPADRESS_ID"] = $_REQUEST["QRY_EXP_BPADRESS_ID"];
+    }
+    if (!empty($_REQUEST["QRY_EXP_BPARTNER_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.EXP_BPARTNER_ID like :EXP_BPARTNER_ID";
+      $params["EXP_BPARTNER_ID"] = $_REQUEST["QRY_EXP_BPARTNER_ID"];
+    }
+    if (!empty($_REQUEST["QRY_EXP_CITY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.EXP_CITY_ID like :EXP_CITY_ID";
+      $params["EXP_CITY_ID"] = $_REQUEST["QRY_EXP_CITY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_EXP_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.EXP_NAME like :EXP_NAME";
+      $params["EXP_NAME"] = $_REQUEST["QRY_EXP_NAME"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_PICKUP_AGENT_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.PICKUP_AGENT_CODE like :PICKUP_AGENT_CODE";
+      $params["PICKUP_AGENT_CODE"] = $_REQUEST["QRY_PICKUP_AGENT_CODE"];
     }
     if (!empty($_REQUEST["QRY_REJECTED"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "REJECTED like :REJECTED";
+      $where .= "t.REJECTED like :REJECTED";
       $params["REJECTED"] = $_REQUEST["QRY_REJECTED"];
     }
 }
@@ -147,112 +102,112 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CODE
-                ,CLIENT_ID
-                ,EXP_BPARTNER_ID
-                ,EXP_NAME
-                ,EXP_BPADRESS_ID
-                ,EXP_BPADRESS
-                ,EXP_COUNTRY
-                ,EXP_REGION
-                ,EXP_CITY
-                ,EXP_CITY_ID
-                ,EXP_ZIP
-                ,EXP_ADRESS_NOTE
-                ,DEST_BPARTNER_ID
-                ,DEST_NAME
-                ,DEST_BPADRESS_ID
-                ,DEST_BPADRESS
-                ,DEST_COUNTRY
-                ,DEST_REGION
-                ,DEST_CITY
-                ,DEST_CITY_ID
-                ,DEST_ZIP
-                ,DEST_ADRESS_NOTE
-                ,PICKEDUP
-                ,PICKUP_MODE
-                ,PICKUP_DATE
-                ,PICKUP_AGENT_CODE
-                ,DELIVERED
-                ,DELIVERY_MODE
-                ,DELIVERY_DATE
-                ,DELIVERY_AGENT_CODE
-                ,DELIVERED_TO_NAME
-                ,DELIVERED_TO_IDENT
-                ,REJECTED
-                ,REJECT_DATE
-                ,REJECT_REASON
-                ,REJECTED_BY_NAME
-                ,REJECTED_BY_IDENT
-                ,PACKAGE_COUNT
-                ,CONTENT
-                ,NOTES
-                ,DECLARED_VALUE
-                ,INSURED_VALUE
-                ,REF_PARCEL_ID
-                ,REF_PARCEL_REFERENCE_TYPE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,(select code from client where id = client_id) CLIENT_NAME
-            from PARCEL  $where $orderByClause ";
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
+                ,t.CODE
+                ,t.CONTENT
+                ,t.CREATEDBY
+                ,t.CREATEDON
+                ,t.DECLARED_VALUE
+                ,t.DELIVERED
+                ,t.DELIVERED_TO_IDENT
+                ,t.DELIVERED_TO_NAME
+                ,t.DELIVERY_AGENT_CODE
+                ,t.DELIVERY_DATE
+                ,t.DELIVERY_MODE
+                ,t.DEST_ADRESS_NOTE
+                ,t.DEST_BPADRESS
+                ,t.DEST_BPADRESS_ID
+                ,t.DEST_BPARTNER_ID
+                ,t.DEST_CITY
+                ,t.DEST_CITY_ID
+                ,t.DEST_COUNTRY
+                ,t.DEST_NAME
+                ,t.DEST_REGION
+                ,t.DEST_ZIP
+                ,t.EXP_ADRESS_NOTE
+                ,t.EXP_BPADRESS
+                ,t.EXP_BPADRESS_ID
+                ,t.EXP_BPARTNER_ID
+                ,t.EXP_CITY
+                ,t.EXP_CITY_ID
+                ,t.EXP_COUNTRY
+                ,t.EXP_NAME
+                ,t.EXP_REGION
+                ,t.EXP_ZIP
+                ,t.ID
+                ,t.INSURED_VALUE
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.NOTES
+                ,t.PACKAGE_COUNT
+                ,t.PICKEDUP
+                ,t.PICKUP_AGENT_CODE
+                ,t.PICKUP_DATE
+                ,t.PICKUP_MODE
+                ,t.REF_PARCEL_ID
+                ,t.REF_PARCEL_REFERENCE_TYPE
+                ,t.REJECTED
+                ,t.REJECTED_BY_IDENT
+                ,t.REJECTED_BY_NAME
+                ,t.REJECT_DATE
+                ,t.REJECT_REASON
+            from TR_PARCEL t $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CODE"
+      "CLIENT_CODE"
       ,"CLIENT_ID"
-      ,"EXP_BPARTNER_ID"
-      ,"EXP_NAME"
-      ,"EXP_BPADRESS_ID"
-      ,"EXP_BPADRESS"
-      ,"EXP_COUNTRY"
-      ,"EXP_REGION"
-      ,"EXP_CITY"
-      ,"EXP_CITY_ID"
-      ,"EXP_ZIP"
-      ,"EXP_ADRESS_NOTE"
-      ,"DEST_BPARTNER_ID"
-      ,"DEST_NAME"
-      ,"DEST_BPADRESS_ID"
+      ,"CODE"
+      ,"CONTENT"
+      ,"CREATEDBY"
+      ,"CREATEDON"
+      ,"DECLARED_VALUE"
+      ,"DELIVERED"
+      ,"DELIVERED_TO_IDENT"
+      ,"DELIVERED_TO_NAME"
+      ,"DELIVERY_AGENT_CODE"
+      ,"DELIVERY_DATE"
+      ,"DELIVERY_MODE"
+      ,"DEST_ADRESS_NOTE"
       ,"DEST_BPADRESS"
-      ,"DEST_COUNTRY"
-      ,"DEST_REGION"
+      ,"DEST_BPADRESS_ID"
+      ,"DEST_BPARTNER_ID"
       ,"DEST_CITY"
       ,"DEST_CITY_ID"
+      ,"DEST_COUNTRY"
+      ,"DEST_NAME"
+      ,"DEST_REGION"
       ,"DEST_ZIP"
-      ,"DEST_ADRESS_NOTE"
-      ,"PICKEDUP"
-      ,"PICKUP_MODE"
-      ,"PICKUP_DATE"
-      ,"PICKUP_AGENT_CODE"
-      ,"DELIVERED"
-      ,"DELIVERY_MODE"
-      ,"DELIVERY_DATE"
-      ,"DELIVERY_AGENT_CODE"
-      ,"DELIVERED_TO_NAME"
-      ,"DELIVERED_TO_IDENT"
-      ,"REJECTED"
-      ,"REJECT_DATE"
-      ,"REJECT_REASON"
-      ,"REJECTED_BY_NAME"
-      ,"REJECTED_BY_IDENT"
-      ,"PACKAGE_COUNT"
-      ,"CONTENT"
-      ,"NOTES"
-      ,"DECLARED_VALUE"
+      ,"EXP_ADRESS_NOTE"
+      ,"EXP_BPADRESS"
+      ,"EXP_BPADRESS_ID"
+      ,"EXP_BPARTNER_ID"
+      ,"EXP_CITY"
+      ,"EXP_CITY_ID"
+      ,"EXP_COUNTRY"
+      ,"EXP_NAME"
+      ,"EXP_REGION"
+      ,"EXP_ZIP"
+      ,"ID"
       ,"INSURED_VALUE"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"NOTES"
+      ,"PACKAGE_COUNT"
+      ,"PICKEDUP"
+      ,"PICKUP_AGENT_CODE"
+      ,"PICKUP_DATE"
+      ,"PICKUP_MODE"
       ,"REF_PARCEL_ID"
       ,"REF_PARCEL_REFERENCE_TYPE"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"CLIENT_NAME"
+      ,"REJECTED"
+      ,"REJECTED_BY_IDENT"
+      ,"REJECTED_BY_NAME"
+      ,"REJECT_DATE"
+      ,"REJECT_REASON"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -278,68 +233,68 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,(select code from client where id = client_id) CLIENT_NAME
-                ,CLIENT_ID
-                ,CODE
-                ,EXP_CITY_ID
-                ,EXP_BPARTNER_ID
-                ,EXP_BPADRESS_ID
-                ,EXP_NAME
-                ,EXP_COUNTRY
-                ,EXP_REGION
-                ,EXP_CITY
-                ,EXP_BPADRESS
-                ,EXP_ZIP
-                ,EXP_ADRESS_NOTE
-                ,DEST_BPADRESS_ID
-                ,DEST_CITY_ID
-                ,DEST_BPARTNER_ID
-                ,DEST_NAME
-                ,DEST_COUNTRY
-                ,DEST_REGION
-                ,DEST_CITY
-                ,DEST_BPADRESS
-                ,DEST_ZIP
-                ,DEST_ADRESS_NOTE
-                ,PICKEDUP
-                ,PICKUP_MODE
-                ,PICKUP_DATE
-                ,PICKUP_AGENT_CODE
-                ,DELIVERED
-                ,DELIVERY_MODE
-                ,DELIVERY_DATE
-                ,DELIVERY_AGENT_CODE
-                ,DELIVERED_TO_NAME
-                ,DELIVERED_TO_IDENT
-                ,REJECTED
-                ,REJECT_DATE
-                ,REJECT_REASON
-                ,REJECTED_BY_NAME
-                ,REJECTED_BY_IDENT
-                ,PACKAGE_COUNT
-                ,CONTENT
-                ,NOTES
-                ,DECLARED_VALUE
-                ,INSURED_VALUE
-                ,REF_PARCEL_ID
-                ,REF_PARCEL_REFERENCE_TYPE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-            from PARCEL  $where $orderByClause ";
+                t.ID
+                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
+                ,t.CODE
+                ,t.EXP_BPARTNER_ID
+                ,t.EXP_BPADRESS_ID
+                ,t.EXP_CITY_ID
+                ,t.EXP_NAME
+                ,t.EXP_COUNTRY
+                ,t.EXP_REGION
+                ,t.EXP_CITY
+                ,t.EXP_BPADRESS
+                ,t.EXP_ZIP
+                ,t.EXP_ADRESS_NOTE
+                ,t.DEST_BPADRESS_ID
+                ,t.DEST_BPARTNER_ID
+                ,t.DEST_CITY_ID
+                ,t.DEST_NAME
+                ,t.DEST_COUNTRY
+                ,t.DEST_REGION
+                ,t.DEST_CITY
+                ,t.DEST_BPADRESS
+                ,t.DEST_ZIP
+                ,t.DEST_ADRESS_NOTE
+                ,t.PICKEDUP
+                ,t.PICKUP_MODE
+                ,t.PICKUP_DATE
+                ,t.PICKUP_AGENT_CODE
+                ,t.DELIVERED
+                ,t.DELIVERY_MODE
+                ,t.DELIVERY_DATE
+                ,t.DELIVERY_AGENT_CODE
+                ,t.DELIVERED_TO_NAME
+                ,t.DELIVERED_TO_IDENT
+                ,t.REJECTED
+                ,t.REJECT_DATE
+                ,t.REJECT_REASON
+                ,t.REJECTED_BY_NAME
+                ,t.REJECTED_BY_IDENT
+                ,t.PACKAGE_COUNT
+                ,t.CONTENT
+                ,t.NOTES
+                ,t.DECLARED_VALUE
+                ,t.INSURED_VALUE
+                ,t.REF_PARCEL_ID
+                ,t.REF_PARCEL_REFERENCE_TYPE
+                ,t.CREATEDON
+                ,t.CREATEDBY
+                ,t.MODIFIEDON
+                ,t.MODIFIEDBY
+            from TR_PARCEL t $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
-     ,"CLIENT_NAME"
+     ,"CLIENT_CODE"
      ,"CLIENT_ID"
      ,"CODE"
-     ,"EXP_CITY_ID"
      ,"EXP_BPARTNER_ID"
      ,"EXP_BPADRESS_ID"
+     ,"EXP_CITY_ID"
      ,"EXP_NAME"
      ,"EXP_COUNTRY"
      ,"EXP_REGION"
@@ -348,8 +303,8 @@ public function doExport() {
      ,"EXP_ZIP"
      ,"EXP_ADRESS_NOTE"
      ,"DEST_BPADRESS_ID"
-     ,"DEST_CITY_ID"
      ,"DEST_BPARTNER_ID"
+     ,"DEST_CITY_ID"
      ,"DEST_NAME"
      ,"DEST_COUNTRY"
      ,"DEST_REGION"
@@ -387,13 +342,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -421,8 +380,8 @@ public function doInsert() {
   $this->logger->debug("start: ".$this->dcName.".doInsert");
   try {
     $RECORD = array();
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["CONTENT"] = $this->getRequestParam("CONTENT");
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
@@ -471,102 +430,102 @@ public function doInsert() {
     $RECORD["REJECTED_BY_NAME"] = $this->getRequestParam("REJECTED_BY_NAME");
     $RECORD["REJECT_DATE"] = $this->getRequestParam("REJECT_DATE");
     $RECORD["REJECT_REASON"] = $this->getRequestParam("REJECT_REASON");
-    $sql = "insert into PARCEL(
-                 ID
+    $sql = "insert into TR_PARCEL(
+                 CLIENT_ID
                 ,CODE
-                ,CLIENT_ID
-                ,EXP_BPARTNER_ID
-                ,EXP_NAME
-                ,EXP_BPADRESS_ID
-                ,EXP_BPADRESS
-                ,EXP_COUNTRY
-                ,EXP_REGION
-                ,EXP_CITY
-                ,EXP_CITY_ID
-                ,EXP_ZIP
-                ,EXP_ADRESS_NOTE
-                ,DEST_BPARTNER_ID
-                ,DEST_NAME
-                ,DEST_BPADRESS_ID
+                ,CONTENT
+                ,CREATEDBY
+                ,DECLARED_VALUE
+                ,DELIVERED
+                ,DELIVERED_TO_IDENT
+                ,DELIVERED_TO_NAME
+                ,DELIVERY_AGENT_CODE
+                ,DELIVERY_DATE
+                ,DELIVERY_MODE
+                ,DEST_ADRESS_NOTE
                 ,DEST_BPADRESS
-                ,DEST_COUNTRY
-                ,DEST_REGION
+                ,DEST_BPADRESS_ID
+                ,DEST_BPARTNER_ID
                 ,DEST_CITY
                 ,DEST_CITY_ID
+                ,DEST_COUNTRY
+                ,DEST_NAME
+                ,DEST_REGION
                 ,DEST_ZIP
-                ,DEST_ADRESS_NOTE
-                ,PICKEDUP
-                ,PICKUP_MODE
-                ,PICKUP_DATE
-                ,PICKUP_AGENT_CODE
-                ,DELIVERED
-                ,DELIVERY_MODE
-                ,DELIVERY_DATE
-                ,DELIVERY_AGENT_CODE
-                ,DELIVERED_TO_NAME
-                ,DELIVERED_TO_IDENT
-                ,REJECTED
-                ,REJECT_DATE
-                ,REJECT_REASON
-                ,REJECTED_BY_NAME
-                ,REJECTED_BY_IDENT
-                ,PACKAGE_COUNT
-                ,CONTENT
-                ,NOTES
-                ,DECLARED_VALUE
+                ,EXP_ADRESS_NOTE
+                ,EXP_BPADRESS
+                ,EXP_BPADRESS_ID
+                ,EXP_BPARTNER_ID
+                ,EXP_CITY
+                ,EXP_CITY_ID
+                ,EXP_COUNTRY
+                ,EXP_NAME
+                ,EXP_REGION
+                ,EXP_ZIP
+                ,ID
                 ,INSURED_VALUE
+                ,MODIFIEDBY
+                ,NOTES
+                ,PACKAGE_COUNT
+                ,PICKEDUP
+                ,PICKUP_AGENT_CODE
+                ,PICKUP_DATE
+                ,PICKUP_MODE
                 ,REF_PARCEL_ID
                 ,REF_PARCEL_REFERENCE_TYPE
-                ,CREATEDBY
-                ,MODIFIEDBY
+                ,REJECTED
+                ,REJECTED_BY_IDENT
+                ,REJECTED_BY_NAME
+                ,REJECT_DATE
+                ,REJECT_REASON
             ) values ( 
-                 :ID
+                 :CLIENT_ID
                 ,:CODE
-                ,:CLIENT_ID
-                ,:EXP_BPARTNER_ID
-                ,:EXP_NAME
-                ,:EXP_BPADRESS_ID
-                ,:EXP_BPADRESS
-                ,:EXP_COUNTRY
-                ,:EXP_REGION
-                ,:EXP_CITY
-                ,:EXP_CITY_ID
-                ,:EXP_ZIP
-                ,:EXP_ADRESS_NOTE
-                ,:DEST_BPARTNER_ID
-                ,:DEST_NAME
-                ,:DEST_BPADRESS_ID
+                ,:CONTENT
+                ,:CREATEDBY
+                ,:DECLARED_VALUE
+                ,:DELIVERED
+                ,:DELIVERED_TO_IDENT
+                ,:DELIVERED_TO_NAME
+                ,:DELIVERY_AGENT_CODE
+                ,:DELIVERY_DATE
+                ,:DELIVERY_MODE
+                ,:DEST_ADRESS_NOTE
                 ,:DEST_BPADRESS
-                ,:DEST_COUNTRY
-                ,:DEST_REGION
+                ,:DEST_BPADRESS_ID
+                ,:DEST_BPARTNER_ID
                 ,:DEST_CITY
                 ,:DEST_CITY_ID
+                ,:DEST_COUNTRY
+                ,:DEST_NAME
+                ,:DEST_REGION
                 ,:DEST_ZIP
-                ,:DEST_ADRESS_NOTE
-                ,:PICKEDUP
-                ,:PICKUP_MODE
-                ,:PICKUP_DATE
-                ,:PICKUP_AGENT_CODE
-                ,:DELIVERED
-                ,:DELIVERY_MODE
-                ,:DELIVERY_DATE
-                ,:DELIVERY_AGENT_CODE
-                ,:DELIVERED_TO_NAME
-                ,:DELIVERED_TO_IDENT
-                ,:REJECTED
-                ,:REJECT_DATE
-                ,:REJECT_REASON
-                ,:REJECTED_BY_NAME
-                ,:REJECTED_BY_IDENT
-                ,:PACKAGE_COUNT
-                ,:CONTENT
-                ,:NOTES
-                ,:DECLARED_VALUE
+                ,:EXP_ADRESS_NOTE
+                ,:EXP_BPADRESS
+                ,:EXP_BPADRESS_ID
+                ,:EXP_BPARTNER_ID
+                ,:EXP_CITY
+                ,:EXP_CITY_ID
+                ,:EXP_COUNTRY
+                ,:EXP_NAME
+                ,:EXP_REGION
+                ,:EXP_ZIP
+                ,:ID
                 ,:INSURED_VALUE
+                ,:MODIFIEDBY
+                ,:NOTES
+                ,:PACKAGE_COUNT
+                ,:PICKEDUP
+                ,:PICKUP_AGENT_CODE
+                ,:PICKUP_DATE
+                ,:PICKUP_MODE
                 ,:REF_PARCEL_ID
                 ,:REF_PARCEL_REFERENCE_TYPE
-                ,:CREATEDBY
-                ,:MODIFIEDBY
+                ,:REJECTED
+                ,:REJECTED_BY_IDENT
+                ,:REJECTED_BY_NAME
+                ,:REJECT_DATE
+                ,:REJECT_REASON
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_parcel_id.nextval seq_val from dual")->fetchRow();
@@ -587,8 +546,8 @@ public function doUpdate() {
   $this->logger->debug("Start: ".$this->dcName.".doUpdate");
   try {
     $RECORD = array();
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["CONTENT"] = $this->getRequestParam("CONTENT");
     $RECORD["DECLARED_VALUE"] = $this->getRequestParam("DECLARED_VALUE");
@@ -634,52 +593,52 @@ public function doUpdate() {
     $RECORD["REJECT_DATE"] = $this->getRequestParam("REJECT_DATE");
     $RECORD["REJECT_REASON"] = $this->getRequestParam("REJECT_REASON");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0016.doUpdate().");}
-    $sql = "update PARCEL set 
-                 ID=:ID
+    $sql = "update TR_PARCEL set 
+                 CLIENT_ID=:CLIENT_ID
                 ,CODE=:CODE
-                ,CLIENT_ID=:CLIENT_ID
-                ,EXP_BPARTNER_ID=:EXP_BPARTNER_ID
-                ,EXP_NAME=:EXP_NAME
-                ,EXP_BPADRESS_ID=:EXP_BPADRESS_ID
-                ,EXP_BPADRESS=:EXP_BPADRESS
-                ,EXP_COUNTRY=:EXP_COUNTRY
-                ,EXP_REGION=:EXP_REGION
-                ,EXP_CITY=:EXP_CITY
-                ,EXP_CITY_ID=:EXP_CITY_ID
-                ,EXP_ZIP=:EXP_ZIP
-                ,EXP_ADRESS_NOTE=:EXP_ADRESS_NOTE
-                ,DEST_BPARTNER_ID=:DEST_BPARTNER_ID
-                ,DEST_NAME=:DEST_NAME
-                ,DEST_BPADRESS_ID=:DEST_BPADRESS_ID
+                ,CONTENT=:CONTENT
+                ,DECLARED_VALUE=:DECLARED_VALUE
+                ,DELIVERED=:DELIVERED
+                ,DELIVERED_TO_IDENT=:DELIVERED_TO_IDENT
+                ,DELIVERED_TO_NAME=:DELIVERED_TO_NAME
+                ,DELIVERY_AGENT_CODE=:DELIVERY_AGENT_CODE
+                ,DELIVERY_DATE=:DELIVERY_DATE
+                ,DELIVERY_MODE=:DELIVERY_MODE
+                ,DEST_ADRESS_NOTE=:DEST_ADRESS_NOTE
                 ,DEST_BPADRESS=:DEST_BPADRESS
-                ,DEST_COUNTRY=:DEST_COUNTRY
-                ,DEST_REGION=:DEST_REGION
+                ,DEST_BPADRESS_ID=:DEST_BPADRESS_ID
+                ,DEST_BPARTNER_ID=:DEST_BPARTNER_ID
                 ,DEST_CITY=:DEST_CITY
                 ,DEST_CITY_ID=:DEST_CITY_ID
+                ,DEST_COUNTRY=:DEST_COUNTRY
+                ,DEST_NAME=:DEST_NAME
+                ,DEST_REGION=:DEST_REGION
                 ,DEST_ZIP=:DEST_ZIP
-                ,DEST_ADRESS_NOTE=:DEST_ADRESS_NOTE
-                ,PICKEDUP=:PICKEDUP
-                ,PICKUP_MODE=:PICKUP_MODE
-                ,PICKUP_DATE=:PICKUP_DATE
-                ,PICKUP_AGENT_CODE=:PICKUP_AGENT_CODE
-                ,DELIVERED=:DELIVERED
-                ,DELIVERY_MODE=:DELIVERY_MODE
-                ,DELIVERY_DATE=:DELIVERY_DATE
-                ,DELIVERY_AGENT_CODE=:DELIVERY_AGENT_CODE
-                ,DELIVERED_TO_NAME=:DELIVERED_TO_NAME
-                ,DELIVERED_TO_IDENT=:DELIVERED_TO_IDENT
-                ,REJECTED=:REJECTED
-                ,REJECT_DATE=:REJECT_DATE
-                ,REJECT_REASON=:REJECT_REASON
-                ,REJECTED_BY_NAME=:REJECTED_BY_NAME
-                ,REJECTED_BY_IDENT=:REJECTED_BY_IDENT
-                ,PACKAGE_COUNT=:PACKAGE_COUNT
-                ,CONTENT=:CONTENT
-                ,NOTES=:NOTES
-                ,DECLARED_VALUE=:DECLARED_VALUE
+                ,EXP_ADRESS_NOTE=:EXP_ADRESS_NOTE
+                ,EXP_BPADRESS=:EXP_BPADRESS
+                ,EXP_BPADRESS_ID=:EXP_BPADRESS_ID
+                ,EXP_BPARTNER_ID=:EXP_BPARTNER_ID
+                ,EXP_CITY=:EXP_CITY
+                ,EXP_CITY_ID=:EXP_CITY_ID
+                ,EXP_COUNTRY=:EXP_COUNTRY
+                ,EXP_NAME=:EXP_NAME
+                ,EXP_REGION=:EXP_REGION
+                ,EXP_ZIP=:EXP_ZIP
+                ,ID=:ID
                 ,INSURED_VALUE=:INSURED_VALUE
+                ,NOTES=:NOTES
+                ,PACKAGE_COUNT=:PACKAGE_COUNT
+                ,PICKEDUP=:PICKEDUP
+                ,PICKUP_AGENT_CODE=:PICKUP_AGENT_CODE
+                ,PICKUP_DATE=:PICKUP_DATE
+                ,PICKUP_MODE=:PICKUP_MODE
                 ,REF_PARCEL_ID=:REF_PARCEL_ID
                 ,REF_PARCEL_REFERENCE_TYPE=:REF_PARCEL_REFERENCE_TYPE
+                ,REJECTED=:REJECTED
+                ,REJECTED_BY_IDENT=:REJECTED_BY_IDENT
+                ,REJECTED_BY_NAME=:REJECTED_BY_NAME
+                ,REJECT_DATE=:REJECT_DATE
+                ,REJECT_REASON=:REJECT_REASON
     where 
            ID= :ID
     ";
@@ -701,7 +660,7 @@ public function doDelete() {
   try {
     $RECORD["ID"] = $this->getRequestParam("ID");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0016.doDelete().");}
-    $sql = "delete from PARCEL where 
+    $sql = "delete from TR_PARCEL where 
            ID= :ID
     ";
     $stmt = $this->db->prepare($sql);
@@ -716,8 +675,8 @@ public function doDelete() {
 
 public function initNewRecord() {
   try {
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CODE"] = $this->getRequestParam("CODE");
     $RECORD["CONTENT"] = $this->getRequestParam("CONTENT");
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
@@ -776,59 +735,59 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CODE
-                ,CLIENT_ID
-                ,EXP_BPARTNER_ID
-                ,EXP_NAME
-                ,EXP_BPADRESS_ID
-                ,EXP_BPADRESS
-                ,EXP_COUNTRY
-                ,EXP_REGION
-                ,EXP_CITY
-                ,EXP_CITY_ID
-                ,EXP_ZIP
-                ,EXP_ADRESS_NOTE
-                ,DEST_BPARTNER_ID
-                ,DEST_NAME
-                ,DEST_BPADRESS_ID
-                ,DEST_BPADRESS
-                ,DEST_COUNTRY
-                ,DEST_REGION
-                ,DEST_CITY
-                ,DEST_CITY_ID
-                ,DEST_ZIP
-                ,DEST_ADRESS_NOTE
-                ,PICKEDUP
-                ,PICKUP_MODE
-                ,PICKUP_DATE
-                ,PICKUP_AGENT_CODE
-                ,DELIVERED
-                ,DELIVERY_MODE
-                ,DELIVERY_DATE
-                ,DELIVERY_AGENT_CODE
-                ,DELIVERED_TO_NAME
-                ,DELIVERED_TO_IDENT
-                ,REJECTED
-                ,REJECT_DATE
-                ,REJECT_REASON
-                ,REJECTED_BY_NAME
-                ,REJECTED_BY_IDENT
-                ,PACKAGE_COUNT
-                ,CONTENT
-                ,NOTES
-                ,DECLARED_VALUE
-                ,INSURED_VALUE
-                ,REF_PARCEL_ID
-                ,REF_PARCEL_REFERENCE_TYPE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,(select code from client where id = client_id) CLIENT_NAME
-            from PARCEL 
+                pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
+                ,t.CODE
+                ,t.CONTENT
+                ,t.CREATEDBY
+                ,t.CREATEDON
+                ,t.DECLARED_VALUE
+                ,t.DELIVERED
+                ,t.DELIVERED_TO_IDENT
+                ,t.DELIVERED_TO_NAME
+                ,t.DELIVERY_AGENT_CODE
+                ,t.DELIVERY_DATE
+                ,t.DELIVERY_MODE
+                ,t.DEST_ADRESS_NOTE
+                ,t.DEST_BPADRESS
+                ,t.DEST_BPADRESS_ID
+                ,t.DEST_BPARTNER_ID
+                ,t.DEST_CITY
+                ,t.DEST_CITY_ID
+                ,t.DEST_COUNTRY
+                ,t.DEST_NAME
+                ,t.DEST_REGION
+                ,t.DEST_ZIP
+                ,t.EXP_ADRESS_NOTE
+                ,t.EXP_BPADRESS
+                ,t.EXP_BPADRESS_ID
+                ,t.EXP_BPARTNER_ID
+                ,t.EXP_CITY
+                ,t.EXP_CITY_ID
+                ,t.EXP_COUNTRY
+                ,t.EXP_NAME
+                ,t.EXP_REGION
+                ,t.EXP_ZIP
+                ,t.ID
+                ,t.INSURED_VALUE
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.NOTES
+                ,t.PACKAGE_COUNT
+                ,t.PICKEDUP
+                ,t.PICKUP_AGENT_CODE
+                ,t.PICKUP_DATE
+                ,t.PICKUP_MODE
+                ,t.REF_PARCEL_ID
+                ,t.REF_PARCEL_REFERENCE_TYPE
+                ,t.REJECTED
+                ,t.REJECTED_BY_IDENT
+                ,t.REJECTED_BY_NAME
+                ,t.REJECT_DATE
+                ,t.REJECT_REASON
+            from TR_PARCEL t
          where 
-           ID= :ID
+           t.ID= :ID
             ";
     $rs = $this->db->Execute($sql, $pkCols);
     $row = $rs->FetchRow();
@@ -836,62 +795,62 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CODE" => array("DATA_TYPE" => "STRING")
+  "CLIENT_CODE" => array("DATA_TYPE" => "STRING")
   ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"EXP_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"EXP_NAME" => array("DATA_TYPE" => "STRING")
-  ,"EXP_BPADRESS_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"EXP_BPADRESS" => array("DATA_TYPE" => "STRING")
-  ,"EXP_COUNTRY" => array("DATA_TYPE" => "STRING")
-  ,"EXP_REGION" => array("DATA_TYPE" => "STRING")
-  ,"EXP_CITY" => array("DATA_TYPE" => "STRING")
-  ,"EXP_CITY_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"EXP_ZIP" => array("DATA_TYPE" => "STRING")
-  ,"EXP_ADRESS_NOTE" => array("DATA_TYPE" => "STRING")
-  ,"DEST_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"DEST_NAME" => array("DATA_TYPE" => "STRING")
-  ,"DEST_BPADRESS_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CODE" => array("DATA_TYPE" => "STRING")
+  ,"CONTENT" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DECLARED_VALUE" => array("DATA_TYPE" => "NUMBER")
+  ,"DELIVERED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"DELIVERED_TO_IDENT" => array("DATA_TYPE" => "STRING")
+  ,"DELIVERED_TO_NAME" => array("DATA_TYPE" => "STRING")
+  ,"DELIVERY_AGENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"DELIVERY_DATE" => array("DATA_TYPE" => "DATE")
+  ,"DELIVERY_MODE" => array("DATA_TYPE" => "STRING")
+  ,"DEST_ADRESS_NOTE" => array("DATA_TYPE" => "STRING")
   ,"DEST_BPADRESS" => array("DATA_TYPE" => "STRING")
-  ,"DEST_COUNTRY" => array("DATA_TYPE" => "STRING")
-  ,"DEST_REGION" => array("DATA_TYPE" => "STRING")
+  ,"DEST_BPADRESS_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"DEST_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
   ,"DEST_CITY" => array("DATA_TYPE" => "STRING")
   ,"DEST_CITY_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"DEST_COUNTRY" => array("DATA_TYPE" => "STRING")
+  ,"DEST_NAME" => array("DATA_TYPE" => "STRING")
+  ,"DEST_REGION" => array("DATA_TYPE" => "STRING")
   ,"DEST_ZIP" => array("DATA_TYPE" => "STRING")
-  ,"DEST_ADRESS_NOTE" => array("DATA_TYPE" => "STRING")
-  ,"PICKEDUP" => array("DATA_TYPE" => "BOOLEAN")
-  ,"PICKUP_MODE" => array("DATA_TYPE" => "STRING")
-  ,"PICKUP_DATE" => array("DATA_TYPE" => "DATE")
-  ,"PICKUP_AGENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"DELIVERED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"DELIVERY_MODE" => array("DATA_TYPE" => "STRING")
-  ,"DELIVERY_DATE" => array("DATA_TYPE" => "DATE")
-  ,"DELIVERY_AGENT_CODE" => array("DATA_TYPE" => "STRING")
-  ,"DELIVERED_TO_NAME" => array("DATA_TYPE" => "STRING")
-  ,"DELIVERED_TO_IDENT" => array("DATA_TYPE" => "STRING")
-  ,"REJECTED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"REJECT_DATE" => array("DATA_TYPE" => "DATE")
-  ,"REJECT_REASON" => array("DATA_TYPE" => "STRING")
-  ,"REJECTED_BY_NAME" => array("DATA_TYPE" => "STRING")
-  ,"REJECTED_BY_IDENT" => array("DATA_TYPE" => "STRING")
-  ,"PACKAGE_COUNT" => array("DATA_TYPE" => "NUMBER")
-  ,"CONTENT" => array("DATA_TYPE" => "STRING")
-  ,"NOTES" => array("DATA_TYPE" => "STRING")
-  ,"DECLARED_VALUE" => array("DATA_TYPE" => "NUMBER")
+  ,"EXP_ADRESS_NOTE" => array("DATA_TYPE" => "STRING")
+  ,"EXP_BPADRESS" => array("DATA_TYPE" => "STRING")
+  ,"EXP_BPADRESS_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"EXP_BPARTNER_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"EXP_CITY" => array("DATA_TYPE" => "STRING")
+  ,"EXP_CITY_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"EXP_COUNTRY" => array("DATA_TYPE" => "STRING")
+  ,"EXP_NAME" => array("DATA_TYPE" => "STRING")
+  ,"EXP_REGION" => array("DATA_TYPE" => "STRING")
+  ,"EXP_ZIP" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"INSURED_VALUE" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NOTES" => array("DATA_TYPE" => "STRING")
+  ,"PACKAGE_COUNT" => array("DATA_TYPE" => "NUMBER")
+  ,"PICKEDUP" => array("DATA_TYPE" => "BOOLEAN")
+  ,"PICKUP_AGENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"PICKUP_DATE" => array("DATA_TYPE" => "DATE")
+  ,"PICKUP_MODE" => array("DATA_TYPE" => "STRING")
   ,"REF_PARCEL_ID" => array("DATA_TYPE" => "NUMBER")
   ,"REF_PARCEL_REFERENCE_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
+  ,"REJECTED" => array("DATA_TYPE" => "BOOLEAN")
+  ,"REJECTED_BY_IDENT" => array("DATA_TYPE" => "STRING")
+  ,"REJECTED_BY_NAME" => array("DATA_TYPE" => "STRING")
+  ,"REJECT_DATE" => array("DATA_TYPE" => "DATE")
+  ,"REJECT_REASON" => array("DATA_TYPE" => "STRING")
 );
 
 
 private function readRequest(&$RECORD) {
+     if (isset($_REQUEST["CLIENT_CODE"] )) { $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE"); }
      if (isset($_REQUEST["CLIENT_ID"] )) { $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID"); }
-     if (isset($_REQUEST["CLIENT_NAME"] )) { $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME"); }
      if (isset($_REQUEST["CODE"] )) { $RECORD["CODE"] = $this->getRequestParam("CODE"); }
      if (isset($_REQUEST["CONTENT"] )) { $RECORD["CONTENT"] = $this->getRequestParam("CONTENT"); }
      if (isset($_REQUEST["CREATEDBY"] )) { $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY"); }

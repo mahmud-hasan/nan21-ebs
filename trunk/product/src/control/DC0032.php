@@ -11,50 +11,50 @@ class DC0032 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACCJOURNAL_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CLIENT_ID like :CLIENT_ID";
-      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+      $where .= "t.ACCJOURNAL_ID like :ACCJOURNAL_ID";
+      $params["ACCJOURNAL_ID"] = $_REQUEST["QRY_ACCJOURNAL_ID"];
     }
     if (!empty($_REQUEST["QRY_ACCOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACCOUNT like :ACCOUNT";
+      $where .= "t.ACCOUNT like :ACCOUNT";
       $params["ACCOUNT"] = $_REQUEST["QRY_ACCOUNT"];
+    }
+    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ACCSCHEMA_ID like :ACCSCHEMA_ID";
+      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ACCTGRP_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ACCTGRP_ID like :ACCTGRP_ID";
+      $params["ACCTGRP_ID"] = $_REQUEST["QRY_ACCTGRP_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+    }
+    if (!empty($_REQUEST["QRY_CLIENT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.CLIENT_ID like :CLIENT_ID";
+      $params["CLIENT_ID"] = $_REQUEST["QRY_CLIENT_ID"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "t.ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
     }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "NAME like :NAME";
+      $where .= "t.NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
     if (!empty($_REQUEST["QRY_PARENT_ACCOUNT"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "PARENT_ACCOUNT like :PARENT_ACCOUNT";
+      $where .= "t.PARENT_ACCOUNT like :PARENT_ACCOUNT";
       $params["PARENT_ACCOUNT"] = $_REQUEST["QRY_PARENT_ACCOUNT"];
-    }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
-    }
-    if (!empty($_REQUEST["QRY_ACCJOURNAL_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCJOURNAL_ID like :ACCJOURNAL_ID";
-      $params["ACCJOURNAL_ID"] = $_REQUEST["QRY_ACCJOURNAL_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACCGRP_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCGRP_ID like :ACCGRP_ID";
-      $params["ACCGRP_ID"] = $_REQUEST["QRY_ACCGRP_ID"];
-    }
-    if (!empty($_REQUEST["QRY_ACCSCHEMA_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACCSCHEMA_ID like :ACCSCHEMA_ID";
-      $params["ACCSCHEMA_ID"] = $_REQUEST["QRY_ACCSCHEMA_ID"];
     }
 }
 
@@ -72,46 +72,48 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CLIENT_ID
-                ,ACCOUNT
-                ,NAME
-                ,PARENT_ACCOUNT
-                ,CURRENCY
-                ,DESCRIPTION
-                ,ACTIVE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,ACCJOURNAL_ID
-                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
-                ,ACCGRP_ID
-                ,ACCSCHEMA_ID
-            from ACCOUNT  $where $orderByClause ";
+                t.ACCJOURNAL_ID
+                ,pbo_acc.get_journal_name_by_id(t.accjournal_id) ACCJOURNAL_NAME
+                ,t.ACCOUNT
+                ,t.ACCSCHEMA_ID
+                ,pbo_acc.get_accschema_name_by_id(t.accschema_id) ACCSCHEMA_NAME
+                ,t.ACCTGRP_ID
+                ,t.ACTIVE
+                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
+                ,t.CREATEDBY
+                ,t.CREATEDON
+                ,t.CURRENCY
+                ,t.DESCRIPTION
+                ,t.ID
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.NAME
+                ,t.PARENT_ACCOUNT
+            from AC_ACCT t $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"CLIENT_ID"
+      "ACCJOURNAL_ID"
+      ,"ACCJOURNAL_NAME"
       ,"ACCOUNT"
-      ,"NAME"
-      ,"PARENT_ACCOUNT"
+      ,"ACCSCHEMA_ID"
+      ,"ACCSCHEMA_NAME"
+      ,"ACCTGRP_ID"
+      ,"ACTIVE"
+      ,"CLIENT_CODE"
+      ,"CLIENT_ID"
+      ,"CREATEDBY"
+      ,"CREATEDON"
       ,"CURRENCY"
       ,"DESCRIPTION"
-      ,"ACTIVE"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"ID"
       ,"MODIFIEDBY"
-      ,"CLIENT_NAME"
-      ,"ACCJOURNAL_ID"
-      ,"ACCJOURNAL_NAME"
-      ,"ACCGRP_ID"
-      ,"ACCSCHEMA_ID"
+      ,"MODIFIEDON"
+      ,"NAME"
+      ,"PARENT_ACCOUNT"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -137,31 +139,34 @@ public function doExport() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,CLIENT_ID
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,ACCOUNT
-                ,NAME
-                ,PARENT_ACCOUNT
-                ,CURRENCY
-                ,DESCRIPTION
-                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
-                ,ACCJOURNAL_ID
-                ,ACTIVE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,ACCGRP_ID
-                ,ACCSCHEMA_ID
-            from ACCOUNT  $where $orderByClause ";
+                t.ID
+                ,t.CLIENT_ID
+                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.ACCSCHEMA_ID
+                ,pbo_acc.get_accschema_name_by_id(t.accschema_id) ACCSCHEMA_NAME
+                ,t.ACCOUNT
+                ,t.NAME
+                ,t.PARENT_ACCOUNT
+                ,t.CURRENCY
+                ,t.DESCRIPTION
+                ,pbo_acc.get_journal_name_by_id(t.accjournal_id) ACCJOURNAL_NAME
+                ,t.ACCJOURNAL_ID
+                ,t.ACTIVE
+                ,t.CREATEDON
+                ,t.CREATEDBY
+                ,t.MODIFIEDON
+                ,t.MODIFIEDBY
+                ,t.ACCTGRP_ID
+            from AC_ACCT t $where $orderByClause ";
     $rs = $this->db->Execute($sql, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
      "ID"
      ,"CLIENT_ID"
-     ,"CLIENT_NAME"
+     ,"CLIENT_CODE"
+     ,"ACCSCHEMA_ID"
+     ,"ACCSCHEMA_NAME"
      ,"ACCOUNT"
      ,"NAME"
      ,"PARENT_ACCOUNT"
@@ -174,19 +179,22 @@ public function doExport() {
      ,"CREATEDBY"
      ,"MODIFIEDON"
      ,"MODIFIEDBY"
-     ,"ACCGRP_ID"
-     ,"ACCSCHEMA_ID"
+     ,"ACCTGRP_ID"
       );
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -214,14 +222,15 @@ public function doInsert() {
   $this->logger->debug("start: ".$this->dcName.".doInsert");
   try {
     $RECORD = array();
-    $RECORD["ACCGRP_ID"] = $this->getRequestParam("ACCGRP_ID");
     $RECORD["ACCJOURNAL_ID"] = $this->getRequestParam("ACCJOURNAL_ID");
     $RECORD["ACCJOURNAL_NAME"] = $this->getRequestParam("ACCJOURNAL_NAME");
     $RECORD["ACCOUNT"] = $this->getRequestParam("ACCOUNT");
     $RECORD["ACCSCHEMA_ID"] = $this->getRequestParam("ACCSCHEMA_ID");
+    $RECORD["ACCSCHEMA_NAME"] = $this->getRequestParam("ACCSCHEMA_NAME");
+    $RECORD["ACCTGRP_ID"] = $this->getRequestParam("ACCTGRP_ID");
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
     $RECORD["CURRENCY"] = $this->getRequestParam("CURRENCY");
@@ -232,32 +241,32 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PARENT_ACCOUNT"] = $this->getRequestParam("PARENT_ACCOUNT");
     $RECORD["SUMMARY"] = $this->getRequestParamBoolean("SUMMARY");
-    $sql = "insert into ACCOUNT(
-                 ID
-                ,CLIENT_ID
+    $sql = "insert into AC_ACCT(
+                 ACCJOURNAL_ID
                 ,ACCOUNT
-                ,NAME
-                ,PARENT_ACCOUNT
+                ,ACCSCHEMA_ID
+                ,ACCTGRP_ID
+                ,ACTIVE
+                ,CLIENT_ID
+                ,CREATEDBY
                 ,CURRENCY
                 ,DESCRIPTION
-                ,ACTIVE
-                ,CREATEDBY
-                ,ACCJOURNAL_ID
-                ,ACCGRP_ID
-                ,ACCSCHEMA_ID
+                ,ID
+                ,NAME
+                ,PARENT_ACCOUNT
             ) values ( 
-                 :ID
-                ,:CLIENT_ID
+                 :ACCJOURNAL_ID
                 ,:ACCOUNT
-                ,:NAME
-                ,:PARENT_ACCOUNT
+                ,:ACCSCHEMA_ID
+                ,:ACCTGRP_ID
+                ,:ACTIVE
+                ,:CLIENT_ID
+                ,:CREATEDBY
                 ,:CURRENCY
                 ,:DESCRIPTION
-                ,:ACTIVE
-                ,:CREATEDBY
-                ,:ACCJOURNAL_ID
-                ,:ACCGRP_ID
-                ,:ACCSCHEMA_ID
+                ,:ID
+                ,:NAME
+                ,:PARENT_ACCOUNT
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_acct_id.nextval seq_val from dual")->fetchRow();
@@ -278,14 +287,15 @@ public function doUpdate() {
   $this->logger->debug("Start: ".$this->dcName.".doUpdate");
   try {
     $RECORD = array();
-    $RECORD["ACCGRP_ID"] = $this->getRequestParam("ACCGRP_ID");
     $RECORD["ACCJOURNAL_ID"] = $this->getRequestParam("ACCJOURNAL_ID");
     $RECORD["ACCJOURNAL_NAME"] = $this->getRequestParam("ACCJOURNAL_NAME");
     $RECORD["ACCOUNT"] = $this->getRequestParam("ACCOUNT");
     $RECORD["ACCSCHEMA_ID"] = $this->getRequestParam("ACCSCHEMA_ID");
+    $RECORD["ACCSCHEMA_NAME"] = $this->getRequestParam("ACCSCHEMA_NAME");
+    $RECORD["ACCTGRP_ID"] = $this->getRequestParam("ACCTGRP_ID");
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CURRENCY"] = $this->getRequestParam("CURRENCY");
     $RECORD["DESCRIPTION"] = $this->getRequestParam("DESCRIPTION");
     $RECORD["ID"] = $this->getRequestParam("ID");
@@ -294,18 +304,18 @@ public function doUpdate() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["PARENT_ACCOUNT"] = $this->getRequestParam("PARENT_ACCOUNT");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0032.doUpdate().");}
-    $sql = "update ACCOUNT set 
-                 ID=:ID
-                ,CLIENT_ID=:CLIENT_ID
+    $sql = "update AC_ACCT set 
+                 ACCJOURNAL_ID=:ACCJOURNAL_ID
                 ,ACCOUNT=:ACCOUNT
-                ,NAME=:NAME
-                ,PARENT_ACCOUNT=:PARENT_ACCOUNT
+                ,ACCSCHEMA_ID=:ACCSCHEMA_ID
+                ,ACCTGRP_ID=:ACCTGRP_ID
+                ,ACTIVE=:ACTIVE
+                ,CLIENT_ID=:CLIENT_ID
                 ,CURRENCY=:CURRENCY
                 ,DESCRIPTION=:DESCRIPTION
-                ,ACTIVE=:ACTIVE
-                ,ACCJOURNAL_ID=:ACCJOURNAL_ID
-                ,ACCGRP_ID=:ACCGRP_ID
-                ,ACCSCHEMA_ID=:ACCSCHEMA_ID
+                ,ID=:ID
+                ,NAME=:NAME
+                ,PARENT_ACCOUNT=:PARENT_ACCOUNT
     where 
            ID= :ID
     ";
@@ -327,7 +337,7 @@ public function doDelete() {
   try {
     $RECORD["ID"] = $this->getRequestParam("ID");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0032.doDelete().");}
-    $sql = "delete from ACCOUNT where 
+    $sql = "delete from AC_ACCT where 
            ID= :ID
     ";
     $stmt = $this->db->prepare($sql);
@@ -342,14 +352,15 @@ public function doDelete() {
 
 public function initNewRecord() {
   try {
-    $RECORD["ACCGRP_ID"] = $this->getRequestParam("ACCGRP_ID");
     $RECORD["ACCJOURNAL_ID"] = $this->getRequestParam("ACCJOURNAL_ID");
     $RECORD["ACCJOURNAL_NAME"] = $this->getRequestParam("ACCJOURNAL_NAME");
     $RECORD["ACCOUNT"] = $this->getRequestParam("ACCOUNT");
     $RECORD["ACCSCHEMA_ID"] = $this->getRequestParam("ACCSCHEMA_ID");
+    $RECORD["ACCSCHEMA_NAME"] = $this->getRequestParam("ACCSCHEMA_NAME");
+    $RECORD["ACCTGRP_ID"] = $this->getRequestParam("ACCTGRP_ID");
     $RECORD["ACTIVE"] = $this->getRequestParam("ACTIVE");
+    $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE");
     $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID");
-    $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME");
     $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY");
     $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON");
     $RECORD["CURRENCY"] = $this->getRequestParam("CURRENCY");
@@ -370,26 +381,27 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,CLIENT_ID
-                ,ACCOUNT
-                ,NAME
-                ,PARENT_ACCOUNT
-                ,CURRENCY
-                ,DESCRIPTION
-                ,ACTIVE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,(select t.code from client t where t.id = client_id) CLIENT_NAME
-                ,ACCJOURNAL_ID
-                ,(select name from accounting_journal where id = accjournal_id) ACCJOURNAL_NAME
-                ,ACCGRP_ID
-                ,ACCSCHEMA_ID
-            from ACCOUNT 
+                t.ACCJOURNAL_ID
+                ,pbo_acc.get_journal_name_by_id(t.accjournal_id) ACCJOURNAL_NAME
+                ,t.ACCOUNT
+                ,t.ACCSCHEMA_ID
+                ,pbo_acc.get_accschema_name_by_id(t.accschema_id) ACCSCHEMA_NAME
+                ,t.ACCTGRP_ID
+                ,t.ACTIVE
+                ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE
+                ,t.CLIENT_ID
+                ,t.CREATEDBY
+                ,t.CREATEDON
+                ,t.CURRENCY
+                ,t.DESCRIPTION
+                ,t.ID
+                ,t.MODIFIEDBY
+                ,t.MODIFIEDON
+                ,t.NAME
+                ,t.PARENT_ACCOUNT
+            from AC_ACCT t
          where 
-           ID= :ID
+           t.ID= :ID
             ";
     $rs = $this->db->Execute($sql, $pkCols);
     $row = $rs->FetchRow();
@@ -397,35 +409,37 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  "ACCJOURNAL_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCJOURNAL_NAME" => array("DATA_TYPE" => "STRING")
   ,"ACCOUNT" => array("DATA_TYPE" => "STRING")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"PARENT_ACCOUNT" => array("DATA_TYPE" => "STRING")
+  ,"ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACCSCHEMA_NAME" => array("DATA_TYPE" => "STRING")
+  ,"ACCTGRP_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"CLIENT_CODE" => array("DATA_TYPE" => "STRING")
+  ,"CLIENT_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CURRENCY" => array("DATA_TYPE" => "STRING")
   ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CLIENT_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACCJOURNAL_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCJOURNAL_NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACCGRP_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"ACCSCHEMA_ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"PARENT_ACCOUNT" => array("DATA_TYPE" => "STRING")
 );
 
 
 private function readRequest(&$RECORD) {
-     if (isset($_REQUEST["ACCGRP_ID"] )) { $RECORD["ACCGRP_ID"] = $this->getRequestParam("ACCGRP_ID"); }
      if (isset($_REQUEST["ACCJOURNAL_ID"] )) { $RECORD["ACCJOURNAL_ID"] = $this->getRequestParam("ACCJOURNAL_ID"); }
      if (isset($_REQUEST["ACCJOURNAL_NAME"] )) { $RECORD["ACCJOURNAL_NAME"] = $this->getRequestParam("ACCJOURNAL_NAME"); }
      if (isset($_REQUEST["ACCOUNT"] )) { $RECORD["ACCOUNT"] = $this->getRequestParam("ACCOUNT"); }
      if (isset($_REQUEST["ACCSCHEMA_ID"] )) { $RECORD["ACCSCHEMA_ID"] = $this->getRequestParam("ACCSCHEMA_ID"); }
+     if (isset($_REQUEST["ACCSCHEMA_NAME"] )) { $RECORD["ACCSCHEMA_NAME"] = $this->getRequestParam("ACCSCHEMA_NAME"); }
+     if (isset($_REQUEST["ACCTGRP_ID"] )) { $RECORD["ACCTGRP_ID"] = $this->getRequestParam("ACCTGRP_ID"); }
     $RECORD["ACTIVE"] = $this->getRequestParamBoolean("ACTIVE");
+     if (isset($_REQUEST["CLIENT_CODE"] )) { $RECORD["CLIENT_CODE"] = $this->getRequestParam("CLIENT_CODE"); }
      if (isset($_REQUEST["CLIENT_ID"] )) { $RECORD["CLIENT_ID"] = $this->getRequestParam("CLIENT_ID"); }
-     if (isset($_REQUEST["CLIENT_NAME"] )) { $RECORD["CLIENT_NAME"] = $this->getRequestParam("CLIENT_NAME"); }
      if (isset($_REQUEST["CREATEDBY"] )) { $RECORD["CREATEDBY"] = $this->getRequestParam("CREATEDBY"); }
      if (isset($_REQUEST["CREATEDON"] )) { $RECORD["CREATEDON"] = $this->getRequestParam("CREATEDON"); }
      if (isset($_REQUEST["CURRENCY"] )) { $RECORD["CURRENCY"] = $this->getRequestParam("CURRENCY"); }

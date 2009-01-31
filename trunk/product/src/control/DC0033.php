@@ -11,10 +11,35 @@ class DC0033 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CREATEDBY like :CREATEDBY";
+      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_CREATEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CREATEDON like :CREATEDON";
+      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
+    }
+    if (!empty($_REQUEST["QRY_DESCRIPTION"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "DESCRIPTION like :DESCRIPTION";
+      $params["DESCRIPTION"] = $_REQUEST["QRY_DESCRIPTION"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDBY like :MODIFIEDBY";
+      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDON like :MODIFIEDON";
+      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
     }
     if (!empty($_REQUEST["QRY_PROPERTY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
@@ -25,31 +50,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "PROPERTY_TYPE like :PROPERTY_TYPE";
       $params["PROPERTY_TYPE"] = $_REQUEST["QRY_PROPERTY_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_DESCRIPTION"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "DESCRIPTION like :DESCRIPTION";
-      $params["DESCRIPTION"] = $_REQUEST["QRY_DESCRIPTION"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDON like :CREATEDON";
-      $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
-    }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDON like :MODIFIEDON";
-      $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
-    }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
     }
 }
 
@@ -67,28 +67,28 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                CREATEDBY
+                ,CREATEDON
+                ,DESCRIPTION
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,PROPERTY_NAME
                 ,PROPERTY_TYPE
-                ,DESCRIPTION
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
             from ACC_SCHEMA_ATTR_DEF  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CREATEDBY"
+      ,"CREATEDON"
+      ,"DESCRIPTION"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"PROPERTY_NAME"
       ,"PROPERTY_TYPE"
-      ,"DESCRIPTION"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -139,13 +139,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -182,19 +186,19 @@ public function doInsert() {
     $RECORD["PROPERTY_NAME"] = $this->getRequestParam("PROPERTY_NAME");
     $RECORD["PROPERTY_TYPE"] = $this->getRequestParam("PROPERTY_TYPE");
     $sql = "insert into ACC_SCHEMA_ATTR_DEF(
-                 ID
+                 CREATEDBY
+                ,DESCRIPTION
+                ,ID
+                ,MODIFIEDBY
                 ,PROPERTY_NAME
                 ,PROPERTY_TYPE
-                ,DESCRIPTION
-                ,CREATEDBY
-                ,MODIFIEDBY
             ) values ( 
-                 :ID
+                 :CREATEDBY
+                ,:DESCRIPTION
+                ,:ID
+                ,:MODIFIEDBY
                 ,:PROPERTY_NAME
                 ,:PROPERTY_TYPE
-                ,:DESCRIPTION
-                ,:CREATEDBY
-                ,:MODIFIEDBY
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_ACCSCHATTRDEF_ID.nextval seq_val from dual")->fetchRow();
@@ -221,10 +225,10 @@ public function doUpdate() {
     $RECORD["PROPERTY_TYPE"] = $this->getRequestParam("PROPERTY_TYPE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0033.doUpdate().");}
     $sql = "update ACC_SCHEMA_ATTR_DEF set 
-                 ID=:ID
+                 DESCRIPTION=:DESCRIPTION
+                ,ID=:ID
                 ,PROPERTY_NAME=:PROPERTY_NAME
                 ,PROPERTY_TYPE=:PROPERTY_TYPE
-                ,DESCRIPTION=:DESCRIPTION
     where 
            ID= :ID
     ";
@@ -279,14 +283,14 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                CREATEDBY
+                ,CREATEDON
+                ,DESCRIPTION
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,PROPERTY_NAME
                 ,PROPERTY_TYPE
-                ,DESCRIPTION
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
             from ACC_SCHEMA_ATTR_DEF 
          where 
            ID= :ID
@@ -297,14 +301,14 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
+  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"PROPERTY_NAME" => array("DATA_TYPE" => "STRING")
   ,"PROPERTY_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"DESCRIPTION" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
 );
 
 

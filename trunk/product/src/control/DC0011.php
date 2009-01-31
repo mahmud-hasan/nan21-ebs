@@ -11,6 +11,11 @@ class DC0011 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_CONVERSION_TYPE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "CONVERSION_TYPE like :CONVERSION_TYPE";
+      $params["CONVERSION_TYPE"] = $_REQUEST["QRY_CONVERSION_TYPE"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
@@ -25,11 +30,6 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "UOM_TO like :UOM_TO";
       $params["UOM_TO"] = $_REQUEST["QRY_UOM_TO"];
-    }
-    if (!empty($_REQUEST["QRY_CONVERSION_TYPE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "CONVERSION_TYPE like :CONVERSION_TYPE";
-      $params["CONVERSION_TYPE"] = $_REQUEST["QRY_CONVERSION_TYPE"];
     }
 }
 
@@ -47,26 +47,26 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
+                CONVERSION_FACTOR
+                ,CONVERSION_TYPE
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,UOM_FROM
                 ,UOM_TO
-                ,CONVERSION_FACTOR
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,CONVERSION_TYPE
             from UOM_CONVERSION  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
+      "CONVERSION_FACTOR"
+      ,"CONVERSION_TYPE"
+      ,"ID"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
       ,"UOM_FROM"
       ,"UOM_TO"
-      ,"CONVERSION_FACTOR"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
-      ,"CONVERSION_TYPE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -115,13 +115,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -161,19 +165,19 @@ public function doInsert() {
     $RECORD["UOM_FROM"] = $this->getRequestParam("UOM_FROM");
     $RECORD["UOM_TO"] = $this->getRequestParam("UOM_TO");
     $sql = "insert into UOM_CONVERSION(
-                 ID
+                 CONVERSION_FACTOR
+                ,CONVERSION_TYPE
+                ,ID
+                ,MODIFIEDBY
                 ,UOM_FROM
                 ,UOM_TO
-                ,CONVERSION_FACTOR
-                ,MODIFIEDBY
-                ,CONVERSION_TYPE
             ) values ( 
-                 :ID
+                 :CONVERSION_FACTOR
+                ,:CONVERSION_TYPE
+                ,:ID
+                ,:MODIFIEDBY
                 ,:UOM_FROM
                 ,:UOM_TO
-                ,:CONVERSION_FACTOR
-                ,:MODIFIEDBY
-                ,:CONVERSION_TYPE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select seq_uomconv_id.nextval seq_val from dual")->fetchRow();
@@ -262,13 +266,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
+                CONVERSION_FACTOR
+                ,CONVERSION_TYPE
+                ,ID
+                ,MODIFIEDBY
+                ,MODIFIEDON
                 ,UOM_FROM
                 ,UOM_TO
-                ,CONVERSION_FACTOR
-                ,MODIFIEDON
-                ,MODIFIEDBY
-                ,CONVERSION_TYPE
             from UOM_CONVERSION 
          where 
            ID= :ID
@@ -279,13 +283,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
+  "CONVERSION_FACTOR" => array("DATA_TYPE" => "NUMBER")
+  ,"CONVERSION_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"UOM_FROM" => array("DATA_TYPE" => "STRING")
   ,"UOM_TO" => array("DATA_TYPE" => "STRING")
-  ,"CONVERSION_FACTOR" => array("DATA_TYPE" => "NUMBER")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"CONVERSION_TYPE" => array("DATA_TYPE" => "STRING")
 );
 
 

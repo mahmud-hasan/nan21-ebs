@@ -37,32 +37,32 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,LOGIN_CODE
-                ,PERSON_ID
+                ACCOUNT_EXPIRED
                 ,ACCOUNT_LOCKED
-                ,ACCOUNT_EXPIRED
-                ,CREATEDON
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
+                ,CREATEDON
                 ,DBUSER
+                ,ID
+                ,LOGIN_CODE
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,PERSON_ID
             from SYS_USER  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"LOGIN_CODE"
-      ,"PERSON_ID"
+      "ACCOUNT_EXPIRED"
       ,"ACCOUNT_LOCKED"
-      ,"ACCOUNT_EXPIRED"
-      ,"CREATEDON"
       ,"CREATEDBY"
-      ,"MODIFIEDON"
-      ,"MODIFIEDBY"
+      ,"CREATEDON"
       ,"DBUSER"
+      ,"ID"
+      ,"LOGIN_CODE"
+      ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"PERSON_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -117,13 +117,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -163,19 +167,19 @@ public function doInsert() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     $RECORD["PERSON_ID"] = $this->getRequestParam("PERSON_ID");
     $sql = "insert into SYS_USER(
-                 ID
+                 ACCOUNT_EXPIRED
+                ,ACCOUNT_LOCKED
+                ,DBUSER
+                ,ID
                 ,LOGIN_CODE
                 ,PERSON_ID
-                ,ACCOUNT_LOCKED
-                ,ACCOUNT_EXPIRED
-                ,DBUSER
             ) values ( 
-                 :ID
+                 :ACCOUNT_EXPIRED
+                ,:ACCOUNT_LOCKED
+                ,:DBUSER
+                ,:ID
                 ,:LOGIN_CODE
                 ,:PERSON_ID
-                ,:ACCOUNT_LOCKED
-                ,:ACCOUNT_EXPIRED
-                ,:DBUSER
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_USER_ID.nextval seq_val from dual")->fetchRow();
@@ -207,11 +211,11 @@ public function doUpdate() {
     $RECORD["MODIFIEDON"] = $this->getRequestParam("MODIFIEDON");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0031.doUpdate().");}
     $sql = "update SYS_USER set 
-                 ID=:ID
-                ,LOGIN_CODE=:LOGIN_CODE
+                 ACCOUNT_EXPIRED=:ACCOUNT_EXPIRED
                 ,ACCOUNT_LOCKED=:ACCOUNT_LOCKED
-                ,ACCOUNT_EXPIRED=:ACCOUNT_EXPIRED
                 ,DBUSER=:DBUSER
+                ,ID=:ID
+                ,LOGIN_CODE=:LOGIN_CODE
     where 
            ID= :ID
     ";
@@ -269,16 +273,16 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,LOGIN_CODE
-                ,PERSON_ID
+                ACCOUNT_EXPIRED
                 ,ACCOUNT_LOCKED
-                ,ACCOUNT_EXPIRED
-                ,CREATEDON
                 ,CREATEDBY
-                ,MODIFIEDON
-                ,MODIFIEDBY
+                ,CREATEDON
                 ,DBUSER
+                ,ID
+                ,LOGIN_CODE
+                ,MODIFIEDBY
+                ,MODIFIEDON
+                ,PERSON_ID
             from SYS_USER 
          where 
            ID= :ID
@@ -289,16 +293,16 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"LOGIN_CODE" => array("DATA_TYPE" => "STRING")
-  ,"PERSON_ID" => array("DATA_TYPE" => "NUMBER")
+  "ACCOUNT_EXPIRED" => array("DATA_TYPE" => "BOOLEAN")
   ,"ACCOUNT_LOCKED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"ACCOUNT_EXPIRED" => array("DATA_TYPE" => "BOOLEAN")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
-  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"DBUSER" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"LOGIN_CODE" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"PERSON_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 

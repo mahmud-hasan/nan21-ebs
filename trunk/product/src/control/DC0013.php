@@ -11,35 +11,35 @@ class DC0013 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_COUNTRY_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "COUNTRY_CODE like :COUNTRY_CODE";
-      $params["COUNTRY_CODE"] = $_REQUEST["QRY_COUNTRY_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "REGION_CODE like :REGION_CODE";
-      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
     }
     if (!empty($_REQUEST["QRY_CITY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CITY_ID like :CITY_ID";
       $params["CITY_ID"] = $_REQUEST["QRY_CITY_ID"];
     }
+    if (!empty($_REQUEST["QRY_COUNTRY_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "COUNTRY_CODE like :COUNTRY_CODE";
+      $params["COUNTRY_CODE"] = $_REQUEST["QRY_COUNTRY_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
     if (!empty($_REQUEST["QRY_NAME"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "NAME like :NAME";
       $params["NAME"] = $_REQUEST["QRY_NAME"];
     }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+    if (!empty($_REQUEST["QRY_REGION_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+      $where .= "REGION_CODE like :REGION_CODE";
+      $params["REGION_CODE"] = $_REQUEST["QRY_REGION_CODE"];
     }
 }
 
@@ -57,26 +57,26 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
+                ACTIVE
                 ,CITY_ID
-                ,NAME
-                ,ACTIVE
                 ,(select name from city where id=city_id) CITY_NAME
+                ,COUNTRY_CODE
+                ,ID
+                ,NAME
+                ,REGION_CODE
             from STREET  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"COUNTRY_CODE"
-      ,"REGION_CODE"
+      "ACTIVE"
       ,"CITY_ID"
-      ,"NAME"
-      ,"ACTIVE"
       ,"CITY_NAME"
+      ,"COUNTRY_CODE"
+      ,"ID"
+      ,"NAME"
+      ,"REGION_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -125,13 +125,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -173,19 +177,19 @@ public function doInsert() {
     $RECORD["NAME"] = $this->getRequestParam("NAME");
     $RECORD["REGION_CODE"] = $this->getRequestParam("REGION_CODE");
     $sql = "insert into STREET(
-                 ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
+                 ACTIVE
                 ,CITY_ID
+                ,COUNTRY_CODE
+                ,ID
                 ,NAME
-                ,ACTIVE
+                ,REGION_CODE
             ) values ( 
-                 :ID
-                ,:COUNTRY_CODE
-                ,:REGION_CODE
+                 :ACTIVE
                 ,:CITY_ID
+                ,:COUNTRY_CODE
+                ,:ID
                 ,:NAME
-                ,:ACTIVE
+                ,:REGION_CODE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_STREET_ID.nextval seq_val from dual")->fetchRow();
@@ -277,13 +281,13 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,COUNTRY_CODE
-                ,REGION_CODE
+                ACTIVE
                 ,CITY_ID
-                ,NAME
-                ,ACTIVE
                 ,(select name from city where id=city_id) CITY_NAME
+                ,COUNTRY_CODE
+                ,ID
+                ,NAME
+                ,REGION_CODE
             from STREET 
          where 
            ID= :ID
@@ -294,13 +298,13 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"COUNTRY_CODE" => array("DATA_TYPE" => "STRING")
-  ,"REGION_CODE" => array("DATA_TYPE" => "STRING")
+  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"CITY_ID" => array("DATA_TYPE" => "NUMBER")
-  ,"NAME" => array("DATA_TYPE" => "STRING")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
   ,"CITY_NAME" => array("DATA_TYPE" => "STRING")
+  ,"COUNTRY_CODE" => array("DATA_TYPE" => "STRING")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"NAME" => array("DATA_TYPE" => "STRING")
+  ,"REGION_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

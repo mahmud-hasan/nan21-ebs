@@ -11,50 +11,50 @@ class DC0036 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
-    if (!empty($_REQUEST["QRY_ID"])) {
+    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "ID like :ID";
-      $params["ID"] = $_REQUEST["QRY_ID"];
-    }
-    if (!empty($_REQUEST["QRY_UIDC_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "UIDC_CODE like :UIDC_CODE";
-      $params["UIDC_CODE"] = $_REQUEST["QRY_UIDC_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_MSG_TYPE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MSG_TYPE like :MSG_TYPE";
-      $params["MSG_TYPE"] = $_REQUEST["QRY_MSG_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_MSG_CODE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MSG_CODE like :MSG_CODE";
-      $params["MSG_CODE"] = $_REQUEST["QRY_MSG_CODE"];
-    }
-    if (!empty($_REQUEST["QRY_MAINTAINED_BY"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "MAINTAINED_BY like :MAINTAINED_BY";
-      $params["MAINTAINED_BY"] = $_REQUEST["QRY_MAINTAINED_BY"];
+      $where .= "CREATEDBY like :CREATEDBY";
+      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
     }
     if (!empty($_REQUEST["QRY_CREATEDON"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "CREATEDON like :CREATEDON";
       $params["CREATEDON"] = $_REQUEST["QRY_CREATEDON"];
     }
-    if (!empty($_REQUEST["QRY_CREATEDBY"])) {
+    if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "CREATEDBY like :CREATEDBY";
-      $params["CREATEDBY"] = $_REQUEST["QRY_CREATEDBY"];
+      $where .= "ID like :ID";
+      $params["ID"] = $_REQUEST["QRY_ID"];
+    }
+    if (!empty($_REQUEST["QRY_MAINTAINED_BY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MAINTAINED_BY like :MAINTAINED_BY";
+      $params["MAINTAINED_BY"] = $_REQUEST["QRY_MAINTAINED_BY"];
+    }
+    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MODIFIEDBY like :MODIFIEDBY";
+      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
     }
     if (!empty($_REQUEST["QRY_MODIFIEDON"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "MODIFIEDON like :MODIFIEDON";
       $params["MODIFIEDON"] = $_REQUEST["QRY_MODIFIEDON"];
     }
-    if (!empty($_REQUEST["QRY_MODIFIEDBY"])) {
+    if (!empty($_REQUEST["QRY_MSG_CODE"])) {
       $where .= (!empty($where))?" and ":"";
-      $where .= "MODIFIEDBY like :MODIFIEDBY";
-      $params["MODIFIEDBY"] = $_REQUEST["QRY_MODIFIEDBY"];
+      $where .= "MSG_CODE like :MSG_CODE";
+      $params["MSG_CODE"] = $_REQUEST["QRY_MSG_CODE"];
+    }
+    if (!empty($_REQUEST["QRY_MSG_TYPE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "MSG_TYPE like :MSG_TYPE";
+      $params["MSG_TYPE"] = $_REQUEST["QRY_MSG_TYPE"];
+    }
+    if (!empty($_REQUEST["QRY_UIDC_CODE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "UIDC_CODE like :UIDC_CODE";
+      $params["UIDC_CODE"] = $_REQUEST["QRY_UIDC_CODE"];
     }
 }
 
@@ -72,30 +72,30 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,UIDC_CODE
-                ,MSG_TYPE
-                ,MSG_CODE
-                ,MAINTAINED_BY
+                CREATEDBY
                 ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,ID
+                ,MAINTAINED_BY
                 ,MODIFIEDBY
+                ,MODIFIEDON
+                ,MSG_CODE
+                ,MSG_TYPE
+                ,UIDC_CODE
             from UI_DICTIONARY  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"UIDC_CODE"
-      ,"MSG_TYPE"
-      ,"MSG_CODE"
-      ,"MAINTAINED_BY"
+      "CREATEDBY"
       ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"ID"
+      ,"MAINTAINED_BY"
       ,"MODIFIEDBY"
+      ,"MODIFIEDON"
+      ,"MSG_CODE"
+      ,"MSG_TYPE"
+      ,"UIDC_CODE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -148,13 +148,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -192,21 +196,21 @@ public function doInsert() {
     $RECORD["MSG_TYPE"] = $this->getRequestParam("MSG_TYPE");
     $RECORD["UIDC_CODE"] = $this->getRequestParam("UIDC_CODE");
     $sql = "insert into UI_DICTIONARY(
-                 ID
-                ,UIDC_CODE
-                ,MSG_TYPE
-                ,MSG_CODE
+                 CREATEDBY
+                ,ID
                 ,MAINTAINED_BY
-                ,CREATEDBY
                 ,MODIFIEDBY
+                ,MSG_CODE
+                ,MSG_TYPE
+                ,UIDC_CODE
             ) values ( 
-                 :ID
-                ,:UIDC_CODE
-                ,:MSG_TYPE
-                ,:MSG_CODE
+                 :CREATEDBY
+                ,:ID
                 ,:MAINTAINED_BY
-                ,:CREATEDBY
                 ,:MODIFIEDBY
+                ,:MSG_CODE
+                ,:MSG_TYPE
+                ,:UIDC_CODE
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_UIDICT_ID.nextval seq_val from dual")->fetchRow();
@@ -237,11 +241,11 @@ public function doUpdate() {
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0036.doUpdate().");}
     $sql = "update UI_DICTIONARY set 
                  ID=:ID
-                ,UIDC_CODE=:UIDC_CODE
-                ,MSG_TYPE=:MSG_TYPE
-                ,MSG_CODE=:MSG_CODE
                 ,MAINTAINED_BY=:MAINTAINED_BY
                 ,MODIFIEDBY=:MODIFIEDBY
+                ,MSG_CODE=:MSG_CODE
+                ,MSG_TYPE=:MSG_TYPE
+                ,UIDC_CODE=:UIDC_CODE
     where 
            ID= :ID
     ";
@@ -297,15 +301,15 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,UIDC_CODE
-                ,MSG_TYPE
-                ,MSG_CODE
-                ,MAINTAINED_BY
+                CREATEDBY
                 ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,ID
+                ,MAINTAINED_BY
                 ,MODIFIEDBY
+                ,MODIFIEDON
+                ,MSG_CODE
+                ,MSG_TYPE
+                ,UIDC_CODE
             from UI_DICTIONARY 
          where 
            ID= :ID
@@ -316,15 +320,15 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MSG_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"MSG_CODE" => array("DATA_TYPE" => "STRING")
-  ,"MAINTAINED_BY" => array("DATA_TYPE" => "STRING")
+  "CREATEDBY" => array("DATA_TYPE" => "STRING")
   ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
+  ,"MAINTAINED_BY" => array("DATA_TYPE" => "STRING")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"MSG_CODE" => array("DATA_TYPE" => "STRING")
+  ,"MSG_TYPE" => array("DATA_TYPE" => "STRING")
+  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
 );
 
 

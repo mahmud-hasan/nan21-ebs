@@ -11,6 +11,21 @@ class DC0030 extends Controller {
 
 
 private function preQuery(&$params, &$where) {
+    if (!empty($_REQUEST["QRY_ACTIVE"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "ACTIVE like :ACTIVE";
+      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
+    }
+    if (!empty($_REQUEST["QRY_APPLY_TO_USER"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "APPLY_TO_USER like :APPLY_TO_USER";
+      $params["APPLY_TO_USER"] = $_REQUEST["QRY_APPLY_TO_USER"];
+    }
+    if (!empty($_REQUEST["QRY_FIELD_NAME"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "FIELD_NAME like :FIELD_NAME";
+      $params["FIELD_NAME"] = $_REQUEST["QRY_FIELD_NAME"];
+    }
     if (!empty($_REQUEST["QRY_ID"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "ID like :ID";
@@ -21,25 +36,10 @@ private function preQuery(&$params, &$where) {
       $where .= "UIDC_CODE like :UIDC_CODE";
       $params["UIDC_CODE"] = $_REQUEST["QRY_UIDC_CODE"];
     }
-    if (!empty($_REQUEST["QRY_FIELD_NAME"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "FIELD_NAME like :FIELD_NAME";
-      $params["FIELD_NAME"] = $_REQUEST["QRY_FIELD_NAME"];
-    }
     if (!empty($_REQUEST["QRY_VALUE_TYPE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "VALUE_TYPE like :VALUE_TYPE";
       $params["VALUE_TYPE"] = $_REQUEST["QRY_VALUE_TYPE"];
-    }
-    if (!empty($_REQUEST["QRY_ACTIVE"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "ACTIVE like :ACTIVE";
-      $params["ACTIVE"] = $_REQUEST["QRY_ACTIVE"];
-    }
-    if (!empty($_REQUEST["QRY_APPLY_TO_USER"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "APPLY_TO_USER like :APPLY_TO_USER";
-      $params["APPLY_TO_USER"] = $_REQUEST["QRY_APPLY_TO_USER"];
     }
 }
 
@@ -57,34 +57,34 @@ public function doQuery() {
       $where = " where ".$where;
     }
     $sql = "select 
-                ID
-                ,UIDC_CODE
+                ACTIVE
+                ,APPLY_TO_USER
+                ,CREATEDBY
+                ,CREATEDON
                 ,FIELD_NAME
                 ,FIELD_VALUE
-                ,VALUE_TYPE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,ID
                 ,MODIFIEDBY
-                ,ACTIVE
-                ,APPLY_TO_USER
+                ,MODIFIEDON
+                ,UIDC_CODE
+                ,VALUE_TYPE
             from UI_DC_FIELD_INITVAL  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
     $rsCount = $this->db->Execute("select count(*) TOTALCOUNT from (".$sql.") t", $params);
     $rsCount->MoveFirst();
     $columns = array(
-      "ID"
-      ,"UIDC_CODE"
+      "ACTIVE"
+      ,"APPLY_TO_USER"
+      ,"CREATEDBY"
+      ,"CREATEDON"
       ,"FIELD_NAME"
       ,"FIELD_VALUE"
-      ,"VALUE_TYPE"
-      ,"CREATEDON"
-      ,"CREATEDBY"
-      ,"MODIFIEDON"
+      ,"ID"
       ,"MODIFIEDBY"
-      ,"ACTIVE"
-      ,"APPLY_TO_USER"
+      ,"MODIFIEDON"
+      ,"UIDC_CODE"
+      ,"VALUE_TYPE"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -141,13 +141,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -187,21 +191,21 @@ public function doInsert() {
     $RECORD["UIDC_CODE"] = $this->getRequestParam("UIDC_CODE");
     $RECORD["VALUE_TYPE"] = $this->getRequestParam("VALUE_TYPE");
     $sql = "insert into UI_DC_FIELD_INITVAL(
-                 ID
-                ,UIDC_CODE
+                 ACTIVE
+                ,APPLY_TO_USER
                 ,FIELD_NAME
                 ,FIELD_VALUE
+                ,ID
+                ,UIDC_CODE
                 ,VALUE_TYPE
-                ,ACTIVE
-                ,APPLY_TO_USER
             ) values ( 
-                 :ID
-                ,:UIDC_CODE
+                 :ACTIVE
+                ,:APPLY_TO_USER
                 ,:FIELD_NAME
                 ,:FIELD_VALUE
+                ,:ID
+                ,:UIDC_CODE
                 ,:VALUE_TYPE
-                ,:ACTIVE
-                ,:APPLY_TO_USER
     )";
     $stmt = $this->db->prepare($sql);
     $_seq = $this->db->execute("select SEQ_UIFLDINITVAL_ID.nextval seq_val from dual")->fetchRow();
@@ -235,13 +239,13 @@ public function doUpdate() {
     $RECORD["VALUE_TYPE"] = $this->getRequestParam("VALUE_TYPE");
     if (empty($RECORD["ID"])) { throw new Exception("Missing value for primary key field ID in DC0030.doUpdate().");}
     $sql = "update UI_DC_FIELD_INITVAL set 
-                 ID=:ID
-                ,UIDC_CODE=:UIDC_CODE
+                 ACTIVE=:ACTIVE
+                ,APPLY_TO_USER=:APPLY_TO_USER
                 ,FIELD_NAME=:FIELD_NAME
                 ,FIELD_VALUE=:FIELD_VALUE
+                ,ID=:ID
+                ,UIDC_CODE=:UIDC_CODE
                 ,VALUE_TYPE=:VALUE_TYPE
-                ,ACTIVE=:ACTIVE
-                ,APPLY_TO_USER=:APPLY_TO_USER
     where 
            ID= :ID
     ";
@@ -299,17 +303,17 @@ public function initNewRecord() {
 
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
-                ID
-                ,UIDC_CODE
+                ACTIVE
+                ,APPLY_TO_USER
+                ,CREATEDBY
+                ,CREATEDON
                 ,FIELD_NAME
                 ,FIELD_VALUE
-                ,VALUE_TYPE
-                ,CREATEDON
-                ,CREATEDBY
-                ,MODIFIEDON
+                ,ID
                 ,MODIFIEDBY
-                ,ACTIVE
-                ,APPLY_TO_USER
+                ,MODIFIEDON
+                ,UIDC_CODE
+                ,VALUE_TYPE
             from UI_DC_FIELD_INITVAL 
          where 
            ID= :ID
@@ -320,17 +324,17 @@ private function findByPk(&$pkCols, &$record) {
 } /* end function findByPk  */
 
 private  $fieldDef = array(
-  "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
+  "ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
+  ,"APPLY_TO_USER" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
+  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
   ,"FIELD_NAME" => array("DATA_TYPE" => "STRING")
   ,"FIELD_VALUE" => array("DATA_TYPE" => "STRING")
-  ,"VALUE_TYPE" => array("DATA_TYPE" => "STRING")
-  ,"CREATEDON" => array("DATA_TYPE" => "DATE")
-  ,"CREATEDBY" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"ID" => array("DATA_TYPE" => "NUMBER")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"ACTIVE" => array("DATA_TYPE" => "BOOLEAN")
-  ,"APPLY_TO_USER" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
+  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
+  ,"VALUE_TYPE" => array("DATA_TYPE" => "STRING")
 );
 
 

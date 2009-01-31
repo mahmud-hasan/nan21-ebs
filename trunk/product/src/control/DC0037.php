@@ -16,11 +16,6 @@ private function preQuery(&$params, &$where) {
       $where .= "ID like :ID";
       $params["ID"] = $_REQUEST["QRY_ID"];
     }
-    if (!empty($_REQUEST["QRY_UIDICT_ID"])) {
-      $where .= (!empty($where))?" and ":"";
-      $where .= "UIDICT_ID like :UIDICT_ID";
-      $params["UIDICT_ID"] = $_REQUEST["QRY_UIDICT_ID"];
-    }
     if (!empty($_REQUEST["QRY_LANGUAGE_CODE"])) {
       $where .= (!empty($where))?" and ":"";
       $where .= "LANGUAGE_CODE like :LANGUAGE_CODE";
@@ -30,6 +25,11 @@ private function preQuery(&$params, &$where) {
       $where .= (!empty($where))?" and ":"";
       $where .= "TRANSLATION like :TRANSLATION";
       $params["TRANSLATION"] = $_REQUEST["QRY_TRANSLATION"];
+    }
+    if (!empty($_REQUEST["QRY_UIDICT_ID"])) {
+      $where .= (!empty($where))?" and ":"";
+      $where .= "UIDICT_ID like :UIDICT_ID";
+      $params["UIDICT_ID"] = $_REQUEST["QRY_UIDICT_ID"];
     }
 }
 
@@ -48,13 +48,13 @@ public function doQuery() {
     }
     $sql = "select 
                 ID
-                ,UIDICT_ID
                 ,LANGUAGE_CODE
-                ,TRANSLATION
-                ,MODIFIEDON
                 ,MODIFIEDBY
-                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,MODIFIEDON
                 ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
+                ,TRANSLATION
+                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,UIDICT_ID
             from UI_DICTIONARY_TRL  $where $orderByClause ";
     $this->logger->debug($sql);
     $rs = $this->db->SelectLimit($sql, $limit, $start, $params);
@@ -62,13 +62,13 @@ public function doQuery() {
     $rsCount->MoveFirst();
     $columns = array(
       "ID"
-      ,"UIDICT_ID"
       ,"LANGUAGE_CODE"
-      ,"TRANSLATION"
-      ,"MODIFIEDON"
       ,"MODIFIEDBY"
-      ,"UIDC_CODE"
+      ,"MODIFIEDON"
       ,"MSG_CODE"
+      ,"TRANSLATION"
+      ,"UIDC_CODE"
+      ,"UIDICT_ID"
       );
     $dataOut = $this->serializeCursor($rs,$columns, $this->query_data_format);
     if ($this->query_data_format == "xml" ) {header("Content-type: application/xml");}
@@ -119,13 +119,17 @@ public function doExport() {
     if (!empty($_REQUEST["_p_disp_cols"])) {
       $columns = explode("|",$_REQUEST["_p_disp_cols"]);
     }
-    $dataOut = $this->serializeCursor($rs,$columns,"xml");
-    $dataOut = "<records>".$dataOut."</records>";
-    $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
-    $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
-    $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
-    $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
-    $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    if ($this->getExpFormat() == "csv" ) {
+      $dataOut = $this->serializeCursor($rs,$columns,"csv");
+    } else {
+      $dataOut = $this->serializeCursor($rs,$columns,"xml");
+      $dataOut = "<records>".$dataOut."</records>";
+      $dataOut = "<queryParams>".$this->serializeArray($params,"xml")."</queryParams>".$dataOut;
+      $dataOut = "<columnDef>".$this->columnDefForExport($columns,$this->fieldDef,true).$this->columnDefForExport(array_diff(array_keys($params), $columns),$this->fieldDef,false)."</columnDef>".$dataOut;
+      $dataOut = "<staticText>".$this->exportLocalizedStaticText()."</staticText>".$dataOut;
+      $dataOut = "<groupBy>".$groupBy."</groupBy>".$dataOut;
+      $dataOut = "<reportData  title=\"".$this->getDcTitle()."\" by=\"".$_SESSION["user"]["userName"]."\" on=\"".date(DATE_FORMAT)."\">".$dataOut."</reportData>";
+    }
     $this->beginExport();
     print $dataOut;
     $this->endExport();
@@ -209,13 +213,13 @@ public function initNewRecord() {
 private function findByPk(&$pkCols, &$record) {
     $sql = "select 
                 ID
-                ,UIDICT_ID
                 ,LANGUAGE_CODE
-                ,TRANSLATION
-                ,MODIFIEDON
                 ,MODIFIEDBY
-                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,MODIFIEDON
                 ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE
+                ,TRANSLATION
+                ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE
+                ,UIDICT_ID
             from UI_DICTIONARY_TRL 
          where 
            ID= :ID
@@ -227,13 +231,13 @@ private function findByPk(&$pkCols, &$record) {
 
 private  $fieldDef = array(
   "ID" => array("DATA_TYPE" => "NUMBER")
-  ,"UIDICT_ID" => array("DATA_TYPE" => "NUMBER")
   ,"LANGUAGE_CODE" => array("DATA_TYPE" => "STRING")
-  ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
-  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"MODIFIEDBY" => array("DATA_TYPE" => "STRING")
-  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
+  ,"MODIFIEDON" => array("DATA_TYPE" => "DATE")
   ,"MSG_CODE" => array("DATA_TYPE" => "STRING")
+  ,"TRANSLATION" => array("DATA_TYPE" => "STRING")
+  ,"UIDC_CODE" => array("DATA_TYPE" => "STRING")
+  ,"UIDICT_ID" => array("DATA_TYPE" => "NUMBER")
 );
 
 
