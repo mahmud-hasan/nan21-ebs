@@ -1,1 +1,0 @@
-exp userid=nan21/nan21@xe file=nan21.dmp owner=NAN21
