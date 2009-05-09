@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <script type="text/javascript" >
-      CFG_DEPLOYMENT = 'php';   // values: {php,java}
+      CFG_DEPLOYMENT = 'java';   // values: {php,java}
 
       if (CFG_DEPLOYMENT == 'php') {
          // Product version. Do not change!
@@ -54,7 +54,7 @@
         CFG_CLIENT_URL =  CFG_CLIENT_SERVER_PROTOCOL + '://'+CFG_CLIENT_SERVER_NAME+((CFG_CLIENT_SERVER_PORT)?':'+CFG_CLIENT_SERVER_PORT:'')+ CFG_CLIENT_SERVER_PATH;
   
         CFG_PATH_EXTJS = 'lib/Extjs/2.2';
-        CFG_PATH_JSLIB = 'lib/n21ExtjsLib';
+        CFG_PATH_JSLIB = 'http://localhost:8088/n21ExtjsLib';
         CFG_PATH_ICONS = CFG_CLIENT_URL+'/resource/icon';
 
       }
@@ -105,6 +105,8 @@
     document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.EditForm.js"><\/script>');
     document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.GridEditForm.js"><\/script>');
     document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/lib.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/globals.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/extjs-extend.js"><\/script>');
 
     document.writeln('<script type="text/javascript" src="src/other/DcLogin.js"><\/script>');
     document.writeln('<script type="text/javascript" src="src/other/DcMenuTree.js"><\/script>');
@@ -330,7 +332,7 @@
 
      function doLockSession() {
         Ext.Ajax.request({
-         url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=lockSession"
+         url: CFG_BACKENDSERVER_URL+"?"+REQUEST_PARAM_DC+"=DC_MAIN&"+REQUEST_PARAM_DC+"=custom&"+REQUEST_PARAM_CUSTOM_ACTION+"=lockSession"
         ,scope:this
         ,callback: function(o,s,r) {
             var respText = Ext.decode(r.responseText);
@@ -355,7 +357,7 @@
       function doLogout() {
           eraseCookie(AUTH_COOKIE_NAME);
           Ext.Ajax.request({
-           url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=logout"
+           url: CFG_BACKENDSERVER_URL+"?"+REQUEST_PARAM_DC+"=DC_MAIN&"+REQUEST_PARAM_ACTION+"=custom&"+REQUEST_PARAM_CUSTOM_ACTION+"=logout"
           ,scope:this
           ,callback: function(o,s,r) {
               var respText = Ext.decode(r.responseText);
@@ -378,7 +380,7 @@
      */
     function changeLanguage(p_lang) {
       Ext.Ajax.request({
-         url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=changeLanguage&_p_lang="+p_lang
+         url: CFG_BACKENDSERVER_URL+"?"+REQUEST_PARAM_DC+"=DC_MAIN&"+REQUEST_PARAM_ACTION+"=custom&"+REQUEST_PARAM_CUSTOM_ACTION+"=changeLanguage&_p_lang="+p_lang
         ,scope:this
         ,callback: function(o,s,r) {
             var respText = Ext.decode(r.responseText);

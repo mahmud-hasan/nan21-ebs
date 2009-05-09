@@ -80,6 +80,11 @@ function initUiDcIncludes(m) {
   m.add("UI0111",["DC0113","LOV0067","LOV0068"]);
   m.add("UI0113",["DC0115","LOV0067","LOV0068"]);
   m.add("UI0114",["DC0117","LOV0008","LOV0006","LOV0007","LOV0071","LOV0010","LOV0039"]);
+  m.add("UI0090",["DC0118"]);
+  m.add("UI0091",["DC0119","LOV0072","DC0120"]);
+  m.add("UI0092",[]);
+  m.add("UI0093",[]);
+  m.add("UI0094",[]);
   m.add("UI0017",["DC0025"]);
   m.add("UI0032",["DC0026","LOV0008","LOV0042","LOV0027","LOV0001","LOV0015","LOV0009","DC0044","LOV0012","LOV0025","DC0041","LOV0002","LOV0024","LOV0017","LOV0001"]);
   m.add("UI0018",["DC0030","LOV0028","LOV0029"]);
