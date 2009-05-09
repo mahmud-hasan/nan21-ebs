@@ -10,15 +10,27 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
   ,queryWindow:null
   ,toolbarConfig: null
   ,hasQuickFilter:false
-
+  ,summary:null
   ,queryPanelColCount:2
   ,queryFields: new Ext.util.MixedCollection()
   ,queryFieldsVisible: new Array()
-  
-
+  ,advfWdw: null //AdvancedFilter
+  ,printWindow:null
+  ,hasCurrencyUnitSelector: false // currencyUnitSelector: project specific
   ,initComponent:function() {
 
+     this.store.paramNames = {
+        "start" : _n21["REQUEST_PARAM_FETCH_START"],
+        "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"],
+        "sort" : _n21["REQUEST_PARAM_FETCH_SORT"],
+        "dir" : _n21["REQUEST_PARAM_FETCH_SENSE"]
+    };
+
+
      Ext.apply(this, arguments);
+
+     this.advfWdw = new Ext.ux.AdvancedFilter();
+
 
      if (this.queryArraySize != null && this.queryArraySize != -1) {
        this.bbar = new Ext.PagingToolbar({
@@ -26,6 +38,10 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
           ,displayInfo:true
           ,pageSize:20
           });
+       this.bbar.paramNames = {
+          "start" : _n21["REQUEST_PARAM_FETCH_START"],
+          "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"]
+        };
      }
 
 
@@ -34,24 +50,25 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
           autoScroll:true
          ,border:false
          ,bodyBorder :false
-        // ,tbar:toolbar1
          ,frame:true
          ,layout:'table'
          ,layoutConfig: {columns: this.queryPanelColCount}
+         ,bbar:((this.hasCurrencyUnitSelector)?new Ext.ux.CurrencyUnitSelector():null)
          ,defaults:{labelWidth:90, labelAlign:'right'}
          ,bodyStyle:'padding-top:5px;padding-bottom:5px;'
-         
        });
-      // alert('this.queryPanelColCount='+this.queryPanelColCount);
+
        for (var i=1; i<=this.queryPanelColCount; i++) {
-         // this.tbar.items[this.tbar.items.length]
          this.tbar.add( {layout:'form',labelAlign:'right', bodyStyle:'border:0;',  items: this.getQueryFieldsForPanelCol(i)});
        }
-     
+       //  this.tbar.add( {xtype:'button', text:'Advanced', scope:this,handler: function() {this.showAdvancedFilter(); }  });
+
+
+       if (!Ext.isEmpty(this.plugins) && !Ext.isEmpty(this.plugins[0])) {
+         this.summary = this.plugins[0];
+       }
+
      }
-
-      // alert('this.tbar.items.length='+this.tbar.items.length);
-
 
 
      N21.Base.GridView.superclass.initComponent.apply(this, arguments);
@@ -67,14 +84,16 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
     var keyMap = new Ext.KeyMap( this.body, [
         { key: Ext.EventObject.PAGE_DOWN , fn: function() { if (this.getBottomToolbar().getPageData().activePage < this.getBottomToolbar().getPageData().pages) { this.getBottomToolbar().changePage(  this.getBottomToolbar().getPageData().activePage+1);}},  ctrl:false, scope:this }
        ,{ key: Ext.EventObject.PAGE_UP , fn: function()   { if (this.getBottomToolbar().getPageData().activePage > 1 )                                          { this.getBottomToolbar().changePage(  this.getBottomToolbar().getPageData().activePage-1);}},  ctrl:false, scope:this }
-     //  ,{ key: Ext.EventObject.F7 , fn: function()   {  this.enterQuery(); },  ctrl:false, scope:this }
-
     ]);
     keyMap.stopEvent = true;
   }
 
+  ,showAdvancedFilter:function() {
+     var x=1;
+     this.advfWdw.show();
 
-
+  }
+  
 
   ,getQueryFieldsForPanelCol:function (colNr) {
     var idxStart,idxStop;
@@ -86,21 +105,13 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
 
      idxStart =  Math.floor(vqfLen/this.queryPanelColCount)*(colNr-1) ;
 
-     //alert('modulus='+mod+', colNr='+colNr+' colSize='+colSize);
       if (mod>0) {
         idxStart += (colNr>mod)?mod:(colNr-1);
       }
       idxStop = idxStart + colSize;
      idxStop = (idxStop<vqfLen)?idxStop:vqfLen ;
-    //alert('idxStart='+idxStart+' idxStop='+idxStop);
-    //alert('idxStart='+idxStart+' idxStop='+idxStop);
-     if (vqfLen%this.queryPanelColCount !=0 ) {
-       if (i<vqfLen%this.queryPanelColCount) {
-          //idxStart++;
-          //idxStop++;
-       }
-     }
-     for(var i = idxStart; i < idxStop; i++){ // alert('col='+colNr+' qf='+this.queryFieldsVisible[i]);
+
+     for(var i = idxStart; i < idxStop; i++){
         colArr[colArr.length] = this.queryFields.get(this.queryFieldsVisible[i]);
      }
 
@@ -119,14 +130,24 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
   }
 
 
-  ,onLoadProxy:function(proxy, obj, arg, result) {
-    if (this.getStore().reader instanceof Ext.data.JsonReader ) { 
-      for (var i=0;i<result.records.length ; i++ )  {
-        for (v in result.records[i].data) {
-          if (Ext.type(result.records[i].get(v)) == 'string')
-            result.records[i].set(v, this.urldecode(result.records[i].get(v) )) ;
+  ,onLoadProxy:function(proxy, obj, arg, result, response) {
+                    // alert(response);
+    if (this.getStore().reader instanceof Ext.data.JsonReader ) {
+      var records = result[_n21["RECORDS_JSON_ROOT_TAG"]];
+      for (var i=0;i<records.length; i++ )  {
+        for (v in records[i].data) {
+          if (Ext.type(records[i].get(v)) == 'string')
+            records[i].set(v, urldecode(records[i].get(v) )) ;
         }
-        result.records[i].commit();
+        records[i].commit();
+      }
+
+      if (this.summary != null ) {
+        var rs = Ext.decode(response.responseText);
+        if (!Ext.isEmpty(rs["summary"])) {
+           this.summary.data = rs["summary"];
+        }
+
       }
     }
   }
@@ -141,7 +162,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
       Ext.Msg.alert(err.name,err.message );
     } else {
        try{
-        Ext.Msg.alert(response.statusText, response.responseText );
+        Ext.Msg.alert(response.statusText, urldecode(response.responseText));
        } catch (e) {
           Ext.Msg.alert(e.name, e.message);
           throw e;
@@ -200,18 +221,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
        }
      }
   }
-   ,urldecode: function ( str ) {
-    var ret = str;
-    try{
-    ret = str.replace(/\+/g, "%20");
-    ret = decodeURIComponent(ret);
-    ret = ret.toString();
-    return ret;
-    }
-    catch(e) {
-      return str;
-    }
-  }
+ 
 
   ,clear_records:function() {
      this.getStore().removeAll();
@@ -220,36 +230,62 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
   ,setQueryFieldValue:function(fieldName, fieldValue) {
      this.queryFields.get(fieldName).setValue(fieldValue);
    }
+   
+  ,exportXml:function() {
+    this.exportList(_n21["DATA_FORMAT_XML"]);
+  }
+  ,exportPdf:function() {
+    this.exportList(_n21["DATA_FORMAT_PDF"]);
+  }
+  ,exportHtml:function() {
+    this.exportList(_n21["DATA_FORMAT_HTML"]);
+  }
+  ,exportCsv:function() {
+    this.exportList(_n21["DATA_FORMAT_CSV"]);
+  }
 
-  ,export_data:function(p_format) {
-     var qs = '';
-     
+  ,exportList:function(pFormat) {
+
+     var params = {};
+     params[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName.replace('G','');
      var qf = this.queryFields;
      for(var i = 0, len = qf.keys.length; i < len; i++){
-        if (qf.items[i].getValue() != undefined)
-         qs = qs + '&QRY_'+ qf.keys[i] + '=' + qf.items[i].getValue();
+        if (qf.items[i].getValue() != undefined) {
+           params['QRY_'+ qf.keys[i]] = qf.items[i].getValue();
+        }
      }
 
-     var cs = '&_p_disp_cols=';
+     var cs = '';  // visible columns
+     var csw = ''; //visible columns width
+     var cnt=0;
      for(var i=0; i<this.getColumnModel().getColumnCount(); i++) {
        if(! this.getColumnModel().isHidden(i) ) {
-          cs = cs + '' +  this.getColumnModel().getDataIndex(i) + ',';
+          cs += (cnt>0)?",":"";
+          cs += this.getColumnModel().getDataIndex(i);
+          csw += (cnt>0)?",":"";
+          csw += this.getColumnModel().getColumnWidth(i);
+          cnt++;
        }
      }
-     var ss = ''; //sorting and grouping
+     params[_n21["REQUEST_PARAM_EXPORT_COL_NAMES"]] = cs;
+     params[_n21["REQUEST_PARAM_EXPORT_COL_WIDTHS"]] = csw;
+
      if (this.getStore().getSortState()) {
-       ss = '&sort='+ this.getStore().getSortState().field + '&dir='+this.getStore().getSortState().direction;
+       params[_n21["REQUEST_PARAM_FETCH_SORT"]] = this.getStore().getSortState().field;
+       params[_n21["REQUEST_PARAM_FETCH_SENSE"]] = this.getStore().getSortState().direction;
      }
+
      if (this.getView() instanceof Ext.grid.GroupingView) {
        if(this.getStore() instanceof Ext.data.GroupingStore && this.getStore().groupField !== false){
-          ss += '&groupBy='+ this.getStore().getGroupState();
+          params[_n21["REQUEST_PARAM_EXPORT_GROUPBY"]] = this.getStore().getGroupState();
        }
-
      }
 
+     if (Ext.isEmpty(this.printWindow)) {
+           this.printWindow = new Ext.ux.PrintWindow({params:params });
+       }
+     this.printWindow.show();
 
-     var v = window.open(CFG_BACKENDSERVER_URL+"?_p_form="+this.dataComponentName.replace('G','')+"&_p_action=export&_p_exp_format="+((p_format)?p_format:"csv")+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
-     v.focus();
   }
 
    ,deleteRecord: function() {
@@ -258,7 +294,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
           title:''
          ,msg: 'No records selected. Nothing to delete.'
          ,buttons: Ext.Msg.OK
-         ,fn: this.execute_delete
+        // ,fn: this.execute_delete
          ,icon: Ext.MessageBox.WARNING
       });
     } else {
@@ -266,25 +302,32 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
          title:'Confirm delete'
          ,msg: 'Are you sure you want to delete this record?'
          ,buttons: Ext.Msg.YESNO
-         ,fn: this.execute_delete
+         ,fn: this.executeDelete
          ,scope:this
          ,icon: Ext.MessageBox.QUESTION
       });
     }
   }
-  ,execute_delete: function(btn) {
+
+ ,executeDelete: function(btn) {
       if (btn=='yes') {
-        Ext.Ajax.request({
-             url: CFG_BACKENDSERVER_URL+"?_p_form="+this.dataComponentName.replace('G','')+"&_p_action=delete"
-             ,success: this.after_execute_delete_success
-             ,failure: this.after_execute_delete_failure
+          var baseUrlCfg = {};
+          baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_DELETE"];
+          baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName.replace('G','');
+
+          Ext.Ajax.request({
+             url: buildUrl(baseUrlCfg)
+             ,success: this.afterExecuteDeleteSuccess
+             ,failure: this.afterExecuteDeleteFailure
              ,scope:this
              ,params: this.getSelectedRowPK()
           });
       }
    }
 
-  ,after_execute_delete_success: function(response,options) {
+
+
+  ,afterExecuteDeleteSuccess: function(response,options) {
     var resp = Ext.decode(response.responseText);
     if (resp.success) {
       var removed = this.getSelectionModel().getSelected();
@@ -304,7 +347,7 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
       }
     }else {
        if (resp.message) {
-         Ext.Msg.alert('Error',this.urldecode(resp.message));
+         Ext.Msg.alert('Error',urldecode(resp.message));
        } else {
          Ext.Msg.alert('Error','Error deleting this record with no message from server. Contact system administrator.');
        }
@@ -312,10 +355,12 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
 
 
   }
-  ,after_execute_delete_failure: function(response,options) {
-     try{
-        Ext.Msg.alert(response.statusText, response.responseText );
-     } catch (e) {Ext.Msg.alert('Error', 'Browser internal error.');}
+  ,afterExecuteDeleteFailure: function(response,options) {
+    try{
+        Ext.Msg.alert(response.statusText, urldecode(response.responseText) );
+       } catch (e) {
+          Ext.Msg.alert(e.name, e.message);
+       }
   }
 
   ,reSelectCurrent:function () {

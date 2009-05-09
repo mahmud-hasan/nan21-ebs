@@ -21,11 +21,16 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
   ,childDCs:new Array()   //Array
 
-
+  ,printWindow:null
 
   ,initComponent:function() {
+     this.store.paramNames = {
+        "start" : _n21["REQUEST_PARAM_FETCH_START"],
+        "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"],
+        "sort" : _n21["REQUEST_PARAM_FETCH_SORT"],
+        "dir" : _n21["REQUEST_PARAM_FETCH_SENSE"]
+    };
 
-     //Ext.apply(this, arguments); // eo apply
      this.clicksToEdit = 1;
      if (this.queryArraySize != null && this.queryArraySize != -1) {
        this.bbar = new Ext.PagingToolbar({
@@ -33,6 +38,10 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
           ,displayInfo:true
           ,pageSize:this.queryArraySize
           });
+      this.bbar.paramNames = {
+          "start" : _n21["REQUEST_PARAM_FETCH_START"],
+          "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"]
+        };
      }
       this.dcToolbar = this.tbar;
       this.tbar = new Ext.Panel({
@@ -57,9 +66,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
      N21.Base.GridEdit.superclass.initComponent.apply(this, arguments);
      if (this.parentDcRelation != null) {
         for (var j=0;j<this.parentDcRelation.relation.length; j++ ) {
-          //this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'_'+ this.parentDcRelation.relation[j].parent;
           this.getColumnModel().getColumnById(this.parentDcRelation.relation[j].child).copyValueFrom = this.parentDcRelation.name+'.'+ this.parentDcRelation.relation[j].parent;
-
         }
      }
      
@@ -83,7 +90,6 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
      if (this.getSelectionModel().selection) {
        return this.getSelectionModel().selection.cell[0];
      }  else return -1;
-
    }
 
 
@@ -144,14 +150,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       }
      idxStop = idxStart + colSize;
      idxStop = (idxStop<vqfLen)?idxStop:vqfLen ;
-     /*
-     if (vqfLen%this.queryPanelColCount !=0 ) {
-       if (i<vqfLen%this.queryPanelColCount) {
-          //idxStart++;
-          //idxStop++;
-       }
-     } */
-     for(var i = idxStart; i < idxStop; i++){ // alert('col='+colNr+' qf='+this.queryFieldsVisible[i]);
+     for(var i = idxStart; i < idxStop; i++){
         colArr[colArr.length] = this.queryFields.get(this.queryFieldsVisible[i]);
      }
     return colArr;
@@ -164,7 +163,6 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       } else {
         return this.getStore().getAt(this.getCurrentRowIndex()).get(fieldName);
       }
-      //return this.fields.get(fieldName).getValue();
   }
 
 
@@ -181,7 +179,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
     for (var i=0;i<result.records.length ; i++ )  {
       for (v in result.records[i].data) {
         if (Ext.type(result.records[i].get(v)) == 'string')
-          result.records[i].set(v, this.urldecode(result.records[i].get(v) )) ;
+          result.records[i].set(v, urldecode(result.records[i].get(v) )) ;
       }
       result.records[i].commit();
     }
@@ -193,7 +191,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       Ext.Msg.alert(err.name,err.message );
     } else {
        try{
-        Ext.Msg.alert(response.statusText, response.responseText );
+        Ext.Msg.alert(response.statusText, urldecode(response.responseText) );
        } catch (e) {
           Ext.Msg.alert(e.name, e.message);
           throw e;
@@ -202,38 +200,62 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
     return false;
   }
 
+
+
+
+  ,exportXml:function() {
+    this.exportList(_n21["DATA_FORMAT_XML"]);
+  }
+  ,exportPdf:function() {
+    this.exportList(_n21["DATA_FORMAT_PDF"]);
+  }
   ,exportHtml:function() {
-    this.exportList("html");
+    this.exportList(_n21["DATA_FORMAT_HTML"]);
   }
   ,exportCsv:function() {
-    this.exportList("csv");
+    this.exportList(_n21["DATA_FORMAT_CSV"]);
   }
   ,exportList:function(pFormat) {
-     var qs = '';
-
+    
+     var params = {};
+     params[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName;
      var qf = this.queryFields;
      for(var i = 0, len = qf.keys.length; i < len; i++){
-        if (qf.items[i].getValue() != undefined)
-         qs = qs + '&QRY_'+ qf.keys[i] + '=' + qf.items[i].getValue();
+        if (qf.items[i].getValue() != undefined) {
+           params['QRY_'+ qf.keys[i]] = qf.items[i].getValue();
+        }
      }
 
-     var cs = '&_p_disp_cols=';
+     var cs = '';
+     var csw = ''; //visible columns width
+     var cnt=0;
      for(var i=0; i<this.getColumnModel().getColumnCount(); i++) {
        if(! this.getColumnModel().isHidden(i) ) {
-          cs = cs + '' +  this.getColumnModel().getDataIndex(i) + ',';
+          cs += (cnt>0)?",":"";
+          cs += this.getColumnModel().getDataIndex(i);
+          csw += (cnt>0)?",":"";
+          csw += this.getColumnModel().getColumnWidth(i);
+          cnt++;
        }
      }
-     var ss = ''; //sorting and grouping
+     params[_n21["REQUEST_PARAM_EXPORT_COL_NAMES"]] = cs;
+     params[_n21["REQUEST_PARAM_EXPORT_COL_WIDTHS"]] = csw;
+
      if (this.getStore().getSortState()) {
-       ss = '&sort='+ this.getStore().getSortState().field + '&dir='+this.getStore().getSortState().direction;
+       params[_n21["REQUEST_PARAM_FETCH_SORT"]] = this.getStore().getSortState().field;
+       params[_n21["REQUEST_PARAM_FETCH_SENSE"]] = this.getStore().getSortState().direction;
      }
+
      if (this.getView() instanceof Ext.grid.GroupingView) {
        if(this.getStore() instanceof Ext.data.GroupingStore && this.getStore().groupField !== false){
-          ss += '&groupBy='+ this.getStore().getGroupState();
+          params[_n21["REQUEST_PARAM_EXPORT_GROUPBY"]] = this.getStore().getGroupState();
        }
      }
-     var v = window.open(CFG_BACKENDSERVER_URL+"?_p_action=export&_p_exp_format="+((pFormat)?pFormat:"html")+"&_p_form="+this.dataComponentName+''+qs+cs+ss,'Export','adress=yes,width=710,height=450,scrollbars=yes,resizable=yes,menubar=yes');
-     v.focus();
+
+     if (Ext.isEmpty(this.printWindow)) {
+           this.printWindow = new Ext.ux.PrintWindow({params:params });
+       }
+     this.printWindow.show();
   }
 
   ,enterQuery:function() { 
@@ -257,7 +279,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       for (var i=0;i<x.length;i++) { this.sentCommitRecCount++;
         var lo = x[i];
         var ld = new Object();
-        if (lo.data._p_record_status == "insert") {_p_action="insert"}  else {_p_action="update";}
+        if (lo.data._p_record_status == "insert") {_p_action=_n21["REQUEST_PARAM_ACTION_INSERT"];}  else {_p_action=_n21["REQUEST_PARAM_ACTION_UPDATE"];}
         for (var j=0;j<this.dataRecordMeta.prototype.fields.items.length;j++) {
 
            if (this.dataRecordMeta.prototype.fields.items[j].type == 'date' ) {
@@ -268,21 +290,25 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
                 ld[this.dataRecordMeta.prototype.fields.items[j].name] = lo.data[this.dataRecordMeta.prototype.fields.items[j].name];
              }
              //add the store's record id to identify record in callback
-             ld["_p_store_recId"] = lo.id;
+             ld[_n21["REQUEST_PARAM_TRANSPORT"]]=_n21["COLLECTION_RECORD_ID_TAG"]+"="+lo.id;
         }
+        var baseUrlCfg = {};
+        baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] =  _p_action;
+        baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName;
+
         Ext.Ajax.request({
              params:ld
             ,method:"POST"
-            ,callback:this.after_commit
+            ,callback:this.afterCommit
             ,scope:this
-            ,url:CFG_BACKENDSERVER_URL+"?_p_action="+_p_action+"&_p_form="+this.dataComponentName
+            ,url:buildUrl(baseUrlCfg)
         });
       }
    }
 
 
 
-   ,after_commit: function(options, success,response) {
+   ,afterCommit: function(options, success,response) {
       this.doneCommitRecCount++;
 
       if (!success) {
@@ -294,21 +320,21 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       }else {
           var o = Ext.util.JSON.decode(response.responseText);
           if (!o.success) {
-             this.serverMessages[this.serverMessages.length] =  this.urldecode(o.message);
+             this.serverMessages[this.serverMessages.length] =  urldecode(o.message);
           } else {
-           var p = o.data;
-           var opt = o.params;
+           var p = o[_n21["RECORD_JSON_ROOT_TAG"]];
+           var opt = o[_n21["TRANSPORT_TAG"]];
            for (var j=0;j<this.dataRecordMeta.prototype.fields.items.length;j++) {
-            // only those fields which have a value set in the returned result
+            // only those fields which exists in the returned result
              if (p.hasOwnProperty(this.dataRecordMeta.prototype.fields.items[j].name)) {
                if (this.dataRecordMeta.prototype.fields.items[j].type == 'date' ) {
-                 this.getStore().getById(opt["_p_store_recId"]).set(this.dataRecordMeta.prototype.fields.items[j].name, Date.parseDate(p[this.dataRecordMeta.prototype.fields.items[j].name], this.dataRecordMeta.prototype.fields.items[j].dateFormat) );
+                 this.getStore().getById(opt[_n21["COLLECTION_RECORD_ID_TAG"]]).set(this.dataRecordMeta.prototype.fields.items[j].name, Date.parseDate(urldecode(p[this.dataRecordMeta.prototype.fields.items[j].name]), this.dataRecordMeta.prototype.fields.items[j].dateFormat) );
                } else {
-                  this.getStore().getById(opt["_p_store_recId"]).set(this.dataRecordMeta.prototype.fields.items[j].name,p[this.dataRecordMeta.prototype.fields.items[j].name] );
+                  this.getStore().getById(opt[_n21["COLLECTION_RECORD_ID_TAG"]]).set(this.dataRecordMeta.prototype.fields.items[j].name,urldecode(p[this.dataRecordMeta.prototype.fields.items[j].name]) );
                }
              }
            }
-           this.getStore().getById(opt["_p_store_recId"]).set("_p_record_status","");
+           this.getStore().getById(opt[_n21["COLLECTION_RECORD_ID_TAG"]]).set("_p_record_status","");
            this.store.commitChanges();
          }
 
@@ -321,15 +347,12 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
           if (this.serverMessages.length>0) {
              var err = '';
              for (var x=0;x<this.serverMessages.length;x++ ) {
-               err += '' + this.urldecode(this.serverMessages[0]) + '<br>' ;
+               err += '' + urldecode(this.serverMessages[0]) + '<br>' ;
              }
              Ext.Msg.alert('Error',err);
           }
         }
    }
-
-
-
 
 
   ,createNewRecord: function() {
@@ -341,33 +364,36 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
             var cpValFrom = this.getColumnModel().config[i].copyValueFrom;
             var dc = cpValFrom.substring(0,cpValFrom.indexOf("."));
             var fld = cpValFrom.substring(cpValFrom.indexOf(".")+1);
-            //var val = Ext.getCmp(this.getColumnModel().config[i].copyValueFrom).getValue();
             var val = Ext.getCmp(dc).getFieldValue(fld);
             newRecord.set(this.getColumnModel().config[i].dataIndex, val);
           }
      }
      this.store.add(newRecord);
+     
+      var baseUrlCfg = {};
+      baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_INIT_RECORD"];
+      baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName;
+
       Ext.Ajax.request({
-          url: CFG_BACKENDSERVER_URL+"?_p_action=initRec&_p_form="+this.dataComponentName
+          url: buildUrl(baseUrlCfg)
          ,success: this.afterCreateNewRecordSuccess
          ,failure: this.afterCreateNewRecordFailure
          ,scope:this
          ,params:newRecord.data
       });
-
   }
 
 
   ,afterCreateNewRecordSuccess:function(r,o) {
-    var p = Ext.util.JSON.decode(r.responseText).data ;
+
+    var p = Ext.util.JSON.decode(r.responseText)[_n21["RECORD_JSON_ROOT_TAG"]];
 
     for (var i=0;i<this.dataRecordMeta.prototype.fields.items.length;i++) {
       if (this.dataRecordMeta.prototype.fields.items[i].name!='_p_record_status') {
-         //alert(this.dataRecordMeta.prototype.fields.items[i].type);
          if (this.dataRecordMeta.prototype.fields.items[i].type == 'date' ) {
-             this.getStore().getAt(this.getStore().getCount()-1).set(this.dataRecordMeta.prototype.fields.items[i].name, Date.parseDate(p[this.dataRecordMeta.prototype.fields.items[i].name], this.dataRecordMeta.prototype.fields.items[i].dateFormat) );
+             this.getStore().getAt(this.getStore().getCount()-1).set(this.dataRecordMeta.prototype.fields.items[i].name, Date.parseDate(urldecode(p[this.dataRecordMeta.prototype.fields.items[i].name] ), this.dataRecordMeta.prototype.fields.items[i].dateFormat) );
            } else {
-              this.getStore().getAt(this.getStore().getCount()-1).set(this.dataRecordMeta.prototype.fields.items[i].name,p[this.dataRecordMeta.prototype.fields.items[i].name] );
+              this.getStore().getAt(this.getStore().getCount()-1).set(this.dataRecordMeta.prototype.fields.items[i].name,urldecode(p[this.dataRecordMeta.prototype.fields.items[i].name] ) );
            }
       }
 
@@ -383,7 +409,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
   ,afterCreateNewRecordFailure:function(r,o) {
 
   }
-  
+
 
   ,getSelectedRowPK: function() {
     var pk = new Object();
@@ -393,6 +419,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
     }
     return pk;
   }
+
 
   ,deleteRecord: function() {
     if ( this.getSelectionModel().selection == null  ) {
@@ -415,19 +442,31 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       });
     }
   }
+
+
   ,executeDelete: function(btn) {
       if (btn=='yes') {
+         this.stopEditing();
+         var rowIdx = this.getSelectionModel().selection.cell[0];
+         if (this.store.getAt(rowIdx).get("_p_record_status") == "insert") {
+           this.getStore().remove( this.getSelectionModel().selection.record );
+           this.getStore().commitChanges();
+         }else{
+            var baseUrlCfg = {};
+            baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_DELETE"];
+            baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName.replace('G','');
 
-         this.stopEditing( );
-          Ext.Ajax.request({
-             url: CFG_BACKENDSERVER_URL+"?_p_action=delete&_p_form="+this.dataComponentName.replace('G','')
-             ,success: this.afterExecuteDeleteSuccess
-             ,failure: this.afterExecuteDeleteFailure
-             ,scope:this
-             ,params: this.getSelectedRowPK() //{ ID: this.store.getAt(rowIdx).get("ID") } //TODO: replace ID with PK column(s) !!!
-          });
+            Ext.Ajax.request({
+              url: buildUrl(baseUrlCfg)
+              ,success: this.afterExecuteDeleteSuccess
+              ,failure: this.afterExecuteDeleteFailure
+              ,scope:this
+              ,params: this.getSelectedRowPK()
+            });
+          }
       }
    }
+
 
   ,afterExecuteDeleteSuccess: function(response,options) {
     var resp = Ext.decode(response.responseText);
@@ -436,27 +475,37 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
       this.getStore().commitChanges();
     }else {
        if (resp.message) {
-         Ext.Msg.alert('Error',this.urldecode(resp.message));
+         Ext.Msg.alert('Error',urldecode(resp.message));
        } else {
          Ext.Msg.alert('Error','Error deleting this record with no message from server. Contact system administrator.');
        }
     }
   }
 
+
   ,afterExecuteDeleteFailure: function(response,options) {
     try{
-        Ext.Msg.alert(response.statusText, this.urldecode(response.responseText) );
+        Ext.Msg.alert(response.statusText, urldecode(response.responseText) );
        } catch (e) {
           Ext.Msg.alert(e.name, e.message);
        }
-  }
+   }
+
 
 
     ,executeQuery: function() {
        var p = new Object();
        var qf = this.queryFields;
        for(var i = 0, len = qf.keys.length; i < len; i++){
-          p["QRY_"+qf.keys[i]] = qf.items[i].getValue();
+         if (qf.items[i] instanceof Ext.form.DateField  ) {
+            if ( !Ext.isEmpty(qf.items[i].getValue() ) ) {
+              p["QRY_"+qf.keys[i]] = qf.items[i].getValue().format(Ext.DATE_FORMAT);
+            } else {
+              p["QRY_"+qf.keys[i]] = "";
+            }
+          } else {
+             p["QRY_"+qf.keys[i]] = qf.items[i].getValue();
+          }
        }
        this.store.baseParams = p;
        this.store.load({callback:this.afterExecuteQuery,scope:this});
@@ -467,22 +516,7 @@ N21.Base.GridEdit = Ext.extend(Ext.grid.EditorGridPanel, {
 
   }
 
-
-  ,urldecode: function ( str ) {
-    var ret = str;
-    try{
-    ret = str.replace(/\+/g, "%20");
-    ret = decodeURIComponent(ret);
-    ret = ret.toString();
-    return ret;
-    }
-    catch(e) {
-      return str;
-    }
-  }
-
-
-   ,clear_records:function() {
+   ,clearRecords:function() {
      this.getStore().removeAll();
    }
 

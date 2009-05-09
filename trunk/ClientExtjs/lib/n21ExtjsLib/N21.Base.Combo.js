@@ -112,8 +112,6 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
     }
     if (!this.isStoreLoaded) {
       this.store.load({callback:this.afterLoad,scope:this});
-      //N21.Base.Combo.superclass.onFocus.apply(this, arguments);
-      //return false;
     } else {
       N21.Base.Combo.superclass.onFocus.apply(this, arguments);
     }
@@ -121,6 +119,8 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
 
 
   ,onBlur: function () {
+    //N21.Base.Combo.superclass.onBlur.call();
+    Ext.form.TriggerField.superclass.onBlur.call(this);
     if (!this.getRawValue()) {
       if (this.fieldMapping.length > 0  ) {
         for (var i=0;i<this.fieldMapping.length;i++ ) {
@@ -133,14 +133,15 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
         }
       }
     }
-    N21.Base.Combo.superclass.onBlur.apply(this, arguments);
+
   }
 
   ,onTriggerClick:function() {
      if (!this.isStoreLoaded ) {
         this.expCboTask = new Ext.util.DelayedTask(this.onTriggerClick, this);
      }
-     N21.Base.Combo.superclass.onTriggerClick.apply(this, arguments);
+     //N21.Base.Combo.superclass.onTriggerClick.call(this);
+    N21.Base.Combo.superclass.onTriggerClick.apply(this, arguments);
   }
 
 
@@ -153,10 +154,6 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
         if (this.expCboTask  != null ) {
             this.expCboTask.delay(50);
         }
-       // setTimeout("this.expand", 100) ; // var x = this.isExpanded();
-        //this.onTriggerClick();
-       // var xx = new Ext.util.DelayedTask(this.onTriggerClick, this); //this.onFocus();
-      //  xx.delay(200);
      } else {
        return false;
      }
@@ -164,7 +161,7 @@ N21.Base.Combo = Ext.extend(Ext.form.ComboBox, {
   }
 
 
-  ,setParamValue:function(paramName, paramValue) {  //alert('in BaseCombo.setParamValue'+ paramName +'='+paramValue);
+  ,setParamValue:function(paramName, paramValue) {   
     this.store.baseParams[paramName] = paramValue;
     this.isStoreLoaded = false;
     this.store.removeAll()
