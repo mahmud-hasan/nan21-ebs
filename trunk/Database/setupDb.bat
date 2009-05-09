@@ -1,0 +1,1 @@
+ant -buildfile=setupDb.xml -logfile=setupDb.log
