@@ -14,7 +14,7 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
     ,queryFieldsMap: null
     ,defQueryField:''
 
-    , params:{}
+    ,params:{}
     ,callFromGrid: null
     ,callFromGridRow:null
 
@@ -95,6 +95,7 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
         N21.Base.Lov.superclass.initComponent.call(this);
 
         this.viewType = this.view.getXType();
+
         if(this.viewType == 'grid' && !this.view.sm){
             this.view.sm = this.view.getSelectionModel();
         }
@@ -143,24 +144,13 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
       for (var i=0;i<result.records.length ; i++ )  {
         for (v in result.records[i].data) {
           if (Ext.type(result.records[i].get(v)) == 'string')
-            result.records[i].set(v, this.urldecode(result.records[i].get(v) )) ;
+            result.records[i].set(v, urldecode(result.records[i].get(v) )) ;
         }
         result.records[i].commit();
       }
     }
   }
-  
-   ,urldecode: function ( str ) {
-    try{
-      var ret = str;
-      ret = ret.replace(/\+/g, "%20");
-      ret = decodeURIComponent(ret);
-      ret = ret.toString();
-      return ret;
-    } catch(e) {
-      return str;
-    }
-  }
+
 
 
   ,onViewKeypress: function( evnt) {  //  alert(evnt.getKey());
@@ -274,11 +264,6 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
        var newParamVal;
 
 
-    // ---------------------
-
-    // if (this.callFromGrid) {
-    //   newParamVal = (!Ext.isEmpty(this.paramMapping[i].field))? this.callFromGrid.store.getAt(this.callFromGridRow).get( this.paramMapping[i].field ):this.paramMapping[i].value;
-    // } else {
        for(var i=0;i<this.paramMapping.length; i++ ) {
          if (this.paramMapping[i].field) {
            if (this.paramMapping[i].field.indexOf(".")<0) {
@@ -299,10 +284,7 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
          p[this.paramMapping[i].param] =  newParamVal;
        }
 
-     // ---------------------
- 
       p['_p_query_column'] = this.queryFieldsMap[0].getValue();
-      //p['_p_query_column_code'] = Ext.getCmp(this.dataComponentName+'_QRY_FIELD_ID').getValue();
       p['_p_query_value'] = this.queryFieldsMap[1].getValue();
 
 
@@ -326,13 +308,14 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
      }
   }
   
-  
 
-  ,onBlur:function () {
+
+  ,onBlur:function () {  
+     Ext.form.TriggerField.superclass.onBlur.call(this);
      if (!this.getValue()) {
         for (var i=0;i<this.fieldMapping.length;i++ ) {
           if (!Ext.isEmpty(this.callFromGrid)) {
-             //this.callFromGrid.store.getAt(this.callFromGridRow).set(this.fieldMapping[i].field,"");
+
            } else {
              Ext.getCmp(this.fieldMapping[i].field).setValue("");
            }
@@ -454,6 +437,18 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
 
         },{shadow: true, frame: true});
 
+
+        if(this.viewType == 'grid'){
+           this.view.store.paramNames = {
+                  "start" : _n21["REQUEST_PARAM_FETCH_START"],
+                  "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"],
+                  "sort" : _n21["REQUEST_PARAM_FETCH_SORT"],
+                  "dir" : _n21["REQUEST_PARAM_FETCH_SENSE"]
+              };
+           }
+
+
+
        if (this.queryArraySize != null && this.queryArraySize != -1) {
 
           this.windowConfig.bbar = new Ext.PagingToolbar({
@@ -461,7 +456,14 @@ N21.Base.Lov = Ext.extend(Ext.form.TriggerField, {
             ,displayInfo:true
             ,pageSize:this.queryArraySize
             });
+             this.windowConfig.bbar.paramNames = {
+              "start" : _n21["REQUEST_PARAM_FETCH_START"],
+              "limit" : _n21["REQUEST_PARAM_FETCH_SIZE"]
+            };
          }
+
+ 
+
             this.window = new Ext.Window(this.windowConfig);
             this.window.on('beforeclose', function(){
                 this.window.hide();

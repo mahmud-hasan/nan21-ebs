@@ -1,14 +1,4 @@
 
-/*
-Object.prototype.hasOwnProperty = function(prop) {
-  for (var k in this) {
-    alert(k);
-
-  }
-
-}
-  */
-
 function getWindowInnerHeight() {
   var myWidth = 0, myHeight = 0;
   if( typeof( window.innerWidth ) == 'number' ) {
@@ -87,36 +77,58 @@ function eraseCookie(name) {
 	createCookie(name,"",-1);
 }
 
+function  buildBaseUrlFetch(pDc, pFormat) {
+  var baseUrlCfg = {};
+  baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_FETCH"];
+  baseUrlCfg[_n21["REQUEST_PARAM_FETCH_DATA_FORMAT"]] = pFormat;
+  baseUrlCfg[_n21["REQUEST_PARAM_DC"]] = pDc;
+  return  buildUrl(baseUrlCfg);
+}
 
+function  buildBaseUrlAction(pDc, pActionName) {
+  var baseUrlCfg = {};
+
+  baseUrlCfg[_n21["REQUEST_PARAM_DC"]] = pDc;
+  baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_CUSTOM"];
+  baseUrlCfg[_n21["REQUEST_PARAM_CUSTOM_ACTION"]] = pActionName;
+  return  buildUrl(baseUrlCfg);
+}
+
+
+function buildUrl(o) {
+  var url = CFG_BACKENDSERVER_URL+"?";
+  var i=0;
+  for(var p in o ) {
+    url += (i>0)? "&":"";
+    url += p+"="+o[p];
+    i++;
+  }
+  //alert(url);
+  return url;
+}
 
 /**
  *  Decode a string which has been urlencoded
  */
 function urldecode ( str ) {
-  var ret = str;
-  ret = ret.replace(/\+/g, "%20");
-  ret = decodeURIComponent(ret);
-  ret = ret.toString();
-  return ret;
-}
-
-
-
-Ext.form.TextField.prototype.caseRestriction = 'Mixed'; //Upper, Lower
-
-Ext.form.TextField.prototype.getValue = function() {
-   var v = Ext.form.TextField.superclass.getValue.call(this);
-   if (!Ext.isEmpty(v)) {
-     if (this.caseRestriction == "Upper" ) {
-       return v.toUpperCase();
-     }else if (this.caseRestriction == "Lower" ) {
-       return v.toLowerCase();
-     }else
-      return v;    
-   } else
-     return v;
+    if (str==undefined || str == null ) {
+       return "";
+    } else {
+      var ret = str;
+      try{
+        ret = str.replace(/\+/g, "%20");
+        ret = decodeURIComponent(ret);
+        ret = ret.toString();
+        return ret;
+      }
+      catch(e) {
+        alert('urldecode of <'+str+'> failed: '+e.message);
+        return str;
+      }
+    }
 
 }
+
 
 
 
