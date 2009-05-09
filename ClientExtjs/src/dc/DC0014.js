@@ -40,8 +40,8 @@
            store: new Ext.data.JsonStore({
                id:"storeDC0014"
               ,totalProperty:"totalCount"
-              ,root:"records"
-              ,url:CFG_BACKENDSERVER_URL+"?_p_action=fetch&_p_data_format=json&_p_form=DC0014"
+              ,root:_n21["RECORDS_JSON_ROOT_TAG"]
+              ,url:buildBaseUrlFetch("DC0014", _n21["DATA_FORMAT_JSON"])
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -107,7 +107,7 @@
        
        this.fields.add("_p_record_status",new Ext.form.Hidden({xtype: "hidden", allowBlank: true, fieldLabel: "record_status", selectOnFocus: false, style: "", name: "_p_record_status"})   );
        this.fields.add("ID",new Ext.form.Hidden({name:"ID",id:"DC0014F_ID",dataIndex:"ID",fieldLabel: this.resourceBundle.FieldLabel.ID||"Id",allowBlank:false,labelSeparator:":*",width:100,insert_allowed:true,update_allowed:true}));
-       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0014F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:false,labelSeparator:":*",caseRestriction:"Upper",width:100,insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;"}));
+       this.fields.add("CODE",new Ext.form.TextField({name:"CODE",id:"DC0014F_CODE",dataIndex:"CODE",fieldLabel: this.resourceBundle.FieldLabel.CODE||"Code",allowBlank:true,caseRestriction:"Upper",width:100,insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;"}));
        this.fields.add("NAME",new Ext.form.TextField({name:"NAME",id:"DC0014F_NAME",dataIndex:"NAME",fieldLabel: this.resourceBundle.FieldLabel.NAME||"Name",allowBlank:false,labelSeparator:":*",width:300,insert_allowed:true,update_allowed:true}));
        this.fields.add("TAX_NUMBER_TYPE",new Ext.form.TextField({name:"TAX_NUMBER_TYPE",id:"DC0014F_TAX_NUMBER_TYPE",dataIndex:"TAX_NUMBER_TYPE",fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER_TYPE||"Tax no type",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
        this.fields.add("TAX_NUMBER",new Ext.form.TextField({name:"TAX_NUMBER",id:"DC0014F_TAX_NUMBER",dataIndex:"TAX_NUMBER",fieldLabel: this.resourceBundle.FieldLabel.TAX_NUMBER||"Tax no",allowBlank:true,width:150,insert_allowed:true,update_allowed:true}));
@@ -254,7 +254,6 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
           ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
 ,"->","<span class='dcName'>DC0014</span>"          )
         }); 
 

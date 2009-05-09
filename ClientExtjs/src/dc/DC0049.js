@@ -24,8 +24,8 @@
            store: new Ext.data.JsonStore({
                id:"storeDC0049"
               ,totalProperty:"totalCount"
-              ,root:"records"
-              ,url:CFG_BACKENDSERVER_URL+"?_p_action=fetch&_p_data_format=json&_p_form=DC0049"
+              ,root:_n21["RECORDS_JSON_ROOT_TAG"]
+              ,url:buildBaseUrlFetch("DC0049", _n21["DATA_FORMAT_JSON"])
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -38,7 +38,6 @@
           ,new Ext.Toolbar.Button({  id:"tlb_DELETE"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/g_rec_del.png" ,tooltip:"" ,handler: this.deleteRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
           ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/exp_excel.png" ,tooltip:"Export records to CSV file" ,handler: this.exportCsv ,scope :this})
 ,"->","<span class='dcName'>DC0049</span>"          )
           ,dataComponentName:"DC0049"
           ,frame:true

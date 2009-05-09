@@ -58,7 +58,7 @@
            store: new Ext.data.GroupingStore({
                id:"storeDC0004"
               ,groupOnSort :false
-              ,url:CFG_BACKENDSERVER_URL+"?_p_action=fetch&_p_data_format=json&_p_form=DC0004"
+              ,url:buildBaseUrlFetch("DC0004", _n21["DATA_FORMAT_JSON"])
               ,remoteSort :true
               ,sortInfo:{field: "DOC_DATE", direction: "DESC"}
               ,reader:new Ext.data.JsonReader({
@@ -320,7 +320,6 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
           ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
 ,"->","<span class='dcName'>DC0004</span>"          )
         }); 
 

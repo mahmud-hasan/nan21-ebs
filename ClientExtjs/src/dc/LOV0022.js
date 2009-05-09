@@ -15,8 +15,8 @@
              store: new Ext.data.JsonStore({
                id:"storeLOV0022"
               ,totalProperty:"totalCount"
-              ,root:"records"
-              ,url:CFG_BACKENDSERVER_URL+"?_p_form=LOV0022&_p_action=fetch&_p_data_format=json"
+              ,root:_n21["RECORDS_JSON_ROOT_TAG"]
+              ,url:buildBaseUrlFetch("LOV0022", _n21["DATA_FORMAT_JSON"])
               ,remoteSort:true
               ,fields:[{name:"ID",type:"float"},{name:"MENUBAR_CODE",type:"string"},{name:"MENUITEM_ID",type:"float"},{name:"NAME",type:"string"},{name:"PARENT_NAME",type:"string"},{name:"POSITION",type:"float"}]
               ,baseParams: {p_parent:"",p_menubar:"%"}
