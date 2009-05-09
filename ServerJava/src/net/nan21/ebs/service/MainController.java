@@ -3,26 +3,23 @@ package net.nan21.ebs.service;
  
  
 
+ 
 import java.io.IOException;
-import java.io.PrintWriter;
+ 
 import java.net.URLEncoder;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
+import java.util.Properties;
   
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import oracle.jdbc.OraclePreparedStatement;
-import oracle.jdbc.driver.OracleConnection;
-
-import net.nan21.ebs.lib.DbManager;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.IDataControlLov;
-import net.nan21.ebs.lib.SessionUser;
+ 
+import net.nan21.lib.DbManager;
+import net.nan21.lib.HttpRequest;
+import net.nan21.lib.HttpSession;
+import net.nan21.lib.IDataControl;
+import net.nan21.lib.IDataControlLov;
+import net.nan21.lib.SessionUser;
 
 public class MainController extends HttpServlet{
 
@@ -34,10 +31,15 @@ public class MainController extends HttpServlet{
 	private boolean doLoadUserPreferences = true;
 	private boolean useCustomAccessRightCheck = false;
 	//private String customAccesRightCheck = "";
+	private final Properties settings = new Properties();
 	
-	 
 	
-	private boolean authAction;
+	public void init(){
+		 this.settings.setProperty("DbJndiName", "jdbc/nan21ebs");
+	}
+	
+	
+	//private boolean authAction;
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException {
 		doGet(request, response);
@@ -47,17 +49,13 @@ public class MainController extends HttpServlet{
 		
 		DbManager dbm = null;
 		try {  
-			 
-			
+			 			
 			
 			HttpRequest request = new HttpRequest(httpRequest);
 			HttpSession session = new HttpSession(httpRequest.getSession(true));	
-			PrintWriter out = response.getWriter();  
-						
-			System.out.println("*******  Start processing "+request.getParameter("_p_form")+"  ********");
-			  
-			  
-			
+			//PrintWriter out = response.getWriter();  
+						 
+			/*
 			Enumeration hn = request.getHttpServletRequest().getHeaderNames();
 			//System.out.println("Request headers -------------------------------");
 			while(hn.hasMoreElements()) {
@@ -65,12 +63,15 @@ public class MainController extends HttpServlet{
 				//System.out.println(n + " = "+this.request.getHttpServletRequest().getHeader(n));
 				
 			}
+			*/
+			/*
 			//System.out.println("Request params -------------------------------");
 			Enumeration pn = request.getHttpServletRequest().getParameterNames();
 			while(pn.hasMoreElements()) {
 				String n = (String)pn.nextElement();
 				//System.out.println(n + " = "+this.request.getHttpServletRequest().getParameter(n));				
 			}			
+			*/	
 						 
 			// =============================== validate=============================== 
 			if (!session.isAuthenticated() ) {  
@@ -78,7 +79,7 @@ public class MainController extends HttpServlet{
 			  		sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized");		  	
 			  	} else {
 			  		// we'll do the authentication a little bit later ...  
-			  		 authAction = true;		
+			  		// authAction = true;		
 			  	}  	
 			  } else {
 			  	 //Double check that current request is coming from session owner according to specific rules.
@@ -96,9 +97,9 @@ public class MainController extends HttpServlet{
 			  
 			  
 
-				dbm = new DbManager();
+				dbm = new DbManager(this.settings.getProperty("DbJndiName"));
 				
-				String action = request.getAction();
+				//String action = request.getAction();
 				
 				if (request.isAuthenticationRequest() ) {
 
@@ -212,8 +213,8 @@ public class MainController extends HttpServlet{
 					frm.doUpdate();
 				}else if(action.equals(HttpRequest.ACTION_FETCH_RECORD) ) {
 					frm.fetchRecord();
-				}else if(action.equals(HttpRequest.ACTION_RPC) ) {
-					frm.callProcedure( request.getParam("_p_proc") );
+				//}else if(action.equals(HttpRequest.ACTION_RPC) ) {
+				//	frm.callProcedure( request.getParam("_p_proc") );
 				}else if(action.equals(HttpRequest.ACTION_DELETE) ) {
 					if ( !this.useCustomAccessRightCheck) {
 						//this.checkDCPermission( HttpRequest.ACTION_DELETE, dcName);

@@ -1,12 +1,8 @@
 package net.nan21.ebs.service;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import net.nan21.ebs.lib.DbManager;
-
-import oracle.jdbc.OracleCallableStatement;
+import net.nan21.lib.DbManager;
 
 public class SecurityManager {
 
