@@ -14,7 +14,7 @@ N21.Other.MenuTree = Ext.extend(Ext.tree.TreePanel , {
       ,autoScroll:true
       ,collapseFirst:false
       ,loader: new Ext.tree.TreeLoader({
-          dataUrl:this.backendServerUrl+'?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=loadMenu'
+          dataUrl:buildBaseUrlAction("DC_MAIN", "loadMenu")
    	    })
       ,root: new Ext.tree.AsyncTreeNode({
            id:'root'
@@ -23,7 +23,6 @@ N21.Other.MenuTree = Ext.extend(Ext.tree.TreePanel , {
           ,expanded:true
         })
     });
-    if (this.backendServerUrl == null){ alert("BackendServerUrl not set in DcMenuTree!"); }
     N21.Other.MenuTree.superclass.initComponent.apply(this, arguments);
     this.addEvents('openMenuLink','openMenuLinkInNewTab');
   }
@@ -76,7 +75,6 @@ N21.Other.MenuTree = Ext.extend(Ext.tree.TreePanel , {
     if (node.attributes.guiID != undefined && node.attributes.guiID != '') {
        var params = new Object();
        this.fireEvent("openMenuLink", node.attributes.guiID, node.attributes.text , params );
-       //openMenuLink(node.attributes.guiID, node.attributes.text , null);
     }
   }  // end tree.on("click"
 

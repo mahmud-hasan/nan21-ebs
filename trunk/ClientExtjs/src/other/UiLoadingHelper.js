@@ -71,9 +71,15 @@
      out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.Lov.js'+ts+'"><\/script>'+NEW_LINE;
      out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.EditForm.js'+ts+'"><\/script>'+NEW_LINE;
      out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.GridEditForm.js'+ts+'"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/Ext.ux.PrintWindow.js'+ts+'"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/Ext.ux.CurrencyUnitSelector.js'+ts+'"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/Ext.ux.AdvancedFilter.js'+ts+'"><\/script>'+NEW_LINE;
+
      out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/lib.js'+ts+'"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/globals.js'+ts+'"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_JSLIB+'/extjs-extend.js'+ts+'"><\/script>'+NEW_LINE;
      out += '  <script type="text/javascript" src="'+CFG_PATH_EXTJS+'/custom/Ext.ux.form.XCheckbox.js"><\/script>'+NEW_LINE;
-     out += '  <script type="text/javascript" src="'+CFG_PATH_EXTJS+'/custom/Ext.ux.grid.GridSummary.js"><\/script>'+NEW_LINE;
+     out += '  <script type="text/javascript" src="'+CFG_PATH_EXTJS+'/custom/Ext.ux.grid.GridSummary.js'+ts+'"><\/script>'+NEW_LINE;
      out += '';
      return out;
   }
@@ -82,7 +88,7 @@
      var out = '';
      var ts = '';
      if (CFG_DEPLOYMENT_TYPE == 'DEV') {
-       ts = '?_t_='+new Date();       
+       ts = '?_t_='+new Date().getTime();
      }
      for (var j=0; j<pDcArray.length; j++) {
        out += '<script type="text/javascript" src="'+CFG_CLIENT_URL+'/src/dc/'+pDcArray[j]+'.js'+ts+'"><\/script>'+NEW_LINE;
