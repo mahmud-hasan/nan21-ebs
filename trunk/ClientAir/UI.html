@@ -1,0 +1,97 @@
+<script type="text/javascript" >
+
+ CFG_DEPLOYMENT = 'java';   // values: {php,java}
+
+      if (CFG_DEPLOYMENT == 'php') {
+         // Product version. Do not change!
+        CFG_PRODUCT_VERSION = 'TRUNK';
+        // Specifies if shared code runs on Adobe Air or Browser.  Do not change!
+        CFG_IS_ADOBEAIR = true;
+        
+        // Deployment type: Production(PROD) or development(DEV). In development mod does not cache
+        CFG_DEPLOYMENT_TYPE = 'DEV';
+        CFG_CLIENT_SERVER_PROTOCOL = '';
+        CFG_CLIENT_SERVER_NAME = '';
+        CFG_CLIENT_SERVER_PORT = '';
+        CFG_CLIENT_SERVER_PATH = '';
+        CFG_DEFAULT_LANGUAGE = 'ro';
+
+        CFG_AUTHSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/index.php';
+        CFG_BACKENDSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/index.php';
+  
+        //CFG_AUTHSERVER_URL    = 'http://localhost/n21eBusinessSuite/ServerPhp/javaProxy.php';
+        //CFG_BACKENDSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/javaProxy.php';
+  
+
+        CFG_CLIENT_URL =  CFG_CLIENT_SERVER_PROTOCOL + '://'+CFG_CLIENT_SERVER_NAME+((CFG_CLIENT_SERVER_PORT)?':'+CFG_CLIENT_SERVER_PORT:'')+ CFG_CLIENT_SERVER_PATH;
+  
+        CFG_PATH_EXTJS = 'http://localhost/_lib/Extjs/2.2';
+        CFG_PATH_JSLIB = 'lib/n21ExtjsLib';
+        CFG_PATH_ICONS = CFG_CLIENT_URL+'/resource/icon';
+
+      }
+
+      if (CFG_DEPLOYMENT == 'java') {
+         // Product version. Do not change!
+        CFG_PRODUCT_VERSION = 'TRUNK';
+        // Specifies if shared code runs on Adobe Air or Browser.  Do not change!
+        CFG_IS_ADOBEAIR = true;
+        
+        // Deployment type: Production(PROD) or development(DEV). In development mod does not cache
+        CFG_DEPLOYMENT_TYPE = 'DEV';
+        CFG_CLIENT_SERVER_PROTOCOL = '';
+        CFG_CLIENT_SERVER_NAME = '';
+        CFG_CLIENT_SERVER_PORT = '';
+        CFG_CLIENT_SERVER_PATH = '';
+        CFG_DEFAULT_LANGUAGE = 'ro';
+
+        CFG_AUTHSERVER_URL = 'http://localhost:8088/n21ebsServerJava/frmMain';
+        CFG_BACKENDSERVER_URL = 'http://localhost:8088/n21ebsServerJava/frmMain';
+
+        //CFG_CLIENT_URL =  CFG_CLIENT_SERVER_PROTOCOL + '://'+CFG_CLIENT_SERVER_NAME+((CFG_CLIENT_SERVER_PORT)?':'+CFG_CLIENT_SERVER_PORT:'')+ CFG_CLIENT_SERVER_PATH;
+        CFG_CLIENT_URL = '';
+        CFG_PATH_EXTJS = 'lib/Extjs/2.2';
+        CFG_PATH_JSLIB = 'lib/n21ExtjsLib';
+        CFG_PATH_ICONS = CFG_CLIENT_URL+'/resource/icon';
+
+      }
+
+  </script>
+<script type="text/javascript" src="AIRAliases.js"></script>
+<script language src="src/other/UiLoadingHelper.js"></script>
+
+<script>
+    function doLoad() {
+		        // Expose this function for the application sandbox
+		        // by writing to window.childSandboxBridge.
+		        var tmp = self.name.split("_");
+		        var uiName = tmp[1];
+		        //alert(uiName);
+		        //alert(parentSandboxBridge.version);
+		        //alert(parentSandboxBridge.session.language);
+		        //alert(parentSandboxBridge.getUiDcInc(uiName) );
+
+
+		        childSandboxBridge = {'callMe': self.name };
+            var htmlString = buildHtml(parentSandboxBridge.session.language,  uiName, parentSandboxBridge.getUiDcInc(uiName) );
+            document.getElementById('src').value = htmlString ;
+
+            document.open("text/html","replace");
+            document.write(htmlString );
+            document.close();
+
+		    }
+
+
+</script>
+<body onload="doLoad()">
+    <textarea id="src" rows=50 cols=80></textarea>
+
+	</body>
+</html>
+
+
+
+
+
+
