@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0111 DC Controller: Org attribute value
+ * DC0118 DC Controller: Import strategy groups
  */
 
 package net.nan21.ebs.dc;
@@ -11,7 +11,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
 
-public class DC0111 extends AbstractDataControl implements IDataControl {
+public class DC0118 extends AbstractDataControl implements IDataControl {
 
   public void init (HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
     this._initFields();
@@ -24,20 +24,15 @@ private void preQuery() {
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
+    if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORG_ID like :ORG_ID");
-      this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
+      this.queryWhere.append("t.NAME like :NAME");
+      this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
     }
-    if (this.request.getParam("QRY_ORGATTR_ID") != null && !this.request.getParam("QRY_ORGATTR_ID").equals("")) {
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORGATTR_ID like :ORGATTR_ID");
-      this.queryParams.put("ORGATTR_ID",(String)this.request.getParam("QRY_ORGATTR_ID"));
-    }
-    if (this.request.getParam("QRY_ATTR_VAL") != null && !this.request.getParam("QRY_ATTR_VAL").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ATTR_VAL like :ATTR_VAL");
-      this.queryParams.put("ATTR_VAL",(String)this.request.getParam("QRY_ATTR_VAL"));
+      this.queryWhere.append("t.ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
     }
 }
 
@@ -47,13 +42,13 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " t.ID"+
-               " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
-               " ,t.ATTR_VAL"+
+               " ,t.NAME"+
+               " ,t.ACTIVE"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
                " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
-               " ,pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
-           " from ORG_ATTR_VAL t "+this.queryWhere.toString()+" "+this.queryOrderBy;
+           " from IE_IMP_STRATEGY_GROUP t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
 
@@ -64,13 +59,13 @@ public void doExport() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " t.ID"+
-               " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
-               ",pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
-               " ,t.ATTR_VAL"+
+               " ,t.NAME"+
+               " ,t.ACTIVE"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
                " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
-           " from ORG_ATTR_VAL t "+this.queryWhere.toString()+" "+this.queryOrderBy;
+           " from IE_IMP_STRATEGY_GROUP t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
 }
 
@@ -83,18 +78,16 @@ public void doExport() throws Exception {
 public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
-    String sql = "insert into ORG_ATTR_VAL("+
+    String sql = "insert into IE_IMP_STRATEGY_GROUP("+
                "  ID"+
-               " ,ORG_ID"+
-               " ,ORGATTR_ID"+
-               " ,ATTR_VAL"+
+               " ,NAME"+
+               " ,ACTIVE"+
            " ) values ( "+
                "  :ID"+
-               " ,:ORG_ID"+
-               " ,:ORGATTR_ID"+
-               " ,:ATTR_VAL"+
+               " ,:NAME"+
+               " ,:ACTIVE"+
     ")";
-    this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ORGATTRVAL_ID")  );
+    this.record.put("ID",   dbm.getSequenceNextValue("SEQ_IMPSTGGRP_ID")  );
     dbm.executeStatement(sql, this.record);
     this.populateRecordPkFromRecord();
     this.findByPk();
@@ -104,13 +97,14 @@ public void doInsert()  throws Exception {
 public void doUpdate()  throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
-    String sql = "update ORG_ATTR_VAL set "+
-               "  ATTR_VAL=:ATTR_VAL"+ 
+    String sql = "update IE_IMP_STRATEGY_GROUP set "+
+               "  ACTIVE=:ACTIVE"+ 
+               " ,CREATEDBY=:CREATEDBY"+ 
+               " ,CREATEDON=:CREATEDON"+ 
                " ,ID=:ID"+ 
                " ,MODIFIEDBY=:MODIFIEDBY"+ 
                " ,MODIFIEDON=:MODIFIEDON"+ 
-               " ,ORGATTR_ID=:ORGATTR_ID"+ 
-               " ,ORG_ID=:ORG_ID"+ 
+               " ,NAME=:NAME"+ 
    " where "+ 
      "      ID= :ID"+
     "";
@@ -122,7 +116,7 @@ public void doUpdate()  throws Exception {
 
 public void doDelete() throws Exception {
     this.populateRecordPkFromRequest();
-   String sql = "delete from ORG_ATTR_VAL where "+
+   String sql = "delete from IE_IMP_STRATEGY_GROUP where "+
      "      ID= :ID"+
     "";
     dbm.executeStatement(sql, this.recordPk);
@@ -138,13 +132,13 @@ public void initNewRecord() throws Exception {
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " t.ID"+
-               " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
-               " ,t.ATTR_VAL"+
+               " ,t.NAME"+
+               " ,t.ACTIVE"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
                " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
-                ",pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
-           " from ORG_ATTR_VAL t"+
+           " from IE_IMP_STRATEGY_GROUP t"+
         " where "+
      "      t.ID= :ID"+ 
           "";
@@ -160,12 +154,12 @@ public void doCustomAction(String pName)  throws Exception {
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ORGATTR_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ATTR_VAL", new FieldDef("STRING"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
 	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("ORGATTR_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

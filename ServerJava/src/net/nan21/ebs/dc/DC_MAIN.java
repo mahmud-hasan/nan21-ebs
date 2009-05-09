@@ -1,8 +1,6 @@
 package net.nan21.ebs.dc;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -10,12 +8,8 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.DbManager;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.SessionUser;
+import net.nan21.lib.*;
+
 
 public class DC_MAIN extends AbstractDataControl implements IDataControl {
 

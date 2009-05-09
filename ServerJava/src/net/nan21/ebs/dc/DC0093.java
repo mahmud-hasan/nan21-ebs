@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0093 extends AbstractDataControl implements IDataControl {
 
@@ -34,15 +24,15 @@ private void preQuery() {
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_IS_ACCOUNT") != null && !this.request.getParam("QRY_IS_ACCOUNT").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.IS_ACCOUNT like :IS_ACCOUNT");
-      this.queryParams.put("IS_ACCOUNT",(String)this.request.getParam("QRY_IS_ACCOUNT"));
-    }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME").toUpperCase());
+    }
+    if (this.request.getParam("QRY_IS_ACCOUNT") != null && !this.request.getParam("QRY_IS_ACCOUNT").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.IS_ACCOUNT like :IS_ACCOUNT");
+      this.queryParams.put("IS_ACCOUNT",(String)this.request.getParam("QRY_IS_ACCOUNT"));
     }
 }
 
@@ -51,14 +41,14 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.DESCRIPTION"+
-               " ,t.ID"+
-               " ,t.IS_ACCOUNT"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " t.ID"+
                " ,t.NAME"+
+               " ,t.DESCRIPTION"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
+               " ,t.IS_ACCOUNT"+
            " from AC_ACCSCHEMA_PARAM t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -72,9 +62,9 @@ public void doExport() throws Exception {
                " t.ID"+
                " ,t.NAME"+
                " ,t.DESCRIPTION"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
                " ,t.IS_ACCOUNT"+
            " from AC_ACCSCHEMA_PARAM t "+this.queryWhere.toString()+" "+this.queryOrderBy;
@@ -91,15 +81,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into AC_ACCSCHEMA_PARAM("+
-               "  DESCRIPTION"+
-               " ,ID"+
-               " ,IS_ACCOUNT"+
+               "  ID"+
                " ,NAME"+
+               " ,DESCRIPTION"+
+               " ,IS_ACCOUNT"+
            " ) values ( "+
-               "  :DESCRIPTION"+
-               " ,:ID"+
-               " ,:IS_ACCOUNT"+
+               "  :ID"+
                " ,:NAME"+
+               " ,:DESCRIPTION"+
+               " ,:IS_ACCOUNT"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ACCSCHPARAM_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -146,14 +136,14 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.DESCRIPTION"+
-               " ,t.ID"+
-               " ,t.IS_ACCOUNT"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " t.ID"+
                " ,t.NAME"+
+               " ,t.DESCRIPTION"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
+               " ,t.IS_ACCOUNT"+
            " from AC_ACCSCHEMA_PARAM t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -162,25 +152,27 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("IS_ACCOUNT", new FieldDef("BOOLEAN"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.get("NAME").setCaseRestriction("Upper");
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("IS_ACCOUNT", new FieldDef("BOOLEAN"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 30;
 	}
 
-public void doCustomAction(String action) {}
 }

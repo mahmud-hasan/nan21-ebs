@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0091 extends AbstractDataControl implements IDataControl {
 
@@ -29,6 +19,7 @@ public class DC0091 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    this.queryWhere.append("type='USER'");
     if (this.request.getParam("QRY_SQL_TEXT") != null && !this.request.getParam("QRY_SQL_TEXT").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.SQL_TEXT like :SQL_TEXT");
@@ -41,27 +32,27 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.CLIENT_INFO"+
-               " ,t.LOGON_TIME"+
-               " ,t.MACHINE"+
-               " ,t.MODULE"+
+               " t.SADDR"+
+               " ,t.SID"+
+               " ,t.SERIAL_"+
+               " ,t.USERNAME"+
+               " ,t.STATUS"+
+               " ,t.SERVER"+
+               " ,t.SCHEMANAME"+
                " ,t.OSUSER"+
                " ,t.PROCESS"+
+               " ,t.MACHINE"+
+               " ,t.TERMINAL"+
                " ,t.PROGRAM"+
-               " ,t.SADDR"+
-               " ,t.SCHEMANAME"+
-               " ,t.SERIAL_"+
-               " ,t.SERVER"+
-               " ,t.SERVICE_NAME"+
-               " ,t.SID"+
+               " ,t.TYPE"+
                " ,t.SQL_ADDRESS"+
                " ,t.SQL_ID"+
-               " ,t.SQL_TEXT"+
+               " ,t.MODULE"+
+               " ,t.CLIENT_INFO"+
+               " ,t.LOGON_TIME"+
                " ,t.STATE"+
-               " ,t.STATUS"+
-               " ,t.TERMINAL"+
-               " ,t.TYPE"+
-               " ,t.USERNAME"+
+               " ,t.SERVICE_NAME"+
+               " ,t.SQL_TEXT"+
            " from V_ORCL_SESSION t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -109,27 +100,27 @@ public void doDelete() throws Exception {}
 public void initNewRecord() throws Exception {}
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.CLIENT_INFO"+
-               " ,t.LOGON_TIME"+
-               " ,t.MACHINE"+
-               " ,t.MODULE"+
+               " t.SADDR"+
+               " ,t.SID"+
+               " ,t.SERIAL_"+
+               " ,t.USERNAME"+
+               " ,t.STATUS"+
+               " ,t.SERVER"+
+               " ,t.SCHEMANAME"+
                " ,t.OSUSER"+
                " ,t.PROCESS"+
+               " ,t.MACHINE"+
+               " ,t.TERMINAL"+
                " ,t.PROGRAM"+
-               " ,t.SADDR"+
-               " ,t.SCHEMANAME"+
-               " ,t.SERIAL_"+
-               " ,t.SERVER"+
-               " ,t.SERVICE_NAME"+
-               " ,t.SID"+
+               " ,t.TYPE"+
                " ,t.SQL_ADDRESS"+
                " ,t.SQL_ID"+
-               " ,t.SQL_TEXT"+
+               " ,t.MODULE"+
+               " ,t.CLIENT_INFO"+
+               " ,t.LOGON_TIME"+
                " ,t.STATE"+
-               " ,t.STATUS"+
-               " ,t.TERMINAL"+
-               " ,t.TYPE"+
-               " ,t.USERNAME"+
+               " ,t.SERVICE_NAME"+
+               " ,t.SQL_TEXT"+
            " from V_ORCL_SESSION t"+
         " where "+
      "      t.SERIAL_= :SERIAL_"+ 
@@ -139,37 +130,39 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_INFO", new FieldDef("STRING"));
-	  this.fields.put("LOGON_TIME", new FieldDef("STRING"));
-	  this.fields.put("MACHINE", new FieldDef("STRING"));
-	  this.fields.put("MODULE", new FieldDef("STRING"));
+	  this.fields.put("SADDR", new FieldDef("STRING"));
+	  this.fields.put("SID", new FieldDef("STRING"));
+	  this.fields.put("SERIAL_", new FieldDef("STRING"));
+	  this.fields.put("USERNAME", new FieldDef("STRING"));
+	  this.fields.put("STATUS", new FieldDef("STRING"));
+	  this.fields.put("SERVER", new FieldDef("STRING"));
+	  this.fields.put("SCHEMANAME", new FieldDef("STRING"));
 	  this.fields.put("OSUSER", new FieldDef("STRING"));
 	  this.fields.put("PROCESS", new FieldDef("STRING"));
+	  this.fields.put("MACHINE", new FieldDef("STRING"));
+	  this.fields.put("TERMINAL", new FieldDef("STRING"));
 	  this.fields.put("PROGRAM", new FieldDef("STRING"));
-	  this.fields.put("SADDR", new FieldDef("STRING"));
-	  this.fields.put("SCHEMANAME", new FieldDef("STRING"));
-	  this.fields.put("SERIAL_", new FieldDef("STRING"));
-	  this.fields.put("SERVER", new FieldDef("STRING"));
-	  this.fields.put("SERVICE_NAME", new FieldDef("STRING"));
-	  this.fields.put("SID", new FieldDef("STRING"));
+	  this.fields.put("TYPE", new FieldDef("STRING"));
 	  this.fields.put("SQL_ADDRESS", new FieldDef("STRING"));
 	  this.fields.put("SQL_ID", new FieldDef("STRING"));
-	  this.fields.put("SQL_TEXT", new FieldDef("STRING"));
+	  this.fields.put("MODULE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_INFO", new FieldDef("STRING"));
+	  this.fields.put("LOGON_TIME", new FieldDef("STRING"));
 	  this.fields.put("STATE", new FieldDef("STRING"));
-	  this.fields.put("STATUS", new FieldDef("STRING"));
-	  this.fields.put("TERMINAL", new FieldDef("STRING"));
-	  this.fields.put("TYPE", new FieldDef("STRING"));
-	  this.fields.put("USERNAME", new FieldDef("STRING"));
+	  this.fields.put("SERVICE_NAME", new FieldDef("STRING"));
+	  this.fields.put("SQL_TEXT", new FieldDef("STRING"));
 	  String[] _pkFields = {"SERIAL_","SID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 40;
 	}
 
-public void doCustomAction(String action) {}
 }

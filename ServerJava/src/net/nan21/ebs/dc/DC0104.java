@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0104 extends AbstractDataControl implements IDataControl {
 
@@ -29,11 +19,6 @@ public class DC0104 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ID like :ID");
@@ -44,6 +29,11 @@ private void preQuery() {
       this.queryWhere.append("t.PRODUCT_ID like :PRODUCT_ID");
       this.queryParams.put("PRODUCT_ID",(String)this.request.getParam("QRY_PRODUCT_ID"));
     }
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
 }
 
 public void doQuery() throws Exception {
@@ -51,16 +41,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CLIENT_ID"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.FOR_SALE"+
-               " ,t.ID"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.PRODCLASS_CODE"+
+               " t.ID"+
                " ,t.PRODUCT_ID"+
+               " ,t.CLIENT_ID"+
+               " ,t.FOR_SALE"+
+               " ,t.PRODCLASS_CODE"+
+               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
            " from MM_PRODUCT_CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -73,13 +63,13 @@ public void doExport() throws Exception {
     String sql = "select "+ 
                " t.ID"+
                " ,t.PRODUCT_ID"+
-               ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
+               ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.FOR_SALE"+
                " ,t.PRODCLASS_CODE"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
            " from MM_PRODUCT_CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -95,17 +85,17 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PRODUCT_CLIENT("+
-               "  CLIENT_ID"+
-               " ,FOR_SALE"+
-               " ,ID"+
-               " ,PRODCLASS_CODE"+
+               "  ID"+
                " ,PRODUCT_ID"+
+               " ,CLIENT_ID"+
+               " ,FOR_SALE"+
+               " ,PRODCLASS_CODE"+
            " ) values ( "+
-               "  :CLIENT_ID"+
-               " ,:FOR_SALE"+
-               " ,:ID"+
-               " ,:PRODCLASS_CODE"+
+               "  :ID"+
                " ,:PRODUCT_ID"+
+               " ,:CLIENT_ID"+
+               " ,:FOR_SALE"+
+               " ,:PRODCLASS_CODE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_PRODCLIENT_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -153,16 +143,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-                "pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CLIENT_ID"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.FOR_SALE"+
-               " ,t.ID"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.PRODCLASS_CODE"+
+               " t.ID"+
                " ,t.PRODUCT_ID"+
+               " ,t.CLIENT_ID"+
+               " ,t.FOR_SALE"+
+               " ,t.PRODCLASS_CODE"+
+                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
            " from MM_PRODUCT_CLIENT t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -171,26 +161,28 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("FOR_SALE", new FieldDef("BOOLEAN"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("PRODCLASS_CODE", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("FOR_SALE", new FieldDef("BOOLEAN"));
+	  this.fields.put("PRODCLASS_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = -1;
 	}
 
-public void doCustomAction(String action) {}
 }

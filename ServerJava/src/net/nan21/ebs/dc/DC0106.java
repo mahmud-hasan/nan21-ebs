@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0106 extends AbstractDataControl implements IDataControl {
 
@@ -29,15 +19,15 @@ public class DC0106 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_DOCSER_ID") != null && !this.request.getParam("QRY_DOCSER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.DOCSER_ID like :DOCSER_ID");
-      this.queryParams.put("DOCSER_ID",(String)this.request.getParam("QRY_DOCSER_ID"));
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
+    if (this.request.getParam("QRY_DOCSER_ID") != null && !this.request.getParam("QRY_DOCSER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.DOCSER_ID like :DOCSER_ID");
+      this.queryParams.put("DOCSER_ID",(String)this.request.getParam("QRY_DOCSER_ID"));
     }
 }
 
@@ -46,12 +36,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.DOCSER_ID"+
-               " ,t.ID"+
-               " ,t.IS_CLOSED"+
-               " ,t.IS_INSTALLED"+
-               " ,t.MAXVAL"+
+               " t.ID"+
+               " ,t.DOCSER_ID"+
                " ,t.MINVAL"+
+               " ,t.MAXVAL"+
+               " ,t.IS_INSTALLED"+
+               " ,t.IS_CLOSED"+
            " from DOCUMENT_SERIAL_RANGE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -82,15 +72,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into DOCUMENT_SERIAL_RANGE("+
-               "  DOCSER_ID"+
-               " ,ID"+
-               " ,MAXVAL"+
+               "  ID"+
+               " ,DOCSER_ID"+
                " ,MINVAL"+
+               " ,MAXVAL"+
            " ) values ( "+
-               "  :DOCSER_ID"+
-               " ,:ID"+
-               " ,:MAXVAL"+
+               "  :ID"+
+               " ,:DOCSER_ID"+
                " ,:MINVAL"+
+               " ,:MAXVAL"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_DOCSERRNG_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -134,12 +124,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.DOCSER_ID"+
-               " ,t.ID"+
-               " ,t.IS_CLOSED"+
-               " ,t.IS_INSTALLED"+
-               " ,t.MAXVAL"+
+               " t.ID"+
+               " ,t.DOCSER_ID"+
                " ,t.MINVAL"+
+               " ,t.MAXVAL"+
+               " ,t.IS_INSTALLED"+
+               " ,t.IS_CLOSED"+
            " from DOCUMENT_SERIAL_RANGE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -148,22 +138,24 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("DOCSER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("IS_CLOSED", new FieldDef("BOOLEAN"));
-	  this.fields.put("IS_INSTALLED", new FieldDef("BOOLEAN"));
-	  this.fields.put("MAXVAL", new FieldDef("NUMBER"));
+	  this.fields.put("DOCSER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("MINVAL", new FieldDef("NUMBER"));
+	  this.fields.put("MAXVAL", new FieldDef("NUMBER"));
+	  this.fields.put("IS_INSTALLED", new FieldDef("BOOLEAN"));
+	  this.fields.put("IS_CLOSED", new FieldDef("BOOLEAN"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

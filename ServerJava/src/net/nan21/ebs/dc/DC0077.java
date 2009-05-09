@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0077 extends AbstractDataControl implements IDataControl {
 
@@ -34,15 +24,15 @@ private void preQuery() {
       this.queryWhere.append("av.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_PRDATTR_ID") != null && !this.request.getParam("QRY_PRDATTR_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("av.PRDATTR_ID like :PRDATTR_ID");
-      this.queryParams.put("PRDATTR_ID",(String)this.request.getParam("QRY_PRDATTR_ID"));
-    }
     if (this.request.getParam("QRY_PRODUCT_ID") != null && !this.request.getParam("QRY_PRODUCT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("av.PRODUCT_ID like :PRODUCT_ID");
       this.queryParams.put("PRODUCT_ID",(String)this.request.getParam("QRY_PRODUCT_ID"));
+    }
+    if (this.request.getParam("QRY_PRDATTR_ID") != null && !this.request.getParam("QRY_PRDATTR_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("av.PRDATTR_ID like :PRDATTR_ID");
+      this.queryParams.put("PRDATTR_ID",(String)this.request.getParam("QRY_PRDATTR_ID"));
     }
 }
 
@@ -51,15 +41,15 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " av.ATTR_VAL"+
-               " ,av.CREATEDBY"+
-               " ,to_char(av.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,av.ID"+
-               " ,av.MODIFIEDBY"+
-               " ,to_char(av.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,av.PRDATTR_ID"+
-               " ,pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
+               " av.ID"+
                " ,av.PRODUCT_ID"+
+               " ,av.PRDATTR_ID"+
+               " ,av.ATTR_VAL"+
+               " ,av.CREATEDON"+
+               " ,av.CREATEDBY"+
+               " ,av.MODIFIEDON"+
+               " ,av.MODIFIEDBY"+
+               " ,pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
                " ,pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME"+
            " from MM_PROD_ATTR_VAL av "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -77,9 +67,9 @@ public void doExport() throws Exception {
                " ,av.ATTR_VAL"+
                " ,av.PRODUCT_ID"+
                ",pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME"+
-               " ,to_char(av.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,av.CREATEDON"+
                " ,av.CREATEDBY"+
-               " ,to_char(av.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,av.MODIFIEDON"+
                " ,av.MODIFIEDBY"+
            " from MM_PROD_ATTR_VAL av "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -122,15 +112,15 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " av.ATTR_VAL"+
-               " ,av.CREATEDBY"+
-               " ,to_char(av.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,av.ID"+
-               " ,av.MODIFIEDBY"+
-               " ,to_char(av.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,av.PRDATTR_ID"+
-                ",pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
+               " av.ID"+
                " ,av.PRODUCT_ID"+
+               " ,av.PRDATTR_ID"+
+               " ,av.ATTR_VAL"+
+               " ,av.CREATEDON"+
+               " ,av.CREATEDBY"+
+               " ,av.MODIFIEDON"+
+               " ,av.MODIFIEDBY"+
+                ",pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
                 ",pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME"+
            " from MM_PROD_ATTR_VAL av"+
         " where "+
@@ -140,26 +130,28 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ATTR_VAL", new FieldDef("STRING"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("PRDATTR_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRDATTR_NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PRDATTR_ID", new FieldDef("NUMBER"));
+	  this.fields.put("ATTR_VAL", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("PRDATTR_NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }
