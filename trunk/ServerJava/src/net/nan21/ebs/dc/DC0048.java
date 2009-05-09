@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0048 extends AbstractDataControl implements IDataControl {
 
@@ -29,6 +19,21 @@ public class DC0048 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
+    if (this.request.getParam("QRY_PROJECT_ISSUE_ID") != null && !this.request.getParam("QRY_PROJECT_ISSUE_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("PROJECT_ISSUE_ID like :PROJECT_ISSUE_ID");
+      this.queryParams.put("PROJECT_ISSUE_ID",(String)this.request.getParam("QRY_PROJECT_ISSUE_ID"));
+    }
+    if (this.request.getParam("QRY_NOTE") != null && !this.request.getParam("QRY_NOTE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("NOTE like :NOTE");
+      this.queryParams.put("NOTE",(String)this.request.getParam("QRY_NOTE"));
+    }
     if (this.request.getParam("QRY_CREATEDBY") != null && !this.request.getParam("QRY_CREATEDBY").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CREATEDBY like :CREATEDBY");
@@ -38,11 +43,6 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CREATEDON like :CREATEDON");
       this.queryParams.put("CREATEDON",(String)this.request.getParam("QRY_CREATEDON"));
-    }
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_MODIFIEDBY") != null && !this.request.getParam("QRY_MODIFIEDBY").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -54,16 +54,6 @@ private void preQuery() {
       this.queryWhere.append("MODIFIEDON like :MODIFIEDON");
       this.queryParams.put("MODIFIEDON",(String)this.request.getParam("QRY_MODIFIEDON"));
     }
-    if (this.request.getParam("QRY_NOTE") != null && !this.request.getParam("QRY_NOTE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("NOTE like :NOTE");
-      this.queryParams.put("NOTE",(String)this.request.getParam("QRY_NOTE"));
-    }
-    if (this.request.getParam("QRY_PROJECT_ISSUE_ID") != null && !this.request.getParam("QRY_PROJECT_ISSUE_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("PROJECT_ISSUE_ID like :PROJECT_ISSUE_ID");
-      this.queryParams.put("PROJECT_ISSUE_ID",(String)this.request.getParam("QRY_PROJECT_ISSUE_ID"));
-    }
 }
 
 public void doQuery() throws Exception {
@@ -71,13 +61,13 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,NOTE"+
+               " ID"+
                " ,PROJECT_ISSUE_ID"+
+               " ,NOTE"+
+               " ,CREATEDBY"+
+               " ,CREATEDON"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
            " from PROJECT_ISSUE_NOTE  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -92,9 +82,9 @@ public void doExport() throws Exception {
                " ,PROJECT_ISSUE_ID"+
                " ,NOTE"+
                " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,CREATEDON"+
                " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,MODIFIEDON"+
            " from PROJECT_ISSUE_NOTE  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
 }
@@ -109,21 +99,21 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into PROJECT_ISSUE_NOTE("+
-               "  CREATEDBY"+
+               "  ID"+
+               " ,PROJECT_ISSUE_ID"+
+               " ,NOTE"+
+               " ,CREATEDBY"+
                " ,CREATEDON"+
-               " ,ID"+
                " ,MODIFIEDBY"+
                " ,MODIFIEDON"+
-               " ,NOTE"+
-               " ,PROJECT_ISSUE_ID"+
            " ) values ( "+
-               "  :CREATEDBY"+
+               "  :ID"+
+               " ,:PROJECT_ISSUE_ID"+
+               " ,:NOTE"+
+               " ,:CREATEDBY"+
                " ,:CREATEDON"+
-               " ,:ID"+
                " ,:MODIFIEDBY"+
                " ,:MODIFIEDON"+
-               " ,:NOTE"+
-               " ,:PROJECT_ISSUE_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_prjissnote_id")  );
     dbm.executeStatement(sql, this.record);
@@ -165,13 +155,13 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,NOTE"+
+               " ID"+
                " ,PROJECT_ISSUE_ID"+
+               " ,NOTE"+
+               " ,CREATEDBY"+
+               " ,CREATEDON"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
            " from PROJECT_ISSUE_NOTE "+
         " where "+
      "      ID= :ID"+ 
@@ -180,23 +170,25 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("PROJECT_ISSUE_ID", new FieldDef("NUMBER"));
+	  this.fields.put("NOTE", new FieldDef("STRING"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
 	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("NOTE", new FieldDef("STRING"));
-	  this.fields.put("PROJECT_ISSUE_ID", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = -1;
 	}
 
-public void doCustomAction(String action) {}
 }

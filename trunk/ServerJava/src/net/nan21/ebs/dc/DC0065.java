@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0065 extends AbstractDataControl implements IDataControl {
 
@@ -29,6 +19,11 @@ public class DC0065 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
     if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CLIENT_ID like :CLIENT_ID");
@@ -38,11 +33,6 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("DOCUMENT_TYPE like :DOCUMENT_TYPE");
       this.queryParams.put("DOCUMENT_TYPE",(String)this.request.getParam("QRY_DOCUMENT_TYPE"));
-    }
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_SERIAL") != null && !this.request.getParam("QRY_SERIAL").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -56,11 +46,11 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " (select t.code from client t where t.id = client_id) CLIENT_CODE"+
+               " ID"+
                " ,CLIENT_ID"+
                " ,DOCUMENT_TYPE"+
-               " ,ID"+
                " ,SERIAL"+
+               " ,(select t.code from client t where t.id = client_id) CLIENT_CODE"+
            " from DOCUMENT_SERIAL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -73,8 +63,8 @@ public void doExport() throws Exception {
     String sql = "select "+ 
                " ID"+
                " ,SERIAL"+
-               ",(select t.code from client t where t.id = client_id) CLIENT_CODE"+
                " ,CLIENT_ID"+
+               ",(select t.code from client t where t.id = client_id) CLIENT_CODE"+
                " ,DOCUMENT_TYPE"+
            " from DOCUMENT_SERIAL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -90,14 +80,14 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into DOCUMENT_SERIAL("+
-               "  CLIENT_ID"+
+               "  ID"+
+               " ,CLIENT_ID"+
                " ,DOCUMENT_TYPE"+
-               " ,ID"+
                " ,SERIAL"+
            " ) values ( "+
-               "  :CLIENT_ID"+
+               "  :ID"+
+               " ,:CLIENT_ID"+
                " ,:DOCUMENT_TYPE"+
-               " ,:ID"+
                " ,:SERIAL"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_docser_id")  );
@@ -141,11 +131,11 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-                "(select t.code from client t where t.id = client_id) CLIENT_CODE"+
+               " ID"+
                " ,CLIENT_ID"+
                " ,DOCUMENT_TYPE"+
-               " ,ID"+
                " ,SERIAL"+
+                ",(select t.code from client t where t.id = client_id) CLIENT_CODE"+
            " from DOCUMENT_SERIAL "+
         " where "+
      "      ID= :ID"+ 
@@ -154,21 +144,23 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("DOCUMENT_TYPE", new FieldDef("STRING"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("SERIAL", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

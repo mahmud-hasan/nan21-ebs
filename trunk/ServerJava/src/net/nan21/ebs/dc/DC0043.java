@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0043 extends AbstractDataControl implements IDataControl {
 
@@ -34,15 +24,15 @@ private void preQuery() {
       this.queryWhere.append("ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_LANG") != null && !this.request.getParam("QRY_LANG").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("LANG like :LANG");
-      this.queryParams.put("LANG",(String)this.request.getParam("QRY_LANG"));
-    }
     if (this.request.getParam("QRY_MENUITEM_ID") != null && !this.request.getParam("QRY_MENUITEM_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("MENUITEM_ID like :MENUITEM_ID");
       this.queryParams.put("MENUITEM_ID",(String)this.request.getParam("QRY_MENUITEM_ID"));
+    }
+    if (this.request.getParam("QRY_LANG") != null && !this.request.getParam("QRY_LANG").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("LANG like :LANG");
+      this.queryParams.put("LANG",(String)this.request.getParam("QRY_LANG"));
     }
     if (this.request.getParam("QRY_TRANSLATION") != null && !this.request.getParam("QRY_TRANSLATION").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -57,8 +47,8 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ID"+
-               " ,LANG"+
                " ,MENUITEM_ID"+
+               " ,LANG"+
                " ,TRANSLATION"+
            " from MENUITEM_TRL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -89,13 +79,13 @@ public void doInsert()  throws Exception {
   this.populateRecordWithClientSpecific();
     String sql = "insert into MENUITEM_TRL("+
                "  ID"+
-               " ,LANG"+
                " ,MENUITEM_ID"+
+               " ,LANG"+
                " ,TRANSLATION"+
            " ) values ( "+
                "  :ID"+
-               " ,:LANG"+
                " ,:MENUITEM_ID"+
+               " ,:LANG"+
                " ,:TRANSLATION"+
     ")";
     dbm.executeStatement(sql, this.record);
@@ -138,8 +128,8 @@ public void initNewRecord() throws Exception {
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " ID"+
-               " ,LANG"+
                " ,MENUITEM_ID"+
+               " ,LANG"+
                " ,TRANSLATION"+
            " from MENUITEM_TRL "+
         " where "+
@@ -149,28 +139,30 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.get("CREATEDBY").setInDS(false);
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MENUITEM_ID", new FieldDef("NUMBER"));
+	  this.fields.put("LANG", new FieldDef("STRING"));
+	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
 	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.get("CREATEDON").setInDS(false);
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("LANG", new FieldDef("STRING"));
-	  this.fields.put("MENUITEM_ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.get("MODIFIEDBY").setInDS(false);
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.get("CREATEDBY").setInDS(false);
 	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.get("MODIFIEDON").setInDS(false);
-	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.get("MODIFIEDBY").setInDS(false);
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = -1;
 	}
 
-public void doCustomAction(String action) {}
 }

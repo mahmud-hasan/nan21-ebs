@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0031 extends AbstractDataControl implements IDataControl {
 
@@ -46,16 +36,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ACCOUNT_EXPIRED"+
-               " ,ACCOUNT_LOCKED"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,DBUSER"+
-               " ,ID"+
+               " ID"+
                " ,LOGIN_CODE"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,PERSON_ID"+
+               " ,ACCOUNT_LOCKED"+
+               " ,ACCOUNT_EXPIRED"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,DBUSER"+
            " from SYS_USER  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -72,9 +62,9 @@ public void doExport() throws Exception {
                " ,ACCOUNT_EXPIRED"+
                " ,DBUSER"+
                " ,PERSON_ID"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,CREATEDON"+
                " ,CREATEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
            " from SYS_USER  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -90,19 +80,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into SYS_USER("+
-               "  ACCOUNT_EXPIRED"+
-               " ,ACCOUNT_LOCKED"+
-               " ,DBUSER"+
-               " ,ID"+
+               "  ID"+
                " ,LOGIN_CODE"+
                " ,PERSON_ID"+
+               " ,ACCOUNT_LOCKED"+
+               " ,ACCOUNT_EXPIRED"+
+               " ,DBUSER"+
            " ) values ( "+
-               "  :ACCOUNT_EXPIRED"+
-               " ,:ACCOUNT_LOCKED"+
-               " ,:DBUSER"+
-               " ,:ID"+
+               "  :ID"+
                " ,:LOGIN_CODE"+
                " ,:PERSON_ID"+
+               " ,:ACCOUNT_LOCKED"+
+               " ,:ACCOUNT_EXPIRED"+
+               " ,:DBUSER"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_USER_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -146,16 +136,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ACCOUNT_EXPIRED"+
-               " ,ACCOUNT_LOCKED"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,DBUSER"+
-               " ,ID"+
+               " ID"+
                " ,LOGIN_CODE"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,PERSON_ID"+
+               " ,ACCOUNT_LOCKED"+
+               " ,ACCOUNT_EXPIRED"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,DBUSER"+
            " from SYS_USER "+
         " where "+
      "      ID= :ID"+ 
@@ -164,29 +154,31 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ACCOUNT_EXPIRED", new FieldDef("BOOLEAN"));
-	  this.fields.put("ACCOUNT_LOCKED", new FieldDef("BOOLEAN"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("DBUSER", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("LOGIN_CODE", new FieldDef("STRING"));
 	  this.fields.get("LOGIN_CODE").setCaseRestriction("Upper");
 	  this.fields.put("LOGIN_PASSWORD", new FieldDef("STRING"));
 	  this.fields.get("LOGIN_PASSWORD").setInDS(false);
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("PERSON_ID", new FieldDef("NUMBER"));
+	  this.fields.put("ACCOUNT_LOCKED", new FieldDef("BOOLEAN"));
+	  this.fields.put("ACCOUNT_EXPIRED", new FieldDef("BOOLEAN"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("DBUSER", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

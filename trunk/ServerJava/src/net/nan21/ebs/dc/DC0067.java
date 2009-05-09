@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0067 extends AbstractDataControl implements IDataControl {
 
@@ -46,9 +36,9 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " r.DESCRIPTION"+
-               " ,r.ID"+
+               " r.ID"+
                " ,r.NAME"+
+               " ,r.DESCRIPTION"+
            " from SYS_ROLE r "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -76,13 +66,13 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into SYS_ROLE("+
-               "  DESCRIPTION"+
-               " ,ID"+
+               "  ID"+
                " ,NAME"+
+               " ,DESCRIPTION"+
            " ) values ( "+
-               "  :DESCRIPTION"+
-               " ,:ID"+
+               "  :ID"+
                " ,:NAME"+
+               " ,:DESCRIPTION"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ROLE_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -124,9 +114,9 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " r.DESCRIPTION"+
-               " ,r.ID"+
+               " r.ID"+
                " ,r.NAME"+
+               " ,r.DESCRIPTION"+
            " from SYS_ROLE r"+
         " where "+
      "      r.ID= :ID"+ 
@@ -135,28 +125,30 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.get("CREATEDBY").setInDS(false);
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.get("CREATEDON").setInDS(false);
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.get("MODIFIEDBY").setInDS(false);
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.get("MODIFIEDON").setInDS(false);
 	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.get("NAME").setCaseRestriction("Upper");
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.get("CREATEDON").setInDS(false);
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.get("CREATEDBY").setInDS(false);
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.get("MODIFIEDON").setInDS(false);
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.get("MODIFIEDBY").setInDS(false);
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0072 extends AbstractDataControl implements IDataControl {
 
@@ -34,20 +24,20 @@ private void preQuery() {
       this.queryWhere.append("ul.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_IP_ADRESS") != null && !this.request.getParam("QRY_IP_ADRESS").equals("")) {
+    if (this.request.getParam("QRY_USERNAME") != null && !this.request.getParam("QRY_USERNAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ul.IP_ADRESS like :IP_ADRESS");
-      this.queryParams.put("IP_ADRESS",(String)this.request.getParam("QRY_IP_ADRESS"));
+      this.queryWhere.append("ul.USERNAME like :USERNAME");
+      this.queryParams.put("USERNAME",(String)this.request.getParam("QRY_USERNAME"));
     }
     if (this.request.getParam("QRY_LOGIN") != null && !this.request.getParam("QRY_LOGIN").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ul.LOGIN like :LOGIN");
       this.queryParams.put("LOGIN",(String)this.request.getParam("QRY_LOGIN"));
     }
-    if (this.request.getParam("QRY_USERNAME") != null && !this.request.getParam("QRY_USERNAME").equals("")) {
+    if (this.request.getParam("QRY_IP_ADRESS") != null && !this.request.getParam("QRY_IP_ADRESS").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ul.USERNAME like :USERNAME");
-      this.queryParams.put("USERNAME",(String)this.request.getParam("QRY_USERNAME"));
+      this.queryWhere.append("ul.IP_ADRESS like :IP_ADRESS");
+      this.queryParams.put("IP_ADRESS",(String)this.request.getParam("QRY_IP_ADRESS"));
     }
 }
 
@@ -57,10 +47,10 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ul.ID"+
-               " ,ul.IP_ADRESS"+
-               " ,to_char(ul.LOGIN,'"+this.DATE_FORMAT_DB+"') LOGIN"+
-               " ,to_char(ul.LOGOUT,'"+this.DATE_FORMAT_DB+"') LOGOUT"+
                " ,ul.USERNAME"+
+               " ,ul.LOGIN"+
+               " ,ul.LOGOUT"+
+               " ,ul.IP_ADRESS"+
            " from USR_LOGIN ul "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -73,8 +63,8 @@ public void doExport() throws Exception {
     String sql = "select "+ 
                " ul.ID"+
                " ,ul.USERNAME"+
-               " ,to_char(ul.LOGIN,'"+this.DATE_FORMAT_DB+"') LOGIN"+
-               " ,to_char(ul.LOGOUT,'"+this.DATE_FORMAT_DB+"') LOGOUT"+
+               " ,ul.LOGIN"+
+               " ,ul.LOGOUT"+
                " ,ul.IP_ADRESS"+
            " from USR_LOGIN ul "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -93,10 +83,10 @@ public void initNewRecord() throws Exception {}
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " ul.ID"+
-               " ,ul.IP_ADRESS"+
-               " ,to_char(ul.LOGIN,'"+this.DATE_FORMAT_DB+"') LOGIN"+
-               " ,to_char(ul.LOGOUT,'"+this.DATE_FORMAT_DB+"') LOGOUT"+
                " ,ul.USERNAME"+
+               " ,ul.LOGIN"+
+               " ,ul.LOGOUT"+
+               " ,ul.IP_ADRESS"+
            " from USR_LOGIN ul"+
         " where "+
      "      ul.ID= :ID"+ 
@@ -105,7 +95,7 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
@@ -113,13 +103,15 @@ public void callProcedure(String pName)  throws Exception {
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("IP_ADRESS", new FieldDef("STRING"));
+	  this.fields.put("USERNAME", new FieldDef("STRING"));
 	  this.fields.put("LOGIN", new FieldDef("DATE"));
 	  this.fields.put("LOGOUT", new FieldDef("DATE"));
-	  this.fields.put("USERNAME", new FieldDef("STRING"));
+	  this.fields.put("IP_ADRESS", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

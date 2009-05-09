@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0068 extends AbstractDataControl implements IDataControl {
 
@@ -34,15 +24,15 @@ private void preQuery() {
       this.queryWhere.append("ur.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_ROLE_NAME") != null && !this.request.getParam("QRY_ROLE_NAME").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ur.ROLE_NAME like :ROLE_NAME");
-      this.queryParams.put("ROLE_NAME",(String)this.request.getParam("QRY_ROLE_NAME"));
-    }
     if (this.request.getParam("QRY_USER_ID") != null && !this.request.getParam("QRY_USER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ur.USER_ID like :USER_ID");
       this.queryParams.put("USER_ID",(String)this.request.getParam("QRY_USER_ID"));
+    }
+    if (this.request.getParam("QRY_ROLE_NAME") != null && !this.request.getParam("QRY_ROLE_NAME").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ur.ROLE_NAME like :ROLE_NAME");
+      this.queryParams.put("ROLE_NAME",(String)this.request.getParam("QRY_ROLE_NAME"));
     }
 }
 
@@ -51,11 +41,11 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ur.CREATEDBY"+
-               " ,to_char(ur.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ur.ID"+
-               " ,ur.ROLE_NAME"+
+               " ur.ID"+
                " ,ur.USER_ID"+
+               " ,ur.ROLE_NAME"+
+               " ,ur.CREATEDON"+
+               " ,ur.CREATEDBY"+
            " from SYS_USER_ROLE ur "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -69,7 +59,7 @@ public void doExport() throws Exception {
                " ur.ID"+
                " ,ur.USER_ID"+
                " ,ur.ROLE_NAME"+
-               " ,to_char(ur.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,ur.CREATEDON"+
                " ,ur.CREATEDBY"+
            " from SYS_USER_ROLE ur "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -86,12 +76,12 @@ public void doInsert()  throws Exception {
   this.populateRecordWithClientSpecific();
     String sql = "insert into SYS_USER_ROLE("+
                "  ID"+
-               " ,ROLE_NAME"+
                " ,USER_ID"+
+               " ,ROLE_NAME"+
            " ) values ( "+
                "  :ID"+
-               " ,:ROLE_NAME"+
                " ,:USER_ID"+
+               " ,:ROLE_NAME"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_USRROL_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -135,11 +125,11 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ur.CREATEDBY"+
-               " ,to_char(ur.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ur.ID"+
-               " ,ur.ROLE_NAME"+
+               " ur.ID"+
                " ,ur.USER_ID"+
+               " ,ur.ROLE_NAME"+
+               " ,ur.CREATEDON"+
+               " ,ur.CREATEDBY"+
            " from SYS_USER_ROLE ur"+
         " where "+
      "      ur.ID= :ID"+ 
@@ -148,21 +138,23 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("ROLE_NAME", new FieldDef("STRING"));
 	  this.fields.put("USER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("ROLE_NAME", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = -1;
 	}
 
-public void doCustomAction(String action) {}
 }

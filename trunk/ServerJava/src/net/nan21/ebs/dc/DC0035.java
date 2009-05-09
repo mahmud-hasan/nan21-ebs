@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0035 extends AbstractDataControl implements IDataControl {
 
@@ -29,45 +19,45 @@ public class DC0035 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_BPCONTR_ID") != null && !this.request.getParam("QRY_BPCONTR_ID").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.BPCONTR_ID like :BPCONTR_ID");
-      this.queryParams.put("BPCONTR_ID",(String)this.request.getParam("QRY_BPCONTR_ID"));
-    }
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
-    if (this.request.getParam("QRY_CONTRSTAT_CODE") != null && !this.request.getParam("QRY_CONTRSTAT_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.CONTRSTAT_CODE like :CONTRSTAT_CODE");
-      this.queryParams.put("CONTRSTAT_CODE",(String)this.request.getParam("QRY_CONTRSTAT_CODE"));
-    }
-    if (this.request.getParam("QRY_CONTRTYPE_CODE") != null && !this.request.getParam("QRY_CONTRTYPE_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.CONTRTYPE_CODE like :CONTRTYPE_CODE");
-      this.queryParams.put("CONTRTYPE_CODE",(String)this.request.getParam("QRY_CONTRTYPE_CODE"));
-    }
-    if (this.request.getParam("QRY_CUST_BPARTNER_ID") != null && !this.request.getParam("QRY_CUST_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.CUST_BPARTNER_ID like :CUST_BPARTNER_ID");
-      this.queryParams.put("CUST_BPARTNER_ID",(String)this.request.getParam("QRY_CUST_BPARTNER_ID"));
-    }
-    if (this.request.getParam("QRY_DOC_DATE") != null && !this.request.getParam("QRY_DOC_DATE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.DOC_DATE like :DOC_DATE");
-      this.queryParams.put("DOC_DATE",(String)this.request.getParam("QRY_DOC_DATE"));
+      this.queryWhere.append("c.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_DOC_NO") != null && !this.request.getParam("QRY_DOC_NO").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("c.DOC_NO like :DOC_NO");
       this.queryParams.put("DOC_NO",(String)this.request.getParam("QRY_DOC_NO"));
     }
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+    if (this.request.getParam("QRY_DOC_DATE") != null && !this.request.getParam("QRY_DOC_DATE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("c.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+      this.queryWhere.append("c.DOC_DATE like :DOC_DATE");
+      this.queryParams.put("DOC_DATE",(String)this.request.getParam("QRY_DOC_DATE"));
+    }
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("c.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
+    if (this.request.getParam("QRY_CUST_BPARTNER_ID") != null && !this.request.getParam("QRY_CUST_BPARTNER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("c.CUST_BPARTNER_ID like :CUST_BPARTNER_ID");
+      this.queryParams.put("CUST_BPARTNER_ID",(String)this.request.getParam("QRY_CUST_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_CONTRTYPE_CODE") != null && !this.request.getParam("QRY_CONTRTYPE_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("c.CONTRTYPE_CODE like :CONTRTYPE_CODE");
+      this.queryParams.put("CONTRTYPE_CODE",(String)this.request.getParam("QRY_CONTRTYPE_CODE"));
+    }
+    if (this.request.getParam("QRY_BPCONTR_ID") != null && !this.request.getParam("QRY_BPCONTR_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("c.BPCONTR_ID like :BPCONTR_ID");
+      this.queryParams.put("BPCONTR_ID",(String)this.request.getParam("QRY_BPCONTR_ID"));
+    }
+    if (this.request.getParam("QRY_CONTRSTAT_CODE") != null && !this.request.getParam("QRY_CONTRSTAT_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("c.CONTRSTAT_CODE like :CONTRSTAT_CODE");
+      this.queryParams.put("CONTRSTAT_CODE",(String)this.request.getParam("QRY_CONTRSTAT_CODE"));
     }
     if (this.request.getParam("QRY_SUPP_BPARTNER_ID") != null && !this.request.getParam("QRY_SUPP_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -81,26 +71,26 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " c.BPCONTR_ID"+
+               " (select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME"+
                " ,(select tt.doc_no||'/'||tt.doc_date from bp_contract tt where tt.id = c.bpcontr_id ) BPCONTR_NAME"+
-               " ,c.CLIENT_ID"+
-               " ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME"+
-               " ,c.CONTRSTAT_CODE"+
-               " ,c.CONTRTYPE_CODE"+
-               " ,c.CREATEDBY"+
-               " ,to_char(c.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,c.CUST_BPARTNER_ID"+
-               " ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
-               " ,to_char(c.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
-               " ,c.DOC_NO"+
-               " ,to_char(c.ENDDATE,'"+this.DATE_FORMAT_DB+"') ENDDATE"+
                " ,c.ID"+
-               " ,c.MODIFIEDBY"+
-               " ,to_char(c.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,c.DOC_NO"+
+               " ,c.DOC_DATE"+
+               " ,c.CLIENT_ID"+
+               " ,c.CUST_BPARTNER_ID"+
+               " ,c.CONTRTYPE_CODE"+
+               " ,c.STARTDATE"+
+               " ,c.ENDDATE"+
                " ,c.NOTES"+
-               " ,to_char(c.STARTDATE,'"+this.DATE_FORMAT_DB+"') STARTDATE"+
+               " ,c.BPCONTR_ID"+
+               " ,c.CREATEDON"+
+               " ,c.CREATEDBY"+
+               " ,c.MODIFIEDON"+
+               " ,c.MODIFIEDBY"+
+               " ,c.CONTRSTAT_CODE"+
                " ,c.SUPP_BPARTNER_ID"+
-               " ,(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME"+
+               " ,(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME"+
+               " ,(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
            " from BP_CONTRACT c "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -112,23 +102,23 @@ public void doExport() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " c.ID"+
-               " ,c.CLIENT_ID"+
                ",(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME"+
+               " ,c.CLIENT_ID"+
                " ,c.DOC_NO"+
-               " ,to_char(c.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
-               ",(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
+               " ,c.DOC_DATE"+
                " ,c.CUST_BPARTNER_ID"+
+               ",(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
                " ,c.SUPP_BPARTNER_ID"+
                ",(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME"+
                " ,c.CONTRTYPE_CODE"+
-               " ,to_char(c.STARTDATE,'"+this.DATE_FORMAT_DB+"') STARTDATE"+
-               " ,to_char(c.ENDDATE,'"+this.DATE_FORMAT_DB+"') ENDDATE"+
+               " ,c.STARTDATE"+
+               " ,c.ENDDATE"+
                ",(select tt.doc_no||'/'||tt.doc_date from bp_contract tt where tt.id = c.bpcontr_id ) BPCONTR_NAME"+
                " ,c.BPCONTR_ID"+
                " ,c.NOTES"+
-               " ,to_char(c.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,c.CREATEDON"+
                " ,c.CREATEDBY"+
-               " ,to_char(c.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,c.MODIFIEDON"+
                " ,c.MODIFIEDBY"+
                " ,c.CONTRSTAT_CODE"+
            " from BP_CONTRACT c "+this.queryWhere.toString()+" "+this.queryOrderBy;
@@ -145,34 +135,34 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into BP_CONTRACT("+
-               "  BPCONTR_ID"+
-               " ,CLIENT_ID"+
-               " ,CONTRSTAT_CODE"+
-               " ,CONTRTYPE_CODE"+
-               " ,CREATEDBY"+
-               " ,CUST_BPARTNER_ID"+
-               " ,DOC_DATE"+
+               "  ID"+
                " ,DOC_NO"+
-               " ,ENDDATE"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
-               " ,NOTES"+
+               " ,DOC_DATE"+
+               " ,CLIENT_ID"+
+               " ,CUST_BPARTNER_ID"+
+               " ,CONTRTYPE_CODE"+
                " ,STARTDATE"+
+               " ,ENDDATE"+
+               " ,NOTES"+
+               " ,BPCONTR_ID"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDBY"+
+               " ,CONTRSTAT_CODE"+
                " ,SUPP_BPARTNER_ID"+
            " ) values ( "+
-               "  :BPCONTR_ID"+
-               " ,:CLIENT_ID"+
-               " ,:CONTRSTAT_CODE"+
-               " ,:CONTRTYPE_CODE"+
-               " ,:CREATEDBY"+
-               " ,:CUST_BPARTNER_ID"+
-               " ,:DOC_DATE"+
+               "  :ID"+
                " ,:DOC_NO"+
-               " ,:ENDDATE"+
-               " ,:ID"+
-               " ,:MODIFIEDBY"+
-               " ,:NOTES"+
+               " ,:DOC_DATE"+
+               " ,:CLIENT_ID"+
+               " ,:CUST_BPARTNER_ID"+
+               " ,:CONTRTYPE_CODE"+
                " ,:STARTDATE"+
+               " ,:ENDDATE"+
+               " ,:NOTES"+
+               " ,:BPCONTR_ID"+
+               " ,:CREATEDBY"+
+               " ,:MODIFIEDBY"+
+               " ,:CONTRSTAT_CODE"+
                " ,:SUPP_BPARTNER_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_BPCONTR_ID")  );
@@ -224,26 +214,26 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " c.BPCONTR_ID"+
+                "(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME"+
                 ",(select tt.doc_no||'/'||tt.doc_date from bp_contract tt where tt.id = c.bpcontr_id ) BPCONTR_NAME"+
-               " ,c.CLIENT_ID"+
-                ",(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME"+
-               " ,c.CONTRSTAT_CODE"+
-               " ,c.CONTRTYPE_CODE"+
-               " ,c.CREATEDBY"+
-               " ,to_char(c.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,c.CUST_BPARTNER_ID"+
-                ",(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
-               " ,to_char(c.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
-               " ,c.DOC_NO"+
-               " ,to_char(c.ENDDATE,'"+this.DATE_FORMAT_DB+"') ENDDATE"+
                " ,c.ID"+
-               " ,c.MODIFIEDBY"+
-               " ,to_char(c.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,c.DOC_NO"+
+               " ,c.DOC_DATE"+
+               " ,c.CLIENT_ID"+
+               " ,c.CUST_BPARTNER_ID"+
+               " ,c.CONTRTYPE_CODE"+
+               " ,c.STARTDATE"+
+               " ,c.ENDDATE"+
                " ,c.NOTES"+
-               " ,to_char(c.STARTDATE,'"+this.DATE_FORMAT_DB+"') STARTDATE"+
+               " ,c.BPCONTR_ID"+
+               " ,c.CREATEDON"+
+               " ,c.CREATEDBY"+
+               " ,c.MODIFIEDON"+
+               " ,c.MODIFIEDBY"+
+               " ,c.CONTRSTAT_CODE"+
                " ,c.SUPP_BPARTNER_ID"+
-                ",(select t.name from bpartner t where t.id = c.supp_bpartner_id) SUPP_BPARTNER_NAME"+
+                ",(select t1.code from client t1 where t1.id = client_id) CLIENT_NAME"+
+                ",(select t.name from bpartner t where t.id = c.cust_bpartner_id) CUST_BPARTNER_NAME"+
            " from BP_CONTRACT c"+
         " where "+
      "      c.ID= :ID"+ 
@@ -252,36 +242,38 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("BPCONTR_ID", new FieldDef("NUMBER"));
-	  this.fields.put("BPCONTR_NAME", new FieldDef("STRING"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_NAME", new FieldDef("STRING"));
-	  this.fields.put("CONTRSTAT_CODE", new FieldDef("STRING"));
-	  this.fields.put("CONTRTYPE_CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CUST_BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CUST_BPARTNER_NAME", new FieldDef("STRING"));
-	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
-	  this.fields.put("DOC_NO", new FieldDef("STRING"));
-	  this.fields.put("ENDDATE", new FieldDef("DATE"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("NOTES", new FieldDef("STRING"));
-	  this.fields.put("STARTDATE", new FieldDef("DATE"));
-	  this.fields.put("SUPP_BPARTNER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("SUPP_BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("BPCONTR_NAME", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("DOC_NO", new FieldDef("STRING"));
+	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CUST_BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CONTRTYPE_CODE", new FieldDef("STRING"));
+	  this.fields.put("STARTDATE", new FieldDef("DATE"));
+	  this.fields.put("ENDDATE", new FieldDef("DATE"));
+	  this.fields.put("NOTES", new FieldDef("STRING"));
+	  this.fields.put("BPCONTR_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("CONTRSTAT_CODE", new FieldDef("STRING"));
+	  this.fields.put("SUPP_BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CLIENT_NAME", new FieldDef("STRING"));
+	  this.fields.put("CUST_BPARTNER_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

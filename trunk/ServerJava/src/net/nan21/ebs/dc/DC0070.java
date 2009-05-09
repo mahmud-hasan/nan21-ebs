@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0070 extends AbstractDataControl implements IDataControl {
 
@@ -51,13 +41,13 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " mir.CREATEDBY"+
-               " ,to_char(mir.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " mir.MODIFIEDBY"+
                " ,mir.ID"+
                " ,mir.MENUITEM_ID"+
-               " ,mir.MODIFIEDBY"+
-               " ,to_char(mir.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,mir.ROLE_NAME"+
+               " ,mir.CREATEDON"+
+               " ,mir.CREATEDBY"+
+               " ,mir.MODIFIEDON"+
            " from MENUITEM_ROLE mir "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -71,9 +61,9 @@ public void doExport() throws Exception {
                " mir.ID"+
                " ,mir.MENUITEM_ID"+
                " ,mir.ROLE_NAME"+
-               " ,to_char(mir.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,mir.CREATEDON"+
                " ,mir.CREATEDBY"+
-               " ,to_char(mir.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,mir.MODIFIEDON"+
                " ,mir.MODIFIEDBY"+
            " from MENUITEM_ROLE mir "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -141,13 +131,13 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " mir.CREATEDBY"+
-               " ,to_char(mir.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " mir.MODIFIEDBY"+
                " ,mir.ID"+
                " ,mir.MENUITEM_ID"+
-               " ,mir.MODIFIEDBY"+
-               " ,to_char(mir.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,mir.ROLE_NAME"+
+               " ,mir.CREATEDON"+
+               " ,mir.CREATEDBY"+
+               " ,mir.MODIFIEDON"+
            " from MENUITEM_ROLE mir"+
         " where "+
      "      mir.ID= :ID"+ 
@@ -156,23 +146,25 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MENUITEM_ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("ROLE_NAME", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = -1;
 	}
 
-public void doCustomAction(String action) {}
 }

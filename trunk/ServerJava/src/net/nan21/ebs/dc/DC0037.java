@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0037 extends AbstractDataControl implements IDataControl {
 
@@ -34,6 +24,11 @@ private void preQuery() {
       this.queryWhere.append("ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
+    if (this.request.getParam("QRY_UIDICT_ID") != null && !this.request.getParam("QRY_UIDICT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("UIDICT_ID like :UIDICT_ID");
+      this.queryParams.put("UIDICT_ID",(String)this.request.getParam("QRY_UIDICT_ID"));
+    }
     if (this.request.getParam("QRY_LANGUAGE_CODE") != null && !this.request.getParam("QRY_LANGUAGE_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("LANGUAGE_CODE like :LANGUAGE_CODE");
@@ -44,11 +39,6 @@ private void preQuery() {
       this.queryWhere.append("TRANSLATION like :TRANSLATION");
       this.queryParams.put("TRANSLATION",(String)this.request.getParam("QRY_TRANSLATION"));
     }
-    if (this.request.getParam("QRY_UIDICT_ID") != null && !this.request.getParam("QRY_UIDICT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("UIDICT_ID like :UIDICT_ID");
-      this.queryParams.put("UIDICT_ID",(String)this.request.getParam("QRY_UIDICT_ID"));
-    }
 }
 
 public void doQuery() throws Exception {
@@ -57,13 +47,13 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ID"+
-               " ,LANGUAGE_CODE"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
-               " ,TRANSLATION"+
-               " ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
                " ,UIDICT_ID"+
+               " ,LANGUAGE_CODE"+
+               " ,TRANSLATION"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+               " ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
            " from UI_DICTIONARY_TRL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -80,7 +70,7 @@ public void doExport() throws Exception {
                ",(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
                " ,LANGUAGE_CODE"+
                " ,TRANSLATION"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
            " from UI_DICTIONARY_TRL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -126,13 +116,13 @@ public void initNewRecord() throws Exception {
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " ID"+
-               " ,LANGUAGE_CODE"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-                ",(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
-               " ,TRANSLATION"+
-                ",(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
                " ,UIDICT_ID"+
+               " ,LANGUAGE_CODE"+
+               " ,TRANSLATION"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+                ",(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+                ",(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
            " from UI_DICTIONARY_TRL "+
         " where "+
      "      ID= :ID"+ 
@@ -141,7 +131,7 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
@@ -149,16 +139,18 @@ public void callProcedure(String pName)  throws Exception {
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("LANGUAGE_CODE", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MSG_CODE", new FieldDef("STRING"));
-	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
-	  this.fields.put("UIDC_CODE", new FieldDef("STRING"));
 	  this.fields.put("UIDICT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("LANGUAGE_CODE", new FieldDef("STRING"));
+	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("UIDC_CODE", new FieldDef("STRING"));
+	  this.fields.put("MSG_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }
