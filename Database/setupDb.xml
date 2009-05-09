@@ -1,0 +1,33 @@
+<project name="Nan21eBusinessSuite" default="setupDb" basedir=".">
+  <description>Install Nan21 eBusiness Suite.</description>
+  <property file="setupDb.properties"/>
+
+  <target name="setupDb" description="Setup the database structure."
+          depends="createUser,createObjects">
+    <echo>Done.</echo>
+  </target>
+
+  <!--  Create db user (schema)-->
+  <target name="createUser">
+    <echo>Creating database user (schema)... </echo>
+    <echo>Super user connection string: ${db.sysUser}/${db.sysPassword}@${db.sid}</echo>
+    <echo>N21EBS user: ${db.ebsUser}/${db.ebsPassword}</echo>
+    <exec executable="sqlplus">
+      <arg value="${db.sysUser}/${db.sysPassword}@${db.sid}"/>
+      <arg value="@Database/src/ddl_user.sql"/>
+      <arg value="${db.ebsUser}"/>
+      <arg value="${db.ebsPassword}"/>
+    </exec>
+  </target>
+
+  <!--  Create objects  -->
+  <target name="createObjects">
+    <echo>Creating database objects... </echo>
+    <exec executable="sqlplus">
+      <arg value="${db.ebsUser}/${db.ebsPassword}@${db.sid}"/>
+      <arg value="@Database/src/install.sql"/>
+    </exec>
+  </target>
+
+
+</project>
