@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script type="text/javascript" >
+      CFG_DEPLOYMENT = 'java';   // values: {php,java}
+
+      if (CFG_DEPLOYMENT == 'php') {
+         // Product version. Do not change!
+        CFG_PRODUCT_VERSION = 'TRUNK';
+        // Specifies if shared code runs on Adobe Air or Browser.  Do not change!
+        CFG_IS_ADOBEAIR = true;
+        
+        // Deployment type: Production(PROD) or development(DEV). In development mod does not cache
+        CFG_DEPLOYMENT_TYPE = 'DEV';
+        CFG_CLIENT_SERVER_PROTOCOL = 'http';
+        CFG_CLIENT_SERVER_NAME = 'localhost';
+        CFG_CLIENT_SERVER_PORT = '';
+        CFG_CLIENT_SERVER_PATH = '/n21eBusinessSuite/ClientExtjs';
+        CFG_DEFAULT_LANGUAGE = 'ro';
+
+        CFG_AUTHSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/index.php';
+        CFG_BACKENDSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/index.php';
+  
+        //CFG_AUTHSERVER_URL    = 'http://localhost/n21eBusinessSuite/ServerPhp/javaProxy.php';
+        //CFG_BACKENDSERVER_URL = 'http://localhost/n21eBusinessSuite/ServerPhp/javaProxy.php';
+  
+  
+        CFG_CLIENT_URL =  CFG_CLIENT_SERVER_PROTOCOL + '://'+CFG_CLIENT_SERVER_NAME+((CFG_CLIENT_SERVER_PORT)?':'+CFG_CLIENT_SERVER_PORT:'')+ CFG_CLIENT_SERVER_PATH;
+  
+        CFG_PATH_EXTJS = 'http://localhost/_lib/Extjs/2.2';
+        CFG_PATH_JSLIB = 'lib/n21ExtjsLib';
+        CFG_PATH_ICONS = CFG_CLIENT_URL+'/resource/icon';
+
+      }
+
+      if (CFG_DEPLOYMENT == 'java') {
+         // Product version. Do not change!
+        CFG_PRODUCT_VERSION = 'TRUNK';
+        // Specifies if shared code runs on Adobe Air or Browser.  Do not change!
+        CFG_IS_ADOBEAIR = true;
+        
+        // Deployment type: Production(PROD) or development(DEV). In development mod does not cache
+        CFG_DEPLOYMENT_TYPE = 'DEV';
+        CFG_CLIENT_SERVER_PROTOCOL = 'http';
+        CFG_CLIENT_SERVER_NAME = 'localhost';
+        CFG_CLIENT_SERVER_PORT = '8088';
+        CFG_CLIENT_SERVER_PATH = '';
+        CFG_DEFAULT_LANGUAGE = 'ro';
+
+        CFG_AUTHSERVER_URL = 'http://localhost:8088/n21ebsServerJava/frmMain';
+        CFG_BACKENDSERVER_URL = 'http://localhost:8088/n21ebsServerJava/frmMain';
+
+        CFG_CLIENT_URL =  CFG_CLIENT_SERVER_PROTOCOL + '://'+CFG_CLIENT_SERVER_NAME+((CFG_CLIENT_SERVER_PORT)?':'+CFG_CLIENT_SERVER_PORT:'')+ CFG_CLIENT_SERVER_PATH;
+
+        CFG_PATH_EXTJS = 'lib/Extjs/2.2';
+        CFG_PATH_JSLIB = 'lib/n21ExtjsLib';
+        CFG_PATH_ICONS = CFG_CLIENT_URL+'/resource/icon';
+
+      }
+  </script>
+
+
+  
+  <script type="text/javascript" src="AIRAliases.js"></script>
+  <script type="text/javascript" src="src/other/UiLoadingHelper.js"></script>
+  <script type="text/javascript" src="DcIncludesMap.js"></script>
+  <link rel="stylesheet" type="text/css" href="resource/css/loading.css"/>
+  <script>
+      document.write('<title>Nan21 eBusiness Suite v. ' + CFG_PRODUCT_VERSION + '</title>');
+  </script>
+
+</head>
+<body>
+  <div id="n21-loading-mask" style=""></div>
+  <div id="n21-loading">
+      <div class="n21-loading-indicator">
+        <span id="n21-loading-logo">Nan21 eBusiness Suite</span>
+        <br>
+        <span id="n21-loading-logo-text">Open source ERP/CRM</span>
+        <br>
+        <img src="resource/icon/loading.gif" width="150"/>
+        <br>
+        <span id="n21-loading-msg">Loading Extjs library...</span>
+      </div>
+  </div>
+
+  <div id="west"></div>
+  <div id="north" style="height:32"></div>
+  <div id="south" style="margin:0;padding:0;"></div>
+  <div style="width:100%;height:100%;overflow: hidden;" id="content">
+    <iframe id="content_iframe" src="" style="border:0;width:100%;height:100%;overflow-y: hidden;margin:0;padding:0;" FRAMEBORDER="no"></iframe>
+  </div>
+
+
+  <script>
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_EXTJS+'/adapter/ext/ext-base.js" ><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_EXTJS+'/ext-all.js" ><\/script>');
+    document.writeln('<script type="text/javascript" src="/lib/ext-air/ext-air.js" ><\/script>');
+  </script>
+  <script type="text/javascript">document.getElementById('n21-loading-msg').innerHTML = 'Loading framework objects...';</script>
+  <script>
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.GridEdit.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.GridView.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.Combo.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.Lov.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.EditForm.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/N21.Base.GridEditForm.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/lib.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/globals.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_JSLIB+'/extjs-extend.js"><\/script>');
+
+    document.writeln('<script type="text/javascript" src="src/other/DcLogin.js"><\/script>');
+    document.writeln('<script type="text/javascript" src="src/other/DcMenuTree.js"><\/script>');
+
+  </script>
+  <script type="text/javascript">document.getElementById('n21-loading-msg').innerHTML = 'Loading default language...';</script>
+  <script>
+    document.writeln('<script type="text/javascript" src="'+CFG_PATH_EXTJS+'/build/locale/ext-lang-'+CFG_DEFAULT_LANGUAGE+'.js"><\/script>');
+  </script>
+  <script type="text/javascript">document.getElementById('n21-loading-msg').innerHTML = 'Loading style and images...';</script>
+  <script>
+    document.writeln('<link rel="stylesheet" type="text/css" href="'+CFG_PATH_EXTJS+'/resources/css/ext-all.css"/>');
+    document.writeln('<link rel="stylesheet" type="text/css" href="resource/css/n21ebs.css"/>');
+    document.writeln('<link rel="stylesheet" type="text/css" href="'+CFG_PATH_EXTJS+'/resources/css/xtheme-nbs.css"/>');
+
+  </script>
+  <script type="text/javascript">document.getElementById('n21-loading-msg').innerHTML = 'Initializing...';</script>
+  <script>
+
+    var logInWindow, loggedIn;
+    var appViewport;
+    var mainViewportLoaded = false;
+    var mTlb;
+    var menuTree, shortcutTree, contentPane;
+    var uiMsgQue;
+    var uiDcInc;
+
+    var AUTH_COOKIE_NAME = 'loggedInCookie';
+
+    var session = {
+      "language": CFG_DEFAULT_LANGUAGE
+    };
+
+    // the main object which exposes content to the child frames
+    var Exposed = null;
+
+    Ext.onReady(function(){
+
+
+
+      Ext.BLANK_IMAGE_URL = CFG_PATH_EXTJS+"/s.gif";
+
+      uiMsgQue = new Ext.util.MixedCollection();
+
+      uiDcInc = new Ext.util.MixedCollection();
+      initUiDcIncludes(uiDcInc);
+
+
+      Exposed = {
+        'version' : '0.8'
+        ,'session':session
+        ,'getUiDcInc':function(ui) {
+            return  uiDcInc.get(ui);
+        }
+      };
+
+       //alert(Exposed.getUiDcInc("UI0037"));
+
+      loggedIn = (readCookie(AUTH_COOKIE_NAME)==null)?false:true ;
+      logInWindow = new N21.Other.DcLogin({ authServerUrl:CFG_AUTHSERVER_URL});
+      logInWindow.addListener('logonSuccess', function() { onLogonSuccess();}  );
+      
+      if (!Ext.isEmpty(Ext.get('n21-loading'))) {
+        Ext.get('n21-loading').remove();
+      }
+
+      if (!loggedIn) {
+        logInWindow.show();
+        setTimeout('logInWindow.focusUserName()',200);
+      } else {
+         showApp();
+      }
+
+      function onLogonSuccess() {
+         loggedIn = true;
+         createCookie(AUTH_COOKIE_NAME,'1');
+         logInWindow.hide();
+         showApp();
+      }
+
+      function showApp() {
+        if (!mainViewportLoaded) {
+           createToolbar();
+           createMenuTree();
+           initAppViewport();
+           loadModuleMenu('MM','Material Management');
+         }
+      }
+
+      function initAppViewport() {
+        contentPane =  new Ext.TabPanel({
+             region:'center'
+            ,deferredRender:false
+            ,activeTab:0
+            ,plain:true
+            ,items:[
+                {contentEl:'content', title: 'Home', autoScroll:true, layout:'fit'}
+              ]
+          });
+          appViewport = new Ext.Viewport({
+          layout:'border',
+          items:[
+              { region:"north", height:26, items:[mTlb] }
+             , new Ext.Panel({
+                   layout:'accordion'
+                  ,region:'west'
+                  ,split:true
+                  ,width: 220
+                  ,title:'Navigation'
+                  ,minSize: 175
+                  ,maxSize: 300
+                  ,collapsible: true
+                  ,items:[
+                      {title: 'Module menu', layout:'fit', border:false, items:[ menuTree ] }
+                    // ,{title: 'My Shortcuts' , border:false, items:[ menuTree ] }
+                     ]
+                 })
+             , contentPane
+             ,{region: "south",border: false, frame:true, height:25,html:"Powered by Nan21 eBusiness Suite, <a href='http://www.nan21.eu' target=_blank title='www.nan21.eu'>www.nan21.eu</a>"}
+             ,{region: "east" ,border: false,width:0}
+           ]
+        }); // end viewport
+
+      }
+
+
+
+
+      function createMenuTree() {
+         menuTree = new N21.Other.MenuTree({backendServerUrl:CFG_BACKENDSERVER_URL});
+         menuTree.on("openMenuLink", function(guiID, guiText, params) { openMenuLink(guiID, guiText, params); })
+         menuTree.on("openMenuLinkInNewTab", function(guiID, guiText, params) { openMenuLinkInNewTab(guiID, guiText, params); })
+         menuTree.getLoader().on("loadexception", function(loader,node,response) {onMenuLoadException(response);});
+      }
+
+
+
+      /**
+       *   Called whenever a NO_ACTIVE_SESSION error is returned by the server
+       */
+
+      function onMenuLoadException(response) { 
+         // check if it is session timeout 
+         eraseCookie(AUTH_COOKIE_NAME);
+         logInWindow.show();
+      }
+
+
+
+
+      /**
+       *  Load a UI url into a content tab.
+       *  Params:  ifrID - Id of the iframe in tabpanel tab where the UI is loaded
+       *           guiID - UI code 
+       *           params - extra params
+       */
+      function loadMenuLink(ifrID, guiID, params) {
+        if(guiID.substr(0,3)=="REP") {
+          document.getElementById(ifrID).src = CFG_BACKENDSERVER_URL+"?_p_report_id="+guiID;
+        } else {  
+          //document.getElementById(ifrID).src = "UI.html";
+
+
+          //var htmlString = buildHtml(session.language, guiID, uiDcInc.get(guiID) );
+          //alert(htmlString);
+          //document.getElementById(ifrID).src =  htmlString;
+
+
+        }
+      }
+
+
+      /**
+       *  Open a menu-link. It is called by the menu tree onclick event handler.
+       *  If UI is already loaded but tab is not active then activate tab.
+       *  If UI is already loaded and tab is active then reload UI.
+       *  If UI is not loaded, create a new tab load UI into it and activate it.
+       */
+      function openMenuLink(guiID, guiText, params) {
+        var tabID = "tabPanel_"+guiID;
+        var ifrID = "iframe_"+guiID;
+        _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
+      }
+
+
+      /**
+       *  Open a menu-link in a new tab. 
+       *  Creates a new tab and load the UI regardless of how many tabs are opened with the same UI
+       *
+       */
+      function openMenuLinkInNewTab(guiID, guiText, params) {
+        var tabID = "tabPanel_"+guiID+"_"+(new Date()).getTime();
+        var ifrID = "iframe_"+guiID+"_"+(new Date()).getTime();
+        _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
+      }
+
+      /**
+       *  Implements the UI loading mechanism.
+       */
+      function _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params) {
+       //alert(ifrID+' => window.frames='+window.frames[ifrID]);
+       //alert(ifrID+' => document.getElementById'+document.getElementById(ifrID));
+       if ( Ext.isEmpty(document.getElementById(ifrID)) &&  !Ext.isEmpty(window.frames[ifrID]) ) {
+           alert('am frames no docgetElemById');
+           delete window.frames[ifrID];
+       }
+       //alert(ifrID+' => window.frames='+window.frames[ifrID]);
+        if (!Ext.isEmpty(document.getElementById(ifrID)  )) {
+          if (contentPane.getActiveTab().getId() == tabID ) {
+            loadMenuLink(ifrID, guiID, params );
+          } else {
+            contentPane.activate(tabID);
+          }
+        } else {
+          contentPane.add(new Ext.Panel({
+                  title:guiText
+                 ,id: tabID
+                 ,autoScroll:true
+                 ,layout:'fit'
+                 ,closable:true
+                 ,html:'<div style="width:100%;height:100%;overflow: hidden;" id="div_'+guiID+'" ><iframe src="UI.html" allowcrossDomainxhr="true"  documentRoot="app:/" sandboxRoot=http://nan21.eu/  id="'+ifrID+'" name="'+ifrID+'" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
+               }));
+               contentPane.activate(tabID);
+               document.getElementById(ifrID).contentWindow.parentSandboxBridge = Exposed;
+               //loadMenuLink(ifrID, guiID, params );
+        }
+      }
+
+
+      function getBlank() {
+        return "<html></html>";
+      }
+
+      function loadModuleMenu(mCode, mName) {
+          menuTree.getLoader().baseParams.module =  mCode;
+          menuTree.getRootNode().setText( mName );
+          menuTree.getLoader().load(menuTree.getRootNode(),function(l,n,r){n.expand();});
+        }
+
+
+
+     function doLockSession() {
+        Ext.Ajax.request({
+         url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=lockSession"
+        ,scope:this
+        ,callback: function(o,s,r) {
+            var respText = Ext.decode(r.responseText);
+            if (respText.success && respText.message == "OK") { 
+              //Ext.getCmp("menu-login").enable();
+              //Ext.getCmp("menu-logout").disable();
+              logInWindow.fields.get("username").disable();
+              logInWindow.show();
+             }
+            else {
+               if (!Ext.isEmpty(respText.message)) { 
+                 Ext.Msg.alert('Error', urldecode(respText.message) );
+               } else {
+                 Ext.Msg.alert('Error', 'Cannot lock session. Connection to server lost.' );
+               }
+            }
+        }
+      });
+     }
+
+
+      function doLogout() {
+          eraseCookie(AUTH_COOKIE_NAME);
+          Ext.Ajax.request({
+           url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=logout"
+          ,scope:this
+          ,callback: function(o,s,r) {
+              var respText = Ext.decode(r.responseText);
+              if (respText.success && respText.message == "OK") {document.location.href='logout.html';}
+              else {
+                 if (!Ext.isEmpty(respText.message)) { 
+                   Ext.Msg.alert('Error', urldecode(respText.message) );
+                 } else {
+                   Ext.Msg.alert('Error', 'Cannot logout. Connection to server lost' );
+                 }
+              }
+          }
+        });
+       }
+
+
+
+    /**
+     *  Change the current language
+     */
+    function changeLanguage(p_lang) {
+      Ext.Ajax.request({
+         url: CFG_BACKENDSERVER_URL+"?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=changeLanguage&_p_lang="+p_lang
+        ,scope:this
+        ,callback: function(o,s,r) {
+            var respText = Ext.decode(r.responseText);
+            if (respText.success && respText.message == "OK") { session.language = p_lang;menuTree.getLoader().load(menuTree.getRootNode(),function(l,n,r){n.expand();}); Ext.Msg.alert('Info', 'Panels already opened must be reloaded to display content in the selected language' );  }
+            if (!respText.success) { Ext.Msg.alert('Error', urldecode(respText.message) ); }
+        }
+      });
+
+    }
+
+
+      function createToolbar() {
+
+            mTlb = new Ext.Toolbar();
+            mTlb.render('north');
+            mTlb.add(
+             new Ext.Toolbar.MenuButton({
+                 text:'Module'
+                 ,menu: {
+                    items: [
+                        {id:"menu-mod-AD", text:'Administration' ,handler: function() { loadModuleMenu('AD','Administration')  } , scope:this }
+                       ,{id:"menu-mod-BP", text:'Business Partners',handler: function() { loadModuleMenu('BP','Business Partners') } , scope:this }
+                       ,{id:"menu-mod-MM", text:'Material Management'   ,handler: function() {  loadModuleMenu('MM','Material Management') }  }
+                       ,{id:"menu-mod-SL", text:'Sales', handler: function() { loadModuleMenu('SL','Sales') } , scope:this }
+                       ,{id:"menu-mod-DT", text:'Distribution'   ,handler: function() { loadModuleMenu('DT','Distribution')  } , scope:this}
+                       ,{id:"menu-mod-FI", text:'Financials'   ,handler: function() {  loadModuleMenu('FI','Financials') } , scope:this }
+                       ,{id:"menu-mod-HR", text:'Human Resources'   ,handler: function() {  loadModuleMenu('HR','Human Resources') } , scope:this, disabled:true}
+                       ,{id:"menu-mod-PJ", text:'Project Management'   ,handler: function() {  loadModuleMenu('PJ','Project Management') } , scope:this }
+                       ,"-"
+                       ,{id:"menu-mod-DV", text:'Developer'   ,handler: function() { loadModuleMenu('DV','Developer')  } , scope:this, disabled:true}
+          
+                    ]
+                  }
+               })
+              ,new Ext.Toolbar.MenuButton({
+                 text:'Session'
+                 ,menu: {
+                    items: [
+                        {id:"menu-login", text:'Log-in' ,handler: function() { logInWindow.show(); } , scope:this, disabled:loggedIn}
+                       ,{id:"menu-logout", text:'Log-out',handler: function() { doLogout(); } , scope:this, disabled:!loggedIn}
+                       ,"-"
+                       ,{id:"menu-lock", text:'Lock'   ,handler: function() { doLockSession(); } , scope:this, disabled:!loggedIn}
+                    ]
+                  }
+               })
+             ,new Ext.Toolbar.MenuButton({
+                 text:'Language'
+                 ,menu: {
+                    items: [
+                        { text:'English',handler: function() { changeLanguage('en'); } , scope:this ,  iconCls:'lang_menu_flag_en' }
+                       ,{ text:'Romana', handler: function() { changeLanguage('ro'); } , scope:this ,  iconCls:'lang_menu_flag_ro'}
+                    ]
+                  }
+               })
+              ,new Ext.Toolbar.MenuButton({
+                 text:'Help'
+                 ,menu: {
+                    items: [
+                        { text:'About',handler: function() {  document.getElementById("content_iframe").src = "showAbout.html"  } , scope:this}
+                       ,{ text:'License', handler: function() { document.getElementById("content_iframe").src = "showLicense.html" } , scope:this}
+                       ,{ text:'Online help', handler: function() {  } , scope:this, disabled:true}
+                    ]
+                  }
+               })
+               ,"->"
+               ,"Welcome:  "
+            );  // end mTlb.add
+          
+
+
+      }
+
+
+
+
+
+
+
+
+    });
+  </script>
+
+
+
+</body> 
+</html>
