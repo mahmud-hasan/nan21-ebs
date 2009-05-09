@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0014 extends AbstractDataControl implements IDataControl {
 
@@ -29,16 +19,6 @@ public class DC0014 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("bp.BPARTNER_ID like :BPARTNER_ID");
-      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
-    }
-    if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("bp.CODE like :CODE");
-      this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("bp.ID like :ID");
@@ -48,6 +28,16 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("bp.NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+    }
+    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("bp.BPARTNER_ID like :BPARTNER_ID");
+      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("bp.CODE like :CODE");
+      this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
     }
     if (this.request.getParam("QRY_TAX_NUMBER") != null && !this.request.getParam("QRY_TAX_NUMBER").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -61,22 +51,22 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " bp.BPARTNER_ID"+
-               " ,bp.BPARTNER_TYPE"+
-               " ,bp.CODE"+
-               " ,bp.COMPANY_REG_NR"+
-               " ,bp.COPIED_FROM_BPARTNER_ID"+
-               " ,bp.CREATEDBY"+
-               " ,to_char(bp.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,bp.EMAIL"+
-               " ,bp.FAX"+
-               " ,bp.ID"+
-               " ,bp.MODIFIEDBY"+
-               " ,to_char(bp.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " bp.ID"+
                " ,bp.NAME"+
-               " ,bp.PHONE"+
+               " ,bp.BPARTNER_TYPE"+
+               " ,bp.BPARTNER_ID"+
+               " ,bp.CODE"+
+               " ,bp.COPIED_FROM_BPARTNER_ID"+
                " ,bp.TAX_NUMBER"+
                " ,bp.TAX_NUMBER_TYPE"+
+               " ,bp.COMPANY_REG_NR"+
+               " ,bp.PHONE"+
+               " ,bp.EMAIL"+
+               " ,bp.FAX"+
+               " ,bp.CREATEDON"+
+               " ,bp.CREATEDBY"+
+               " ,bp.MODIFIEDON"+
+               " ,bp.MODIFIEDBY"+
            " from BPARTNER bp "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -99,9 +89,9 @@ public void doExport() throws Exception {
                " ,bp.BPARTNER_TYPE"+
                " ,bp.BPARTNER_ID"+
                " ,bp.COPIED_FROM_BPARTNER_ID"+
-               " ,to_char(bp.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,bp.CREATEDON"+
                " ,bp.CREATEDBY"+
-               " ,to_char(bp.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,bp.MODIFIEDON"+
                " ,bp.MODIFIEDBY"+
            " from BPARTNER bp "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -117,31 +107,31 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into BPARTNER("+
-               "  BPARTNER_ID"+
-               " ,BPARTNER_TYPE"+
-               " ,CODE"+
-               " ,COMPANY_REG_NR"+
-               " ,COPIED_FROM_BPARTNER_ID"+
-               " ,EMAIL"+
-               " ,FAX"+
-               " ,ID"+
+               "  ID"+
                " ,NAME"+
-               " ,PHONE"+
+               " ,BPARTNER_TYPE"+
+               " ,BPARTNER_ID"+
+               " ,CODE"+
+               " ,COPIED_FROM_BPARTNER_ID"+
                " ,TAX_NUMBER"+
                " ,TAX_NUMBER_TYPE"+
+               " ,COMPANY_REG_NR"+
+               " ,PHONE"+
+               " ,EMAIL"+
+               " ,FAX"+
            " ) values ( "+
-               "  :BPARTNER_ID"+
-               " ,:BPARTNER_TYPE"+
-               " ,:CODE"+
-               " ,:COMPANY_REG_NR"+
-               " ,:COPIED_FROM_BPARTNER_ID"+
-               " ,:EMAIL"+
-               " ,:FAX"+
-               " ,:ID"+
+               "  :ID"+
                " ,:NAME"+
-               " ,:PHONE"+
+               " ,:BPARTNER_TYPE"+
+               " ,:BPARTNER_ID"+
+               " ,:CODE"+
+               " ,:COPIED_FROM_BPARTNER_ID"+
                " ,:TAX_NUMBER"+
                " ,:TAX_NUMBER_TYPE"+
+               " ,:COMPANY_REG_NR"+
+               " ,:PHONE"+
+               " ,:EMAIL"+
+               " ,:FAX"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_bpartner_id")  );
     dbm.executeStatement(sql, this.record);
@@ -189,22 +179,22 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " bp.BPARTNER_ID"+
-               " ,bp.BPARTNER_TYPE"+
-               " ,bp.CODE"+
-               " ,bp.COMPANY_REG_NR"+
-               " ,bp.COPIED_FROM_BPARTNER_ID"+
-               " ,bp.CREATEDBY"+
-               " ,to_char(bp.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,bp.EMAIL"+
-               " ,bp.FAX"+
-               " ,bp.ID"+
-               " ,bp.MODIFIEDBY"+
-               " ,to_char(bp.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " bp.ID"+
                " ,bp.NAME"+
-               " ,bp.PHONE"+
+               " ,bp.BPARTNER_TYPE"+
+               " ,bp.BPARTNER_ID"+
+               " ,bp.CODE"+
+               " ,bp.COPIED_FROM_BPARTNER_ID"+
                " ,bp.TAX_NUMBER"+
                " ,bp.TAX_NUMBER_TYPE"+
+               " ,bp.COMPANY_REG_NR"+
+               " ,bp.PHONE"+
+               " ,bp.EMAIL"+
+               " ,bp.FAX"+
+               " ,bp.CREATEDON"+
+               " ,bp.CREATEDBY"+
+               " ,bp.MODIFIEDON"+
+               " ,bp.MODIFIEDBY"+
            " from BPARTNER bp"+
         " where "+
      "      bp.ID= :ID"+ 
@@ -213,33 +203,35 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("BPARTNER_TYPE", new FieldDef("STRING"));
+	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.get("CODE").setCaseRestriction("Upper");
-	  this.fields.put("COMPANY_REG_NR", new FieldDef("STRING"));
 	  this.fields.put("COPIED_FROM_BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("EMAIL", new FieldDef("STRING"));
-	  this.fields.put("FAX", new FieldDef("STRING"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
-	  this.fields.put("PHONE", new FieldDef("STRING"));
 	  this.fields.put("TAX_NUMBER", new FieldDef("STRING"));
 	  this.fields.put("TAX_NUMBER_TYPE", new FieldDef("STRING"));
+	  this.fields.put("COMPANY_REG_NR", new FieldDef("STRING"));
+	  this.fields.put("PHONE", new FieldDef("STRING"));
+	  this.fields.put("EMAIL", new FieldDef("STRING"));
+	  this.fields.put("FAX", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

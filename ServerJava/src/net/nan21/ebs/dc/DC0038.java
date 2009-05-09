@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0038 extends AbstractDataControl implements IDataControl {
 
@@ -29,20 +19,15 @@ public class DC0038 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("pc.ACTIVE like :ACTIVE");
-      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
+      this.queryWhere.append("pc.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("pc.CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
-    }
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("pc.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -54,6 +39,11 @@ private void preQuery() {
       this.queryWhere.append("pc.PRODCATEG_ID like :PRODCATEG_ID");
       this.queryParams.put("PRODCATEG_ID",(String)this.request.getParam("QRY_PRODCATEG_ID"));
     }
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("pc.ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
+    }
 }
 
 public void doQuery() throws Exception {
@@ -61,16 +51,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " pc.ACTIVE"+
+               " pc.ID"+
                " ,pc.CODE"+
-               " ,pc.CREATEDBY"+
-               " ,to_char(pc.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,pc.DESCRIPTION"+
-               " ,pc.ID"+
-               " ,pc.MODIFIEDBY"+
-               " ,to_char(pc.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,pc.NAME"+
                " ,pc.PRODCATEG_ID"+
+               " ,pc.DESCRIPTION"+
+               " ,pc.CREATEDON"+
+               " ,pc.CREATEDBY"+
+               " ,pc.MODIFIEDON"+
+               " ,pc.MODIFIEDBY"+
+               " ,pc.ACTIVE"+
                " ,pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME"+
            " from MM_PRODUCT_CATEGORY pc "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -85,13 +75,13 @@ public void doExport() throws Exception {
                " pc.ID"+
                " ,pc.CODE"+
                " ,pc.NAME"+
-               ",pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME"+
                " ,pc.PRODCATEG_ID"+
+               ",pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME"+
                " ,pc.DESCRIPTION"+
                " ,pc.ACTIVE"+
-               " ,to_char(pc.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,pc.CREATEDON"+
                " ,pc.CREATEDBY"+
-               " ,to_char(pc.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,pc.MODIFIEDON"+
                " ,pc.MODIFIEDBY"+
            " from MM_PRODUCT_CATEGORY pc "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -107,23 +97,23 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PRODUCT_CATEGORY("+
-               "  ACTIVE"+
+               "  ID"+
                " ,CODE"+
-               " ,CREATEDBY"+
-               " ,DESCRIPTION"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
                " ,NAME"+
                " ,PRODCATEG_ID"+
+               " ,DESCRIPTION"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDBY"+
+               " ,ACTIVE"+
            " ) values ( "+
-               "  :ACTIVE"+
+               "  :ID"+
                " ,:CODE"+
-               " ,:CREATEDBY"+
-               " ,:DESCRIPTION"+
-               " ,:ID"+
-               " ,:MODIFIEDBY"+
                " ,:NAME"+
                " ,:PRODCATEG_ID"+
+               " ,:DESCRIPTION"+
+               " ,:CREATEDBY"+
+               " ,:MODIFIEDBY"+
+               " ,:ACTIVE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_prodcateg_id")  );
     dbm.executeStatement(sql, this.record);
@@ -167,16 +157,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " pc.ACTIVE"+
+               " pc.ID"+
                " ,pc.CODE"+
-               " ,pc.CREATEDBY"+
-               " ,to_char(pc.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,pc.DESCRIPTION"+
-               " ,pc.ID"+
-               " ,pc.MODIFIEDBY"+
-               " ,to_char(pc.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,pc.NAME"+
                " ,pc.PRODCATEG_ID"+
+               " ,pc.DESCRIPTION"+
+               " ,pc.CREATEDON"+
+               " ,pc.CREATEDBY"+
+               " ,pc.MODIFIEDON"+
+               " ,pc.MODIFIEDBY"+
+               " ,pc.ACTIVE"+
                 ",pbo_product.get_categ_name_by_id(pc.prodcateg_id) PRODCATEG_NAME"+
            " from MM_PRODUCT_CATEGORY pc"+
         " where "+
@@ -186,28 +176,30 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.get("CODE").setCaseRestriction("Upper");
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODCATEG_ID", new FieldDef("NUMBER"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
 	  this.fields.put("PRODCATEG_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

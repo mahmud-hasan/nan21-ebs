@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0045 extends AbstractDataControl implements IDataControl {
 
@@ -29,11 +19,6 @@ public class DC0045 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ID like :ID");
@@ -43,6 +28,11 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+    }
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_STATUS_CODE") != null && !this.request.getParam("QRY_STATUS_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -61,15 +51,15 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " CLIENT_ID"+
-               " ,(select code from client where id = client_id) CLIENT_NAME"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ID"+
                " ,NAME"+
+               " ,CLIENT_ID"+
                " ,STATUS_CODE"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,(select code from client where id = client_id) CLIENT_NAME"+
                " ,TYPE_CODE"+
            " from PROJECT  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -82,14 +72,14 @@ public void doExport() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ID"+
-               ",(select code from client where id = client_id) CLIENT_NAME"+
                " ,CLIENT_ID"+
+               ",(select code from client where id = client_id) CLIENT_NAME"+
                " ,NAME"+
                " ,TYPE_CODE"+
                " ,STATUS_CODE"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,CREATEDON"+
                " ,CREATEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
            " from PROJECT  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -105,15 +95,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into PROJECT("+
-               "  CLIENT_ID"+
-               " ,ID"+
+               "  ID"+
                " ,NAME"+
+               " ,CLIENT_ID"+
                " ,STATUS_CODE"+
                " ,TYPE_CODE"+
            " ) values ( "+
-               "  :CLIENT_ID"+
-               " ,:ID"+
+               "  :ID"+
                " ,:NAME"+
+               " ,:CLIENT_ID"+
                " ,:STATUS_CODE"+
                " ,:TYPE_CODE"+
     ")";
@@ -159,15 +149,15 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " CLIENT_ID"+
-                ",(select code from client where id = client_id) CLIENT_NAME"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ID"+
                " ,NAME"+
+               " ,CLIENT_ID"+
                " ,STATUS_CODE"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+                ",(select code from client where id = client_id) CLIENT_NAME"+
                " ,TYPE_CODE"+
            " from PROJECT "+
         " where "+
@@ -177,26 +167,28 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_NAME", new FieldDef("STRING"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("STATUS_CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_NAME", new FieldDef("STRING"));
 	  this.fields.put("TYPE_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

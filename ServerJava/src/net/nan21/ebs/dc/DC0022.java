@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0022 extends AbstractDataControl implements IDataControl {
 
@@ -29,35 +19,35 @@ public class DC0022 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ACTIVE like :ACTIVE");
-      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_LINK") != null && !this.request.getParam("QRY_LINK").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("LINK like :LINK");
-      this.queryParams.put("LINK",(String)this.request.getParam("QRY_LINK"));
     }
     if (this.request.getParam("QRY_MENUBAR_CODE") != null && !this.request.getParam("QRY_MENUBAR_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("MENUBAR_CODE like :MENUBAR_CODE");
       this.queryParams.put("MENUBAR_CODE",(String)this.request.getParam("QRY_MENUBAR_CODE"));
     }
+    if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("NAME like :NAME");
+      this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+    }
     if (this.request.getParam("QRY_MENUITEM_ID") != null && !this.request.getParam("QRY_MENUITEM_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("MENUITEM_ID like :MENUITEM_ID");
       this.queryParams.put("MENUITEM_ID",(String)this.request.getParam("QRY_MENUITEM_ID"));
     }
-    if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
+    if (this.request.getParam("QRY_LINK") != null && !this.request.getParam("QRY_LINK").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("NAME like :NAME");
-      this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+      this.queryWhere.append("LINK like :LINK");
+      this.queryParams.put("LINK",(String)this.request.getParam("QRY_LINK"));
+    }
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
     }
 }
 
@@ -66,20 +56,20 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ACTIVE"+
-               " ,CODE"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " (select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU"+
                " ,ID"+
-               " ,LINK"+
                " ,MENUBAR_CODE"+
-               " ,MENUITEM_ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,NAME"+
-               " ,(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU"+
                " ,POSITION"+
+               " ,MENUITEM_ID"+
+               " ,CODE"+
+               " ,LINK"+
                " ,TARGET"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,ACTIVE"+
            " from MENUITEM  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -99,9 +89,9 @@ public void doExport() throws Exception {
                ",(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU"+
                " ,CODE"+
                " ,TARGET"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,CREATEDON"+
                " ,CREATEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
                " ,ACTIVE"+
            " from MENUITEM  "+this.queryWhere.toString()+" "+this.queryOrderBy;
@@ -118,29 +108,29 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MENUITEM("+
-               "  ACTIVE"+
-               " ,CODE"+
-               " ,CREATEDBY"+
-               " ,ID"+
-               " ,LINK"+
+               "  ID"+
                " ,MENUBAR_CODE"+
-               " ,MENUITEM_ID"+
-               " ,MODIFIEDBY"+
                " ,NAME"+
                " ,POSITION"+
+               " ,MENUITEM_ID"+
+               " ,CODE"+
+               " ,LINK"+
                " ,TARGET"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDBY"+
+               " ,ACTIVE"+
            " ) values ( "+
-               "  :ACTIVE"+
-               " ,:CODE"+
-               " ,:CREATEDBY"+
-               " ,:ID"+
-               " ,:LINK"+
+               "  :ID"+
                " ,:MENUBAR_CODE"+
-               " ,:MENUITEM_ID"+
-               " ,:MODIFIEDBY"+
                " ,:NAME"+
                " ,:POSITION"+
+               " ,:MENUITEM_ID"+
+               " ,:CODE"+
+               " ,:LINK"+
                " ,:TARGET"+
+               " ,:CREATEDBY"+
+               " ,:MODIFIEDBY"+
+               " ,:ACTIVE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_menuitem_id")  );
     dbm.executeStatement(sql, this.record);
@@ -187,20 +177,20 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ACTIVE"+
-               " ,CODE"+
-               " ,CREATEDBY"+
-               " ,to_char(CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+                "(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU"+
                " ,ID"+
-               " ,LINK"+
                " ,MENUBAR_CODE"+
-               " ,MENUITEM_ID"+
-               " ,MODIFIEDBY"+
-               " ,to_char(MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
                " ,NAME"+
-                ",(select t.name from menuitem t where t.id = menuitem.menuitem_id) PARENT_MENU"+
                " ,POSITION"+
+               " ,MENUITEM_ID"+
+               " ,CODE"+
+               " ,LINK"+
                " ,TARGET"+
+               " ,CREATEDON"+
+               " ,CREATEDBY"+
+               " ,MODIFIEDON"+
+               " ,MODIFIEDBY"+
+               " ,ACTIVE"+
            " from MENUITEM "+
         " where "+
      "      ID= :ID"+ 
@@ -209,30 +199,32 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("LINK", new FieldDef("STRING"));
-	  this.fields.put("MENUBAR_CODE", new FieldDef("STRING"));
-	  this.fields.put("MENUITEM_ID", new FieldDef("NUMBER"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("PARENT_MENU", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MENUBAR_CODE", new FieldDef("STRING"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("POSITION", new FieldDef("NUMBER"));
+	  this.fields.put("MENUITEM_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("LINK", new FieldDef("STRING"));
 	  this.fields.put("TARGET", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }
