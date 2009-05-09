@@ -15,8 +15,8 @@
              store: new Ext.data.JsonStore({
                id:"storeLOV0027"
               ,totalProperty:"totalCount"
-              ,root:"records"
-              ,url:CFG_BACKENDSERVER_URL+"?_p_form=LOV0027&_p_action=fetch&_p_data_format=json"
+              ,root:_n21["RECORDS_JSON_ROOT_TAG"]
+              ,url:buildBaseUrlFetch("LOV0027", _n21["DATA_FORMAT_JSON"])
               ,remoteSort:true
               ,fields:[{name:"DOC_CURRENCY",type:"string"},{name:"DOC_DATE",type:"date",dateFormat:Ext.DATE_FORMAT},{name:"DOC_NO",type:"string"},{name:"DOC_NO_DATE",type:"string"},{name:"ID",type:"float"},{name:"ISSUER_ID",type:"float"},{name:"ISSUER_NAME",type:"string"},{name:"TOTAL_AMOUNT",type:"float"}]
               ,baseParams: {p_client_id:"",p_issuer_id:""}

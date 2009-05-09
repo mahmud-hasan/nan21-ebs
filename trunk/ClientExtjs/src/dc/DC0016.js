@@ -38,8 +38,8 @@
          ,{name:"DELIVERED", type:"string" }
          ,{name:"DELIVERY_MODE", type:"string" }
          ,{name:"DELIVERY_DATE", type:"date",dateFormat:Ext.DATE_FORMAT }
-         ,{name:"DELIVERY_AGENT_ID", type:"float" }
          ,{name:"DELIVERY_AGENT_NAME", type:"string" }
+         ,{name:"DELIVERY_AGENT_ID", type:"float" }
          ,{name:"DELIVERED_TO_NAME", type:"string" }
          ,{name:"DELIVERED_TO_IDENT", type:"string" }
          ,{name:"REJECTED", type:"string" }
@@ -58,15 +58,17 @@
          ,{name:"CREATEDBY", type:"string" }
          ,{name:"MODIFIEDON", type:"date",dateFormat:Ext.DATE_FORMAT }
          ,{name:"MODIFIEDBY", type:"string" }
+         ,{name:"WEIGHT", type:"float" }
          ,{name:"CUSTODY_ORG_NAME", type:"string" }
          ,{name:"CUSTODY_ORG_ID", type:"float" }
-         ,{name:"LAST_EVENT_ID", type:"float" }
          ,{name:"LAST_EVENT_NAME", type:"string" }
+         ,{name:"LAST_EVENT_ID", type:"float" }
          ,{name:"REJECT_REASON_CODE", type:"string" }
     ])
      ,queryFields: new Ext.util.MixedCollection()
      ,queryFieldsVisible: new Array()
      ,queryPanelColCount:4 
+    ,summary : new Ext.ux.grid.GridSummary()
     ,recordPk:[ "ID"]
     ,initComponent:function() {
        
@@ -82,25 +84,26 @@
        this.queryFields.add("DEST_BPADRESS_ID",new Ext.form.Hidden({name:"QRY_DEST_BPADRESS_ID",id:"DC0016F_QRY_DEST_BPADRESS_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_BPADRESS_ID||"Receiver adress ID",allowBlank:true,width:100}));
        this.queryFields.add("DEST_CITY_ID",new Ext.form.Hidden({name:"QRY_DEST_CITY_ID",id:"DC0016F_QRY_DEST_CITY_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_CITY_ID||"Receiver city ID",allowBlank:true,width:100}));
        this.queryFields.add("DEST_NAME",new  N21.DataComp.LOV0039({name:"QRY_DEST_NAME",id:"DC0016F_QRY_DEST_NAME",fieldLabel: this.resourceBundle.FieldLabel.DEST_NAME||"Receiver name",allowBlank:true,width:100,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_QRY_DEST_BPARTNER_ID"}]}));
-       this.queryFields.add("PICKUP_AGENT_NAME",new  N21.DataComp.LOV0067({name:"QRY_PICKUP_AGENT_NAME",id:"DC0016F_QRY_PICKUP_AGENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_NAME||"Pickup agent",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_QRY_PICKUP_AGENT_ID"}]}));
        this.queryFields.add("PICKUP_AGENT_ID",new Ext.form.Hidden({name:"QRY_PICKUP_AGENT_ID",id:"DC0016F_QRY_PICKUP_AGENT_ID",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_ID||"Pickup agent ID",allowBlank:true,width:100}));
+       this.queryFields.add("PICKUP_AGENT_NAME",new  N21.DataComp.LOV0067({name:"QRY_PICKUP_AGENT_NAME",id:"DC0016F_QRY_PICKUP_AGENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_NAME||"Pickup agent",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_QRY_PICKUP_AGENT_ID"}]}));
        this.queryFields.add("DELIVERED",new Ext.form.ComboBox({name:"QRY_DELIVERED",id:"DC0016F_QRY_DELIVERED",fieldLabel: this.resourceBundle.FieldLabel.DELIVERED||"Delivered",allowBlank:true,width:50,store:["%","Y","N"],value:"%"}));
        this.queryFields.add("DELIVERY_AGENT_ID",new Ext.form.Hidden({name:"QRY_DELIVERY_AGENT_ID",id:"DC0016F_QRY_DELIVERY_AGENT_ID",fieldLabel: this.resourceBundle.FieldLabel.DELIVERY_AGENT_ID||"Delivery agent ID",allowBlank:true,width:100}));
        this.queryFields.add("DELIVERY_AGENT_NAME",new  N21.DataComp.LOV0067({name:"QRY_DELIVERY_AGENT_NAME",id:"DC0016F_QRY_DELIVERY_AGENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.DELIVERY_AGENT_NAME||"Delivery agent",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_QRY_DELIVERY_AGENT_ID"}]}));
        this.queryFields.add("REJECTED",new Ext.form.ComboBox({name:"QRY_REJECTED",id:"DC0016F_QRY_REJECTED",fieldLabel: this.resourceBundle.FieldLabel.REJECTED||"Rejected",allowBlank:true,width:50,store:["%","Y","N"],value:"%"}));
+       this.queryFields.add("WEIGHT",new Ext.form.NumberField({name:"QRY_WEIGHT",id:"DC0016F_QRY_WEIGHT",fieldLabel: this.resourceBundle.FieldLabel.WEIGHT||"Weight(Kg)",allowBlank:true,width:100}));
        this.queryFields.add("CUSTODY_ORG_NAME",new  N21.DataComp.LOV0071({name:"QRY_CUSTODY_ORG_NAME",id:"DC0016F_QRY_CUSTODY_ORG_NAME",fieldLabel: this.resourceBundle.FieldLabel.CUSTODY_ORG_NAME||"In inventory",allowBlank:true,width:100,listWidth:118,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_QRY_CUSTODY_ORG_ID"}]}));
        this.queryFields.add("CUSTODY_ORG_ID",new Ext.form.Hidden({name:"QRY_CUSTODY_ORG_ID",id:"DC0016F_QRY_CUSTODY_ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.CUSTODY_ORG_ID||"In inventory ID",allowBlank:true,width:100}));
        this.queryFields.add("LAST_EVENT_NAME",new Ext.form.TextField({name:"QRY_LAST_EVENT_NAME",id:"DC0016F_QRY_LAST_EVENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.LAST_EVENT_NAME||"Last event",allowBlank:true,width:100}));
        this.queryFields.add("LAST_EVENT_ID",new Ext.form.Hidden({name:"QRY_LAST_EVENT_ID",id:"DC0016F_QRY_LAST_EVENT_ID",labelSeparator: "",allowBlank:true,width:100}));
        this.queryFields.add("REJECT_REASON_CODE",new  N21.DataComp.LOV0065({name:"QRY_REJECT_REASON_CODE",id:"DC0016F_QRY_REJECT_REASON_CODE",fieldLabel: this.resourceBundle.FieldLabel.REJECT_REASON_CODE||"Reject reason type",allowBlank:true,caseRestriction:"Upper",style: "text-transform:uppercase;",width:100,listWidth:118,selectOnFocus:true}));
   
-       this.queryFieldsVisible = [  "CLIENT_CODE","CODE","EXP_NAME","DEST_NAME","PICKUP_AGENT_NAME","DELIVERED","DELIVERY_AGENT_NAME","REJECTED","CUSTODY_ORG_NAME","LAST_EVENT_NAME","REJECT_REASON_CODE" ];
+       this.queryFieldsVisible = [  "CLIENT_CODE","CODE","EXP_NAME","DEST_NAME","PICKUP_AGENT_NAME","DELIVERED","DELIVERY_AGENT_NAME","REJECTED","WEIGHT","CUSTODY_ORG_NAME","LAST_EVENT_NAME","REJECT_REASON_CODE" ];
        Ext.apply(this, {
            store: new Ext.data.JsonStore({
                id:"storeDC0016"
               ,totalProperty:"totalCount"
-              ,root:"records"
-              ,url:CFG_BACKENDSERVER_URL+"?_p_action=fetch&_p_data_format=json&_p_form=DC0016"
+              ,root:_n21["RECORDS_JSON_ROOT_TAG"]
+              ,url:buildBaseUrlFetch("DC0016", _n21["DATA_FORMAT_JSON"])
               ,remoteSort :true
               ,fields:this.dataRecordMeta
            })
@@ -138,8 +141,8 @@
               ,{ id:"DELIVERED",header:this.resourceBundle.FieldLabel.DELIVERED||"Delivered",width:50,dataIndex:'DELIVERED',hidden:true,sortable:true}
               ,{ id:"DELIVERY_MODE",header:this.resourceBundle.FieldLabel.DELIVERY_MODE||"Delivery mode",width:100,dataIndex:'DELIVERY_MODE',hidden:true,sortable:true}
               ,{ id:"DELIVERY_DATE",header:this.resourceBundle.FieldLabel.DELIVERY_DATE||"Delivery date",width:100,dataIndex:'DELIVERY_DATE',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
-              ,{ id:"DELIVERY_AGENT_ID",header:this.resourceBundle.FieldLabel.DELIVERY_AGENT_ID||"Delivery agent ID",width:100,dataIndex:'DELIVERY_AGENT_ID',hidden:true,sortable:true}
               ,{ id:"DELIVERY_AGENT_NAME",header:this.resourceBundle.FieldLabel.DELIVERY_AGENT_NAME||"Delivery agent",width:100,dataIndex:'DELIVERY_AGENT_NAME',hidden:true,sortable:true}
+              ,{ id:"DELIVERY_AGENT_ID",header:this.resourceBundle.FieldLabel.DELIVERY_AGENT_ID||"Delivery agent ID",width:100,dataIndex:'DELIVERY_AGENT_ID',hidden:true,sortable:true}
               ,{ id:"DELIVERED_TO_NAME",header:this.resourceBundle.FieldLabel.DELIVERED_TO_NAME||"Deliv. to person",width:100,dataIndex:'DELIVERED_TO_NAME',hidden:true,sortable:true}
               ,{ id:"DELIVERED_TO_IDENT",header:this.resourceBundle.FieldLabel.DELIVERED_TO_IDENT||"Deliv. to pers. ident",width:100,dataIndex:'DELIVERED_TO_IDENT',hidden:true,sortable:true}
               ,{ id:"REJECTED",header:this.resourceBundle.FieldLabel.REJECTED||"Rejected",width:50,dataIndex:'REJECTED',hidden:true,sortable:true}
@@ -158,15 +161,17 @@
               ,{ id:"CREATEDBY",header:this.resourceBundle.FieldLabel.CREATEDBY||"Created by",width:100,dataIndex:'CREATEDBY',hidden:true,sortable:true}
               ,{ id:"MODIFIEDON",header:this.resourceBundle.FieldLabel.MODIFIEDON||"Modified on",width:100,dataIndex:'MODIFIEDON',hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)}
               ,{ id:"MODIFIEDBY",header:this.resourceBundle.FieldLabel.MODIFIEDBY||"Modified by",width:100,dataIndex:'MODIFIEDBY',hidden:true,sortable:true}
+              ,{ id:"WEIGHT",header:this.resourceBundle.FieldLabel.WEIGHT||"Weight(Kg)",width:100,dataIndex:'WEIGHT',sortable:true,align:'right',decimalPrecision:2}
               ,{ id:"CUSTODY_ORG_NAME",header:this.resourceBundle.FieldLabel.CUSTODY_ORG_NAME||"In inventory",width:100,dataIndex:'CUSTODY_ORG_NAME',sortable:true}
               ,{ id:"CUSTODY_ORG_ID",header:this.resourceBundle.FieldLabel.CUSTODY_ORG_ID||"In inventory ID",width:100,dataIndex:'CUSTODY_ORG_ID',hidden:true,sortable:true}
-              ,{ id:"LAST_EVENT_ID",header:this.resourceBundle.FieldLabel.LAST_EVENT_ID||"",width:100,dataIndex:'LAST_EVENT_ID',hidden:true,sortable:true}
               ,{ id:"LAST_EVENT_NAME",header:this.resourceBundle.FieldLabel.LAST_EVENT_NAME||"Last event",width:100,dataIndex:'LAST_EVENT_NAME',hidden:true,sortable:true}
+              ,{ id:"LAST_EVENT_ID",header:this.resourceBundle.FieldLabel.LAST_EVENT_ID||"",width:100,dataIndex:'LAST_EVENT_ID',hidden:true,sortable:true}
               ,{ id:"REJECT_REASON_CODE",header:this.resourceBundle.FieldLabel.REJECT_REASON_CODE||"Reject reason type",width:100,dataIndex:'REJECT_REASON_CODE',hidden:true,sortable:true}
           ]
           ,dataComponentName:"DC0016G"
           ,queryArraySize:20
           ,toolbarConfig:"STANDARD"
+    ,plugins:[this.summary]
         });
        N21.DataComp.DC0016G.superclass.initComponent.apply(this, arguments);
      }
@@ -207,8 +212,8 @@
               ,DELIVERED:""
               ,DELIVERY_MODE:""
               ,DELIVERY_DATE:""
-              ,DELIVERY_AGENT_ID:""
               ,DELIVERY_AGENT_NAME:""
+              ,DELIVERY_AGENT_ID:""
               ,DELIVERED_TO_NAME:""
               ,DELIVERED_TO_IDENT:""
               ,REJECTED:""
@@ -227,10 +232,11 @@
               ,CREATEDBY:""
               ,MODIFIEDON:""
               ,MODIFIEDBY:""
+              ,WEIGHT:""
               ,CUSTODY_ORG_NAME:""
               ,CUSTODY_ORG_ID:""
-              ,LAST_EVENT_ID:""
               ,LAST_EVENT_NAME:""
+              ,LAST_EVENT_ID:""
               ,REJECT_REASON_CODE:""});
      }
   });
@@ -261,9 +267,9 @@
        this.fields.add("EXP_BPADRESS",new Ext.form.TextField({name:"EXP_BPADRESS",id:"DC0016F_EXP_BPADRESS",dataIndex:"EXP_BPADRESS",fieldLabel: this.resourceBundle.FieldLabel.EXP_BPADRESS||"Adress",allowBlank:true,width:200,insert_allowed:true,update_allowed:true}));
        this.fields.add("EXP_ZIP",new Ext.form.TextField({name:"EXP_ZIP",id:"DC0016F_EXP_ZIP",dataIndex:"EXP_ZIP",fieldLabel: this.resourceBundle.FieldLabel.EXP_ZIP||"Sender zip",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
        this.fields.add("EXP_ADRESS_NOTE",new Ext.form.TextField({name:"EXP_ADRESS_NOTE",id:"DC0016F_EXP_ADRESS_NOTE",dataIndex:"EXP_ADRESS_NOTE",fieldLabel: this.resourceBundle.FieldLabel.EXP_ADRESS_NOTE||"Sender adress note",allowBlank:true,width:200,insert_allowed:true,update_allowed:true}));
-       this.fields.add("DEST_BPADRESS_ID",new Ext.form.Hidden({name:"DEST_BPADRESS_ID",id:"DC0016F_DEST_BPADRESS_ID",dataIndex:"DEST_BPADRESS_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_BPADRESS_ID||"Receiver adress ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
-       this.fields.add("DEST_CITY_ID",new Ext.form.Hidden({name:"DEST_CITY_ID",id:"DC0016F_DEST_CITY_ID",dataIndex:"DEST_CITY_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_CITY_ID||"Receiver city ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
        this.fields.add("DEST_BPARTNER_ID",new Ext.form.Hidden({name:"DEST_BPARTNER_ID",id:"DC0016F_DEST_BPARTNER_ID",dataIndex:"DEST_BPARTNER_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_BPARTNER_ID||"Receiver ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("DEST_CITY_ID",new Ext.form.Hidden({name:"DEST_CITY_ID",id:"DC0016F_DEST_CITY_ID",dataIndex:"DEST_CITY_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_CITY_ID||"Receiver city ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
+       this.fields.add("DEST_BPADRESS_ID",new Ext.form.Hidden({name:"DEST_BPADRESS_ID",id:"DC0016F_DEST_BPADRESS_ID",dataIndex:"DEST_BPADRESS_ID",fieldLabel: this.resourceBundle.FieldLabel.DEST_BPADRESS_ID||"Receiver adress ID",allowBlank:true,width:100,insert_allowed:true,update_allowed:true}));
        this.fields.add("DEST_NAME",new  N21.DataComp.LOV0039({name:"DEST_NAME",id:"DC0016F_DEST_NAME",dataIndex:"DEST_NAME",fieldLabel: this.resourceBundle.FieldLabel.DEST_NAME||"Receiver name",allowBlank:true,width:200,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_DEST_BPARTNER_ID"},{column:"COUNTRY_CODE",field:"DC0016F_DEST_COUNTRY"},{column:"REGION_CODE",field:"DC0016F_DEST_REGION"},{column:"CITY",field:"DC0016F_DEST_CITY"},{column:"ADRESS",field:"DC0016F_DEST_BPADRESS"}]}));
        this.fields.add("DEST_COUNTRY",new  N21.DataComp.LOV0006({name:"DEST_COUNTRY",id:"DC0016F_DEST_COUNTRY",dataIndex:"DEST_COUNTRY",fieldLabel: this.resourceBundle.FieldLabel.DEST_COUNTRY||"Receiver country",allowBlank:true,width:120,listWidth:138,insert_allowed:true,update_allowed:true,selectOnFocus:true}));
        this.fields.add("DEST_REGION",new  N21.DataComp.LOV0007({name:"DEST_REGION",id:"DC0016F_DEST_REGION",dataIndex:"DEST_REGION",fieldLabel: this.resourceBundle.FieldLabel.DEST_REGION||"Region",allowBlank:true,width:150,listWidth:168,insert_allowed:true,update_allowed:true,selectOnFocus:true,paramMapping: [{param:"p_country_code",field:"DC0016F.DEST_COUNTRY"}]}));
@@ -274,8 +280,8 @@
        this.fields.add("PICKEDUP",new Ext.ux.form.XCheckbox({name:"PICKEDUP",id:"DC0016F_PICKEDUP",dataIndex:"PICKEDUP",fieldLabel: this.resourceBundle.FieldLabel.PICKEDUP||"Pickedup",allowBlank:true,insert_allowed:true,update_allowed:true}));
        this.fields.add("PICKUP_MODE",new Ext.form.TextField({name:"PICKUP_MODE",id:"DC0016F_PICKUP_MODE",dataIndex:"PICKUP_MODE",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_MODE||"Pickup mode",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
        this.fields.add("PICKUP_DATE",new Ext.form.DateField({name:"PICKUP_DATE",id:"DC0016F_PICKUP_DATE",dataIndex:"PICKUP_DATE",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_DATE||"Pickup date",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
-       this.fields.add("PICKUP_AGENT_ID",new Ext.form.Hidden({name:"PICKUP_AGENT_ID",id:"DC0016F_PICKUP_AGENT_ID",dataIndex:"PICKUP_AGENT_ID",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_ID||"Pickup agent ID",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
        this.fields.add("PICKUP_AGENT_NAME",new  N21.DataComp.LOV0067({name:"PICKUP_AGENT_NAME",id:"DC0016F_PICKUP_AGENT_NAME",dataIndex:"PICKUP_AGENT_NAME",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_NAME||"Pickup agent",allowBlank:true,width:100,listWidth:118,insert_allowed:true,update_allowed:true,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_PICKUP_AGENT_ID"}]}));
+       this.fields.add("PICKUP_AGENT_ID",new Ext.form.Hidden({name:"PICKUP_AGENT_ID",id:"DC0016F_PICKUP_AGENT_ID",dataIndex:"PICKUP_AGENT_ID",fieldLabel: this.resourceBundle.FieldLabel.PICKUP_AGENT_ID||"Pickup agent ID",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
        this.fields.add("DELIVERED",new Ext.ux.form.XCheckbox({name:"DELIVERED",id:"DC0016F_DELIVERED",dataIndex:"DELIVERED",fieldLabel: this.resourceBundle.FieldLabel.DELIVERED||"Delivered",allowBlank:true,insert_allowed:true,update_allowed:true}));
        this.fields.add("DELIVERY_MODE",new Ext.form.TextField({name:"DELIVERY_MODE",id:"DC0016F_DELIVERY_MODE",dataIndex:"DELIVERY_MODE",fieldLabel: this.resourceBundle.FieldLabel.DELIVERY_MODE||"Delivery mode",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
        this.fields.add("DELIVERY_DATE",new Ext.form.DateField({name:"DELIVERY_DATE",id:"DC0016F_DELIVERY_DATE",dataIndex:"DELIVERY_DATE",fieldLabel: this.resourceBundle.FieldLabel.DELIVERY_DATE||"Delivery date",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,format:Ext.DATE_FORMAT}));
@@ -295,6 +301,7 @@
        this.fields.add("INSURED_VALUE",new Ext.form.NumberField({name:"INSURED_VALUE",id:"DC0016F_INSURED_VALUE",dataIndex:"INSURED_VALUE",fieldLabel: this.resourceBundle.FieldLabel.INSURED_VALUE||"Insured value",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
        this.fields.add("REF_PARCEL_ID",new Ext.form.NumberField({name:"REF_PARCEL_ID",id:"DC0016F_REF_PARCEL_ID",dataIndex:"REF_PARCEL_ID",fieldLabel: this.resourceBundle.FieldLabel.REF_PARCEL_ID||"Ref_parcel_id",allowBlank:true,width:100,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
        this.fields.add("REF_PARCEL_REFERENCE_TYPE",new Ext.form.TextField({name:"REF_PARCEL_REFERENCE_TYPE",id:"DC0016F_REF_PARCEL_REFERENCE_TYPE",dataIndex:"REF_PARCEL_REFERENCE_TYPE",fieldLabel: this.resourceBundle.FieldLabel.REF_PARCEL_REFERENCE_TYPE||"Ref_parcel_reference_type",allowBlank:true,width:80,insert_allowed:true,update_allowed:true}));
+       this.fields.add("WEIGHT",new Ext.form.NumberField({name:"WEIGHT",id:"DC0016F_WEIGHT",dataIndex:"WEIGHT",fieldLabel: this.resourceBundle.FieldLabel.WEIGHT||"Weight(Kg)",allowBlank:true,width:70,insert_allowed:true,update_allowed:true,style: "text-align:right;",decimalPrecision:2}));
        this.fields.add("CUSTODY_ORG_ID",new Ext.form.Hidden({name:"CUSTODY_ORG_ID",id:"DC0016F_CUSTODY_ORG_ID",dataIndex:"CUSTODY_ORG_ID",fieldLabel: this.resourceBundle.FieldLabel.CUSTODY_ORG_ID||"In inventory ID",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
        this.fields.add("CUSTODY_ORG_NAME",new  N21.DataComp.LOV0071({name:"CUSTODY_ORG_NAME",id:"DC0016F_CUSTODY_ORG_NAME",dataIndex:"CUSTODY_ORG_NAME",fieldLabel: this.resourceBundle.FieldLabel.CUSTODY_ORG_NAME||"In inventory",allowBlank:true,width:100,listWidth:118,insert_allowed:false,update_allowed:false,selectOnFocus:true,fieldMapping: [{column:"ID",field:"DC0016F_CUSTODY_ORG_ID"}]}));
        this.fields.add("LAST_EVENT_ID",new Ext.form.Hidden({name:"LAST_EVENT_ID",id:"DC0016F_LAST_EVENT_ID",dataIndex:"LAST_EVENT_ID",labelSeparator: "",allowBlank:false,labelSeparator:":*",width:150,insert_allowed:true,update_allowed:true}));
@@ -302,11 +309,11 @@
        this.fields.add("REJECT_REASON_CODE",new  N21.DataComp.LOV0065({name:"REJECT_REASON_CODE",id:"DC0016F_REJECT_REASON_CODE",dataIndex:"REJECT_REASON_CODE",fieldLabel: this.resourceBundle.FieldLabel.REJECT_REASON_CODE||"Reject reason type",allowBlank:true,caseRestriction:"Upper",width:100,listWidth:118,insert_allowed:true,update_allowed:true,style: "text-transform:uppercase;",selectOnFocus:true}));
 
        this.layoutItems.add("Pickup",
-             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Pickup||"Pickup",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("PICKEDUP"),this.fields.get("PICKUP_MODE"),this.fields.get("PICKUP_DATE"),this.fields.get("PICKUP_AGENT_NAME")] });
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Pickup||"Pickup",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("PICKEDUP"),this.fields.get("PICKUP_MODE"),this.fields.get("PICKUP_DATE"),this.fields.get("PICKUP_AGENT_NAME"),this.fields.get("PICKUP_AGENT_ID")] });
        this.layoutItems.add("Return",
              { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Return||"Return",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("REJECTED"),this.fields.get("REJECT_DATE"),this.fields.get("REJECT_REASON_CODE"),this.fields.get("REJECT_REASON"),this.fields.get("REJECTED_BY_NAME"),this.fields.get("REJECTED_BY_IDENT")] });
        this.layoutItems.add("Delivery",
-             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Delivery||"Delivery",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("DELIVERED"),this.fields.get("DELIVERY_MODE"),this.fields.get("DELIVERY_DATE"),this.fields.get("DELIVERY_AGENT_NAME"),this.fields.get("DELIVERED_TO_NAME"),this.fields.get("DELIVERED_TO_IDENT")] });
+             { xtype:"fieldset", autoHeight:true,collapsed:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Delivery||"Delivery",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("DELIVERED"),this.fields.get("DELIVERY_MODE"),this.fields.get("DELIVERY_DATE"),this.fields.get("DELIVERY_AGENT_ID"),this.fields.get("DELIVERY_AGENT_NAME"),this.fields.get("DELIVERED_TO_NAME"),this.fields.get("DELIVERED_TO_IDENT")] });
        this.layoutItems.add("C3",
              { layout:"form",width:260,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("Pickup"),this.layoutItems.get("Delivery"),this.layoutItems.get("Return")]
  }); 
@@ -322,7 +329,7 @@
        this.layoutItems.add("Status",
              { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.Status||"Status",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("CUSTODY_ORG_ID"),this.fields.get("CUSTODY_ORG_NAME"),this.fields.get("LAST_EVENT_ID"),this.fields.get("LAST_EVENT_NAME")] });
        this.layoutItems.add("ParcelInfo",
-             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.ParcelInfo||"ParcelInfo",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("ID"),this.fields.get("CLIENT_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("CODE"),this.fields.get("PACKAGE_COUNT")] });
+             { xtype:"fieldset", autoHeight:true,collapsible: true,title:this.resourceBundle.FieldsetTitle.ParcelInfo||"ParcelInfo",border:true,labelWidth:80,labelAlign:"left",width:"230"   ,items:[ this.fields.get("ID"),this.fields.get("CLIENT_ID"),this.fields.get("CLIENT_CODE"),this.fields.get("CODE"),this.fields.get("PACKAGE_COUNT"),this.fields.get("WEIGHT")] });
        this.layoutItems.add("C1",
              { layout:"form",width:260,labelAlign:"left",labelWidth:100, items:[ this.layoutItems.get("ParcelInfo"),this.layoutItems.get("Notes"),this.layoutItems.get("Status")]
  }); 
@@ -382,8 +389,8 @@
               ,DELIVERED:""
               ,DELIVERY_MODE:""
               ,DELIVERY_DATE:""
-              ,DELIVERY_AGENT_ID:""
               ,DELIVERY_AGENT_NAME:""
+              ,DELIVERY_AGENT_ID:""
               ,DELIVERED_TO_NAME:""
               ,DELIVERED_TO_IDENT:""
               ,REJECTED:""
@@ -402,10 +409,11 @@
               ,CREATEDBY:""
               ,MODIFIEDON:""
               ,MODIFIEDBY:""
+              ,WEIGHT:""
               ,CUSTODY_ORG_NAME:""
               ,CUSTODY_ORG_ID:""
-              ,LAST_EVENT_ID:""
               ,LAST_EVENT_NAME:""
+              ,LAST_EVENT_ID:""
               ,REJECT_REASON_CODE:""});
      }
 
@@ -469,7 +477,6 @@
           ,new Ext.Toolbar.Button({  id:"tlb_NEXT_REC"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/f_rec_next.gif" ,tooltip:"Next record" ,handler: this.goToNextRecord ,scope :this})
           ,new Ext.Toolbar.Separator()
           ,new Ext.Toolbar.Button({  id:"tlb_PRINT"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/print.png" ,tooltip:"Print list" ,handler: this.exportHtml ,scope :this})
-          ,new Ext.Toolbar.Button({  id:"tlb_EXP_CSV"  ,xtype:"button" ,cls:"x-btn-icon" ,icon:CFG_PATH_ICONS+"/exp_excel.png" ,tooltip:"Export records in CSV file" ,handler: this.exportCsv ,scope :this})
 ,"->","<span class='dcName'>DC0016</span>"          )
         }); 
 
