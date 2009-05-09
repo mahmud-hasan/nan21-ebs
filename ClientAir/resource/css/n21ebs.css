@@ -1,0 +1,52 @@
+
+.x-form-text,textarea.x-form-field{background:#fff;border-color:#B5B8C8; }
+.x-form-focus,textarea.x-form-focus{ background:#FFF6AA;background-color: #FFF6AA; border-color:#7eadd9;}
+.x-form-invalid,textarea.x-form-invalid{background:#fff ;border-color:#dd7870;}
+.x-grid3-cell-selected{background:#FFF6AA;background-color:#FFF6AA!important;color:black;}
+
+.ext-safari .x-form-field-wrap .x-form-trigger{height:19px;}
+
+span.dcName { color:black;padding-right:4px; font-size:10px; }
+
+
+.gui_title {
+  background-color:#dfe8f6;
+  font-family: arial,sans-serif,tahoma,verdana,arial;
+  font-size:16px;
+  height:22px;
+  padding-top:4px;
+  font-weight:bold;
+}
+.field_important_1  {
+  background-color: #CFF6BA!important;
+  background: #CFF6BA!important;
+  font-weight:bold;
+}
+.cellClsAlignTop {
+  vertical-align:top;
+  padding-right:10px;
+}
+
+
+
+
+
+/* [OPTIONAL] -- may be used for either Ext.grid.GroupSummary / Ext.ux.grid.GridSummary plugins */
+.x-grid3-summary-row{border-left:1px solid #fff;border-right:1px solid #fff;color:#333;background:#f1f2f4;}
+.x-grid3-summary-row .x-grid3-cell-inner{font-weight:bold;padding-bottom:4px;}
+.x-grid3-cell-first .x-grid3-cell-inner{padding-left:16px;}
+.x-grid-hide-summary .x-grid3-summary-row{display:none;}
+.x-grid3-summary-msg{padding:4px 16px;font-weight:bold;}
+
+
+/* [REQUIRED] (by Ext.ux.grid.GridSummary plugin) */
+.x-grid3-gridsummary-row-inner{overflow:hidden;width:100%;}/* IE6 requires width:100% for hori. scroll to work */
+.x-grid3-gridsummary-row-offset{width:10000px;}
+.x-grid-hide-gridsummary .x-grid3-gridsummary-row-inner{display:none;}
+
+/* from http://extjs.com/forum/showthread.php?t=33475&page=2*/
+ul.x-menu-list {
+  height: expression( this.scrollHeight > 350 ? "350px" : "auto" ); /* sets max-height for IE */ 
+  max-height: 350px;
+  overflow-y: auto;
+}
