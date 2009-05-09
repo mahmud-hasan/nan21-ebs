@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0021.prototype.resourceBundle.DcProperty.Title||"UI User interfaces (UI)")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0015&gt;</div>"}
    ]
 });
-gui.findById("DC0021").close_detail();
+gui.findById("DC0021").closeDetail();
 gui.findById("DC0021").executeQuery();
   });

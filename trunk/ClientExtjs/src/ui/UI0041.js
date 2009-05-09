@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0059.prototype.resourceBundle.DcProperty.Title||"Orders")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0041&gt;</div>"}
    ]
 });
-gui.findById("DC0059").close_detail();
+gui.findById("DC0059").closeDetail();
 gui.findById("DC0059").executeQuery();
   });

@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0026.prototype.resourceBundle.DcProperty.Title||"Supplier invoice")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0032&gt;</div>"}
    ]
 });
-gui.findById("DC0026").close_detail();
+gui.findById("DC0026").closeDetail();
 gui.findById("DC0026").executeQuery();
   });

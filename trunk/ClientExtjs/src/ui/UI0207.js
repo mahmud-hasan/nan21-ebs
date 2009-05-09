@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0042.prototype.resourceBundle.DcProperty.Title||"Accounting doc. item")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0207&gt;</div>"}
    ]
 });
-gui.findById("DC0042").close_detail();
+gui.findById("DC0042").closeDetail();
 gui.findById("DC0042").executeQuery();
   });

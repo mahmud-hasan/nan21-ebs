@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0004.prototype.resourceBundle.DcProperty.Title||"Issued invoices")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0031&gt;</div>"}
    ]
 });
-gui.findById("DC0004").close_detail();
+gui.findById("DC0004").closeDetail();
 gui.findById("DC0004").executeQuery();
   });
