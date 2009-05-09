@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0090 extends AbstractDataControl implements IDataControl {
 
@@ -39,15 +29,15 @@ private void preQuery() {
       this.queryWhere.append("t.PRICELIST_ID like :PRICELIST_ID");
       this.queryParams.put("PRICELIST_ID",(String)this.request.getParam("QRY_PRICELIST_ID"));
     }
-    if (this.request.getParam("QRY_PRICELVL_ID") != null && !this.request.getParam("QRY_PRICELVL_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.PRICELVL_ID like :PRICELVL_ID");
-      this.queryParams.put("PRICELVL_ID",(String)this.request.getParam("QRY_PRICELVL_ID"));
-    }
     if (this.request.getParam("QRY_PRODUCT_ID") != null && !this.request.getParam("QRY_PRODUCT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.PRODUCT_ID like :PRODUCT_ID");
       this.queryParams.put("PRODUCT_ID",(String)this.request.getParam("QRY_PRODUCT_ID"));
+    }
+    if (this.request.getParam("QRY_PRICELVL_ID") != null && !this.request.getParam("QRY_PRICELVL_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.PRICELVL_ID like :PRICELVL_ID");
+      this.queryParams.put("PRICELVL_ID",(String)this.request.getParam("QRY_PRICELVL_ID"));
     }
 }
 
@@ -57,11 +47,11 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " t.ID"+
-               " ,t.PRICE"+
                " ,t.PRICELIST_ID"+
-               " ,t.PRICELVL_ID"+
-               " ,pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                " ,t.PRODUCT_ID"+
+               " ,t.PRICELVL_ID"+
+               " ,t.PRICE"+
+               " ,pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                " ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
            " from MM_PRODUCT_PRICE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -77,8 +67,8 @@ public void doExport() throws Exception {
                " ,t.PRICELIST_ID"+
                " ,t.PRODUCT_ID"+
                ",pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
-               ",pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                " ,t.PRICELVL_ID"+
+               ",pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                " ,t.PRICE"+
            " from MM_PRODUCT_PRICE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -95,16 +85,16 @@ public void doInsert()  throws Exception {
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PRODUCT_PRICE("+
                "  ID"+
-               " ,PRICE"+
                " ,PRICELIST_ID"+
-               " ,PRICELVL_ID"+
                " ,PRODUCT_ID"+
+               " ,PRICELVL_ID"+
+               " ,PRICE"+
            " ) values ( "+
                "  :ID"+
-               " ,:PRICE"+
                " ,:PRICELIST_ID"+
-               " ,:PRICELVL_ID"+
                " ,:PRODUCT_ID"+
+               " ,:PRICELVL_ID"+
+               " ,:PRICE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_PRODPRICE_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -149,11 +139,11 @@ public void initNewRecord() throws Exception {
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " t.ID"+
-               " ,t.PRICE"+
                " ,t.PRICELIST_ID"+
-               " ,t.PRICELVL_ID"+
-                ",pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                " ,t.PRODUCT_ID"+
+               " ,t.PRICELVL_ID"+
+               " ,t.PRICE"+
+                ",pbo_price.get_pricelvl_name_by_id(t.pricelvl_id) PRICELVL_NAME"+
                 ",pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
            " from MM_PRODUCT_PRICE t"+
         " where "+
@@ -163,7 +153,7 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
@@ -171,15 +161,17 @@ public void callProcedure(String pName)  throws Exception {
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRICE", new FieldDef("NUMBER"));
 	  this.fields.put("PRICELIST_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRICELVL_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRICELVL_NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PRICELVL_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PRICE", new FieldDef("NUMBER"));
+	  this.fields.put("PRICELVL_NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

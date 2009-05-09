@@ -5,13 +5,7 @@
  */
 package net.nan21.ebs.dc;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.DbManager;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.IDataControlLov;
+import net.nan21.lib.*;
 import java.util.HashMap;
 public class LOV0010 extends AbstractDataControl implements IDataControlLov {
 public void init(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
@@ -48,5 +42,6 @@ private void preQuery() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.queryResultSize = -1;
   }
 }

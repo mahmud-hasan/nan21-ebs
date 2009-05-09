@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0109 extends AbstractDataControl implements IDataControl {
 
@@ -47,7 +37,7 @@ public void initNewRecord() throws Exception {
 }
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
     if (pName.equals("markRejected")) { this.callProc_markRejected(); }
 }
@@ -66,8 +56,8 @@ private void callProc_markRejected() throws Exception {
    inParams.setProperty("p_reason", "REJECT_REASON");
    inParams.setProperty("p_warehouse_id", "WAREHOUSE_ORG_ID");
    inParams.setProperty("p_agent_id", "RETURN_BY_ORG_ID");
-  String sql = "BEGIN pbo_parcel.mark_return(p_parcel_code => :p_parcel_code,p_raise => :p_raise,p_reason_code => :p_reason_code,p_event_date => :p_event_date,p_reason => :p_reason,p_warehouse_id => :p_warehouse_id,p_agent_id => :p_agent_id); END;";
-  dbm.executeProcedure(sql, inParams, outParams);
+  String sql = "BEGIN pbo_parcel.mark_return(?,?,?,?,?,?,?); END;";
+  dbm.executeProcedure(sql, inParams, outParams, this.record);
 
 } 
 
@@ -76,15 +66,17 @@ private void callProc_markRejected() throws Exception {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.put("EVENT_DATE", new FieldDef("DATE"));
-	  this.fields.put("RETURN_BY_ORG_ID", new FieldDef("NUMBER"));
-	  this.fields.put("RETURN_BY_ORG_NAME", new FieldDef("STRING"));
-	  this.fields.put("RETURN_REASON", new FieldDef("STRING"));
 	  this.fields.put("RETURN_REASON_CODE", new FieldDef("STRING"));
+	  this.fields.put("RETURN_REASON", new FieldDef("STRING"));
 	  this.fields.put("WAREHOUSE_ORG_ID", new FieldDef("NUMBER"));
 	  this.fields.put("WAREHOUSE_ORG_NAME", new FieldDef("STRING"));
+	  this.fields.put("RETURN_BY_ORG_ID", new FieldDef("NUMBER"));
+	  this.fields.put("RETURN_BY_ORG_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"CODE"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

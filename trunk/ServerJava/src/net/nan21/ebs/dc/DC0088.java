@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0088 extends AbstractDataControl implements IDataControl {
 
@@ -29,25 +19,25 @@ public class DC0088 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_ORGINV_ID") != null && !this.request.getParam("QRY_ORGINV_ID").equals("")) {
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORGINV_ID like :ORGINV_ID");
-      this.queryParams.put("ORGINV_ID",(String)this.request.getParam("QRY_ORGINV_ID"));
+      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ORG_ID like :ORG_ID");
       this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
+    }
+    if (this.request.getParam("QRY_ORGINV_ID") != null && !this.request.getParam("QRY_ORGINV_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ORGINV_ID like :ORGINV_ID");
+      this.queryParams.put("ORGINV_ID",(String)this.request.getParam("QRY_ORGINV_ID"));
     }
 }
 
@@ -56,19 +46,19 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.CLIENT_ID"+
-               " ,t.CODE"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.DESCRIPTION"+
-               " ,t.ID"+
-               " ,t.IS_DEFAULT"+
-               " ,t.IS_VIRTUAL"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.ORGINV_ID"+
+               " t.ID"+
+               " ,t.CLIENT_ID"+
                " ,t.ORG_ID"+
+               " ,t.ORGINV_ID"+
+               " ,t.CODE"+
+               " ,t.DESCRIPTION"+
+               " ,t.IS_DEFAULT"+
                " ,t.STOCKLOC_TYPE"+
+               " ,t.IS_VIRTUAL"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
            " from MM_STOCK_LOC t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -88,9 +78,9 @@ public void doExport() throws Exception {
                " ,t.IS_DEFAULT"+
                " ,t.STOCKLOC_TYPE"+
                " ,t.IS_VIRTUAL"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
            " from MM_STOCK_LOC t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -106,25 +96,25 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_STOCK_LOC("+
-               "  CLIENT_ID"+
+               "  ID"+
+               " ,CLIENT_ID"+
+               " ,ORG_ID"+
+               " ,ORGINV_ID"+
                " ,CODE"+
                " ,DESCRIPTION"+
-               " ,ID"+
                " ,IS_DEFAULT"+
-               " ,IS_VIRTUAL"+
-               " ,ORGINV_ID"+
-               " ,ORG_ID"+
                " ,STOCKLOC_TYPE"+
+               " ,IS_VIRTUAL"+
            " ) values ( "+
-               "  :CLIENT_ID"+
+               "  :ID"+
+               " ,:CLIENT_ID"+
+               " ,:ORG_ID"+
+               " ,:ORGINV_ID"+
                " ,:CODE"+
                " ,:DESCRIPTION"+
-               " ,:ID"+
                " ,:IS_DEFAULT"+
-               " ,:IS_VIRTUAL"+
-               " ,:ORGINV_ID"+
-               " ,:ORG_ID"+
                " ,:STOCKLOC_TYPE"+
+               " ,:IS_VIRTUAL"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_STOCKLOC_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -172,19 +162,19 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.CLIENT_ID"+
-               " ,t.CODE"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.DESCRIPTION"+
-               " ,t.ID"+
-               " ,t.IS_DEFAULT"+
-               " ,t.IS_VIRTUAL"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.ORGINV_ID"+
+               " t.ID"+
+               " ,t.CLIENT_ID"+
                " ,t.ORG_ID"+
+               " ,t.ORGINV_ID"+
+               " ,t.CODE"+
+               " ,t.DESCRIPTION"+
+               " ,t.IS_DEFAULT"+
                " ,t.STOCKLOC_TYPE"+
+               " ,t.IS_VIRTUAL"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
            " from MM_STOCK_LOC t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -193,29 +183,31 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
-	  this.fields.put("IS_VIRTUAL", new FieldDef("BOOLEAN"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("ORGINV_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
+	  this.fields.put("ORGINV_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
 	  this.fields.put("STOCKLOC_TYPE", new FieldDef("STRING"));
+	  this.fields.put("IS_VIRTUAL", new FieldDef("BOOLEAN"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

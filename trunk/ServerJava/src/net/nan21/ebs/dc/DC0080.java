@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0080 extends AbstractDataControl implements IDataControl {
 
@@ -56,21 +46,21 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.BASE_DOC_CURRENCY"+
-               " ,t.BASE_DOC_PRICE"+
-               " ,t.BASE_DOC_QTY"+
-               " ,t.ID"+
-               " ,t.INVENTORY_QTY"+
+               " t.ID"+
                " ,t.LINE_NO"+
                " ,t.MVMNTINDOC_ID"+
-               " ,t.NOTES"+
                " ,t.PRODUCT_ID"+
-               " ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
                " ,t.QTY"+
+               " ,t.BASE_DOC_QTY"+
                " ,t.RECEIVED_QTY"+
-               " ,pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
-               " ,t.STOCKLOC_ID"+
+               " ,t.INVENTORY_QTY"+
+               " ,t.BASE_DOC_PRICE"+
+               " ,t.BASE_DOC_CURRENCY"+
+               " ,t.NOTES"+
                " ,t.UOM"+
+               " ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
+               " ,t.STOCKLOC_ID"+
+               " ,pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
            " from MM_MOVEMENT_IN_LINE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -110,33 +100,33 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_MOVEMENT_IN_LINE("+
-               "  BASE_DOC_CURRENCY"+
-               " ,BASE_DOC_PRICE"+
-               " ,BASE_DOC_QTY"+
-               " ,ID"+
-               " ,INVENTORY_QTY"+
+               "  ID"+
                " ,LINE_NO"+
                " ,MVMNTINDOC_ID"+
-               " ,NOTES"+
                " ,PRODUCT_ID"+
                " ,QTY"+
+               " ,BASE_DOC_QTY"+
                " ,RECEIVED_QTY"+
-               " ,STOCKLOC_ID"+
+               " ,INVENTORY_QTY"+
+               " ,BASE_DOC_PRICE"+
+               " ,BASE_DOC_CURRENCY"+
+               " ,NOTES"+
                " ,UOM"+
+               " ,STOCKLOC_ID"+
            " ) values ( "+
-               "  :BASE_DOC_CURRENCY"+
-               " ,:BASE_DOC_PRICE"+
-               " ,:BASE_DOC_QTY"+
-               " ,:ID"+
-               " ,:INVENTORY_QTY"+
+               "  :ID"+
                " ,:LINE_NO"+
                " ,:MVMNTINDOC_ID"+
-               " ,:NOTES"+
                " ,:PRODUCT_ID"+
                " ,:QTY"+
+               " ,:BASE_DOC_QTY"+
                " ,:RECEIVED_QTY"+
-               " ,:STOCKLOC_ID"+
+               " ,:INVENTORY_QTY"+
+               " ,:BASE_DOC_PRICE"+
+               " ,:BASE_DOC_CURRENCY"+
+               " ,:NOTES"+
                " ,:UOM"+
+               " ,:STOCKLOC_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_MVMNTINLIN_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -188,21 +178,21 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.BASE_DOC_CURRENCY"+
-               " ,t.BASE_DOC_PRICE"+
-               " ,t.BASE_DOC_QTY"+
-               " ,t.ID"+
-               " ,t.INVENTORY_QTY"+
+               " t.ID"+
                " ,t.LINE_NO"+
                " ,t.MVMNTINDOC_ID"+
-               " ,t.NOTES"+
                " ,t.PRODUCT_ID"+
-                ",pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
                " ,t.QTY"+
+               " ,t.BASE_DOC_QTY"+
                " ,t.RECEIVED_QTY"+
-                ",pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
-               " ,t.STOCKLOC_ID"+
+               " ,t.INVENTORY_QTY"+
+               " ,t.BASE_DOC_PRICE"+
+               " ,t.BASE_DOC_CURRENCY"+
+               " ,t.NOTES"+
                " ,t.UOM"+
+                ",pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
+               " ,t.STOCKLOC_ID"+
+                ",pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
            " from MM_MOVEMENT_IN_LINE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -211,31 +201,33 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("BASE_DOC_CURRENCY", new FieldDef("STRING"));
-	  this.fields.put("BASE_DOC_PRICE", new FieldDef("NUMBER"));
-	  this.fields.put("BASE_DOC_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("INVENTORY_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("LINE_NO", new FieldDef("NUMBER"));
 	  this.fields.put("MVMNTINDOC_ID", new FieldDef("NUMBER"));
-	  this.fields.put("NOTES", new FieldDef("STRING"));
 	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
 	  this.fields.put("QTY", new FieldDef("NUMBER"));
+	  this.fields.put("BASE_DOC_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("RECEIVED_QTY", new FieldDef("NUMBER"));
-	  this.fields.put("STOCKLOC_CODE", new FieldDef("STRING"));
-	  this.fields.put("STOCKLOC_ID", new FieldDef("NUMBER"));
+	  this.fields.put("INVENTORY_QTY", new FieldDef("NUMBER"));
+	  this.fields.put("BASE_DOC_PRICE", new FieldDef("NUMBER"));
+	  this.fields.put("BASE_DOC_CURRENCY", new FieldDef("STRING"));
+	  this.fields.put("NOTES", new FieldDef("STRING"));
 	  this.fields.put("UOM", new FieldDef("STRING"));
+	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
+	  this.fields.put("STOCKLOC_ID", new FieldDef("NUMBER"));
+	  this.fields.put("STOCKLOC_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

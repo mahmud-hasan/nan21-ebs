@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0073 extends AbstractDataControl implements IDataControl {
 
@@ -51,9 +41,9 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ag.DESCRIPTION"+
-               " ,ag.ID"+
+               " ag.ID"+
                " ,ag.NAME"+
+               " ,ag.DESCRIPTION"+
                " ,ag.PRODATTRGRP_ID"+
                " ,( select p.name from MM_PROD_ATTR_GRP p where p.id = ag.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR_GRP ag "+this.queryWhere.toString()+" "+this.queryOrderBy;
@@ -85,14 +75,14 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PROD_ATTR_GRP("+
-               "  DESCRIPTION"+
-               " ,ID"+
+               "  ID"+
                " ,NAME"+
+               " ,DESCRIPTION"+
                " ,PRODATTRGRP_ID"+
            " ) values ( "+
-               "  :DESCRIPTION"+
-               " ,:ID"+
+               "  :ID"+
                " ,:NAME"+
+               " ,:DESCRIPTION"+
                " ,:PRODATTRGRP_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_PRDATTRGRP_ID")  );
@@ -136,9 +126,9 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ag.DESCRIPTION"+
-               " ,ag.ID"+
+               " ag.ID"+
                " ,ag.NAME"+
+               " ,ag.DESCRIPTION"+
                " ,ag.PRODATTRGRP_ID"+
                 ",( select p.name from MM_PROD_ATTR_GRP p where p.id = ag.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR_GRP ag"+
@@ -149,21 +139,23 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("PRODATTRGRP_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PRODATTRGRP_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }
