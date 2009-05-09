@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0004 extends AbstractDataControl implements IDataControl {
 
@@ -29,35 +19,20 @@ public class DC0004 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
-    if (this.request.getParam("QRY_DOC_CURRENCY") != null && !this.request.getParam("QRY_DOC_CURRENCY").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.DOC_CURRENCY like :DOC_CURRENCY");
-      this.queryParams.put("DOC_CURRENCY",(String)this.request.getParam("QRY_DOC_CURRENCY"));
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_DOC_DATE") != null && !this.request.getParam("QRY_DOC_DATE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.DOC_DATE like :DOC_DATE");
       this.queryParams.put("DOC_DATE",(String)this.request.getParam("QRY_DOC_DATE"));
     }
-    if (this.request.getParam("QRY_DOC_NO") != null && !this.request.getParam("QRY_DOC_NO").equals("")) {
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.DOC_NO like :DOC_NO");
-      this.queryParams.put("DOC_NO",(String)this.request.getParam("QRY_DOC_NO"));
-    }
-    if (this.request.getParam("QRY_DOC_TYPE") != null && !this.request.getParam("QRY_DOC_TYPE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.DOC_TYPE like :DOC_TYPE");
-      this.queryParams.put("DOC_TYPE",(String)this.request.getParam("QRY_DOC_TYPE"));
-    }
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+      this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_ISSUER_ID") != null && !this.request.getParam("QRY_ISSUER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -69,15 +44,30 @@ private void preQuery() {
       this.queryWhere.append("t.RECEIVER_ID like :RECEIVER_ID");
       this.queryParams.put("RECEIVER_ID",(String)this.request.getParam("QRY_RECEIVER_ID"));
     }
-    if (this.request.getParam("QRY_REF_IINV_DOC_NO") != null && !this.request.getParam("QRY_REF_IINV_DOC_NO").equals("")) {
+    if (this.request.getParam("QRY_DOC_TYPE") != null && !this.request.getParam("QRY_DOC_TYPE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.REF_IINV_DOC_NO like :REF_IINV_DOC_NO");
-      this.queryParams.put("REF_IINV_DOC_NO",(String)this.request.getParam("QRY_REF_IINV_DOC_NO"));
+      this.queryWhere.append("t.DOC_TYPE like :DOC_TYPE");
+      this.queryParams.put("DOC_TYPE",(String)this.request.getParam("QRY_DOC_TYPE"));
+    }
+    if (this.request.getParam("QRY_DOC_CURRENCY") != null && !this.request.getParam("QRY_DOC_CURRENCY").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.DOC_CURRENCY like :DOC_CURRENCY");
+      this.queryParams.put("DOC_CURRENCY",(String)this.request.getParam("QRY_DOC_CURRENCY"));
     }
     if (this.request.getParam("QRY_REF_IINV_ID") != null && !this.request.getParam("QRY_REF_IINV_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.REF_IINV_ID like :REF_IINV_ID");
       this.queryParams.put("REF_IINV_ID",(String)this.request.getParam("QRY_REF_IINV_ID"));
+    }
+    if (this.request.getParam("QRY_REF_IINV_DOC_NO") != null && !this.request.getParam("QRY_REF_IINV_DOC_NO").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.REF_IINV_DOC_NO like :REF_IINV_DOC_NO");
+      this.queryParams.put("REF_IINV_DOC_NO",(String)this.request.getParam("QRY_REF_IINV_DOC_NO"));
+    }
+    if (this.request.getParam("QRY_DOC_NO") != null && !this.request.getParam("QRY_DOC_NO").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.DOC_NO like :DOC_NO");
+      this.queryParams.put("DOC_NO",(String)this.request.getParam("QRY_DOC_NO"));
     }
 }
 
@@ -86,33 +76,33 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CLIENT_ID"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.CURRENCY_XRATE"+
-               " ,t.DOC_CURRENCY"+
-               " ,to_char(t.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
-               " ,t.DOC_NO"+
+               " t.ID"+
+               " ,t.DOC_DATE"+
                " ,doc_no_serial||doc_no DOC_NO_FULL"+
-               " ,t.DOC_NO_SERIAL"+
-               " ,t.DOC_TYPE"+
-               " ,to_char(t.DUE_DATE,'"+this.DATE_FORMAT_DB+"') DUE_DATE"+
-               " ,t.ID"+
+               " ,t.CLIENT_ID"+
                " ,t.ISSUER_ID"+
-               " ,pbo_bpartner.get_name_by_id(t.issuer_id) ISSUER_NAME"+
-               " ,t.IS_INSERTED"+
-               " ,t.IS_PRINTED"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.NOTES"+
                " ,t.RECEIVER_ID"+
-               " ,pbo_bpartner.get_name_by_id(t.receiver_id) RECEIVER_NAME"+
-               " ,t.REF_IINV_DOC_NO"+
+               " ,t.DOC_TYPE"+
+               " ,t.DOC_CURRENCY"+
+               " ,t.DUE_DATE"+
                " ,t.REF_IINV_ID"+
-               " ,t.TOTAL_AMOUNT"+
+               " ,t.REF_IINV_DOC_NO"+
                " ,t.TOTAL_NET_AMOUNT"+
                " ,t.TOTAL_TAX_AMOUNT"+
+               " ,t.TOTAL_AMOUNT"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
+               " ,t.IS_PRINTED"+
+               " ,t.NOTES"+
+               " ,t.CURRENCY_XRATE"+
+               " ,t.DOC_NO_SERIAL"+
+               " ,t.DOC_NO"+
+               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,pbo_bpartner.get_name_by_id(t.issuer_id) ISSUER_NAME"+
+               " ,pbo_bpartner.get_name_by_id(t.receiver_id) RECEIVER_NAME"+
+               " ,t.IS_INSERTED"+
            " from IINVOICE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -123,12 +113,12 @@ public void doExport() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               "pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " t.ID"+
+               ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.ID"+
                " ,t.ISSUER_ID"+
                ",pbo_bpartner.get_name_by_id(t.issuer_id) ISSUER_NAME"+
-               " ,to_char(t.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
+               " ,t.DOC_DATE"+
                " ,t.DOC_TYPE"+
                " ,t.DOC_CURRENCY"+
                " ,t.DOC_NO_SERIAL"+
@@ -137,7 +127,7 @@ public void doExport() throws Exception {
                " ,t.RECEIVER_ID"+
                ",pbo_bpartner.get_name_by_id(t.receiver_id) RECEIVER_NAME"+
                " ,t.NOTES"+
-               " ,to_char(t.DUE_DATE,'"+this.DATE_FORMAT_DB+"') DUE_DATE"+
+               " ,t.DUE_DATE"+
                " ,t.TOTAL_AMOUNT"+
                " ,t.TOTAL_NET_AMOUNT"+
                " ,t.TOTAL_TAX_AMOUNT"+
@@ -146,9 +136,9 @@ public void doExport() throws Exception {
                " ,t.REF_IINV_ID"+
                " ,t.IS_INSERTED"+
                " ,t.IS_PRINTED"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
+               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
+               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
            " from IINVOICE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -164,39 +154,39 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into IINVOICE("+
-               "  CLIENT_ID"+
-               " ,CURRENCY_XRATE"+
-               " ,DOC_CURRENCY"+
+               "  ID"+
                " ,DOC_DATE"+
-               " ,DOC_NO"+
-               " ,DOC_NO_SERIAL"+
-               " ,DOC_TYPE"+
-               " ,DUE_DATE"+
-               " ,ID"+
+               " ,CLIENT_ID"+
                " ,ISSUER_ID"+
-               " ,IS_INSERTED"+
+               " ,RECEIVER_ID"+
+               " ,DOC_TYPE"+
+               " ,DOC_CURRENCY"+
+               " ,DUE_DATE"+
+               " ,REF_IINV_ID"+
+               " ,REF_IINV_DOC_NO"+
                " ,IS_PRINTED"+
                " ,NOTES"+
-               " ,RECEIVER_ID"+
-               " ,REF_IINV_DOC_NO"+
-               " ,REF_IINV_ID"+
+               " ,CURRENCY_XRATE"+
+               " ,DOC_NO_SERIAL"+
+               " ,DOC_NO"+
+               " ,IS_INSERTED"+
            " ) values ( "+
-               "  :CLIENT_ID"+
-               " ,:CURRENCY_XRATE"+
-               " ,:DOC_CURRENCY"+
+               "  :ID"+
                " ,:DOC_DATE"+
-               " ,:DOC_NO"+
-               " ,:DOC_NO_SERIAL"+
-               " ,:DOC_TYPE"+
-               " ,:DUE_DATE"+
-               " ,:ID"+
+               " ,:CLIENT_ID"+
                " ,:ISSUER_ID"+
-               " ,:IS_INSERTED"+
+               " ,:RECEIVER_ID"+
+               " ,:DOC_TYPE"+
+               " ,:DOC_CURRENCY"+
+               " ,:DUE_DATE"+
+               " ,:REF_IINV_ID"+
+               " ,:REF_IINV_DOC_NO"+
                " ,:IS_PRINTED"+
                " ,:NOTES"+
-               " ,:RECEIVER_ID"+
-               " ,:REF_IINV_DOC_NO"+
-               " ,:REF_IINV_ID"+
+               " ,:CURRENCY_XRATE"+
+               " ,:DOC_NO_SERIAL"+
+               " ,:DOC_NO"+
+               " ,:IS_INSERTED"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_iinv_id")  );
     dbm.executeStatement(sql, this.record);
@@ -251,33 +241,33 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-                "pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CLIENT_ID"+
-               " ,t.CREATEDBY"+
-               " ,to_char(t.CREATEDON,'"+this.DATE_FORMAT_DB+"') CREATEDON"+
-               " ,t.CURRENCY_XRATE"+
-               " ,t.DOC_CURRENCY"+
-               " ,to_char(t.DOC_DATE,'"+this.DATE_FORMAT_DB+"') DOC_DATE"+
-               " ,t.DOC_NO"+
+               " t.ID"+
+               " ,t.DOC_DATE"+
                 ",doc_no_serial||doc_no DOC_NO_FULL"+
-               " ,t.DOC_NO_SERIAL"+
-               " ,t.DOC_TYPE"+
-               " ,to_char(t.DUE_DATE,'"+this.DATE_FORMAT_DB+"') DUE_DATE"+
-               " ,t.ID"+
+               " ,t.CLIENT_ID"+
                " ,t.ISSUER_ID"+
-                ",pbo_bpartner.get_name_by_id(t.issuer_id) ISSUER_NAME"+
-               " ,t.IS_INSERTED"+
-               " ,t.IS_PRINTED"+
-               " ,t.MODIFIEDBY"+
-               " ,to_char(t.MODIFIEDON,'"+this.DATE_FORMAT_DB+"') MODIFIEDON"+
-               " ,t.NOTES"+
                " ,t.RECEIVER_ID"+
-                ",pbo_bpartner.get_name_by_id(t.receiver_id) RECEIVER_NAME"+
-               " ,t.REF_IINV_DOC_NO"+
+               " ,t.DOC_TYPE"+
+               " ,t.DOC_CURRENCY"+
+               " ,t.DUE_DATE"+
                " ,t.REF_IINV_ID"+
-               " ,t.TOTAL_AMOUNT"+
+               " ,t.REF_IINV_DOC_NO"+
                " ,t.TOTAL_NET_AMOUNT"+
                " ,t.TOTAL_TAX_AMOUNT"+
+               " ,t.TOTAL_AMOUNT"+
+               " ,t.CREATEDON"+
+               " ,t.CREATEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.MODIFIEDBY"+
+               " ,t.IS_PRINTED"+
+               " ,t.NOTES"+
+               " ,t.CURRENCY_XRATE"+
+               " ,t.DOC_NO_SERIAL"+
+               " ,t.DOC_NO"+
+                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+                ",pbo_bpartner.get_name_by_id(t.issuer_id) ISSUER_NAME"+
+                ",pbo_bpartner.get_name_by_id(t.receiver_id) RECEIVER_NAME"+
+               " ,t.IS_INSERTED"+
            " from IINVOICE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -286,55 +276,57 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CURRENCY_XRATE", new FieldDef("NUMBER"));
-	  this.fields.put("DOC_CURRENCY", new FieldDef("STRING"));
-	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
-	  this.fields.put("DOC_NO", new FieldDef("STRING"));
-	  this.fields.put("DOC_NO_FULL", new FieldDef("STRING"));
-	  this.fields.put("DOC_NO_SERIAL", new FieldDef("STRING"));
-	  this.fields.put("DOC_TYPE", new FieldDef("STRING"));
-	  this.fields.put("DUE_DATE", new FieldDef("DATE"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("INV_LINE_COUNT", new FieldDef("NUMBER"));
-	  this.fields.get("INV_LINE_COUNT").setInDS(false);
-	  this.fields.put("INV_STATUS", new FieldDef("STRING"));
-	  this.fields.get("INV_STATUS").setInDS(false);
+	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
+	  this.fields.put("DOC_NO_FULL", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ISSUER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ISSUER_NAME", new FieldDef("STRING"));
-	  this.fields.put("IS_INSERTED", new FieldDef("BOOLEAN"));
-	  this.fields.put("IS_PRINTED", new FieldDef("BOOLEAN"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("NOTES", new FieldDef("STRING"));
-	  this.fields.put("ORDER_ID", new FieldDef("NUMBER"));
-	  this.fields.get("ORDER_ID").setInDS(false);
+	  this.fields.put("RECEIVER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PAYBY_ID", new FieldDef("NUMBER"));
 	  this.fields.get("PAYBY_ID").setInDS(false);
-	  this.fields.put("RECEIVER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("RECEIVER_NAME", new FieldDef("STRING"));
-	  this.fields.put("REF_IINV_DOC_NO", new FieldDef("STRING"));
-	  this.fields.put("REF_IINV_ID", new FieldDef("NUMBER"));
-	  this.fields.put("TOTAL_AMOUNT", new FieldDef("NUMBER"));
-	  this.fields.put("TOTAL_NET_AMOUNT", new FieldDef("NUMBER"));
-	  this.fields.put("TOTAL_TAX_AMOUNT", new FieldDef("NUMBER"));
+	  this.fields.put("DOC_TYPE", new FieldDef("STRING"));
+	  this.fields.put("INV_STATUS", new FieldDef("STRING"));
+	  this.fields.get("INV_STATUS").setInDS(false);
+	  this.fields.put("DOC_CURRENCY", new FieldDef("STRING"));
 	  this.fields.put("TRANSTYPE_CODE", new FieldDef("STRING"));
 	  this.fields.get("TRANSTYPE_CODE").setInDS(false);
+	  this.fields.put("DUE_DATE", new FieldDef("DATE"));
+	  this.fields.put("INV_LINE_COUNT", new FieldDef("NUMBER"));
+	  this.fields.get("INV_LINE_COUNT").setInDS(false);
+	  this.fields.put("REF_IINV_ID", new FieldDef("NUMBER"));
+	  this.fields.put("REF_IINV_DOC_NO", new FieldDef("STRING"));
+	  this.fields.put("ORDER_ID", new FieldDef("NUMBER"));
+	  this.fields.get("ORDER_ID").setInDS(false);
+	  this.fields.put("TOTAL_NET_AMOUNT", new FieldDef("NUMBER"));
+	  this.fields.put("TOTAL_TAX_AMOUNT", new FieldDef("NUMBER"));
+	  this.fields.put("TOTAL_AMOUNT", new FieldDef("NUMBER"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("IS_PRINTED", new FieldDef("BOOLEAN"));
+	  this.fields.put("NOTES", new FieldDef("STRING"));
+	  this.fields.put("CURRENCY_XRATE", new FieldDef("NUMBER"));
+	  this.fields.put("DOC_NO_SERIAL", new FieldDef("STRING"));
 	  this.fields.put("VAT_RATE", new FieldDef("NUMBER"));
 	  this.fields.get("VAT_RATE").setInDS(false);
+	  this.fields.put("DOC_NO", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("ISSUER_NAME", new FieldDef("STRING"));
+	  this.fields.put("RECEIVER_NAME", new FieldDef("STRING"));
+	  this.fields.put("IS_INSERTED", new FieldDef("BOOLEAN"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }

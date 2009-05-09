@@ -7,19 +7,9 @@
 package net.nan21.ebs.dc;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import net.nan21.ebs.lib.CollectionUtils;
-import net.nan21.ebs.lib.AbstractDataControl;
-import net.nan21.ebs.lib.FieldDef;
-import net.nan21.ebs.lib.HttpRequest;
-import net.nan21.ebs.lib.HttpSession;
-import net.nan21.ebs.lib.IDataControl;
-import net.nan21.ebs.lib.DbManager;
+import net.nan21.lib.*;
 
 public class DC0006 extends AbstractDataControl implements IDataControl {
 
@@ -29,25 +19,25 @@ public class DC0006 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_BANK_CODE") != null && !this.request.getParam("QRY_BANK_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("BANK_CODE like :BANK_CODE");
-      this.queryParams.put("BANK_CODE",(String)this.request.getParam("QRY_BANK_CODE").toUpperCase());
-    }
-    if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("CODE like :CODE");
-      this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
-    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
+    if (this.request.getParam("QRY_BANK_CODE") != null && !this.request.getParam("QRY_BANK_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("BANK_CODE like :BANK_CODE");
+      this.queryParams.put("BANK_CODE",(String)this.request.getParam("QRY_BANK_CODE").toUpperCase());
+    }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+    }
+    if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("CODE like :CODE");
+      this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
     }
 }
 
@@ -56,12 +46,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ADRESS"+
+               " ID"+
                " ,BANK_CODE"+
-               " ,CODE"+
-               " ,ID"+
                " ,NAME"+
                " ,TYPE"+
+               " ,CODE"+
+               " ,ADRESS"+
            " from BANK_AGENCY  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -92,19 +82,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into BANK_AGENCY("+
-               "  ADRESS"+
+               "  ID"+
                " ,BANK_CODE"+
-               " ,CODE"+
-               " ,ID"+
                " ,NAME"+
                " ,TYPE"+
+               " ,CODE"+
+               " ,ADRESS"+
            " ) values ( "+
-               "  :ADRESS"+
+               "  :ID"+
                " ,:BANK_CODE"+
-               " ,:CODE"+
-               " ,:ID"+
                " ,:NAME"+
                " ,:TYPE"+
+               " ,:CODE"+
+               " ,:ADRESS"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_bankag_id")  );
     dbm.executeStatement(sql, this.record);
@@ -149,12 +139,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ADRESS"+
+               " ID"+
                " ,BANK_CODE"+
-               " ,CODE"+
-               " ,ID"+
                " ,NAME"+
                " ,TYPE"+
+               " ,CODE"+
+               " ,ADRESS"+
            " from BANK_AGENCY "+
         " where "+
      "      ID= :ID"+ 
@@ -163,24 +153,26 @@ private void findByPk()  throws Exception {
 } 
 
 
-public void callProcedure(String pName)  throws Exception {
+public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ADRESS", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("BANK_CODE", new FieldDef("STRING"));
 	  this.fields.get("BANK_CODE").setCaseRestriction("Upper");
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.get("CODE").setCaseRestriction("Upper");
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("TYPE", new FieldDef("STRING"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.get("CODE").setCaseRestriction("Upper");
+	  this.fields.put("ADRESS", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
+	  String[] _summaryFields = {};
+	  this.summaryFields = _summaryFields;
+	  this.queryResultSize = 20;
 	}
 
-public void doCustomAction(String action) {}
 }
