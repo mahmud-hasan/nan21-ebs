@@ -1,13 +1,13 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * LOV0034: Project issue priority
+ * LOV0072: Import strategy groups 
  */
 package net.nan21.ebs.dc;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
 import java.util.HashMap;
-public class LOV0034 extends AbstractDataControl implements IDataControlLov {
+public class LOV0072 extends AbstractDataControl implements IDataControlLov {
 public void init(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
     this._initFields();
     super.init(request, response, session, dbm);
@@ -26,13 +26,14 @@ private void preQuery() {
       this.prepareQueryContext();
       this.preQuery();
       this.queryWhere.insert(0, (this.queryWhere.length() > 0) ? " where ":"");
-      String sql = "select tsql.* from (select code from project_issue_priority order by 1) tsql " + this.queryWhere.toString() + " " + this.queryOrderBy;
+      String sql = "select tsql.* from (select id, name from ie_imp_strategy_group) tsql " + this.queryWhere.toString() + " " + this.queryOrderBy;
       this.writeResultDoQuery(sql); 
   }
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.queryResultSize = -1;
   }
 }
