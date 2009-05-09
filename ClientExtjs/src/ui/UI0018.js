@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0030.prototype.resourceBundle.DcProperty.Title||"Field default values")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0018&gt;</div>"}
    ]
 });
-gui.findById("DC0030").close_detail();
+gui.findById("DC0030").closeDetail();
 gui.findById("DC0030").executeQuery();
   });

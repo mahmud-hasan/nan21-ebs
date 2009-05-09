@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0023.prototype.resourceBundle.DcProperty.Title||"Accounting years")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0200&gt;</div>"}
    ]
 });
-gui.findById("DC0023").close_detail();
+gui.findById("DC0023").closeDetail();
 gui.findById("DC0023").executeQuery();
   });

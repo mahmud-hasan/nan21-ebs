@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0025.prototype.resourceBundle.DcProperty.Title||"UI Lists of values (LOV)")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0017&gt;</div>"}
    ]
 });
-gui.findById("DC0025").close_detail();
+gui.findById("DC0025").closeDetail();
 gui.findById("DC0025").executeQuery();
   });

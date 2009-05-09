@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0029.prototype.resourceBundle.DcProperty.Title||"Payments - Payables")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0035&gt;</div>"}
    ]
 });
-gui.findById("DC0029").close_detail();
+gui.findById("DC0029").closeDetail();
 gui.findById("DC0029").executeQuery();
   });

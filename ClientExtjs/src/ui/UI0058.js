@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0081.prototype.resourceBundle.DcProperty.Title||"Business units")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0058&gt;</div>"}
    ]
 });
-gui.findById("DC0081").close_detail();
+gui.findById("DC0081").closeDetail();
 gui.findById("DC0081").executeQuery();
   });

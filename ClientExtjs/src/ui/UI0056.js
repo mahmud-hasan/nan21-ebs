@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0078.prototype.resourceBundle.DcProperty.Title||"Reception document")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0056&gt;</div>"}
    ]
 });
-gui.findById("DC0078").close_detail();
+gui.findById("DC0078").closeDetail();
 gui.findById("DC0078").executeQuery();
   });

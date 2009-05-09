@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0103.prototype.resourceBundle.DcProperty.Title||"Business partner details")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0104&gt;</div>"}
    ]
 });
-gui.findById("DC0103").close_detail();
+gui.findById("DC0103").closeDetail();
 gui.findById("DC0103").executeQuery();
   });

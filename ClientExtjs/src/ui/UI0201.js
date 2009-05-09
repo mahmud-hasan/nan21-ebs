@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0024.prototype.resourceBundle.DcProperty.Title||"Accounting periods")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0201&gt;</div>"}
    ]
 });
-gui.findById("DC0024").close_detail();
+gui.findById("DC0024").closeDetail();
 gui.findById("DC0024").executeQuery();
   });

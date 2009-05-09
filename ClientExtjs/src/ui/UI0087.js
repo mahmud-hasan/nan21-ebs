@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0098.prototype.resourceBundle.DcProperty.Title||"Transports")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0087&gt;</div>"}
    ]
 });
-gui.findById("DC0098").close_detail();
+gui.findById("DC0098").closeDetail();
 gui.findById("DC0098").executeQuery();
   });

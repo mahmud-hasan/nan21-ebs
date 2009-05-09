@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0105.prototype.resourceBundle.DcProperty.Title||"Product accounts")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0105&gt;</div>"}
    ]
 });
-gui.findById("DC0105").close_detail();
+gui.findById("DC0105").closeDetail();
 gui.findById("DC0105").executeQuery();
   });

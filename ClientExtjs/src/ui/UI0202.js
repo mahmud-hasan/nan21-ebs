@@ -25,6 +25,6 @@
     ,{ region: "north",border: false, html:"<div class='gui_title'>"+(N21.DataComp.DC0032.prototype.resourceBundle.DcProperty.Title||"Accounts chart")+" &nbsp;&nbsp;&nbsp;<font size=-2>&lt;UI0202&gt;</div>"}
    ]
 });
-gui.findById("DC0032").close_detail();
+gui.findById("DC0032").closeDetail();
 gui.findById("DC0032").executeQuery();
   });
