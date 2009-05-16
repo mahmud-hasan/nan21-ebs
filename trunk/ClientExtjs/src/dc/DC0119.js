@@ -107,7 +107,7 @@
        this.fields.add("DESCRIPTION",new Ext.form.TextArea({name:"DESCRIPTION",id:"DC0119F_DESCRIPTION",dataIndex:"DESCRIPTION",fieldLabel: this.resourceBundle.FieldLabel.DESCRIPTION||"Description",allowBlank:true,width:200,height:50,insert_allowed:true,update_allowed:true}));
        this.fields.add("DEST_TABLE",new Ext.form.TextField({name:"DEST_TABLE",id:"DC0119F_DEST_TABLE",dataIndex:"DEST_TABLE",fieldLabel: this.resourceBundle.FieldLabel.DEST_TABLE||"Target table",allowBlank:false,labelSeparator:":*",width:200,insert_allowed:true,update_allowed:true}));
        this.fields.add("FILE_LOCATION",new Ext.form.TextField({name:"FILE_LOCATION",id:"DC0119F_FILE_LOCATION",dataIndex:"FILE_LOCATION",fieldLabel: this.resourceBundle.FieldLabel.FILE_LOCATION||"File location",allowBlank:true,width:200,insert_allowed:true,update_allowed:true}));
-       this.fields.add("ACTIVE",new Ext.ux.form.XCheckbox({name:"ACTIVE",id:"DC0119F_ACTIVE",dataIndex:"ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:false,labelSeparator:":*",insert_allowed:true,update_allowed:true}));
+       this.fields.add("ACTIVE",new Ext.ux.form.XCheckbox({name:"ACTIVE",id:"DC0119F_ACTIVE",dataIndex:"ACTIVE",fieldLabel: this.resourceBundle.FieldLabel.ACTIVE||"Active",allowBlank:true,insert_allowed:true,update_allowed:true}));
 
        this.layoutItems.add("DC0120",
              new Ext.Window({ xtype:"window", modal:true, title: "DC0120 - "+(N21.DataComp.DC0120.prototype.resourceBundle.DcProperty.Title||"Fields"),  closeAction:"hide",closable:true,layout:"fit", width:650, height:400, items:{xtype:"DC0120",id:"DC0120", parentDcRelation:{name:"DC0119F",relation:[{parent:"ID",child:"IMPSTG_ID"}]}         }} ) ); 
