@@ -17,13 +17,13 @@ private void preQuery() {
   String p_query_column = this.request.getParam("_p_query_column");
   String p_query_value = this.request.getParam("_p_query_value");
 
-  this.queryParams.setProperty("p_client_id", ""); 
+  this.queryParams.put("p_client_id", ""); 
   if(this.request.getParam("p_client_id") != null ) {
-    this.queryParams.setProperty("p_client_id", this.request.getParam("p_client_id")); 
+    this.queryParams.put("p_client_id", this.request.getParam("p_client_id")); 
   }
-  this.queryParams.setProperty("p_issuer_id", ""); 
+  this.queryParams.put("p_issuer_id", ""); 
   if(this.request.getParam("p_issuer_id") != null ) {
-    this.queryParams.setProperty("p_issuer_id", this.request.getParam("p_issuer_id")); 
+    this.queryParams.put("p_issuer_id", this.request.getParam("p_issuer_id")); 
   }
 
   if (p_query_column != null) {

@@ -17,9 +17,9 @@ private void preQuery() {
   String p_query_column = this.request.getParam("_p_query_column");
   String p_query_value = this.request.getParam("_p_query_value");
 
-  this.queryParams.setProperty("p_uidc_code", ""); 
+  this.queryParams.put("p_uidc_code", ""); 
   if(this.request.getParam("p_uidc_code") != null ) {
-    this.queryParams.setProperty("p_uidc_code", this.request.getParam("p_uidc_code")); 
+    this.queryParams.put("p_uidc_code", this.request.getParam("p_uidc_code")); 
   }
 
   if (p_query_column != null) {

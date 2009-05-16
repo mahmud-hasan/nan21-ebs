@@ -1,4 +1,4 @@
-package net.nan21.ebs.service;
+package net.nan21.lib.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.lib.JasperReportGenerator;
 import net.nan21.lib.DbManager;
 
 public class ReportServlet extends HttpServlet {
@@ -40,8 +41,8 @@ public class ReportServlet extends HttpServlet {
 	 
 		try	{					
 			dbm = new DbManager(this.settings.getProperty("DbJndiName"));
-			ReportGenerator rg = new ReportGenerator(sourceFileName, compilePath, jasperClassPath, cachePath);
-			rg.runReport(destFile, params, ReportGenerator.REPORT_TYPE_PDF, (Connection)dbm.getDbConn());
+			JasperReportGenerator rg = new JasperReportGenerator(sourceFileName, compilePath, jasperClassPath, cachePath);
+			rg.runReport(destFile, params, JasperReportGenerator.REPORT_TYPE_PDF, (Connection)dbm.getDbConn());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
