@@ -908,6 +908,63 @@ create table IE_IMPORT_DATA(
 );                                                                                                  
                                                                                                     
                                                                                                     
+prompt Creating table IE_IMPORT_DATA_RAW...                                                         
+create table IE_IMPORT_DATA_RAW(                                                                    
+  ID NUMBER(10,0) NOT NULL                                                                          
+  ,IMPORT_ID NUMBER(10,0) NOT NULL                                                                  
+  ,COL1 VARCHAR2(4000)                                                                              
+  ,COL2 VARCHAR2(4000)                                                                              
+  ,COL3 VARCHAR2(4000)                                                                              
+  ,COL4 VARCHAR2(4000)                                                                              
+  ,COL5 VARCHAR2(4000)                                                                              
+  ,COL6 VARCHAR2(4000)                                                                              
+  ,COL7 VARCHAR2(4000)                                                                              
+  ,COL8 VARCHAR2(4000)                                                                              
+  ,COL9 VARCHAR2(4000)                                                                              
+  ,COL10 VARCHAR2(4000)                                                                             
+  ,COL11 VARCHAR2(4000)                                                                             
+  ,COL12 VARCHAR2(4000)                                                                             
+  ,COL13 VARCHAR2(4000)                                                                             
+  ,COL14 VARCHAR2(4000)                                                                             
+  ,COL15 VARCHAR2(4000)                                                                             
+  ,COL16 VARCHAR2(4000)                                                                             
+  ,COL17 VARCHAR2(4000)                                                                             
+  ,COL18 VARCHAR2(4000)                                                                             
+  ,COL19 VARCHAR2(4000)                                                                             
+  ,COL20 VARCHAR2(4000)                                                                             
+  ,COL21 VARCHAR2(4000)                                                                             
+  ,COL22 VARCHAR2(4000)                                                                             
+  ,COL23 VARCHAR2(4000)                                                                             
+  ,COL24 VARCHAR2(4000)                                                                             
+  ,COL25 VARCHAR2(4000)                                                                             
+  ,COL26 VARCHAR2(4000)                                                                             
+  ,COL27 VARCHAR2(4000)                                                                             
+  ,COL28 VARCHAR2(4000)                                                                             
+  ,COL29 VARCHAR2(4000)                                                                             
+  ,COL30 VARCHAR2(4000)                                                                             
+  ,COL31 VARCHAR2(4000)                                                                             
+  ,COL32 VARCHAR2(4000)                                                                             
+  ,COL33 VARCHAR2(4000)                                                                             
+  ,COL34 VARCHAR2(4000)                                                                             
+  ,COL35 VARCHAR2(4000)                                                                             
+  ,COL36 VARCHAR2(4000)                                                                             
+  ,COL37 VARCHAR2(4000)                                                                             
+  ,COL38 VARCHAR2(4000)                                                                             
+  ,COL39 VARCHAR2(4000)                                                                             
+  ,COL40 VARCHAR2(4000)                                                                             
+  ,COL41 VARCHAR2(4000)                                                                             
+  ,COL42 VARCHAR2(4000)                                                                             
+  ,COL43 VARCHAR2(4000)                                                                             
+  ,COL44 VARCHAR2(4000)                                                                             
+  ,COL45 VARCHAR2(4000)                                                                             
+  ,COL46 VARCHAR2(4000)                                                                             
+  ,COL47 VARCHAR2(4000)                                                                             
+  ,COL48 VARCHAR2(4000)                                                                             
+  ,COL49 VARCHAR2(4000)                                                                             
+  ,COL50 VARCHAR2(4000)                                                                             
+);                                                                                                  
+                                                                                                    
+                                                                                                    
 prompt Creating table IE_IMP_STRATEGY...                                                            
 create table IE_IMP_STRATEGY(                                                                       
   ID NUMBER(10,0) NOT NULL                                                                          

@@ -226,6 +226,10 @@ prompt Creating  primary key PK_IMPDATA...
 alter table IE_IMPORT_DATA add constraint PK_IMPDATA primary key (ID);                                                                                                                                  
                                                                                                                                                                                                         
                                                                                                                                                                                                         
+prompt Creating  primary key PK_IMPDATARAW...                                                                                                                                                           
+alter table IE_IMPORT_DATA_RAW add constraint PK_IMPDATARAW primary key (ID);                                                                                                                           
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
 prompt Creating  primary key PK_IMPEXMAPITEM...                                                                                                                                                         
 alter table IE_IMPEX_MAP add constraint PK_IMPEXMAPITEM primary key (ID);                                                                                                                               
                                                                                                                                                                                                         
