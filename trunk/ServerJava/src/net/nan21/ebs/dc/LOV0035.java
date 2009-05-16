@@ -17,9 +17,9 @@ private void preQuery() {
   String p_query_column = this.request.getParam("_p_query_column");
   String p_query_value = this.request.getParam("_p_query_value");
 
-  this.queryParams.setProperty("p_project_id", "-1"); 
+  this.queryParams.put("p_project_id", "-1"); 
   if(this.request.getParam("p_project_id") != null ) {
-    this.queryParams.setProperty("p_project_id", this.request.getParam("p_project_id")); 
+    this.queryParams.put("p_project_id", this.request.getParam("p_project_id")); 
   }
 
   if (p_query_column != null) {

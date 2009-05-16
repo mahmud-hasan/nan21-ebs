@@ -1,4 +1,4 @@
-package net.nan21.ebs.service;
+package net.nan21.lib;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
@@ -8,7 +8,7 @@ import java.util.*;
 import java.sql.*;
 import java.io.*;
 
-public class ReportGenerator
+public class JasperReportGenerator
 {
 	/////////////////
 	// constants
@@ -18,7 +18,7 @@ public class ReportGenerator
 	public static final int REPORT_TYPE_XLS = 2;
 	public static final int REPORT_TYPE_CSV = 3;
 	public static final int REPORT_TYPE_XML = 4;
-        private String dbEngine = "ORACLE";
+    //private String dbEngine = "ORACLE";
 	/////////////////
 	// variables
 	////////////////
@@ -31,7 +31,7 @@ public class ReportGenerator
 	 * @param jasperClassPath
 	 * @param cachePath
 	 */
-	public ReportGenerator(String sourceFileName, String compilePath, String jasperClassPath, String cachePath)
+	public JasperReportGenerator(String sourceFileName, String compilePath, String jasperClassPath, String cachePath)
 	{
 		// we have to define some of the system properties...
 		System.setProperty("jasper.reports.compile.class.path", jasperClassPath);
@@ -108,7 +108,7 @@ public class ReportGenerator
 	 * @param params a map of all the params for the report
 	 * @param data is a datasource to perform the query on
 	 */
-	public void runReport(String destFile, Map params, int exportType, Connection conn)
+	public void runReport(String destFile, Map<String, Object> params, int exportType, Connection conn)
 	{	 
 
 		JasperPrint jasperPrint;
@@ -185,7 +185,7 @@ public class ReportGenerator
 	 * get the params for the report
 	 * @param sourceFile is the report xml file to use
 	 */
-	public HashMap getReportParams(String sourceFile)
+	public HashMap<String, String> getReportParams(String sourceFile)
 	{
 		HashMap<String, String> output = new HashMap<String, String>();
 		try 
@@ -209,7 +209,7 @@ public class ReportGenerator
 	 * get the custom params for the report
 	 * @param sourceFile
 	 */
-	public HashMap getCustomReportParams(String sourceFile)
+	public HashMap<String, String> getCustomReportParams(String sourceFile)
 	{
 		HashMap<String, String> output = new HashMap<String, String>();
 

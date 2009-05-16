@@ -1,0 +1,24 @@
+<application>
+  <dbInstances>
+    <dbInstance name="DEV" jndiName="jdbc/nan21ebs"/> 
+  </dbInstances>
+  <!-- java, ruby, python-->
+  <!-- <technologyStack  defaultDcImpl="java" defaultNamespace="net.nan21.ebs" > -->
+  <technologyStack  defaultDcImpl="ruby" defaultNamespace="net.nan21.ebs" >
+     <securityManager className="net.nan21.ebs.service.AccessManager" />
+  </technologyStack>
+
+  <paths>
+    <!-- Path to the ruby implementation of the standanrd data controls -->
+    <path name="StdDcImplRuby" value="D:\work\php\n21eBusinessSuite\ServerOther\ruby\src\dc"/>
+    <!-- Path to the ruby implementation of the custom data controls -->
+    <path name="CustDcImplRuby" value=""/>
+
+    <!-- Path to the python implementation of the standanrd data controls -->
+    <path name="StdDcImplPython" value=""/>
+    <!-- Path to the python implementation of the standanrd data controls -->
+    <path name="CustDcImplPython" value=""/>
+
+  </paths>
+
+</application>
