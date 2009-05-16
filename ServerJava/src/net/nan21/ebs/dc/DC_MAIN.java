@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -92,12 +92,12 @@ public class DC_MAIN extends AbstractDataControl implements IDataControl {
 					+ user.getUserName() + "')  )" + "   )"
 					+ " order by m.position";
 		}
-		List<Properties> res = dbm.executeQuery(sql, null);
+		List<Map<String,String>> res = dbm.executeQuery(sql, null);
 		StringBuffer out = new StringBuffer("");
 		int x = 0;
-		Iterator<Properties> it = res.iterator();
+		Iterator<Map<String,String>> it = res.iterator();
 		while (it.hasNext()) {
-			Properties row = it.next();
+			Map<String,String> row = it.next();
 			String leaf = "";
 			out.append((x > 0) ? "," : "");
 			if (row.get("LINK") != null

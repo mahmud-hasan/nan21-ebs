@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Properties;
 
 //JAXP
 import javax.xml.transform.Transformer;
@@ -23,21 +21,16 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.sax.SAXResult;
 
-//FOP
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
-
-
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletResponse;
  
 
-import oracle.jdbc.OraclePreparedStatement;
-
-
-public abstract class AbstractDataControl {
+public abstract class AbstractDataControl implements IDataControl{
 
 	// constants 
 	public static final String FLDPROP_NAME = "NAME";
@@ -53,14 +46,15 @@ public abstract class AbstractDataControl {
 	public static final String RECORDS_JSON_ROOT_TAG = "records";
 	public static final String TRANSPORT_TAG = "transport";
 	
+	private static Logger logger = Logger.getLogger(AbstractDataControl.class); 
 	
 	// global properties
 	protected boolean isInitialised =  false;
     protected Map<String, FieldDef> fields = new HashMap<String, FieldDef>();
-    protected Properties record = new Properties();
-    protected List<Properties> records = new ArrayList<Properties>();
-    protected Properties recordsSummary = null;
-    protected Properties recordPk = new Properties();
+    protected Map<String, String> record = new HashMap<String, String>();
+    protected List<Map<String, String>> records = new ArrayList<Map<String, String>>();
+    protected Map<String, String> recordsSummary = null;
+    protected Map<String, String> recordPk = new HashMap<String, String>();
     protected String dataFormatExport = HttpRequest.DATA_FORMAT_HTML;
     protected String dataFormatFetch = HttpRequest.DATA_FORMAT_JSON;   
     protected HttpRequest request;
@@ -71,19 +65,15 @@ public abstract class AbstractDataControl {
     protected String[] summaryFields = {};  
     protected String dcCode = null;
     protected SessionUser user = null;
-    protected Properties trl = new Properties();;
+    protected Map<String, String> trl = new HashMap<String, String>();;
     // function specific properties
     protected int queryResultStart = 0;
     protected int queryResultSize = 20;
     
-    
-    
-    
-    
     protected String[] queryOrderByColumns = new String[1];
     protected String[] queryOrderBySense = new String[1]; 
     protected String queryOrderBy;
-    protected Properties queryParams = new Properties();
+    protected Map<String, String> queryParams = new HashMap<String, String>();
     protected StringBuffer queryWhere = new StringBuffer();
      
     protected String DATE_FORMAT_DB = "DD.MM.YYYY";
@@ -92,7 +82,7 @@ public abstract class AbstractDataControl {
     
     protected String dsAlias = "";
     
-    protected void init(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
+    public void init(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
     	this.request = request;
 		this.response = response;
 		this.session = session;
@@ -117,6 +107,20 @@ public abstract class AbstractDataControl {
 		isInitialised = true;
     }
   
+    
+  // -------------------------------- IDataControl interface methods -------------------------------------
+    
+    public void doQuery()  throws Exception {} ;
+	public void doInsert()  throws Exception{} ;
+	public void doUpdate() throws Exception {};
+	public void doDelete()  throws Exception {};
+	public void fetchRecord() throws Exception{} ;
+	public void doExport()  throws Exception {};
+	public void initNewRecord()  throws Exception {};
+	public void doCustomAction(String action)  throws Exception {};
+    
+    
+    
   // -------------------- getters / setters ---------------------------------
 
 	public boolean isInitialised() {
@@ -126,6 +130,21 @@ public abstract class AbstractDataControl {
 	public HttpRequest getRequest() {
 		return request;
 	}
+
+	protected String[] getPkFields() {
+		return pkFields;
+	}
+
+
+	protected void setPkFields(String[] pkFields) {
+		this.pkFields = pkFields;
+	}
+
+
+	protected DbManager getDbm() {
+		return dbm;
+	}
+
 
 	public HttpServletResponse getResponse() {
 		return response;
@@ -197,7 +216,11 @@ public abstract class AbstractDataControl {
 	      if (this.dataFormatFetch.equals(HttpRequest.DATA_FORMAT_XML) ) {
 	    	  String dataOut = CollectionUtils.recordsToXml(this.records, null, this.fields);
 	    	  write( "<?xml version='1.0' encoding='UTF-8'?><response><totalCount>"+totalCount+"</totalCount>" + dataOut + "</response>" );
-	      }	  
+	      }
+	      if (logger.isDebugEnabled()) {
+	    	  logger.debug("Fetch executed succesfully.");
+	      }
+	      
 	}	
 	
 	
@@ -357,13 +380,22 @@ public abstract class AbstractDataControl {
 	    	this.write(dataOut);	    
 	    	this.endExport();	    
 	    }
+	    if (logger.isInfoEnabled()) {
+	    	  logger.info("Export executed succesfully.");
+	      } 
 	}	
 
 	protected void writeResultDoUpdate() throws Exception {
 		this.sendRecord();
+		if (logger.isInfoEnabled()) {
+	    	  logger.info("Update executed succesfully.");
+	      }
 	}	
 	protected void writeResultDoInsert() throws Exception {
 		this.sendRecord();
+		if (logger.isInfoEnabled()) {
+	    	  logger.info("Insert executed succesfully.");
+	      }
 	}	
 	
 	protected void writeResultFetchRecord() throws Exception {
@@ -379,7 +411,9 @@ public abstract class AbstractDataControl {
 	      if (this.dataFormatFetch.equals(HttpRequest.DATA_FORMAT_XML) ) {
 	    	  write( "<?xml version='1.0' encoding='UTF-8'?><response></response>"   );
 	      }	 
-	      
+	      if (logger.isInfoEnabled()) {
+	    	  logger.info("Delete executed succesfully.");
+	      }
 	}
 	
  	
@@ -387,6 +421,9 @@ public abstract class AbstractDataControl {
 	protected void writeResultInitNewRecord() throws Exception {		
 		this.setFieldInitialValues();
 		this.sendRecord();
+		if (logger.isInfoEnabled()) {
+	    	  logger.info("Init record executed succesfully.");
+	      }
 	}
 	
  
@@ -459,10 +496,10 @@ public abstract class AbstractDataControl {
 	
 	protected void populateRecordPkFromRecord() throws Exception {		
 		for (int i=0; i<this.pkFields.length; i++ ) {
-			if (this.record.getProperty(this.pkFields[i]) == null || this.record.getProperty(this.pkFields[i]).equals("")) {
+			if (this.record.get(this.pkFields[i]) == null || this.record.get(this.pkFields[i]).equals("")) {
 				  throw new Exception("Missing value from record for primary key field: "+this.pkFields[i]);
 			  }	
-			this.recordPk.put(this.pkFields[i], applyCaseRestriction(this.pkFields[i], this.record.getProperty(this.pkFields[i])));			
+			this.recordPk.put(this.pkFields[i], applyCaseRestriction(this.pkFields[i], this.record.get(this.pkFields[i])));			
 		}		 
 	}
 	
@@ -541,26 +578,26 @@ public abstract class AbstractDataControl {
 		   this.record.put("_p_record_status", "insert");
 		   
 		   String sql = "select * from ui_dc_field_initval where uidc_code = :UIDC and active='Y'";
-		   Properties p = new Properties();
+		   Map<String, String> p = new HashMap<String, String>();
 		   p.put("UIDC", this.dcCode);
-		   Iterator<Properties> it = dbm.executeQuery(sql, p).iterator();
+		   Iterator<Map<String, String>> it = dbm.executeQuery(sql, p).iterator();
 		   
 		   while(it.hasNext()) {
-			   Properties fdv = it.next();
-			   String fieldName = fdv.getProperty("FIELD_NAME");
-			   String fieldValueType = fdv.getProperty("VALUE_TYPE");
-			   String fieldValue = fdv.getProperty("FIELD_VALUE");
+			   Map<String, String> fdv = it.next();
+			   String fieldName = fdv.get("FIELD_NAME");
+			   String fieldValueType = fdv.get("VALUE_TYPE");
+			   String fieldValue = fdv.get("FIELD_VALUE");
 			   
 			   if (this.record.containsKey(fieldName)) {
 		    		if(fieldValueType.equals("VALUE")) {
-		    			this.record.setProperty(fieldName, fieldValue);
+		    			this.record.put(fieldName, fieldValue);
 		    		} 
 		    		if (fieldValueType.equals("SQL")) {
-		    			Properties fv = dbm.executeQuery(fieldValue, this.record).get(0);
+		    			Map<String, String> fv = dbm.executeQuery(fieldValue, this.record).get(0);
 		    			if (fv.size()>1) {
 		    				throw new Exception("Field default value SQL cannot return more then one column"); 
 		    			}		    			
-		    			this.record.setProperty(fieldName, (String)fv.values().toArray()[0]  );
+		    			this.record.put(fieldName, (String)fv.values().toArray()[0]  );
 		    		}
 			   }
 			   
@@ -657,6 +694,151 @@ public abstract class AbstractDataControl {
 	
 	
 	  private void endExport() {}
+
+
+	protected Map<String, FieldDef> getFields() {
+		return fields;
+	}
+
+
+	protected Map<String, String> getRecord() {
+		return record;
+	}
+
+
+	protected void setRecord(Map<String, String> record) {
+		this.record = record;
+	}
+
+
+	protected List<Map<String, String>> getRecords() {
+		return records;
+	}
+
+
+	protected void setRecords(List<Map<String, String>> records) {
+		this.records = records;
+	}
+
+
+	protected Map<String, String> getRecordsSummary() {
+		return recordsSummary;
+	}
+
+
+	protected void setRecordsSummary(Map<String, String> recordsSummary) {
+		this.recordsSummary = recordsSummary;
+	}
+
+
+	protected Map<String, String> getRecordPk() {
+		return recordPk;
+	}
+
+
+	protected void setRecordPk(Map<String, String> recordPk) {
+		this.recordPk = recordPk;
+	}
+
+
+	protected String[] getSummaryFields() {
+		return summaryFields;
+	}
+
+
+	protected void setSummaryFields(String[] summaryFields) {
+		this.summaryFields = summaryFields;
+	}
+
+
+	protected int getQueryResultStart() {
+		return queryResultStart;
+	}
+
+
+	protected void setQueryResultStart(int queryResultStart) {
+		this.queryResultStart = queryResultStart;
+	}
+
+
+	protected int getQueryResultSize() {
+		return queryResultSize;
+	}
+
+
+	protected void setQueryResultSize(int queryResultSize) {
+		this.queryResultSize = queryResultSize;
+	}
+
+
+	protected String[] getQueryOrderByColumns() {
+		return queryOrderByColumns;
+	}
+
+
+	protected void setQueryOrderByColumns(String[] queryOrderByColumns) {
+		this.queryOrderByColumns = queryOrderByColumns;
+	}
+
+
+	protected String[] getQueryOrderBySense() {
+		return queryOrderBySense;
+	}
+
+
+	protected void setQueryOrderBySense(String[] queryOrderBySense) {
+		this.queryOrderBySense = queryOrderBySense;
+	}
+
+
+	protected String getQueryOrderBy() {
+		return queryOrderBy;
+	}
+
+
+	protected void setQueryOrderBy(String queryOrderBy) {
+		this.queryOrderBy = queryOrderBy;
+	}
+
+
+	protected Map<String, String> getQueryParams() {
+		return queryParams;
+	}
+
+
+	protected void setQueryParams(Map<String, String> queryParams) {
+		this.queryParams = queryParams;
+	}
+
+
+	protected StringBuffer getQueryWhere() {
+		return queryWhere;
+	}
+
+
+	protected void setQueryWhere(StringBuffer queryWhere) {
+		this.queryWhere = queryWhere;
+	}
+
+
+	protected void setRequest(HttpRequest request) {
+		this.request = request;
+	}
+
+
+	protected void setResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+
+
+	protected void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+
+	protected void setFields(Map<String, FieldDef> fields) {
+		this.fields = fields;
+	}
  
 
 }

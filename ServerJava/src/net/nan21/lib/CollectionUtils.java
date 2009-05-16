@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+
  
 public class CollectionUtils {
 
 	
-	public static String recordToJson(Properties record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException, UnsupportedEncodingException{
+	public static String recordToJson(Map<String, String> record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException, UnsupportedEncodingException{
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -25,8 +24,8 @@ public class CollectionUtils {
 		int columnCount = columns.length;
 		for (int i=0; i<columnCount; i++) {	
 			out.append( (i>0)?",":""  );
-			if (record.getProperty(columns[i]) != null) {
-				out.append( columns[i]+":\"" + URLEncoder.encode((record.getProperty(columns[i])), "UTF-8")+"\"" );
+			if (record.get(columns[i]) != null) {
+				out.append( columns[i]+":\"" + URLEncoder.encode((record.get(columns[i])), "UTF-8")+"\"" );
 			} else {
 				out.append( columns[i]+":\"\"" );
 			}
@@ -36,7 +35,7 @@ public class CollectionUtils {
 	}
 	
 	
-	public static String recordsToJson(List<Properties> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException, UnsupportedEncodingException{
+	public static String recordsToJson(List<Map<String, String>> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException, UnsupportedEncodingException{
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -54,7 +53,7 @@ public class CollectionUtils {
 	
 	
 	
-	public static String recordToXml(Properties record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
+	public static String recordToXml(Map<String, String> record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -66,8 +65,8 @@ public class CollectionUtils {
 		for (int i=0; i<columnCount; i++) {	
 			
 			if (columns[i]!= null && !columns[i].equals("")) {
-				if (record.getProperty(columns[i]) != null ) {
-					out.append( "<"+columns[i]+">" +  record.getProperty(columns[i]) +"</"+columns[i]+">");
+				if (record.get(columns[i]) != null ) {
+					out.append( "<"+columns[i]+">" +  record.get(columns[i]) +"</"+columns[i]+">");
 				}else {
 					out.append( "<"+columns[i]+"></"+columns[i]+">");
 				}
@@ -77,7 +76,7 @@ public class CollectionUtils {
 	}
 	
 	
-	public static String recordsToXml(List<Properties> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
+	public static String recordsToXml(List<Map<String, String>> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -94,7 +93,7 @@ public class CollectionUtils {
 		
 	
 
-	public static String recordToCsv(Properties record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
+	public static String recordToCsv(Map<String, String> record, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException{
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -104,16 +103,16 @@ public class CollectionUtils {
 		}	
 		int columnCount = columns.length;
 		for (int i=0; i<columnCount; i++) {	
-			out.append( record.getProperty(columns[i]) +"," );
+			out.append( record.get(columns[i]) +"," );
 		}
 		return out.toString();
 	}
 	
-	public static String recordsToCsv(List<Properties> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException {
+	public static String recordsToCsv(List<Map<String, String>> records, String[] columnNames, Map<String,FieldDef> fieldDef) throws SQLException {
 		return CollectionUtils.recordsToCsv(records, columnNames, fieldDef, true);
 	}	
 	
-	public static String recordsToCsv(List<Properties> records, String[] columnNames, Map<String,FieldDef> fieldDef, boolean withHeader) throws SQLException {
+	public static String recordsToCsv(List<Map<String, String>> records, String[] columnNames, Map<String,FieldDef> fieldDef, boolean withHeader) throws SQLException {
 		StringBuffer out = new StringBuffer();
 		String[] columns = null;
 		if (columnNames == null) {
@@ -208,11 +207,11 @@ public class CollectionUtils {
 	
 	
 	
-	
+	/*
 	public static String serializeMap(Properties map, String format) throws Exception {
-		return serializeMap((Map)map, format);
+		return serializeMap((Map<String, String>)map, format);
 	}
-	
+	*/
 	public static String serializeMap(Map<String, Object> map, String format) throws Exception {
 		if (format== null || format.equals("")) { return mapToJson(map);}
 		else {
@@ -242,7 +241,7 @@ public class CollectionUtils {
 		return dataOut.toString();
 	}
 	
-	public static String serializeRecord(Properties record, String format) throws Exception {
+	public static String serializeRecord(Map<String, String> record, String format) throws Exception {
 		if (format== null || format.equals("")) { return recordToJson(record);}
 		else {
 			if (format.equals(HttpRequest.DATA_FORMAT_JSON)) { return recordToJson(record);}
@@ -253,10 +252,10 @@ public class CollectionUtils {
 	}
 	
 	
-	public static String recordToJson(Properties record) throws Exception {
+	public static String recordToJson(Map<String, String> record) throws Exception {
 		StringBuffer dataOut = new StringBuffer();
 		int x=0;
-		Iterator it = record.keySet().iterator();		
+		Iterator<String> it = record.keySet().iterator();		
 		dataOut.append("{");
 		while ( it.hasNext() ){
 			String key = (String)it.next(); 
@@ -270,9 +269,9 @@ public class CollectionUtils {
 	
 	
 	
-	public static String recordToXml(Properties record, String rootTagName) throws Exception {
+	public static String recordToXml(Map<String, String> record, String rootTagName) throws Exception {
 		StringBuffer s = new StringBuffer();
-		Iterator it = record.keySet().iterator();	
+		Iterator<String> it = record.keySet().iterator();	
 		s.append("<"+rootTagName+">");
 		while ( it.hasNext() ){
 			String key = (String)it.next(); 	
@@ -332,21 +331,21 @@ public class CollectionUtils {
 	} 
 	
 	 
-	public static void populateRecordFromRecordSetRow(Properties record, ResultSet rs, String[] columnNames) throws SQLException {
+	public static void populateRecordFromRecordSetRow(Map<String,String> record, ResultSet rs, String[] columnNames) throws SQLException {
 		if (rs.isBeforeFirst()) {
 			rs.next();
 		}
 		int len = columnNames.length;
 		for (int i=0; i<len; i++) {
 			if (rs.getString(columnNames[i]) != null ) {
-				record.setProperty(columnNames[i], rs.getString(columnNames[i]));
+				record.put(columnNames[i], rs.getString(columnNames[i]));
 			}			
-			System.out.println(columnNames[i]);
+			//System.out.println(columnNames[i]);
 		}
 	}
 	
-	public static Map filteredMap(Map  sourceMap, String[] filterKeys) {
-		Map t = new HashMap<String, Object>(); 
+	public static <T> Map<String,T> filteredMap(Map<String, T>  sourceMap, String[] filterKeys) {
+		Map<String, T> t = new HashMap<String, T>(); 
 		for(int x=0; x<filterKeys.length; x++) {
 			t.put(filterKeys[x], sourceMap.get(filterKeys[x]));
 		}
