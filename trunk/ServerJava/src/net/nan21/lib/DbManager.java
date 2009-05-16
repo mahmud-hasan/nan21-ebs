@@ -5,14 +5,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
 
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OraclePreparedStatement;
@@ -24,6 +26,8 @@ public class DbManager {
 	private String dbJndiName;
 	private OracleConnection dbConn;
 
+	private static Logger logger = Logger.getLogger(DbManager.class);
+	
 	public DbManager(String dbJndiName) throws Exception {
 		this.dbJndiName = dbJndiName;
 		doDbConnection();
@@ -58,7 +62,9 @@ public class DbManager {
 			  if (this.dbConn == null) {
 				 throw new Exception("Cannot establish DB connection: No connection");
 			  }
-			  System.out.println("Connection="+dbConn.toString());
+			  if (logger.isDebugEnabled()) {
+				  logger.debug("Got connection <"+dbConn.toString()+">");
+			  }
 		  }
 	    }
 	  
@@ -67,10 +73,10 @@ public class DbManager {
 			_executeProcedure(sql, null, null, null , true);		
 		}
 		
-		public void executeNamedProcedure(String sql, Properties inParams, Properties paramValues) throws SQLException {		
+		public void executeNamedProcedure(String sql, Properties inParams, Map<String,String> paramValues) throws SQLException {		
 			_executeProcedure(sql, inParams, null, paramValues , true);		
 		}
-		public void executeNamedProcedure(String sql, Properties inParams, Properties outParams, Properties paramValues) throws SQLException {
+		public void executeNamedProcedure(String sql, Properties inParams, Properties outParams, Map<String,String> paramValues) throws SQLException {
 			_executeProcedure(sql, inParams, outParams, paramValues , true);		
 		}
 		
@@ -79,18 +85,21 @@ public class DbManager {
 		_executeProcedure(sql, null, null, null , false);		
 	}
 	
-	public void executeProcedure(String sql, Properties inParams, Properties paramValues) throws SQLException {		
+	public void executeProcedure(String sql, Properties inParams, Map<String,String> paramValues) throws SQLException {		
 		_executeProcedure(sql, inParams, null, paramValues , false);		
 	}
-	public void executeProcedure(String sql, Properties inParams, Properties outParams, Properties paramValues) throws SQLException {
+	public void executeProcedure(String sql, Properties inParams, Properties outParams, Map<String,String> paramValues) throws SQLException {
 		_executeProcedure(sql, inParams, outParams, paramValues , false);		
 	}
 	
 	private void _executeProcedure(String sql, Properties inParams,
-			Properties outParams, Properties paramValues, boolean isNamed) throws SQLException {
+			Properties outParams, Map<String,String> paramValues, boolean isNamed) throws SQLException {
 		if ((inParams != null ||outParams != null) && paramValues == null) {
 			throw new SQLException("INVALID_PROCEDURE_CALL");
 		}
+		
+		
+		
 		
 		OracleCallableStatement st = null;
 		try {
@@ -102,7 +111,7 @@ public class DbManager {
 					Iterator it = inParams.keySet().iterator();
 					while (it.hasNext()) {
 						String p = (String) it.next();
-						st.setStringAtName(p, paramValues.getProperty(inParams.getProperty(p)));						
+						st.setStringAtName(p, paramValues.get(inParams.getProperty(p)));						
 					}
 				}
 			} else {
@@ -110,7 +119,7 @@ public class DbManager {
 					Iterator it = inParams.keySet().iterator();
 					while (it.hasNext()) {
 						String p = (String) it.next();						
-						st.setString(p, paramValues.getProperty(inParams.getProperty(p)));
+						st.setString(p, paramValues.get(inParams.getProperty(p)));
 					}
 				}
 			}
@@ -124,7 +133,9 @@ public class DbManager {
 				}
  
 			}
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug("SQL:"+sql);				
+			}
 			st.execute();
 
 			// read out parameter values
@@ -132,8 +143,7 @@ public class DbManager {
 				Iterator it = outParams.keySet().iterator();
 				while (it.hasNext()) {
 					String p = (String) it.next();
-					paramValues.setProperty(outParams.getProperty(p), st
-							.getString(p));
+					paramValues.put(outParams.getProperty(p), st.getString(p));
 				}
 			}
 		} catch (SQLException e) {
@@ -160,7 +170,7 @@ public class DbManager {
 		executeStatement(sql, null);
 	}
 	
-	public void executeStatement(String sql, Properties params)
+	public void executeStatement(String sql, Map<String,String> params)
 			throws SQLException {
 		OraclePreparedStatement st = null;
 		try {
@@ -170,12 +180,12 @@ public class DbManager {
 				Iterator it = params.keySet().iterator();
 				while (it.hasNext()) {
 					String p = (String) it.next();
-					System.out.println(p);
+					//System.out.println(p);
 					try {
-						st.setStringAtName(p, params.getProperty(p));
+						st.setStringAtName(p, params.get(p));
 					} catch (SQLException e) {
 						if (e.getErrorCode() == 17147) {
-							System.out.println(e.getMessage());
+							//System.out.println(e.getMessage());
 							// it means that the sql doesn't contain a certain bind
 							// parameter which is a key
 							// in this.record. ignore it and go on ...
@@ -185,7 +195,9 @@ public class DbManager {
 					}
 				}
 			}
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug("SQL:"+sql);
+			}	
 			st.execute();
 		} catch (SQLException e) {
 			try {
@@ -208,8 +220,8 @@ public class DbManager {
 
 	}
 
-	private Properties rsRowToProperties(ResultSet rs) throws SQLException {
-		Properties pRow = new Properties();
+	private Map<String, String> rsRowToMap(ResultSet rs) throws SQLException {
+		Map<String, String> pRow = new HashMap<String, String>();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int cols = rsmd.getColumnCount();
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");			
@@ -228,11 +240,11 @@ public class DbManager {
 		return pRow;
 	}
 
-	private List<Properties> rsToPropertiesList(ResultSet rs)
+	private List<Map<String, String>> rsToPropertiesList(ResultSet rs)
 			throws SQLException {
-		List<Properties> results = new ArrayList<Properties>();
+		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 		while (rs.next()) {
-			results.add(this.rsRowToProperties(rs));
+			results.add(this.rsRowToMap(rs));
 		}
 		return results;
 	}
@@ -240,18 +252,15 @@ public class DbManager {
 	
 	
 	
-	public Properties getDcTranslations(String lang, String dc) throws Exception {
+	public Map<String, String> getDcTranslations(String lang, String dc) throws Exception {
 		String sql = "select t.msg_type,t.msg_code,  t.translation from v_ui_dictionary t where t.language_code = '"+lang+"' and t.uidc_code = '"+dc+"'";
-		Properties p = new Properties();
+		Map<String, String> p = new HashMap<String, String>();
 		ResultSet rs = null;
 		try {
 			rs = this.getDbConn().createStatement().executeQuery(sql);
 			while(rs.next()) {
-			   	p.setProperty(rs.getString("MSG_TYPE")+"."+rs.getString("MSG_CODE"), (rs.getString("TRANSLATION")!=null)?rs.getString("TRANSLATION"):"");
-			}
-		
-			
-
+			   	p.put(rs.getString("MSG_TYPE")+"."+rs.getString("MSG_CODE"), (rs.getString("TRANSLATION")!=null)?rs.getString("TRANSLATION"):"");
+			}		
 		} catch (SQLException e) {
 			try { 
 				if (rs != null) {
@@ -278,17 +287,15 @@ public class DbManager {
 		return p;
 	}
 	
-	public List<Properties> executeQuery(String sql)
+	public List<Map<String, String>> executeQuery(String sql)
 	throws SQLException {
 		return executeQuery(sql, null);
 	}
 	
-	public List<Properties> executeQuery(String sql, Properties params)
+	public List<Map<String, String>> executeQuery(String sql, Map<String, String> params)
 			throws SQLException {
-		// TODO: change it into a statement manager to be able to close them
 		OraclePreparedStatement st = null;
 		try {
-
 			st = (OraclePreparedStatement) this.getDbConn().prepareStatement(
 					sql);
 			if (params != null) {
@@ -296,10 +303,10 @@ public class DbManager {
 				while (it.hasNext()) {
 					String p = (String) it.next();
 					try {
-						st.setStringAtName(p, params.getProperty(p));
+						st.setStringAtName(p, params.get(p));
 					} catch (SQLException e) {
 						if (e.getErrorCode() == 17147) {
-							System.out.println(e.getMessage());
+							//System.out.println(e.getMessage());
 							// it means that the sql doesn't contain a certain
 							// bind parameter which is a key
 							// in this.record. ignore it and go on ...
@@ -309,6 +316,9 @@ public class DbManager {
 					}
 				}
 			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("SQL:"+sql);
+			}			
 			st.execute();
 			return rsToPropertiesList(st.getResultSet());
 
@@ -333,23 +343,20 @@ public class DbManager {
 
 	}
 
-	public List<Properties> executeQueryLimit(String sql, Properties params,
+	public List<Map<String, String>> executeQueryLimit(String sql, Map<String, String> params,
 			int _queryResultStart, int _queryResultSize) throws SQLException {
-		// validate limit integers ....
+		//TODO: validate limit integers ....
 		int _queryResultStop = _queryResultStart + _queryResultSize;
-		_queryResultStart++;
-		// wrap sql with the rowids ...
+		_queryResultStart++;		 
 		String lSql = "select /*+ FIRST_ROWS("+_queryResultSize+") */ n21t_2.* from (select n21t_1.*, rownum as nan21ebs_rownum from ("+sql+") n21t_1 where rownum <= "+_queryResultStop+") n21t_2 where n21t_2.nan21ebs_rownum >= "+_queryResultStart;
-		System.out.println(lSql);
 		return this.executeQuery(lSql, params);
 	}
 
-	public int countQueryResults(String sql, Properties params)
+	public int countQueryResults(String sql, Map<String, String> params)
 			throws SQLException {
 		int res = -1;
 		String countSql = "select count(*) TOTALCOUNT from (" + sql + ") t";
-		res = Integer.parseInt(this.executeQuery(countSql, params).get(0)
-				.getProperty("TOTALCOUNT"));
+		res = Integer.parseInt(this.executeQuery(countSql, params).get(0).get("TOTALCOUNT"));
 		return res;
 	}
 
