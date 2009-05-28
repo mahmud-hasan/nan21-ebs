@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0011 DC Controller: UoM conversions
+ * DC0011 DC Controller: Unit of measure conversions
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0011 extends AbstractDataControl implements IDataControl {
 
@@ -19,6 +20,11 @@ public class DC0011 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_CONVERSION_TYPE") != null && !this.request.getParam("QRY_CONVERSION_TYPE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("CONVERSION_TYPE like :CONVERSION_TYPE");
+      this.queryParams.put("CONVERSION_TYPE",(String)this.request.getParam("QRY_CONVERSION_TYPE"));
+    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ID like :ID");
@@ -34,11 +40,6 @@ private void preQuery() {
       this.queryWhere.append("UOM_TO like :UOM_TO");
       this.queryParams.put("UOM_TO",(String)this.request.getParam("QRY_UOM_TO"));
     }
-    if (this.request.getParam("QRY_CONVERSION_TYPE") != null && !this.request.getParam("QRY_CONVERSION_TYPE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("CONVERSION_TYPE like :CONVERSION_TYPE");
-      this.queryParams.put("CONVERSION_TYPE",(String)this.request.getParam("QRY_CONVERSION_TYPE"));
-    }
 }
 
 public void doQuery() throws Exception {
@@ -46,13 +47,13 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ID"+
+               " CONVERSION_FACTOR"+
+               " ,CONVERSION_TYPE"+
+               " ,ID"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
                " ,UOM_FROM"+
                " ,UOM_TO"+
-               " ,CONVERSION_FACTOR"+
-               " ,MODIFIEDON"+
-               " ,MODIFIEDBY"+
-               " ,CONVERSION_TYPE"+
            " from UOM_CONVERSION  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -84,19 +85,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into UOM_CONVERSION("+
-               "  ID"+
+               "  CONVERSION_FACTOR"+
+               " ,CONVERSION_TYPE"+
+               " ,ID"+
+               " ,MODIFIEDBY"+
                " ,UOM_FROM"+
                " ,UOM_TO"+
-               " ,CONVERSION_FACTOR"+
-               " ,MODIFIEDBY"+
-               " ,CONVERSION_TYPE"+
            " ) values ( "+
-               "  :ID"+
+               "  :CONVERSION_FACTOR"+
+               " ,:CONVERSION_TYPE"+
+               " ,:ID"+
+               " ,:MODIFIEDBY"+
                " ,:UOM_FROM"+
                " ,:UOM_TO"+
-               " ,:CONVERSION_FACTOR"+
-               " ,:MODIFIEDBY"+
-               " ,:CONVERSION_TYPE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_uomconv_id")  );
     dbm.executeStatement(sql, this.record);
@@ -142,13 +143,13 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ID"+
+               " CONVERSION_FACTOR"+
+               " ,CONVERSION_TYPE"+
+               " ,ID"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
                " ,UOM_FROM"+
                " ,UOM_TO"+
-               " ,CONVERSION_FACTOR"+
-               " ,MODIFIEDON"+
-               " ,MODIFIEDBY"+
-               " ,CONVERSION_TYPE"+
            " from UOM_CONVERSION "+
         " where "+
      "      ID= :ID"+ 
@@ -159,22 +160,23 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("UOM_FROM", new FieldDef("STRING"));
-	  this.fields.put("UOM_TO", new FieldDef("STRING"));
 	  this.fields.put("CONVERSION_FACTOR", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.get("CREATEDON").setInDS(false);
+	  this.fields.put("CONVERSION_TYPE", new FieldDef("STRING"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
 	  this.fields.get("CREATEDBY").setInDS(false);
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.get("CREATEDON").setInDS(false);
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("CONVERSION_TYPE", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("UOM_FROM", new FieldDef("STRING"));
+	  this.fields.put("UOM_TO", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0012 extends AbstractDataControl implements IDataControl {
 
@@ -19,15 +20,20 @@ public class DC0012 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_CURRENCY_FROM") != null && !this.request.getParam("QRY_CURRENCY_FROM").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CURRENCY_FROM like :CURRENCY_FROM");
       this.queryParams.put("CURRENCY_FROM",(String)this.request.getParam("QRY_CURRENCY_FROM"));
+    }
+    if (this.request.getParam("QRY_CURRENCY_TO") != null && !this.request.getParam("QRY_CURRENCY_TO").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("CURRENCY_TO like :CURRENCY_TO");
+      this.queryParams.put("CURRENCY_TO",(String)this.request.getParam("QRY_CURRENCY_TO"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_VALID_FROM") != null && !this.request.getParam("QRY_VALID_FROM").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -39,11 +45,6 @@ private void preQuery() {
       this.queryWhere.append("VALID_TO like :VALID_TO");
       this.queryParams.put("VALID_TO",(String)this.request.getParam("QRY_VALID_TO"));
     }
-    if (this.request.getParam("QRY_CURRENCY_TO") != null && !this.request.getParam("QRY_CURRENCY_TO").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("CURRENCY_TO like :CURRENCY_TO");
-      this.queryParams.put("CURRENCY_TO",(String)this.request.getParam("QRY_CURRENCY_TO"));
-    }
 }
 
 public void doQuery() throws Exception {
@@ -51,13 +52,13 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ID"+
-               " ,CURRENCY_FROM"+
-               " ,XRATE"+
+               " CURRENCY_FROM"+
+               " ,CURRENCY_TO"+
+               " ,ID"+
                " ,MODIFIEDON"+
                " ,VALID_FROM"+
                " ,VALID_TO"+
-               " ,CURRENCY_TO"+
+               " ,XRATE"+
            " from CURRENCY_XRATE  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -89,19 +90,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into CURRENCY_XRATE("+
-               "  ID"+
-               " ,CURRENCY_FROM"+
-               " ,XRATE"+
+               "  CURRENCY_FROM"+
+               " ,CURRENCY_TO"+
+               " ,ID"+
                " ,VALID_FROM"+
                " ,VALID_TO"+
-               " ,CURRENCY_TO"+
+               " ,XRATE"+
            " ) values ( "+
-               "  :ID"+
-               " ,:CURRENCY_FROM"+
-               " ,:XRATE"+
+               "  :CURRENCY_FROM"+
+               " ,:CURRENCY_TO"+
+               " ,:ID"+
                " ,:VALID_FROM"+
                " ,:VALID_TO"+
-               " ,:CURRENCY_TO"+
+               " ,:XRATE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_CRNCYXRATE_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -147,13 +148,13 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ID"+
-               " ,CURRENCY_FROM"+
-               " ,XRATE"+
+               " CURRENCY_FROM"+
+               " ,CURRENCY_TO"+
+               " ,ID"+
                " ,MODIFIEDON"+
                " ,VALID_FROM"+
                " ,VALID_TO"+
-               " ,CURRENCY_TO"+
+               " ,XRATE"+
            " from CURRENCY_XRATE "+
         " where "+
      "      ID= :ID"+ 
@@ -164,24 +165,25 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CURRENCY_FROM", new FieldDef("STRING"));
-	  this.fields.put("XRATE", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.get("CREATEDON").setInDS(false);
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
 	  this.fields.get("CREATEDBY").setInDS(false);
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.get("CREATEDON").setInDS(false);
+	  this.fields.put("CURRENCY_FROM", new FieldDef("STRING"));
+	  this.fields.put("CURRENCY_TO", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  this.fields.get("MODIFIEDBY").setInDS(false);
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("VALID_FROM", new FieldDef("DATE"));
 	  this.fields.put("VALID_TO", new FieldDef("DATE"));
-	  this.fields.put("CURRENCY_TO", new FieldDef("STRING"));
+	  this.fields.put("XRATE", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
