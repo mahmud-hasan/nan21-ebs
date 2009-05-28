@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +19,12 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.sax.SAXResult;
+
+import net.nan21.lib.dc.DcTranslReader;
+import net.nan21.lib.dc.DcTranslation;
+import net.nan21.lib.dc.FieldDef;
+import net.nan21.lib.dc.IDataControl;
+import net.nan21.lib.settings.Settings;
 
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
@@ -65,7 +70,7 @@ public abstract class AbstractDataControl implements IDataControl{
     protected String[] summaryFields = {};  
     protected String dcCode = null;
     protected SessionUser user = null;
-    protected Map<String, String> trl = new HashMap<String, String>();;
+    protected Map<String, String> trl = new HashMap<String, String>();
     // function specific properties
     protected int queryResultStart = 0;
     protected int queryResultSize = 20;
@@ -104,6 +109,8 @@ public abstract class AbstractDataControl implements IDataControl{
 		while (it.hasNext()) {
 			this.record.put(it.next(), "");	 
 		}		
+		
+		this.trl = DcTranslation.get(this.dcCode, this.session.getLanguage(), true);
 		isInitialised = true;
     }
   
@@ -242,7 +249,7 @@ public abstract class AbstractDataControl implements IDataControl{
 		}
 		for(int i=0; i<len; i++) {
 			if (columns[i]!=null && !columns[i].equals("")) {
-				String trlKey = "FIELD_LABEL."+columns[i];
+				String trlKey = DcTranslReader.TAG_FIELD_LABEL+"."+columns[i];
 				String colWidthTag = "<width>-1</width>";
 				if (includeColWidth) {
 					colWidthTag = "<width>"+columnsWidth[i]+"</width>";
@@ -256,7 +263,7 @@ public abstract class AbstractDataControl implements IDataControl{
 	
 	protected void writeResultDoExport(String sql) throws Exception{
 		
-		trl = dbm.getDcTranslations(this.session.getLanguage(), this.getDcCode());
+		//trl = dbm.getDcTranslations(this.session.getLanguage(), this.getDcCode());
 		String printLayout = this.request.getParam(HttpRequest.REQUEST_PARAM_PRINT_LAYOUT); 
 		
 		if (!(printLayout!=null && (printLayout.equals(HttpRequest.PRINT_LAYOUT_V)  || printLayout.equals(HttpRequest.PRINT_LAYOUT_H) ))) {
@@ -302,37 +309,25 @@ public abstract class AbstractDataControl implements IDataControl{
 	      //dataOut = "<staticText>"+this.exportLocalizedStaticText()+"</staticText>"+dataOut;
 	      dataOut = "<groupBy></groupBy>"+dataOut; //"+groupBy+"
 	     
-	      SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");	      
-	      dataOut = "<reportData  layout=\""+printLayout+"\" title=\""+this.getDcCode()+"\" by=\""+this.user.getUserName()+"\" on=\""+format.format(new Date())+"\">"+dataOut+"</reportData>";	      
+	      SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");	   
+	      String dcTitle = DcTranslation.get(this.getDcCode(), this.session.getLanguage(), true).get(DcTranslReader.TAG_DC_PROPERTY+".Title");
+	      dataOut = "<reportData  layout=\""+printLayout+"\" title=\""+dcTitle+"\" by=\""+this.user.getUserName()+"\" on=\""+format.format(new Date())+"\">"+dataOut+"</reportData>";	      
 	      	      
 	      try {
   
-	            // Setup input and output files
-	    	  File t = new File(".");
-	    	  System.out.println(t.getAbsolutePath());
-	    	  
-	            File xsltfile = new File("D:/work/php/n21eBusinessSuite/ServerJava/WebContent/to_fo.xsl");
-	            //String fileName="tmp.pdf"; 
-	            //File pdffile = new File( "D:/work/php/n21eBusinessSuite/ServerJava/WebContent/"+fileName);
+	            File xsltfile = new File(Settings.getInstance().getPaths().get(Settings.PATH_XSL)+"/dc.fo");
+	            
+	            if (logger.isInfoEnabled()) {
+	            	logger.info("Creating PDF ...");
+	            }
 
-	    
-	            System.out.println(xsltfile.getAbsolutePath());
-	            System.out.println("Transforming...");
-
-	            // configure fopFactory as desired
 	            FopFactory fopFactory = FopFactory.newInstance();
-
 	            FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-	            // configure foUserAgent as desired
-
-	            // Setup output
 	            OutputStream out = null;
-	            // out = new java.io.FileOutputStream(pdffile);
-	            //  out = new java.io.BufferedOutputStream(out);
 	            out = new java.io.BufferedOutputStream(this.response.getOutputStream());
 
 	            try {
-	                // Construct fop with desired output format
+
 	                Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
 
 	                // Setup XSLT
@@ -353,14 +348,11 @@ public abstract class AbstractDataControl implements IDataControl{
 	            } finally {
 	                out.close();
 	            }
-
-	            System.out.println("Success!");
+	             
 	        } catch (Exception e) {
 	            e.printStackTrace(System.err);	            
 	        }
-	      
-	       
-	      
+	      	     	      
 	    }else {
 	      dataOut = CollectionUtils.recordsToXml(this.records, columns, this.fields);
 	      //dataOut = "<records>"+dataOut+"</records>"; 
@@ -370,7 +362,8 @@ public abstract class AbstractDataControl implements IDataControl{
 	      //"+this.columnDefForExport(columns,this.fields,true)+this.columnDefForExport(array_diff(array_keys(params), columns),this.fields,false)+"
 	      //dataOut = "<staticText>"+this.exportLocalizedStaticText()+"</staticText>"+dataOut;
 	      dataOut = "<groupBy></groupBy>"+dataOut; //"+groupBy+"
-	      dataOut = "<reportData layout=\""+printLayout+"\"  title=\""+this.getDcCode()+"\" by=\""+this.user.getUserName()+"\" on=\""+(new Date()).toString()+"\">"+dataOut+"</reportData>";
+	      String dcTitle = DcTranslation.get(this.getDcCode(), this.session.getLanguage(), true).get(DcTranslReader.TAG_DC_PROPERTY+".Title");
+	      dataOut = "<reportData layout=\""+printLayout+"\"  title=\""+dcTitle+"\" by=\""+this.user.getUserName()+"\" on=\""+(new Date()).toString()+"\">"+dataOut+"</reportData>";
 	    }
 	    
 	    
@@ -427,9 +420,9 @@ public abstract class AbstractDataControl implements IDataControl{
 	}
 	
  
-	
-	
-	
+	protected void sendSuccess() throws Exception {
+		write( "{ success:true}");
+	}
 	
 	protected void sendRecord() throws Exception {
 		StringBuffer transport = new StringBuffer();
@@ -563,7 +556,7 @@ public abstract class AbstractDataControl implements IDataControl{
 	  
 
 	 
-	 protected void _doSummaries(String sql) throws SQLException {
+	 protected void _doSummaries(String sql) throws Exception {
 		//this.recordsSummary =  new Properties();
 		this.recordsSummary = dbm.executeQuery(sql, this.queryParams).get(0);
 	 
@@ -664,7 +657,7 @@ public abstract class AbstractDataControl implements IDataControl{
 	     
 	      
 	      this.write("<?xml version=\"1.0\"?>");
-	      this.write("<?xml-stylesheet type=\"text/xsl\" href=\"test.xsl\"?>");
+	      this.write("<?xml-stylesheet type=\"text/xsl\" href=\"templates/dc.xsl\"?>");
 	      
 	    } else if (this.dataFormatExport.equals(HttpRequest.DATA_FORMAT_XML))  {
 	    	

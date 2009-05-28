@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.nan21.lib.dc.FieldDef;
+
  
 public class CollectionUtils {
 
