@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0108 extends AbstractDataControl implements IDataControl {
 
@@ -40,29 +41,32 @@ public void initNewRecord() throws Exception {
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
     if (pName.equals("markDelivered")) { this.callProc_markDelivered(); }
+    this.sendRecord();
 }
 
 
 private void callProc_markDelivered() throws Exception {
-
-  String p_raise = "Y"; 
-
-  Properties inParams = new Properties();
-  Properties outParams = new Properties();
-   inParams.setProperty("p_event_date", "EVENT_DATE");
-   inParams.setProperty("p_parcel_code", "CODE");
-   inParams.setProperty("p_raise", p_raise);
-   inParams.setProperty("p_agent_id", "ORG_ID");
+  ProcParamDef param = null;
+  List<ProcParamDef> params= new ArrayList<ProcParamDef>();
+  param = new ProcParamDef("p_event_date","EVENT_DATE", DataType.DATE,true,false);
+  params.add(param);
+  param = new ProcParamDef("p_parcel_code","CODE", DataType.STRING,true,false);
+  params.add(param);
+  param = new ProcParamDef("p_raise",null, DataType.STRING,true,false);
+  param.setValue("Y"); 
+  params.add(param);
+  param = new ProcParamDef("p_agent_id","ORG_ID", DataType.NUMBER,true,false);
+  params.add(param);
   String sql = "BEGIN pbo_parcel.mark_delivered(?,?,?,?); END;";
-  dbm.executeProcedure(sql, inParams, outParams, this.record);
+  dbm.executeProcedure(sql, params, this.record);
 
 } 
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("EVENT_DATE", new FieldDef("DATE"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("EVENT_DATE", new FieldDef("DATE"));
 	  this.fields.put("ORG", new FieldDef("STRING"));
 	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"CODE"};

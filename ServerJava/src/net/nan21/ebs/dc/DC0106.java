@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0106 extends AbstractDataControl implements IDataControl {
 
@@ -19,15 +20,15 @@ public class DC0106 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_DOCSER_ID") != null && !this.request.getParam("QRY_DOCSER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.DOCSER_ID like :DOCSER_ID");
       this.queryParams.put("DOCSER_ID",(String)this.request.getParam("QRY_DOCSER_ID"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
 }
 
@@ -36,12 +37,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.DOCSER_ID"+
-               " ,t.MINVAL"+
-               " ,t.MAXVAL"+
-               " ,t.IS_INSTALLED"+
+               " t.DOCSER_ID"+
+               " ,t.ID"+
                " ,t.IS_CLOSED"+
+               " ,t.IS_INSTALLED"+
+               " ,t.MAXVAL"+
+               " ,t.MINVAL"+
            " from DOCUMENT_SERIAL_RANGE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -72,15 +73,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into DOCUMENT_SERIAL_RANGE("+
-               "  ID"+
-               " ,DOCSER_ID"+
-               " ,MINVAL"+
+               "  DOCSER_ID"+
+               " ,ID"+
                " ,MAXVAL"+
+               " ,MINVAL"+
            " ) values ( "+
-               "  :ID"+
-               " ,:DOCSER_ID"+
-               " ,:MINVAL"+
+               "  :DOCSER_ID"+
+               " ,:ID"+
                " ,:MAXVAL"+
+               " ,:MINVAL"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_DOCSERRNG_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -124,12 +125,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.DOCSER_ID"+
-               " ,t.MINVAL"+
-               " ,t.MAXVAL"+
-               " ,t.IS_INSTALLED"+
+               " t.DOCSER_ID"+
+               " ,t.ID"+
                " ,t.IS_CLOSED"+
+               " ,t.IS_INSTALLED"+
+               " ,t.MAXVAL"+
+               " ,t.MINVAL"+
            " from DOCUMENT_SERIAL_RANGE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -140,17 +141,18 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("DOCSER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("MINVAL", new FieldDef("NUMBER"));
-	  this.fields.put("MAXVAL", new FieldDef("NUMBER"));
-	  this.fields.put("IS_INSTALLED", new FieldDef("BOOLEAN"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("IS_CLOSED", new FieldDef("BOOLEAN"));
+	  this.fields.put("IS_INSTALLED", new FieldDef("BOOLEAN"));
+	  this.fields.put("MAXVAL", new FieldDef("NUMBER"));
+	  this.fields.put("MINVAL", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

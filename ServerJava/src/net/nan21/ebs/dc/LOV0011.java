@@ -6,6 +6,7 @@
 package net.nan21.ebs.dc;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 import java.util.HashMap;
 public class LOV0011 extends AbstractDataControl implements IDataControlLov {
 public void init(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
