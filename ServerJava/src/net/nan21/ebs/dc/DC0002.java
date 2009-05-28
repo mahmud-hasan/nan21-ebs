@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0002 DC Controller: Currencies def.
+ * DC0002 DC Controller: Currencies
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0002 extends AbstractDataControl implements IDataControl {
 
@@ -19,20 +20,20 @@ public class DC0002 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+      this.queryWhere.append("ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
     }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
     }
-    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ACTIVE like :ACTIVE");
-      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
+      this.queryWhere.append("ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
 }
 
@@ -41,10 +42,10 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ID"+
+               " ACTIVE"+
                " ,CODE"+
+               " ,ID"+
                " ,NAME"+
-               " ,ACTIVE"+
            " from CURRENCY  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -73,15 +74,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into CURRENCY("+
-               "  ID"+
+               "  ACTIVE"+
                " ,CODE"+
+               " ,ID"+
                " ,NAME"+
-               " ,ACTIVE"+
            " ) values ( "+
-               "  :ID"+
+               "  :ACTIVE"+
                " ,:CODE"+
+               " ,:ID"+
                " ,:NAME"+
-               " ,:ACTIVE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_CURRENCY_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -124,10 +125,10 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ID"+
+               " ACTIVE"+
                " ,CODE"+
+               " ,ID"+
                " ,NAME"+
-               " ,ACTIVE"+
            " from CURRENCY "+
         " where "+
      "      ID= :ID"+ 
@@ -138,20 +139,21 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.get("CODE").setCaseRestriction("Upper");
-	  this.fields.put("NAME", new FieldDef("STRING"));
-	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
 	  this.fields.put("ACCOUNT_GAIN", new FieldDef("STRING"));
 	  this.fields.get("ACCOUNT_GAIN").setInDS(false);
 	  this.fields.put("ACCOUNT_LOSS", new FieldDef("STRING"));
 	  this.fields.get("ACCOUNT_LOSS").setInDS(false);
+	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.get("CODE").setCaseRestriction("Upper");
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
