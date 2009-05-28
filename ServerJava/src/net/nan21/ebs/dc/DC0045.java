@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0045 extends AbstractDataControl implements IDataControl {
 
@@ -19,6 +20,11 @@ public class DC0045 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ID like :ID");
@@ -28,11 +34,6 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
-    }
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_STATUS_CODE") != null && !this.request.getParam("QRY_STATUS_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -51,15 +52,15 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ID"+
-               " ,NAME"+
-               " ,CLIENT_ID"+
-               " ,STATUS_CODE"+
-               " ,CREATEDON"+
-               " ,CREATEDBY"+
-               " ,MODIFIEDON"+
-               " ,MODIFIEDBY"+
+               " CLIENT_ID"+
                " ,(select code from client where id = client_id) CLIENT_NAME"+
+               " ,CREATEDBY"+
+               " ,CREATEDON"+
+               " ,ID"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
+               " ,NAME"+
+               " ,STATUS_CODE"+
                " ,TYPE_CODE"+
            " from PROJECT  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -72,8 +73,8 @@ public void doExport() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ID"+
-               " ,CLIENT_ID"+
                ",(select code from client where id = client_id) CLIENT_NAME"+
+               " ,CLIENT_ID"+
                " ,NAME"+
                " ,TYPE_CODE"+
                " ,STATUS_CODE"+
@@ -95,15 +96,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into PROJECT("+
-               "  ID"+
+               "  CLIENT_ID"+
+               " ,ID"+
                " ,NAME"+
-               " ,CLIENT_ID"+
                " ,STATUS_CODE"+
                " ,TYPE_CODE"+
            " ) values ( "+
-               "  :ID"+
+               "  :CLIENT_ID"+
+               " ,:ID"+
                " ,:NAME"+
-               " ,:CLIENT_ID"+
                " ,:STATUS_CODE"+
                " ,:TYPE_CODE"+
     ")";
@@ -118,9 +119,9 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update PROJECT set "+
-               "  ID=:ID"+
+               "  CLIENT_ID=:CLIENT_ID"+
+               " ,ID=:ID"+
                " ,NAME=:NAME"+
-               " ,CLIENT_ID=:CLIENT_ID"+
                " ,STATUS_CODE=:STATUS_CODE"+
                " ,TYPE_CODE=:TYPE_CODE"+
    " where "+
@@ -149,15 +150,15 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ID"+
-               " ,NAME"+
-               " ,CLIENT_ID"+
-               " ,STATUS_CODE"+
-               " ,CREATEDON"+
-               " ,CREATEDBY"+
-               " ,MODIFIEDON"+
-               " ,MODIFIEDBY"+
+               " CLIENT_ID"+
                 ",(select code from client where id = client_id) CLIENT_NAME"+
+               " ,CREATEDBY"+
+               " ,CREATEDON"+
+               " ,ID"+
+               " ,MODIFIEDBY"+
+               " ,MODIFIEDON"+
+               " ,NAME"+
+               " ,STATUS_CODE"+
                " ,TYPE_CODE"+
            " from PROJECT "+
         " where "+
@@ -169,20 +170,21 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("STATUS_CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  this.fields.put("CLIENT_NAME", new FieldDef("STRING"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("STATUS_CODE", new FieldDef("STRING"));
 	  this.fields.put("TYPE_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
