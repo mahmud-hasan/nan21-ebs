@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import net.nan21.lib.dc.ProcParamDef;
 
 import org.apache.log4j.Logger;
 
@@ -24,27 +25,51 @@ import oracle.jdbc.pool.OracleDataSource;
 public class DbManager {
 
 	private String dbJndiName;
+		
 	private OracleConnection dbConn;
-
+	
+	
 	private static Logger logger = Logger.getLogger(DbManager.class);
 	
+	/**
+	 * Constructor with JNDI name to establish the database connection. 
+	 * When calling getDbConn for the first time will try to establish a connection to database using the JNDI provided. 
+	 * @param dbJndiName
+	 * @throws Exception
+	 */
 	public DbManager(String dbJndiName) throws Exception {
 		this.dbJndiName = dbJndiName;
-		doDbConnection();
 	}
- 
-	// -------------------- getters/ setters
+	
+	/**
+	 * Constructor with the connection object.
+	 * @param conn
+	 * @throws Exception
+	 */
+	public DbManager(OracleConnection conn) throws Exception {
+		this.dbConn = conn;
+	}
+	
+	// -------------------- getters/setters ------------
 
-	public OracleConnection getDbConn() {
+	public OracleConnection getDbConn() throws Exception{		 
+		if (this.dbConn == null) { 
+			doDbConnection();
+		}  
 		return dbConn;
 	}
-
+	
+	
 	public void setDbConn(OracleConnection dbConn) {
 		this.dbConn = dbConn;
 	}
 
 	public void close() throws SQLException {
 		dbConn.close();
+		dbConn = null;
+	}
+
+	public void releaseConnection() throws SQLException {
 		dbConn = null;
 	}
 	
@@ -57,8 +82,7 @@ public class DbManager {
 		     if (envContext == null) throw new Exception("Cannot establish DB connection: No Context");
 		     if (ds == null) throw new Exception("Cannot establish DB connection: No DataSource");
 		     if (ds != null) dbConn = (OracleConnection)ds.getConnection();
-	
-	 
+		 
 			  if (this.dbConn == null) {
 				 throw new Exception("Cannot establish DB connection: No connection");
 			  }
@@ -69,37 +93,29 @@ public class DbManager {
 	    }
 	  
 	  
-		public void executeNamedProcedure(String sql) throws SQLException {		
-			_executeProcedure(sql, null, null, null , true);		
+		public void executeNamedProcedure(String sql) throws Exception {		
+			_executeProcedure(sql, null, null , true);		
 		}
 		
-		public void executeNamedProcedure(String sql, Properties inParams, Map<String,String> paramValues) throws SQLException {		
-			_executeProcedure(sql, inParams, null, paramValues , true);		
+		public void executeNamedProcedure(String sql, List<ProcParamDef> params, Map<String,String> paramValues) throws Exception {		
+			_executeProcedure(sql, params, paramValues , true);		
 		}
-		public void executeNamedProcedure(String sql, Properties inParams, Properties outParams, Map<String,String> paramValues) throws SQLException {
-			_executeProcedure(sql, inParams, outParams, paramValues , true);		
-		}
+
 		
 		
-	public void executeProcedure(String sql) throws SQLException {		
-		_executeProcedure(sql, null, null, null , false);		
+	public void executeProcedure(String sql) throws Exception {		
+		_executeProcedure(sql, null, null , false);		
 	}
 	
-	public void executeProcedure(String sql, Properties inParams, Map<String,String> paramValues) throws SQLException {		
-		_executeProcedure(sql, inParams, null, paramValues , false);		
+	public void executeProcedure(String sql, List<ProcParamDef> params, Map<String,String> paramValues) throws Exception {		
+		_executeProcedure(sql, params, paramValues , false);		
 	}
-	public void executeProcedure(String sql, Properties inParams, Properties outParams, Map<String,String> paramValues) throws SQLException {
-		_executeProcedure(sql, inParams, outParams, paramValues , false);		
-	}
+ 
 	
-	private void _executeProcedure(String sql, Properties inParams,
-			Properties outParams, Map<String,String> paramValues, boolean isNamed) throws SQLException {
-		if ((inParams != null ||outParams != null) && paramValues == null) {
-			throw new SQLException("INVALID_PROCEDURE_CALL");
-		}
-		
-		
-		
+	
+	
+	private void _executeProcedure(String sql, List<ProcParamDef> params, Map<String,String> paramValues, boolean isNamed) throws Exception {
+	  
 		
 		OracleCallableStatement st = null;
 		try {
@@ -107,45 +123,57 @@ public class DbManager {
 
 			// bind in parameters
 			if (isNamed) {
-				if (inParams != null ) {
-					Iterator it = inParams.keySet().iterator();
+				if (params != null) {
+					Iterator<ProcParamDef> it = params.iterator();
 					while (it.hasNext()) {
-						String p = (String) it.next();
-						st.setStringAtName(p, paramValues.get(inParams.getProperty(p)));						
+						ProcParamDef param = it.next();
+						if (param.isInParam()) {
+							st.setStringAtName(param.getParamName(), (param.getBinding()!=null)?paramValues.get(param.getBinding()):param.getValue()  );			
+						}
+						if (param.isOutParam()) {
+							st.registerOutParameter(param.getParamName(), DataType.toSqlType(param.getDataType())); 
+						}
+									
 					}
-				}
-			} else {
-				if (inParams != null ) {
-					Iterator it = inParams.keySet().iterator();
+				}			
+			} else {				
+				if (params != null ) {
+					Iterator<ProcParamDef> it = params.iterator();
 					while (it.hasNext()) {
-						String p = (String) it.next();						
-						st.setString(p, paramValues.get(inParams.getProperty(p)));
+						ProcParamDef param = it.next();	
+						if (param.isInParam()) {
+							st.setString(param.getParamName(), (param.getBinding()!=null)?paramValues.get(param.getBinding()):param.getValue() );	
+						}	
+						if (param.isOutParam()) {
+							st.registerOutParameter(param.getParamName(), DataType.toSqlType(param.getDataType())); 
+						}
 					}
 				}
 			}
-			
-			if (outParams != null ) {
-				// bind out parameters
-				Iterator it = outParams.keySet().iterator();
-				while (it.hasNext()) {
-					String p = (String) it.next();
-					st.registerOutParameter(p, java.sql.Types.VARCHAR);
-				}
- 
-			}
+						 
 			if (logger.isDebugEnabled()) {
-				logger.debug("SQL:"+sql);				
+				logger.debug("SQL:"+sql);	
+				logger.debug("Arguments:");
+				if (params!=null) {
+					Iterator<ProcParamDef> it = params.iterator();
+					while (it.hasNext()) {
+						ProcParamDef param = it.next();	
+						logger.debug("  "+param.getParamName()+" = "+ ((param.getBinding()!=null)?paramValues.get(param.getBinding()):param.getValue() )   );
+					}
+				}				
 			}
 			st.execute();
-
+			
 			// read out parameter values
-			if (outParams != null ) {
-				Iterator it = outParams.keySet().iterator();
+			if (params != null) {
+				Iterator<ProcParamDef> it = params.iterator();
 				while (it.hasNext()) {
-					String p = (String) it.next();
-					paramValues.put(outParams.getProperty(p), st.getString(p));
+					ProcParamDef param = it.next();	
+					if (param.isOutParam() && param.getBinding() != null ) {
+						paramValues.put(param.getBinding(), st.getString(param.getParamName()));					
+					} 
 				}
-			}
+			}			
 		} catch (SQLException e) {
 			try {
 				if (st != null) {
@@ -166,18 +194,17 @@ public class DbManager {
 		}
 	}
 
-	public void executeStatement(String sql) throws SQLException {
+	public void executeStatement(String sql) throws Exception {
 		executeStatement(sql, null);
 	}
 	
-	public void executeStatement(String sql, Map<String,String> params)
-			throws SQLException {
+	public void executeStatement(String sql, Map<String,String> params) throws Exception {
 		OraclePreparedStatement st = null;
 		try {
 			st = (OraclePreparedStatement) this.getDbConn().prepareStatement(
 					sql);
 			if (params != null) {
-				Iterator it = params.keySet().iterator();
+				Iterator<String> it = params.keySet().iterator();
 				while (it.hasNext()) {
 					String p = (String) it.next();
 					//System.out.println(p);
@@ -287,19 +314,18 @@ public class DbManager {
 		return p;
 	}
 	
-	public List<Map<String, String>> executeQuery(String sql)
-	throws SQLException {
+	public List<Map<String, String>> executeQuery(String sql) throws Exception {
 		return executeQuery(sql, null);
 	}
 	
 	public List<Map<String, String>> executeQuery(String sql, Map<String, String> params)
-			throws SQLException {
+			throws Exception {
 		OraclePreparedStatement st = null;
 		try {
 			st = (OraclePreparedStatement) this.getDbConn().prepareStatement(
 					sql);
 			if (params != null) {
-				Iterator it = params.keySet().iterator();
+				Iterator<String> it = params.keySet().iterator();
 				while (it.hasNext()) {
 					String p = (String) it.next();
 					try {
@@ -344,7 +370,7 @@ public class DbManager {
 	}
 
 	public List<Map<String, String>> executeQueryLimit(String sql, Map<String, String> params,
-			int _queryResultStart, int _queryResultSize) throws SQLException {
+			int _queryResultStart, int _queryResultSize) throws Exception {
 		//TODO: validate limit integers ....
 		int _queryResultStop = _queryResultStart + _queryResultSize;
 		_queryResultStart++;		 
@@ -353,14 +379,14 @@ public class DbManager {
 	}
 
 	public int countQueryResults(String sql, Map<String, String> params)
-			throws SQLException {
+			throws Exception {
 		int res = -1;
 		String countSql = "select count(*) TOTALCOUNT from (" + sql + ") t";
 		res = Integer.parseInt(this.executeQuery(countSql, params).get(0).get("TOTALCOUNT"));
 		return res;
 	}
 
-	public String getSequenceNextValue(String sequencaName) throws SQLException {
+	public String getSequenceNextValue(String sequencaName) throws Exception {
 		ResultSet rsSeq = this.getDbConn().createStatement().executeQuery(
 				"select " + sequencaName + ".nextval seq_val from dual");
 		rsSeq.next();

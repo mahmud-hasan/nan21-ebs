@@ -1,6 +1,6 @@
 package net.nan21.lib.settings;
 
-import net.nan21.lib.DataControlResolver;
+import net.nan21.lib.dc.DataControlResolver;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -9,10 +9,12 @@ import org.xml.sax.helpers.DefaultHandler;
 public class CustomDcReader extends DefaultHandler{
 	
 	private Settings settings;
+	private String rootPath;
 	
-	public CustomDcReader() {
+	public CustomDcReader(String rootPath) {
 		super();
 		this.settings = Settings.getInstance();
+		this.rootPath = rootPath;
 	}
 	
 	

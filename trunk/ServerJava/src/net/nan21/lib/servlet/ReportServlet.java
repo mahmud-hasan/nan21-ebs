@@ -1,99 +1,121 @@
 package net.nan21.lib.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.servlet.ServletException;
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.lib.JasperReportGenerator;
-import net.nan21.lib.DbManager;
+import org.apache.log4j.Logger;
+
+import net.nan21.lib.*;
+import net.nan21.lib.dc.IReport;
+import net.nan21.lib.settings.*;
 
 public class ReportServlet extends HttpServlet {
 
-	private final Properties settings = new Properties();
-	
-	
-	public void init(){
-		 this.settings.setProperty("DbJndiName", "jdbc/nan21ebs");
-	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-		DbManager dbm = null;
-		
-		String sourcePath = "D:/work/php/n21eBusinessSuite/Reports/standard";
-		String sourceFileName = "D:/work/php/n21eBusinessSuite/Reports/standard/REP0001.jrxml";
-		String compilePath = "D:/work/php/n21eBusinessSuite/Reports/standard";
-		String jasperClassPath = "D:/workenv/sdk/reporting/iReport/3.0.0/lib/";
-		String cachePath = "D:/work/php/n21eBusinessSuite/Reports/standard";
-		
-		String destFile = "D:/work/php/n21eBusinessSuite/Reports/standard/result.pdf";
-		Map params = new HashMap();
-		params.put("P_INVOICE_ID", new java.lang.Long(request.getParameter("P_INVOICE_ID")) );
-		params.put("SUBREPORT_DIR",sourcePath);
-		
-	 
-		try	{					
-			dbm = new DbManager(this.settings.getProperty("DbJndiName"));
-			JasperReportGenerator rg = new JasperReportGenerator(sourceFileName, compilePath, jasperClassPath, cachePath);
-			rg.runReport(destFile, params, JasperReportGenerator.REPORT_TYPE_PDF, (Connection)dbm.getDbConn());
-			
-		}catch (Exception e) {
-			e.printStackTrace();
+	static final long serialVersionUID = -1;
+	private static Logger logger = Logger.getLogger(ReportServlet.class);
+	private Settings settings = null;
+	private IAccessManager accessManager = null;
+
+	public void init() {
+		StopWatch sw = new StopWatch();
+		sw.start();
+		if (logger.isInfoEnabled()) {
+			logger.info("Initializing ReportServlet.");
 		}
+		String cfgFilePath = getInitParameter("configFilesPath");
+		String rootPath = getServletContext().getRealPath("/");
 		
-		
-		
-		
-		
-		
-	}
-	
-	
-	
-	
-	/*
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		DbManager dbm = null;
-		
-		Connection connection;
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-		InputStream reportStream =	getServletConfig().getServletContext().getResourceAsStream("D:/work/php/n21eBusinessSuite/Reports/standard/REP0001.jasper");
-		try	{
-			
-			dbm = new DbManager(this.settings.getProperty("DbJndiName"));
-			
-			//Class.forName("oracle.jdbc.driver.OracleDriver");
-			//connection = DriverManager.getConnection ("jdbc:oracle:thin:@toshiba2:1521:XE?user=NAN21&password=NAN21");
-			connection = (Connection)dbm.getDbConn();
-			Map<String, Object> params = new HashMap();
-			params.put("P_INVOICE_ID", new java.lang.Long(request.getParameter("P_INVOICE_ID")) );
-				
-		 
-			JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,params , connection);
-			connection.close();					
-			response.setContentType("application/pdf");
-			servletOutputStream.flush();
-			servletOutputStream.close();
+		if (cfgFilePath==null || cfgFilePath.equals("")) {
+			cfgFilePath = rootPath+"/WEB-INF/classes";			 
+		}
+
+
+		try {
+			SettingsManager.loadSetting(rootPath, cfgFilePath);
+			this.settings = Settings.getInstance();
+			accessManager = (IAccessManager) Class.forName(
+					this.settings.getSecurityManagerClassName()).newInstance();
 		} catch (Exception e) {
-			// display stack trace in the browser
-			//StringWriter stringWriter = new StringWriter();
-			//PrintWriter printWriter = new PrintWriter(stringWriter);
-			//e.printStackTrace(printWriter);
 			e.printStackTrace();
-			//response.setContentType("text/plain");
-			//response.getOutputStream().print(stringWriter.toString());
+		} finally {
+			sw.stop();
+			logger.info("ReportServlet initialized in " + sw.getTime() + " ms");
 		}
 	}
-	 * */
-	
-	
-	
+
+	// private boolean authAction;
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		doGet(request, response);
+	}
+
+	public void doGet(HttpServletRequest httpRequest,
+			HttpServletResponse response) throws IOException {
+		StopWatch sw = new StopWatch();
+		sw.start();
+		if (logger.isDebugEnabled()) {
+			logger.debug(" *** Request: " + httpRequest.getQueryString());
+		}
+		DbManager dbm = null;
+		HttpRequest request = null;
+		HttpSession session = null;
+
+		try {
+
+			request = new HttpRequest(httpRequest);
+			session = new HttpSession(httpRequest.getSession(true));
+
+			if (!request.isValid()) {
+				this.sendError(response, HttpServletResponse.SC_BAD_REQUEST,
+						request.getError());
+			}
+			if (!session.isAuthenticated()
+					|| !accessManager.confirmAuthentication()) {
+
+				sendError(response, HttpServletResponse.SC_UNAUTHORIZED,
+						"Not Authorized");
+				return;
+
+			}
+
+			dbm = DbManagerFactory.getDbManager(session, request);
+
+			accessManager.setDbConn(dbm.getDbConn());
+
+			String sql = "ALTER SESSION SET NLS_DATE_FORMAT='DD.MM.YYYY'";
+			dbm.executeStatement(sql);
+			doReport(request, response, session, dbm);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					URLEncoder.encode(e.getMessage(), "UTF-8"));
+		} finally {
+			logger.debug(" -> Closing DbManager");
+			DbManagerFactory.cleanup(session, request, dbm);
+			sw.stop();
+			logger.info("Report processed in " + sw.getTime() + " ms");
+		}
+	}
+
+	private void doReport(HttpRequest request, HttpServletResponse response,
+			HttpSession session, DbManager dbm) throws Exception {
+		IReport r = (IReport) Class.forName(
+				"net.nan21.ebs.rep." + request.getReportCode() ).newInstance();
+		r.init(request, response, session, dbm);
+		r.run();
+	}
+
+	private void sendError(HttpServletResponse response, int errorCode,
+			String message) throws IOException {
+		response.setStatus(errorCode);
+		response.getWriter().write(message);
+		response.flushBuffer();
+	}
+
+
 }

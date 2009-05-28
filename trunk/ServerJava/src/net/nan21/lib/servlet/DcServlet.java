@@ -1,19 +1,19 @@
 package net.nan21.lib.servlet;
  
  
+import java.io.File;
 import java.io.IOException;
- 
-import java.net.URLEncoder;
-import java.sql.SQLException;
-  
+import java.net.URLEncoder;  
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
  
- 
 import net.nan21.lib.*;
+import net.nan21.lib.dc.DataControlFactory;
+import net.nan21.lib.dc.IDataControl;
+import net.nan21.lib.dc.IReport;
 import net.nan21.lib.settings.*;
  
 
@@ -35,19 +35,15 @@ public class DcServlet extends HttpServlet{
 		 if (logger.isInfoEnabled()) {
 	    	  logger.info("Initializing DcServlet.");
 	      }
-		 String cfgFilePath = getInitParameter("n21ebsConfigFilesPath");
+		 String cfgFilePath = getInitParameter("configFilesPath");
+		 String rootPath = getServletContext().getRealPath("/");
 		 if (cfgFilePath==null || cfgFilePath.equals("")) {
-			 cfgFilePath = getServletContext().getRealPath("/");
+			 cfgFilePath = rootPath+"/WEB-INF/classes";			 
 		 }
-		 logger.info("Looking for configuration files in: "+cfgFilePath);
-		 logger.info("Loading settings from applicationConfig.xml ... ");
-		 SettingsManager.loadSettings(cfgFilePath+"/applicationConfig.xml");
-		 logger.info("Loading settings from customDataControls.xml ... ");
-		 SettingsManager.loadCustomDc(cfgFilePath+"/customDataControls.xml");		 
-		 this.settings = Settings.getInstance();
-		 
+		 		 
 		 try {
-			 this.settings.validate();  
+			SettingsManager.loadSetting(rootPath, cfgFilePath);		 
+			this.settings = Settings.getInstance();
 			accessManager = (IAccessManager)Class.forName(this.settings.getSecurityManagerClassName()).newInstance();			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,23 +67,33 @@ public class DcServlet extends HttpServlet{
 			logger.debug(" *** Request: "+httpRequest.getQueryString());
 		}
 		DbManager dbm = null;
+		HttpRequest request = null;
+		HttpSession session = null;
+		
 		try {  
 			 						
-			HttpRequest request = new HttpRequest(httpRequest);
-			HttpSession session = new HttpSession(httpRequest.getSession(true));	
- 				 	 
+			request = new HttpRequest(httpRequest);
+			session = new HttpSession(httpRequest.getSession(true));	
+ 			 	 
 			// =============================== validate=============================== 
+			
+			if (request.isLogoutRequest()) {
+	  			session.setAttribute(HttpSession.MAP_KEY_AUTH_USER, null);
+	  			this.sendOk(response,"{ success: true, message: \"OK\"}");
+	  			//close database connections in case of state-full db session
+	  			return;
+	  		}
+			
 			if (!session.isAuthenticated() ) {  
 			  	if (!request.isAuthenticationRequest() ) {
-			  		sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized");		  	
-			  	} else {
-			  		// we'll do the authentication a little bit later ...  
-			  		// authAction = true;		
+			  		sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized");	
+			  		return;
 			  	}  	
 			  } else {
 			  	 //Double check that current request is coming from session owner according to specific rules.
 			  	 if (!accessManager.confirmAuthentication()) {
 			  		this.sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized"); 
+			  		return;
 			  	 }
 			  }  
 	 
@@ -98,7 +104,8 @@ public class DcServlet extends HttpServlet{
 			
 			// =============================== validate===============================
 			  
-				dbm = new DbManager(this.settings.getDbInstance("").getJndiName());
+			    dbm = DbManagerFactory.getDbManager(session, request);
+				
 				accessManager.setDbConn(dbm.getDbConn());
 								
 				if (request.isAuthenticationRequest() ) {
@@ -139,18 +146,11 @@ public class DcServlet extends HttpServlet{
 			e.printStackTrace();
 			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, URLEncoder.encode(e.getMessage(), "UTF-8")); 
 		}finally {
-			if (dbm != null) {
-				try {
-					 logger.debug(" -> Closing DbManager");					 			
-					dbm.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}		
-			}
+			logger.debug(" -> Closing DbManager");	
+			DbManagerFactory.cleanup(session, request, dbm);			
 			sw.stop();
 			logger.info("Request processed in "+sw.getTime() + " ms");
-		}
-		
+		}		
 	}
 	
  
@@ -158,15 +158,22 @@ public class DcServlet extends HttpServlet{
 	private void processRequest(
 			   HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm			
 			) throws Exception {
-		String dcName = request.getDcName();		
-		if ( dcName.startsWith("LOV")) {
-			processRequestLov(request, response, session, dbm);
-		} else {
+		String dcName = request.getDcName();
+		if (dcName.startsWith("LOV") || dcName.startsWith("DC") ) {
 			processRequestDc(request, response, session, dbm);
+		}
+		if (dcName.startsWith("REP") ) {
+			doReport(request, response, session, dbm);
 		}
 	}
 	
- 
+    private void doReport(HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm) throws Exception {
+    	IReport r = (IReport) Class.forName("net.nan21.ebs.rep."+request.getDcName() ).newInstance();
+    	r.init(request, response, session, dbm);
+    	r.run();
+    }
+    
+    
 	private void processRequestDc(
 	   HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm
 	
@@ -182,8 +189,7 @@ public class DcServlet extends HttpServlet{
 			IDataControl frm = null;
 			try {
 								 
-				frm = DataControlFactory.getDataControl(dcName);
-				 
+				frm = DataControlFactory.getDataControl(dcName);				 
 			    frm.init(request, response, session, dbm);
 			 
 				if (action.equals(HttpRequest.ACTION_FETCH) ) {
@@ -199,7 +205,7 @@ public class DcServlet extends HttpServlet{
 				}else if(action.equals(HttpRequest.ACTION_UPDATE)) {
 					if (!this.useCustomAccessRightCheck) {
 						//this.checkDCPermission(HttpRequest.ACTION_UPDATE, dcName);
-					}
+					} 
 					frm.doUpdate();
 				}else if(action.equals(HttpRequest.ACTION_FETCH_RECORD) ) {
 					frm.fetchRecord();
@@ -213,15 +219,18 @@ public class DcServlet extends HttpServlet{
 				}else if(action.equals(HttpRequest.ACTION_INIT_RECORD ) ) {
 					frm.initNewRecord();
 				}else if(action.equals(HttpRequest.ACTION_CUSTOM) ) {
-					frm.doCustomAction(( request.getParam("_p_custom_action") != null )?request.getParam("_p_custom_action"):"");
+					frm.doCustomAction(( request.getParam(HttpRequest.REQUEST_PARAM_CUSTOM_ACTION) != null )?request.getParam(HttpRequest.REQUEST_PARAM_CUSTOM_ACTION):"");
 				}
 			 
 			}catch(ClassNotFoundException e ) {
 				sendError(response, HttpServletResponse.SC_NOT_FOUND, "INVALID_DATACONTROL");
-			}			
+			}catch(Exception e) {
+				sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			}
 		}
 	}
-
+	
+	/*
 	private void processRequestLov(
 	   HttpRequest request, HttpServletResponse response, HttpSession session, DbManager dbm
 	
@@ -247,14 +256,17 @@ public class DcServlet extends HttpServlet{
 			}			
 		}
 	}
-	
+	*/
 	
 	private void sendError(HttpServletResponse response, int errorCode, String message) throws IOException {
 		response.setStatus(errorCode);
 		response.getWriter().write(message);
 		response.flushBuffer();
 	}
-	
+	private void sendOk(HttpServletResponse response, String message) throws IOException {
+		response.getWriter().write(message);
+		response.flushBuffer();
+	}	
 	
 	
 }
