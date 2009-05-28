@@ -539,11 +539,11 @@ alter table SALES_ORDER_LINE add constraint PK_SORDLIN primary key (ID);
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  primary key PK_SRVMSG...                                                                                                                                                               
-alter table SERVER_MESSAGE add constraint PK_SRVMSG primary key (ID);                                                                                                                                   
+alter table APP_SERVER_MESSAGE add constraint PK_SRVMSG primary key (ID);                                                                                                                               
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  primary key PK_SRVMSGTRL...                                                                                                                                                            
-alter table SERVER_MESSAGE_TRL add constraint PK_SRVMSGTRL primary key (ID);                                                                                                                            
+alter table APP_SERVER_MESSAGE_TRL add constraint PK_SRVMSGTRL primary key (ID);                                                                                                                        
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  primary key PK_STOCKLOC...                                                                                                                                                             
@@ -923,11 +923,11 @@ alter table SYS_ROLE add constraint UK_ROLE unique (NAME);
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  unique UK_SRVMSG...                                                                                                                                                                    
-alter table SERVER_MESSAGE add constraint UK_SRVMSG unique (CODE);                                                                                                                                      
+alter table APP_SERVER_MESSAGE add constraint UK_SRVMSG unique (CODE);                                                                                                                                  
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  unique UK_SRVMSGTRL...                                                                                                                                                                 
-alter table SERVER_MESSAGE_TRL add constraint UK_SRVMSGTRL unique (SRVMSG_CODE,LANG_CODE);                                                                                                              
+alter table APP_SERVER_MESSAGE_TRL add constraint UK_SRVMSGTRL unique (SRVMSG_CODE,LANG_CODE);                                                                                                          
                                                                                                                                                                                                         
                                                                                                                                                                                                         
 prompt Creating  unique UK_STOCKLOCTYP...                                                                                                                                                               

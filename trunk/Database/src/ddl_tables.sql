@@ -276,6 +276,24 @@ create table APP_DUAL1000(
 );                                                                                                  
                                                                                                     
                                                                                                     
+prompt Creating table APP_SERVER_MESSAGE...                                                         
+create table APP_SERVER_MESSAGE(                                                                    
+  ID NUMBER(10,0) NOT NULL                                                                          
+  ,CODE VARCHAR2(64) NOT NULL                                                                       
+);                                                                                                  
+                                                                                                    
+                                                                                                    
+prompt Creating table APP_SERVER_MESSAGE_TRL...                                                     
+create table APP_SERVER_MESSAGE_TRL(                                                                
+  ID NUMBER(10,0) NOT NULL                                                                          
+  ,SRVMSG_CODE VARCHAR2(64) NOT NULL                                                                
+  ,LANG_CODE VARCHAR2(16) NOT NULL                                                                  
+  ,TRANSLATION VARCHAR2(400) NOT NULL                                                               
+  ,MODIFIEDON DATE NOT NULL                                                                         
+  ,MODIFIEDBY VARCHAR2(16) NOT NULL                                                                 
+);                                                                                                  
+                                                                                                    
+                                                                                                    
 prompt Creating table ASSET...                                                                      
 create table ASSET(                                                                                 
   ID NUMBER(10,0) NOT NULL                                                                          
@@ -2082,24 +2100,6 @@ create table SALES_ORDER_LINE(
   ,DATE_DELIVERED DATE                                                                              
   ,NET_AMOUNT NUMBER(22,6) DEFAULT 0 NOT NULL                                                       
   ,RAW_NET_AMOUNT NUMBER(22,6) DEFAULT 0 NOT NULL                                                   
-);                                                                                                  
-                                                                                                    
-                                                                                                    
-prompt Creating table SERVER_MESSAGE...                                                             
-create table SERVER_MESSAGE(                                                                        
-  ID NUMBER(10,0) NOT NULL                                                                          
-  ,CODE VARCHAR2(64) NOT NULL                                                                       
-);                                                                                                  
-                                                                                                    
-                                                                                                    
-prompt Creating table SERVER_MESSAGE_TRL...                                                         
-create table SERVER_MESSAGE_TRL(                                                                    
-  ID NUMBER(10,0) NOT NULL                                                                          
-  ,SRVMSG_CODE VARCHAR2(64) NOT NULL                                                                
-  ,LANG_CODE VARCHAR2(16) NOT NULL                                                                  
-  ,TRANSLATION VARCHAR2(400) NOT NULL                                                               
-  ,MODIFIEDON DATE NOT NULL                                                                         
-  ,MODIFIEDBY VARCHAR2(16) NOT NULL                                                                 
 );                                                                                                  
                                                                                                     
                                                                                                     
