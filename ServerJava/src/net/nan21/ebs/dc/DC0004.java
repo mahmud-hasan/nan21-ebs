@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0004 extends AbstractDataControl implements IDataControl {
 
@@ -278,11 +279,11 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
-	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
 	  this.fields.put("DOC_NO_FULL", new FieldDef("STRING"));

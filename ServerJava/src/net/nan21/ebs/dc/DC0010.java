@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0010 DC Controller: UoM types
+ * DC0010 DC Controller: Unit of measure types
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0010 extends AbstractDataControl implements IDataControl {
 
@@ -19,15 +20,15 @@ public class DC0010 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE").toUpperCase());
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -41,12 +42,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ID"+
-               " ,CODE"+
-               " ,NAME"+
+               " CODE"+
+               " ,ID"+
                " ,IS_PERIOD"+
                " ,IS_VOLUME"+
                " ,IS_WEIGHT"+
+               " ,NAME"+
            " from UOM_TYPE  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -77,19 +78,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into UOM_TYPE("+
-               "  ID"+
-               " ,CODE"+
-               " ,NAME"+
+               "  CODE"+
+               " ,ID"+
                " ,IS_PERIOD"+
                " ,IS_VOLUME"+
                " ,IS_WEIGHT"+
+               " ,NAME"+
            " ) values ( "+
-               "  :ID"+
-               " ,:CODE"+
-               " ,:NAME"+
+               "  :CODE"+
+               " ,:ID"+
                " ,:IS_PERIOD"+
                " ,:IS_VOLUME"+
                " ,:IS_WEIGHT"+
+               " ,:NAME"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("seq_uomtype_id")  );
     dbm.executeStatement(sql, this.record);
@@ -134,12 +135,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ID"+
-               " ,CODE"+
-               " ,NAME"+
+               " CODE"+
+               " ,ID"+
                " ,IS_PERIOD"+
                " ,IS_VOLUME"+
                " ,IS_WEIGHT"+
+               " ,NAME"+
            " from UOM_TYPE "+
         " where "+
      "      ID= :ID"+ 
@@ -150,18 +151,19 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.get("CODE").setCaseRestriction("Upper");
-	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("IS_PERIOD", new FieldDef("BOOLEAN"));
 	  this.fields.put("IS_VOLUME", new FieldDef("BOOLEAN"));
 	  this.fields.put("IS_WEIGHT", new FieldDef("BOOLEAN"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
