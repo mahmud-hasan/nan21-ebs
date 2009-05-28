@@ -1,0 +1,15 @@
+<Translations dc="DC0109" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Retur la depozit</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVENT_DATE">Data</FieldLabel>
+    <FieldLabel name="RETURN_REASON_CODE">Motiv retur</FieldLabel>
+    <FieldLabel name="RETURN_REASON">Explicatii</FieldLabel>
+    <FieldLabel name="CODE">Cod colet</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_ID">ID depozit</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Depozit</FieldLabel>
+    <FieldLabel name="RETURN_BY_ORG_ID">ID curier</FieldLabel>
+    <FieldLabel name="RETURN_BY_ORG_NAME">Curier</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,18 @@
+<Translations dc="DC0066" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Menu shortcuts</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="OWNER">Owner</FieldLabel>
+    <FieldLabel name="TITLE">Title</FieldLabel>
+    <FieldLabel name="LINK">Link</FieldLabel>
+    <FieldLabel name="MENUITEM_ID">Menuitem_id</FieldLabel>
+    <FieldLabel name="MENUSHRCT_ID">Menushrct_id</FieldLabel>
+    <FieldLabel name="POSITION">Position</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+  </FieldLabels>
+</Translations>

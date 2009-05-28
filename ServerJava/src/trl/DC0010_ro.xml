@@ -1,0 +1,13 @@
+<Translations dc="DC0010" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri unitati masura</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="IS_PERIOD">Perioada?</FieldLabel>
+    <FieldLabel name="IS_VOLUME">Volum?</FieldLabel>
+    <FieldLabel name="IS_WEIGHT">Masa?</FieldLabel>
+  </FieldLabels>
+</Translations>

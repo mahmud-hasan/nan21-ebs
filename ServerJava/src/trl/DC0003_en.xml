@@ -1,0 +1,19 @@
+<Translations dc="DC0003" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Units of measure</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="UOM_TYPE">Type</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="IS_PERIOD">Period</FieldLabel>
+    <FieldLabel name="IS_VOLUME">Volume</FieldLabel>
+    <FieldLabel name="IS_MASS">Mass</FieldLabel>
+  </FieldLabels>
+</Translations>

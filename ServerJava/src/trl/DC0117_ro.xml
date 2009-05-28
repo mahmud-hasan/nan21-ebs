@@ -1,0 +1,39 @@
+<Translations dc="DC0117" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Receptie initiala</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Depozit</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_ID">ID depozit</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CODE">Cod colet</FieldLabel>
+    <FieldLabel name="CONTENT">Continut</FieldLabel>
+    <FieldLabel name="DECLARED_VALUE">Valoare declarata</FieldLabel>
+    <FieldLabel name="DEST_ADRESS_NOTE">Note</FieldLabel>
+    <FieldLabel name="DEST_BPADRESS">Adresa</FieldLabel>
+    <FieldLabel name="DEST_BPADRESS_ID">ID adresa destinatar</FieldLabel>
+    <FieldLabel name="DEST_BPARTNER_ID">ID destinatar</FieldLabel>
+    <FieldLabel name="DEST_CITY">Localitate</FieldLabel>
+    <FieldLabel name="DEST_CITY_ID">ID localitate</FieldLabel>
+    <FieldLabel name="DEST_COUNTRY">Tara</FieldLabel>
+    <FieldLabel name="DEST_NAME">Destinatar</FieldLabel>
+    <FieldLabel name="DEST_REGION">Judet</FieldLabel>
+    <FieldLabel name="DEST_ZIP">Cod postal</FieldLabel>
+    <FieldLabel name="EXP_BPADRESS">Adresa</FieldLabel>
+    <FieldLabel name="EXP_BPADRESS_ID">ID adresa expeditor</FieldLabel>
+    <FieldLabel name="EXP_BPARTNER_ID">ID expeditor</FieldLabel>
+    <FieldLabel name="EXP_CITY">Localitate</FieldLabel>
+    <FieldLabel name="EXP_CITY_ID">ID localitate expeditor</FieldLabel>
+    <FieldLabel name="EXP_COUNTRY">Tara</FieldLabel>
+    <FieldLabel name="EXP_NAME">Expeditor</FieldLabel>
+    <FieldLabel name="EXP_REGION">Judet</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="INSURED_VALUE">Valoare asigurata</FieldLabel>
+    <FieldLabel name="NOTES">Note</FieldLabel>
+    <FieldLabel name="PACKAGE_COUNT">Bucati</FieldLabel>
+    <FieldLabel name="REF_PARCEL_ID">ID colet referinta</FieldLabel>
+    <FieldLabel name="REF_PARCEL_REFERENCE_TYPE">Tip referinta</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Data receptie</FieldLabel>
+  </FieldLabels>
+</Translations>

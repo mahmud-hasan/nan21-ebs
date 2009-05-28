@@ -1,0 +1,22 @@
+<Translations dc="DC0080" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Linii document receptie</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="LINE_NO">Nr linie</FieldLabel>
+    <FieldLabel name="MVMNTINDOC_ID">ID document</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="QTY">Cantitate</FieldLabel>
+    <FieldLabel name="BASE_DOC_QTY">Cantitate doc sursa</FieldLabel>
+    <FieldLabel name="RECEIVED_QTY">Cantitate receptionata</FieldLabel>
+    <FieldLabel name="INVENTORY_QTY">Cantitate stoc</FieldLabel>
+    <FieldLabel name="BASE_DOC_PRICE">Pret doc sursa</FieldLabel>
+    <FieldLabel name="BASE_DOC_CURRENCY">Moneda doc sursa</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="UOM">UM</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+    <FieldLabel name="STOCKLOC_ID">ID locatie</FieldLabel>
+    <FieldLabel name="STOCKLOC_CODE">Locatie</FieldLabel>
+  </FieldLabels>
+</Translations>

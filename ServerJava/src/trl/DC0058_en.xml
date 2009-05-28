@@ -1,0 +1,15 @@
+<Translations dc="DC0058" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Communication channels</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner id</FieldLabel>
+    <FieldLabel name="CMNCT_TYPE">Type</FieldLabel>
+    <FieldLabel name="CMNCT_VALUE">Value</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+  </FieldLabels>
+</Translations>

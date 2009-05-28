@@ -1,0 +1,22 @@
+<Translations dc="DC0080" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Reception document line</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="LINE_NO">Line no</FieldLabel>
+    <FieldLabel name="MVMNTINDOC_ID">Document ID</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product ID</FieldLabel>
+    <FieldLabel name="QTY">Qty</FieldLabel>
+    <FieldLabel name="BASE_DOC_QTY">Base doc qty</FieldLabel>
+    <FieldLabel name="RECEIVED_QTY">Received qty</FieldLabel>
+    <FieldLabel name="INVENTORY_QTY">Inventory qty</FieldLabel>
+    <FieldLabel name="BASE_DOC_PRICE">Base doc price</FieldLabel>
+    <FieldLabel name="BASE_DOC_CURRENCY">Base doc currency</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="UOM">Uom</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Product name</FieldLabel>
+    <FieldLabel name="STOCKLOC_ID">Stockloc_id</FieldLabel>
+    <FieldLabel name="STOCKLOC_CODE">Stock location</FieldLabel>
+  </FieldLabels>
+</Translations>

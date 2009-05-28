@@ -1,0 +1,18 @@
+<Translations dc="DC0071" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Drepturi de acces roluri</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="UI_DC">DC</FieldLabel>
+    <FieldLabel name="ROLE_NAME">Rol</FieldLabel>
+    <FieldLabel name="FETCH_ALLOWED">Interogare permisa?</FieldLabel>
+    <FieldLabel name="INSERT_ALLOWED">Creare permisa?</FieldLabel>
+    <FieldLabel name="UPDATE_ALLOWED">Modificare permisa?</FieldLabel>
+    <FieldLabel name="DELETE_ALLOWED">Stergere permisa?</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,33 @@
+<Translations dc="DC0059" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Comenzi client</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID Unitate</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_ID">ID tert facturare</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_ID">ID tert livrare</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_ID">ID tert platitor</FieldLabel>
+    <FieldLabel name="BPARTNER_CONTACT_ID">ID pers. contact</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_CONTACT_ID">ID contact facturare</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_CONTACT_ID">ID persoana livrare</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_CONTACT_ID">ID contact platitor</FieldLabel>
+    <FieldLabel name="REF_SORDER_ID">ID comanda referinta</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Metoda plata</FieldLabel>
+    <FieldLabel name="SALESREP_ID">ID repr. vanzari</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Valoare totala</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Client</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_NAME">Tert facturare</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_NAME">Tert livrare</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_NAME">Tert platitor</FieldLabel>
+  </FieldLabels>
+</Translations>

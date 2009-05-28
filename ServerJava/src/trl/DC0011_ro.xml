@@ -1,0 +1,16 @@
+<Translations dc="DC0011" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Conversii unitati masura</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="UOM_FROM">UM sursa</FieldLabel>
+    <FieldLabel name="UOM_TO">UM destinatie</FieldLabel>
+    <FieldLabel name="CONVERSION_FACTOR">Factor conversie</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CONVERSION_TYPE">Tip conversie</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,19 @@
+<Translations dc="DC0019" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Tasks</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CLOSED">Closed</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="TITLE">Title</FieldLabel>
+    <FieldLabel name="FINISH_DATE">Finish date</FieldLabel>
+    <FieldLabel name="START_DATE">Start date</FieldLabel>
+    <FieldLabel name="STATUS">Status</FieldLabel>
+    <FieldLabel name="ASSIGNED_TO">Assigned to</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,12 @@
+<Translations dc="DC0073" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Grupuri atribute produs</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="PRODATTRGRP_ID">ID grup superior</FieldLabel>
+    <FieldLabel name="PRODATTRGRP_NAME">Grup superior</FieldLabel>
+  </FieldLabels>
+</Translations>

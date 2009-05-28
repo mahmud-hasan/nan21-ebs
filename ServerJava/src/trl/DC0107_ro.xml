@@ -1,0 +1,15 @@
+<Translations dc="DC0107" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Alocari numere serie</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="RANGE"></FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="DOCUMENT_TYPE">Doc. type</FieldLabel>
+    <FieldLabel name="SERIAL">Serial</FieldLabel>
+    <FieldLabel name="VALUE">Value</FieldLabel>
+    <FieldLabel name="IS_ALLOCATED">Allocated?</FieldLabel>
+  </FieldLabels>
+</Translations>

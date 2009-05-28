@@ -1,0 +1,11 @@
+<Translations dc="DC0007" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Countries</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+  </FieldLabels>
+</Translations>

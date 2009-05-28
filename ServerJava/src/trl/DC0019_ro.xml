@@ -1,0 +1,19 @@
+<Translations dc="DC0019" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Activitati</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CLOSED">Inchis</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="TITLE">Titlu</FieldLabel>
+    <FieldLabel name="FINISH_DATE">Data sfarsit</FieldLabel>
+    <FieldLabel name="START_DATE">Data inceput</FieldLabel>
+    <FieldLabel name="STATUS">Stadiu</FieldLabel>
+    <FieldLabel name="ASSIGNED_TO">Asignat la</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

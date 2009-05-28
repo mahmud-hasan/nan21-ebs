@@ -1,0 +1,16 @@
+<Translations dc="DC0112" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri evenimente colet</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVNTGRP_CODE">Grup</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="ACTIVE">Activ</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Create de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

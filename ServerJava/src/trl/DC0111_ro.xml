@@ -1,0 +1,14 @@
+<Translations dc="DC0111" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">DC0111</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="ORG_ID">Org. id</FieldLabel>
+    <FieldLabel name="ORGATTR_ID">Attribute ID</FieldLabel>
+    <FieldLabel name="ATTR_VAL">Value</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ORGATTR_NAME">Attribute</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,11 @@
+<Translations dc="DC0034" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Contract types</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+  </FieldLabels>
+</Translations>

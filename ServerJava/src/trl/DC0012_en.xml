@@ -1,0 +1,17 @@
+<Translations dc="DC0012" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Currency exchange rates</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CURRENCY_FROM">Currency from</FieldLabel>
+    <FieldLabel name="XRATE">Exchange rate</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="VALID_FROM">Valid from</FieldLabel>
+    <FieldLabel name="VALID_TO">Valid to</FieldLabel>
+    <FieldLabel name="CURRENCY_TO">Currency to</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

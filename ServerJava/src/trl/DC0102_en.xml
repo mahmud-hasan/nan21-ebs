@@ -1,0 +1,27 @@
+<Translations dc="DC0102" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Business partner accounts</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Business partner ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accounting schema ID</FieldLabel>
+    <FieldLabel name="C_ACCT_RECEIVABLE_ID">Cust. receivables acct</FieldLabel>
+    <FieldLabel name="C_ACCT_PREPAY_ID">Cust. prepayment acct </FieldLabel>
+    <FieldLabel name="V_ACCT_PAYABLE_ID">Vendor prepayment acct</FieldLabel>
+    <FieldLabel name="V_ACCT_PREPAY_ID">Vendor prepayment acct ID</FieldLabel>
+    <FieldLabel name="I_ACCT_PAYABLE_ID">Employee payables acct ID</FieldLabel>
+    <FieldLabel name="I_ACCT_RECEIVABLE_ID">Employee receivables acct ID</FieldLabel>
+    <FieldLabel name="I_ACCT_PREPAY_ID">Employee prepayment acct ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Business partner</FieldLabel>
+    <FieldLabel name="C_ACCT_RECEIVABLE_NAME">Receivables acct.</FieldLabel>
+    <FieldLabel name="V_ACCT_PAYABLE_NAME">Payables acct.</FieldLabel>
+  </FieldLabels>
+</Translations>

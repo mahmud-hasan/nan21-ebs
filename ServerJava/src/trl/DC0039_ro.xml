@@ -1,0 +1,30 @@
+<Translations dc="DC0039" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Produse</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="PROD_TYPE">Tip</FieldLabel>
+    <FieldLabel name="SUMMARY">Sumar</FieldLabel>
+    <FieldLabel name="STORABLE">Stocabil</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="UOM_CODE">UM</FieldLabel>
+    <FieldLabel name="VOLUME">Volum</FieldLabel>
+    <FieldLabel name="WEIGHT">Greutate</FieldLabel>
+    <FieldLabel name="PRODCATEG_ID">ID categorie</FieldLabel>
+    <FieldLabel name="PRODCATEG_CODE">Categorie</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Unitate</FieldLabel>
+    <FieldLabel name="FOR_SALE">La vanzare</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCOUNT">Cont chelt.</FieldLabel>
+    <FieldLabel name="REVENUE_ACCOUNT">Cont vanz.</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="ATTRGRP_ID">ID grup atribute</FieldLabel>
+    <FieldLabel name="ATTRGRP_NAME">Grup atribute</FieldLabel>
+  </FieldLabels>
+</Translations>

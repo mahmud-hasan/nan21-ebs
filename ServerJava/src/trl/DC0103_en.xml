@@ -1,0 +1,26 @@
+<Translations dc="DC0103" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Business partner details</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Business partner ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Customer?</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Vendor?</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Employee?</FieldLabel>
+    <FieldLabel name="CUSTGRP_CODE">Customer group</FieldLabel>
+    <FieldLabel name="CREDITCLASS_CODE">Credit class</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Preffered payment method</FieldLabel>
+    <FieldLabel name="PAYTERMCLASS_CODE">Payment terms class</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT">Max. credit limit</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT_CURRENCY">Credit limit currency</FieldLabel>
+    <FieldLabel name="MAX_PAYMENT_TERM">Max. payment term</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Business partner</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,11 @@
+<Translations dc="DC0025" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Liste valori UI</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+  </FieldLabels>
+</Translations>

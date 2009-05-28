@@ -1,0 +1,35 @@
+<Translations dc="DC0014" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Terti</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="BPARTNER_TYPE">Tip tert</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="COPIED_FROM_BPARTNER_ID">Copiat dupa tert</FieldLabel>
+    <FieldLabel name="TAX_NUMBER">Cod fiscal</FieldLabel>
+    <FieldLabel name="TAX_NUMBER_TYPE">Atribut fiscal</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="COMPANY_REG_NR">Nr inregistrare</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="PHONE">Telefon</FieldLabel>
+    <FieldLabel name="EMAIL">Email</FieldLabel>
+    <FieldLabel name="FAX">Fax</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CUSTGROUP_CODE">Clasa client</FieldLabel>
+    <FieldLabel name="CREDITCLASS_CODE">Clasa credit</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Metoda plata</FieldLabel>
+    <FieldLabel name="PAYTERMCLASS_CODE">Clasa termen de plata</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT">Limita max credit</FieldLabel>
+    <FieldLabel name="MAX_PAYMENT_TERM">Limita termen de plata</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Client</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Furnizor</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Angajat</FieldLabel>
+    <FieldLabel name="IS_ONETIME">Is_onetime</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,13 @@
+<Translations dc="DC0115" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Parcel reception existing</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="WAREHOUSE_ORG_ID">Warehouse ID</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Warehouse</FieldLabel>
+    <FieldLabel name="AGENT_ORG_ID">From agent ID</FieldLabel>
+    <FieldLabel name="AGENT_ORG_NAME">From agent</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Date</FieldLabel>
+    <FieldLabel name="CODE">Parcel code</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,16 @@
+<Translations dc="DC0055" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Pontaj lucrari</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CHARGED_DATE">Data</FieldLabel>
+    <FieldLabel name="USER_ACCOUNT">Cont utilizator</FieldLabel>
+    <FieldLabel name="EFFORT">Efort</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Introdus</FieldLabel>
+    <FieldLabel name="IS_APPROVED">Aprobat</FieldLabel>
+    <FieldLabel name="PROJECT_ISSUE_ID">ID incident</FieldLabel>
+    <FieldLabel name="EFFORT_UNIT">UM efort</FieldLabel>
+  </FieldLabels>
+</Translations>

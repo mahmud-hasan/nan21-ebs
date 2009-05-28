@@ -1,0 +1,32 @@
+<Translations dc="DC0046" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Incidents/Requests</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="PROJECT_ID">Project_id</FieldLabel>
+    <FieldLabel name="TITLE">Title</FieldLabel>
+    <FieldLabel name="ACT_STARTDATE">Actual start-date</FieldLabel>
+    <FieldLabel name="ISSUE_TYPE_CODE">Type</FieldLabel>
+    <FieldLabel name="SEVERITY_CODE">Severity</FieldLabel>
+    <FieldLabel name="AFF_CMP_TYPE_CODE">Affected component type</FieldLabel>
+    <FieldLabel name="AFF_CMP">Affected component</FieldLabel>
+    <FieldLabel name="AFF_PROJECT_RELEASE_CODE">Affected release</FieldLabel>
+    <FieldLabel name="STATUS_CODE">Status</FieldLabel>
+    <FieldLabel name="IS_CLOSED">Closed</FieldLabel>
+    <FieldLabel name="DESCRIPTION"></FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="PRIORITY_CODE">Priority</FieldLabel>
+    <FieldLabel name="ASSIGNED_TO">Assigned to</FieldLabel>
+    <FieldLabel name="PLAN_STARTDATE">Planned start-date</FieldLabel>
+    <FieldLabel name="PLAN_ENDDATE">Planned end-date</FieldLabel>
+    <FieldLabel name="ACT_ENDDATE">Actual end-date</FieldLabel>
+    <FieldLabel name="PROJECT_NAME">Project</FieldLabel>
+    <FieldLabel name="ESTIMATE_EFFORT">Estimated effort</FieldLabel>
+    <FieldLabel name="ACTUAL_EFFORT">Actual effort</FieldLabel>
+    <FieldLabel name="EFFORT_UNIT">Effort unit</FieldLabel>
+  </FieldLabels>
+</Translations>

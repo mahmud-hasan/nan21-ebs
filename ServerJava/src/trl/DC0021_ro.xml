@@ -1,0 +1,17 @@
+<Translations dc="DC0021" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Ecrane</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="NBS_STANDARD">Standard</FieldLabel>
+    <FieldLabel name="USER_BUILD">Particular</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="DEPRECATED">Depasit</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

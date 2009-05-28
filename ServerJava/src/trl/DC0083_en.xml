@@ -1,0 +1,17 @@
+<Translations dc="DC0083" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Cost centers</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+  </FieldLabels>
+</Translations>

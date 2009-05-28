@@ -1,0 +1,11 @@
+<Translations dc="DC0034" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri contract</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="ACTIVE">Utilizat</FieldLabel>
+  </FieldLabels>
+</Translations>

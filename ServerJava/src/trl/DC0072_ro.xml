@@ -1,0 +1,12 @@
+<Translations dc="DC0072" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Audit autentificare utilizatori</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="USERNAME">Utilizator</FieldLabel>
+    <FieldLabel name="LOGIN">Login</FieldLabel>
+    <FieldLabel name="LOGOUT">Logout</FieldLabel>
+    <FieldLabel name="IP_ADRESS">Adresa IP</FieldLabel>
+  </FieldLabels>
+</Translations>

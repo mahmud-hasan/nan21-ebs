@@ -1,0 +1,15 @@
+<Translations dc="DC0109" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Return to warehouse</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVENT_DATE">Date</FieldLabel>
+    <FieldLabel name="RETURN_REASON_CODE">Reason type</FieldLabel>
+    <FieldLabel name="RETURN_REASON">Notes</FieldLabel>
+    <FieldLabel name="CODE">Parcel code</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_ID">Warehouse ID</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Warehouse</FieldLabel>
+    <FieldLabel name="RETURN_BY_ORG_ID">Agent ID</FieldLabel>
+    <FieldLabel name="RETURN_BY_ORG_NAME">Returned by agent</FieldLabel>
+  </FieldLabels>
+</Translations>

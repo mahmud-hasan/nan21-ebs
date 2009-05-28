@@ -1,0 +1,12 @@
+<Translations dc="DC0068" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">DC0068</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="USER_ID">ID utilizator</FieldLabel>
+    <FieldLabel name="ROLE_NAME">Rol</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+  </FieldLabels>
+</Translations>

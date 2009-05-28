@@ -1,0 +1,16 @@
+<Translations dc="DC0112" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Parcel event types</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVNTGRP_CODE">Group</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+  </FieldLabels>
+</Translations>

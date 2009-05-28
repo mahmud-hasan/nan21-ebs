@@ -1,0 +1,13 @@
+<Translations dc="DC0047" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Atasamente incident</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PROJECT_ISSUE_ID">ID incident</FieldLabel>
+    <FieldLabel name="FILE_NAME">Fisier</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+  </FieldLabels>
+</Translations>

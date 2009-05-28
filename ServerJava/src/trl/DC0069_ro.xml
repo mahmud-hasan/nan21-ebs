@@ -1,0 +1,22 @@
+<Translations dc="DC0069" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Persoane de contact</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="FIRSTNAME">Prenume</FieldLabel>
+    <FieldLabel name="LASTNAME">Nume</FieldLabel>
+    <FieldLabel name="PHONE">Telefon</FieldLabel>
+    <FieldLabel name="EMAIL">Email</FieldLabel>
+    <FieldLabel name="FAX">Fax</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="MOBILE">Mobil</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Tert</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,32 @@
+<Translations dc="DC0015" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">BP adresses</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner ID</FieldLabel>
+    <FieldLabel name="COUNTRY_CODE">Country</FieldLabel>
+    <FieldLabel name="REGION_CODE">Region</FieldLabel>
+    <FieldLabel name="CITY">City</FieldLabel>
+    <FieldLabel name="CITY_ID">City ID</FieldLabel>
+    <FieldLabel name="STREET">Street</FieldLabel>
+    <FieldLabel name="STREET_ID">Street ID</FieldLabel>
+    <FieldLabel name="NO">No</FieldLabel>
+    <FieldLabel name="BUILDING">Building</FieldLabel>
+    <FieldLabel name="FLOOR">Floor</FieldLabel>
+    <FieldLabel name="APT">Apt</FieldLabel>
+    <FieldLabel name="ADRESS_TYPE">Adress type</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="ENTRANCE">Entrance</FieldLabel>
+    <FieldLabel name="IS_BILLING">Billing</FieldLabel>
+    <FieldLabel name="IS_DELIVERY">Delivery</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ZIP">Zip</FieldLabel>
+    <FieldLabel name="ADRESS">Adress</FieldLabel>
+    <FieldLabel name="IS_DETAILED">Detailed</FieldLabel>
+  </FieldLabels>
+</Translations>

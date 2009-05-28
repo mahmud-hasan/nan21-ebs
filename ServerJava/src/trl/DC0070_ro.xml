@@ -1,0 +1,14 @@
+<Translations dc="DC0070" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">DC0070</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="MENUITEM_ID">ID meniu</FieldLabel>
+    <FieldLabel name="ROLE_NAME">Rol</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

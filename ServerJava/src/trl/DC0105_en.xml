@@ -1,0 +1,23 @@
+<Translations dc="DC0105" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Product accounts</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product ID</FieldLabel>
+    <FieldLabel name="REVENUE_ACCT_ID">Revenue account ID</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCT_ID">Expense account ID</FieldLabel>
+    <FieldLabel name="ASSET_ACCT_ID">Asset account ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accounting schema ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Product</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+    <FieldLabel name="REVENUE_ACCT_NAME">Revenue account</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCT_NAME">Expense account</FieldLabel>
+  </FieldLabels>
+</Translations>

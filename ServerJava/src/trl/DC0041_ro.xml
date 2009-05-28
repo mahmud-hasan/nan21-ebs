@@ -1,0 +1,31 @@
+<Translations dc="DC0041" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Linii factura furnizor</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ORIG_AMOUNT">Suma orig.</FieldLabel>
+    <FieldLabel name="ORIG_CURRENCY">Moneda orig.</FieldLabel>
+    <FieldLabel name="PURCHASE_ACCT">Cont cumparari</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="RINV_ID">ID factura furnizor</FieldLabel>
+    <FieldLabel name="PROD_CODE">Cod produs</FieldLabel>
+    <FieldLabel name="PROD_ID">ID produs</FieldLabel>
+    <FieldLabel name="QUANTITY">Cantitate</FieldLabel>
+    <FieldLabel name="QUANTITY_UNIT">Unit masura</FieldLabel>
+    <FieldLabel name="NET_AMOUNT">Valoare neta</FieldLabel>
+    <FieldLabel name="PRICE">Pret</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="RINVITEM_ID">ID linie factura</FieldLabel>
+    <FieldLabel name="NOTES">Descriere produs</FieldLabel>
+    <FieldLabel name="TAX_ID">ID clasa TVA</FieldLabel>
+    <FieldLabel name="TAX_RATE">Rata TVA</FieldLabel>
+    <FieldLabel name="TAX_AMOUNT">Valoare TVA</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="CURRENCY_XRATE">Curs valutar</FieldLabel>
+    <FieldLabel name="TAX_NAME">Procent TVA</FieldLabel>
+    <FieldLabel name="TAX_AMOUNT_NR">TVA nedeductibil</FieldLabel>
+  </FieldLabels>
+</Translations>

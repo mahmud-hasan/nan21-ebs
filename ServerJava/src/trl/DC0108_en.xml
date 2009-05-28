@@ -1,0 +1,11 @@
+<Translations dc="DC0108" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Confirm delivery</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVENT_DATE">Delivery date</FieldLabel>
+    <FieldLabel name="CODE">Parcel code</FieldLabel>
+    <FieldLabel name="ORG">Delivery agent</FieldLabel>
+    <FieldLabel name="ORG_ID">Delivery agent ID</FieldLabel>
+  </FieldLabels>
+</Translations>

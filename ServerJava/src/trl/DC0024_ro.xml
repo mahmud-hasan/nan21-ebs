@@ -1,0 +1,26 @@
+<Translations dc="DC0024" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Perioade contabile</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="ACCYEAR_CODE">An fiscal</FieldLabel>
+    <FieldLabel name="CODE">Denumire</FieldLabel>
+    <FieldLabel name="STARTDATE">De la</FieldLabel>
+    <FieldLabel name="ENDDATE">Pana la</FieldLabel>
+    <FieldLabel name="CLOSED">Inchis</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PREV_PERIOD_NAME">Perioada anterioara</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="PERIODTYPE">Tip perioada</FieldLabel>
+    <FieldLabel name="PROCESSING">Procesare</FieldLabel>
+    <FieldLabel name="OPENED">Deschisa</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="IS_FIRST_PERIOD">Is first period?</FieldLabel>
+  </FieldLabels>
+</Translations>

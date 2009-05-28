@@ -1,0 +1,18 @@
+<Translations dc="DC0076" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Liste preturi</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="VALID_FROM">Valabil de la</FieldLabel>
+    <FieldLabel name="VALID_TO">Valabil pana la</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="COPY_FROM_LIST_IS">Copiat dupa lista</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+  </FieldLabels>
+</Translations>

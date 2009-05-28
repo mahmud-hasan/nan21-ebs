@@ -1,0 +1,17 @@
+<Translations dc="DC0094" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Sisteme contabile unitate</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="IS_DEFAULT">Implicit?</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+  </FieldLabels>
+</Translations>

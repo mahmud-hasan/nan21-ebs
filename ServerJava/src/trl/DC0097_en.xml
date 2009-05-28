@@ -1,0 +1,15 @@
+<Translations dc="DC0097" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Vehicles</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="VEHICLETYP_CODE">Vehicle type</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="REG_NO">Registration no</FieldLabel>
+    <FieldLabel name="ASSET_ID">Asset ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+  </FieldLabels>
+</Translations>

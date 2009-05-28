@@ -1,0 +1,15 @@
+<Translations dc="DC0043" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Traduceri elemente meniu</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="MENUITEM_ID">ID meniu</FieldLabel>
+    <FieldLabel name="LANG">Limba</FieldLabel>
+    <FieldLabel name="TRANSLATION">Traducere</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,23 @@
+<Translations dc="DC0028" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Payment types</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="COMPENSATION">Compensation</FieldLabel>
+    <FieldLabel name="PAYABLE">Payable</FieldLabel>
+    <FieldLabel name="RECEIVABLE">Receivable</FieldLabel>
+    <FieldLabel name="PRINT_REPORT">Print report</FieldLabel>
+    <FieldLabel name="BY_AGENT">By agent</FieldLabel>
+    <FieldLabel name="BY_BANK">By bank</FieldLabel>
+    <FieldLabel name="BY_CASH_DESK">By cash desk</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+  </FieldLabels>
+</Translations>

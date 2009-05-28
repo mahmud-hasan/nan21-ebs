@@ -1,0 +1,49 @@
+<Translations dc="DC0004" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Facturi client</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data doc.</FieldLabel>
+    <FieldLabel name="DOC_NO_FULL">Nr. doc.</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="ISSUER_ID">ID Furnizor</FieldLabel>
+    <FieldLabel name="RECEIVER_ID">ID beneficiar</FieldLabel>
+    <FieldLabel name="PAYBY_ID">ID tert platitor</FieldLabel>
+    <FieldLabel name="DOC_TYPE">Tip doc.</FieldLabel>
+    <FieldLabel name="INV_STATUS">Status</FieldLabel>
+    <FieldLabel name="INV_CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="TRANSTYPE_CODE">Tip tranzactie</FieldLabel>
+    <FieldLabel name="DUE_DATE">Scadent la</FieldLabel>
+    <FieldLabel name="INV_LINE_COUNT">Nr linii</FieldLabel>
+    <FieldLabel name="REF_IINV_ID">ID doc. referinta</FieldLabel>
+    <FieldLabel name="REF_IINV_DOC_NO">Doc. referinta</FieldLabel>
+    <FieldLabel name="ORDER_ID">ID comanda</FieldLabel>
+    <FieldLabel name="TOTAL_NET_AMOUNT">Valoare neta</FieldLabel>
+    <FieldLabel name="TOTAL_TAX_AMOUNT">Valoare TVA</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Valoare totala</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PRINTED">Emisa la</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="CURRENCY_XRATE">Curs valutar</FieldLabel>
+    <FieldLabel name="DOC_NO_SERIAL">Serie doc.</FieldLabel>
+    <FieldLabel name="POSTED">Inregistrat</FieldLabel>
+    <FieldLabel name="VAT_RATE">Rata TVA</FieldLabel>
+    <FieldLabel name="DOC_CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Nota contabila</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="IS_PRINTED">Emis</FieldLabel>
+    <FieldLabel name="IS_POSTED">Inregistrat</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ISSUER_NAME">Furnizor</FieldLabel>
+    <FieldLabel name="RECEIVER_NAME">Beneficiar</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr doc</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Introdus</FieldLabel>
+    <FieldLabel name="ACCT">Cont creanta</FieldLabel>
+    <FieldLabel name="POSTEDON">Inregistrat la</FieldLabel>
+    <FieldLabel name="POSTEDBY">Inregistrat de</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">ID nota contabila</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,13 @@
+<Translations dc="DC0006" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Agentii bancare</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BANK_CODE">Banca</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="TYPE">Tip</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="ADRESS">Adresa</FieldLabel>
+  </FieldLabels>
+</Translations>

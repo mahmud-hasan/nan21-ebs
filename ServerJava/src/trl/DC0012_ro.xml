@@ -1,0 +1,17 @@
+<Translations dc="DC0012" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Cursuri schimb valutar</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CURRENCY_FROM">Din moneda</FieldLabel>
+    <FieldLabel name="XRATE">Curs valutar</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="VALID_FROM">Valabil de la</FieldLabel>
+    <FieldLabel name="VALID_TO">Valabil pana la</FieldLabel>
+    <FieldLabel name="CURRENCY_TO">In moneda</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

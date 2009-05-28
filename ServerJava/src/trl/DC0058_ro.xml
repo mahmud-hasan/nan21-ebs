@@ -1,0 +1,15 @@
+<Translations dc="DC0058" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Canale comunicare</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="CMNCT_TYPE">Metoda</FieldLabel>
+    <FieldLabel name="CMNCT_VALUE">Valoare</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,34 @@
+<Translations dc="DC0044" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Plati factura furnizor</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="PAYDOCTYPE_CODE">Tip plata</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr. doc.</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data</FieldLabel>
+    <FieldLabel name="BPARTNER_FROM">Platitor</FieldLabel>
+    <FieldLabel name="BPARTNER_TO">Beneficiar</FieldLabel>
+    <FieldLabel name="IS_PAYABLE">De plata</FieldLabel>
+    <FieldLabel name="IS_RECEIVABLE">De incasat</FieldLabel>
+    <FieldLabel name="AMOUNT">Valoare</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PAYMNT_ACCT">Cont plata</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Introdus</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generat</FieldLabel>
+    <FieldLabel name="IS_APPROVED">Aprobat</FieldLabel>
+    <FieldLabel name="IS_POSTED">Inregistrat</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">ID nota contabila</FieldLabel>
+    <FieldLabel name="IS_PREPAYMENT">Plata avans</FieldLabel>
+    <FieldLabel name="PREPAY_ACCT">Cont plata avans</FieldLabel>
+    <FieldLabel name="RINV_ID">ID factura</FieldLabel>
+    <FieldLabel name="IS_MULTI_PAYMENT">Plata multipla</FieldLabel>
+    <FieldLabel name="IINV_ID">ID factura</FieldLabel>
+  </FieldLabels>
+</Translations>

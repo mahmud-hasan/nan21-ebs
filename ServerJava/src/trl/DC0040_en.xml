@@ -1,0 +1,31 @@
+<Translations dc="DC0040" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Accounting documents</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Doc date</FieldLabel>
+    <FieldLabel name="BASEDOC_TYPE">Source doc. type</FieldLabel>
+    <FieldLabel name="BASEDOC_NO">Source doc. no</FieldLabel>
+    <FieldLabel name="BASEDOC_DATE">Source doc. date</FieldLabel>
+    <FieldLabel name="BASEDOC_ID">Source doc. ID</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generated</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Inserted</FieldLabel>
+    <FieldLabel name="IS_POSTED">Posted</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="POSTEDBY">Posted by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ACCPERIOD_ID">Accounting period</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="POSTEDON">Posted on</FieldLabel>
+    <FieldLabel name="DB_AMOUNT">Debit amount</FieldLabel>
+    <FieldLabel name="CR_AMOUNT">Credit amount</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accschema_id</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+  </FieldLabels>
+</Translations>

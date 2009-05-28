@@ -1,0 +1,17 @@
+<Translations dc="DC0083" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Centre de cost</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="ACTIVE">Activ</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+  </FieldLabels>
+</Translations>

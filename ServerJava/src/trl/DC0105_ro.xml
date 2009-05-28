@@ -1,0 +1,23 @@
+<Translations dc="DC0105" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Conturi produs</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Produs ID</FieldLabel>
+    <FieldLabel name="REVENUE_ACCT_ID">Cont vanzari ID</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCT_ID">Cont cumparari ID</FieldLabel>
+    <FieldLabel name="ASSET_ACCT_ID">Cont inventar ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+    <FieldLabel name="REVENUE_ACCT_NAME">Cont vanzari</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCT_NAME">Cont cumparari</FieldLabel>
+  </FieldLabels>
+</Translations>

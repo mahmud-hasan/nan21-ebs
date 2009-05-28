@@ -1,0 +1,13 @@
+<Translations dc="DC0115" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Receptie intermediara</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="WAREHOUSE_ORG_ID">ID depozit</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Depozit</FieldLabel>
+    <FieldLabel name="AGENT_ORG_ID">ID curier</FieldLabel>
+    <FieldLabel name="AGENT_ORG_NAME">Curier</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Data</FieldLabel>
+    <FieldLabel name="CODE">Cod colet</FieldLabel>
+  </FieldLabels>
+</Translations>

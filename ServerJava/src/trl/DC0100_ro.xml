@@ -1,0 +1,18 @@
+<Translations dc="DC0100" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Unitati tert</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Tert ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Client?</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Furnizor?</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Angajat?</FieldLabel>
+  </FieldLabels>
+</Translations>

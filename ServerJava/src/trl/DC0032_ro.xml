@@ -1,0 +1,27 @@
+<Translations dc="DC0032" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Plan de conturi</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="ACCOUNT">Cont</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="TYPE">Tip</FieldLabel>
+    <FieldLabel name="SUMMARY">Sumar</FieldLabel>
+    <FieldLabel name="PARENT_ACCOUNT">Cont parinte</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="ACTIVE">Utilizat</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="ACCJOURNAL_ID">ID jurnal contabil</FieldLabel>
+    <FieldLabel name="ACCJOURNAL_NAME">Jurnal contabil</FieldLabel>
+    <FieldLabel name="ACCTGRP_ID">ID clasa cont</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+  </FieldLabels>
+</Translations>

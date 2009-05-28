@@ -1,0 +1,25 @@
+<Translations dc="DC0064" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Linii comanda furnizor</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="PORDER_ID">ID comanda furnizor</FieldLabel>
+    <FieldLabel name="LINE_NR">No</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="QTY">Cantitate</FieldLabel>
+    <FieldLabel name="UOM_CODE">UM</FieldLabel>
+    <FieldLabel name="PRICE">Pret</FieldLabel>
+    <FieldLabel name="NET_AMOUNT">Valoare neta</FieldLabel>
+    <FieldLabel name="CURRENCY_CODE">Moneda</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="DATE_REQUESTED">Solicitat pentru</FieldLabel>
+    <FieldLabel name="DATE_PROMISED">Promis pentru</FieldLabel>
+    <FieldLabel name="DATE_DELIVERED">Predat la</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+  </FieldLabels>
+</Translations>

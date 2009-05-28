@@ -1,0 +1,12 @@
+<Translations dc="DC0054" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Project component types</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="PROJECT_ID">Project_id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="PROJECT_NAME">Project</FieldLabel>
+  </FieldLabels>
+</Translations>

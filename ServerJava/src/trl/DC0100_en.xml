@@ -1,0 +1,18 @@
+<Translations dc="DC0100" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">BP client list</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Business partner ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Customer?</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Vendor?</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Employee?</FieldLabel>
+  </FieldLabels>
+</Translations>

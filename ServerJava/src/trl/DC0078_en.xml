@@ -1,0 +1,33 @@
+<Translations dc="DC0078" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Reception document</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Date</FieldLabel>
+    <FieldLabel name="FROM_BPARTNER_ID">BPartner ID</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="DOC_TYPE">Doc type</FieldLabel>
+    <FieldLabel name="RINV_ID">Supplier invoice ID</FieldLabel>
+    <FieldLabel name="QTY_CHECK">Qty check</FieldLabel>
+    <FieldLabel name="QTY_CHECK_ON">Qty check on</FieldLabel>
+    <FieldLabel name="QTY_CHECK_BY">Qty check by</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK">Quality check</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK_ON">Quality check on</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK_BY">Quality check by</FieldLabel>
+    <FieldLabel name="VALUE_CHECK">Value check</FieldLabel>
+    <FieldLabel name="VALUE_CHECK_ON">Value check on</FieldLabel>
+    <FieldLabel name="VALUE_CHECK_BY">Value check by</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ORG_ID">Org_id</FieldLabel>
+    <FieldLabel name="ORGINV_ID">Orginv_id</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ORG_NAME">Organization</FieldLabel>
+    <FieldLabel name="ORGINV_NAME">Org. inventory</FieldLabel>
+  </FieldLabels>
+</Translations>
