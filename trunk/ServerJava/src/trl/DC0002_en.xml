@@ -1,0 +1,13 @@
+<Translations dc="DC0002" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Currencies</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="ACCOUNT_GAIN">Acc. gain</FieldLabel>
+    <FieldLabel name="ACCOUNT_LOSS">Acc. loss</FieldLabel>
+  </FieldLabels>
+</Translations>

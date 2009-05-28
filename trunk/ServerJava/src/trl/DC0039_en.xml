@@ -1,0 +1,30 @@
+<Translations dc="DC0039" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Product master-data</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="PROD_TYPE">Product type</FieldLabel>
+    <FieldLabel name="SUMMARY">Summary</FieldLabel>
+    <FieldLabel name="STORABLE">Storable</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="UOM_CODE">UoM</FieldLabel>
+    <FieldLabel name="VOLUME">Volume</FieldLabel>
+    <FieldLabel name="WEIGHT">Weight</FieldLabel>
+    <FieldLabel name="PRODCATEG_ID">Prodcateg ID</FieldLabel>
+    <FieldLabel name="PRODCATEG_CODE">Product Category</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Client</FieldLabel>
+    <FieldLabel name="FOR_SALE">For sale</FieldLabel>
+    <FieldLabel name="EXPENSE_ACCOUNT">Expense account</FieldLabel>
+    <FieldLabel name="REVENUE_ACCOUNT">Revenue account</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="ATTRGRP_ID">Attribute group ID</FieldLabel>
+    <FieldLabel name="ATTRGRP_NAME">Attribute group</FieldLabel>
+  </FieldLabels>
+</Translations>

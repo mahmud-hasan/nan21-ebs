@@ -1,0 +1,13 @@
+<Translations dc="DC0113" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Alocare curier</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="AGENT_ORG_ID">Curier ID</FieldLabel>
+    <FieldLabel name="CODE">Cod colet</FieldLabel>
+    <FieldLabel name="AGENT_ORG_NAME">Curier</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Data</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_ID">Depozit ID</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Depozit</FieldLabel>
+  </FieldLabels>
+</Translations>

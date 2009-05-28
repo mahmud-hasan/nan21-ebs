@@ -1,0 +1,10 @@
+<Translations dc="DC0050" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri gravitate incident</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+  </FieldLabels>
+</Translations>

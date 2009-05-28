@@ -1,0 +1,16 @@
+<Translations dc="DC0055" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Timesheet charge</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="CHARGED_DATE">Date</FieldLabel>
+    <FieldLabel name="USER_ACCOUNT">User account</FieldLabel>
+    <FieldLabel name="EFFORT">Effort</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Released</FieldLabel>
+    <FieldLabel name="IS_APPROVED">Approved</FieldLabel>
+    <FieldLabel name="PROJECT_ISSUE_ID">Project_issue_id</FieldLabel>
+    <FieldLabel name="EFFORT_UNIT">Unit</FieldLabel>
+  </FieldLabels>
+</Translations>

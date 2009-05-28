@@ -1,0 +1,18 @@
+<Translations dc="DC0031" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Users</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="DBUSER">Database user</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="LOGIN_CODE">Login name</FieldLabel>
+    <FieldLabel name="LOGIN_PASSWORD">Login password</FieldLabel>
+    <FieldLabel name="PERSON_ID">Person ID</FieldLabel>
+    <FieldLabel name="ACCOUNT_LOCKED">Account is locked</FieldLabel>
+    <FieldLabel name="ACCOUNT_EXPIRED">Account is expired</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

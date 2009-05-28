@@ -1,0 +1,17 @@
+<Translations dc="DC0077" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Atribute produs</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="PRDATTR_ID">ID atribut</FieldLabel>
+    <FieldLabel name="ATTR_VAL">Valoare</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PRDATTR_NAME">Atribut</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,18 @@
+<Translations dc="DC0031" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Utilizatori</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="DBUSER">Cont Oracle</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="LOGIN_CODE">Cod autentificare</FieldLabel>
+    <FieldLabel name="LOGIN_PASSWORD">Parola</FieldLabel>
+    <FieldLabel name="PERSON_ID">ID persoana</FieldLabel>
+    <FieldLabel name="ACCOUNT_LOCKED">Cont blocat</FieldLabel>
+    <FieldLabel name="ACCOUNT_EXPIRED">Cont expirat</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

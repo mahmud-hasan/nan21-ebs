@@ -1,0 +1,17 @@
+<Translations dc="DC0104" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Product client list</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="FOR_SALE">For sale</FieldLabel>
+    <FieldLabel name="PRODCLASS_CODE">Product class</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+  </FieldLabels>
+</Translations>

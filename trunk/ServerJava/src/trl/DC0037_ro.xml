@@ -1,0 +1,15 @@
+<Translations dc="DC0037" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Traduceri dictionar UI</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="UIDICT_ID">ID dictionar</FieldLabel>
+    <FieldLabel name="LANGUAGE_CODE">Limba</FieldLabel>
+    <FieldLabel name="TRANSLATION">Traducere</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="UIDC_CODE">DC (Componenta-date)</FieldLabel>
+    <FieldLabel name="MSG_CODE">Mesaj</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

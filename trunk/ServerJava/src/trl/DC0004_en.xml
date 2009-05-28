@@ -1,0 +1,49 @@
+<Translations dc="DC0004" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Invoices</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOC_DATE">Inv date</FieldLabel>
+    <FieldLabel name="DOC_NO_FULL">Doc no</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client id</FieldLabel>
+    <FieldLabel name="ISSUER_ID">Issuer ID</FieldLabel>
+    <FieldLabel name="RECEIVER_ID">Receiver ID</FieldLabel>
+    <FieldLabel name="PAYBY_ID">Payby ID</FieldLabel>
+    <FieldLabel name="DOC_TYPE">Inv. type</FieldLabel>
+    <FieldLabel name="INV_STATUS">Status</FieldLabel>
+    <FieldLabel name="INV_CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="TRANSTYPE_CODE">Trans. type</FieldLabel>
+    <FieldLabel name="DUE_DATE">Due date</FieldLabel>
+    <FieldLabel name="INV_LINE_COUNT">Line count</FieldLabel>
+    <FieldLabel name="REF_IINV_ID">Ref inv ID</FieldLabel>
+    <FieldLabel name="REF_IINV_DOC_NO">Ref doc. no</FieldLabel>
+    <FieldLabel name="ORDER_ID">Order ID</FieldLabel>
+    <FieldLabel name="TOTAL_NET_AMOUNT">Net amount</FieldLabel>
+    <FieldLabel name="TOTAL_TAX_AMOUNT">Tax amount</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Total amount</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="PRINTED">Printed</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="CURRENCY_XRATE">Exchange rate</FieldLabel>
+    <FieldLabel name="DOC_NO_SERIAL">Serial no</FieldLabel>
+    <FieldLabel name="POSTED">Posted</FieldLabel>
+    <FieldLabel name="VAT_RATE">Vat rate</FieldLabel>
+    <FieldLabel name="DOC_CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Acc. doc.</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="IS_PRINTED">Printed</FieldLabel>
+    <FieldLabel name="IS_POSTED">Posted</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ISSUER_NAME">Issuer</FieldLabel>
+    <FieldLabel name="RECEIVER_NAME">Customer</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Inserted</FieldLabel>
+    <FieldLabel name="ACCT">Revenue acct.</FieldLabel>
+    <FieldLabel name="POSTEDON">Posted on</FieldLabel>
+    <FieldLabel name="POSTEDBY">Posted by</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">Accounting doc. ID</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,9 @@
+<Translations dc="DC0092" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Sisteme contabile</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+  </FieldLabels>
+</Translations>

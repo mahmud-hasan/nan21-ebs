@@ -1,0 +1,17 @@
+<Translations dc="DC0021" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">UI components</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="NBS_STANDARD">Standard</FieldLabel>
+    <FieldLabel name="USER_BUILD">User build</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="DEPRECATED">Deprecated</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

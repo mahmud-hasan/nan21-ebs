@@ -1,0 +1,17 @@
+<Translations dc="DC0074" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Define prod. attributes</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="PRODATTRGRP_NAME">Attribute group</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="NAME">Attribute Name</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="DATA_TYPE">Data type</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="PRODATTRGRP_ID">Attribute group ID</FieldLabel>
+  </FieldLabels>
+</Translations>

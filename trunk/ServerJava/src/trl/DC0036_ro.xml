@@ -1,0 +1,16 @@
+<Translations dc="DC0036" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Dictionar UI</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="UIDC_CODE">Cod DC</FieldLabel>
+    <FieldLabel name="MSG_TYPE">Tip mesaj</FieldLabel>
+    <FieldLabel name="MSG_CODE">Cod mesaj</FieldLabel>
+    <FieldLabel name="MAINTAINED_BY">Intretinut de</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

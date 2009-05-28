@@ -1,0 +1,33 @@
+<Translations dc="DC0059" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Customer orders</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOC_NO">Order no.</FieldLabel>
+    <FieldLabel name="DOC_DATE">Date</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client id</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Customer id</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_ID">Bill-to id</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_ID">Deliver-to id</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_ID">Pay-by id</FieldLabel>
+    <FieldLabel name="BPARTNER_CONTACT_ID">Customer contact id</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_CONTACT_ID">Bill-to contact id</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_CONTACT_ID">Deliver-to contact id</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_CONTACT_ID">Pay-by contact id</FieldLabel>
+    <FieldLabel name="REF_SORDER_ID">Reference order id</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Payment method</FieldLabel>
+    <FieldLabel name="SALESREP_ID">Sales repr. id</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Total amount</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Customer</FieldLabel>
+    <FieldLabel name="BILL_BPARTNER_NAME">Invoice to</FieldLabel>
+    <FieldLabel name="DELIV_BPARTNER_NAME">Deliver to</FieldLabel>
+    <FieldLabel name="PAY_BPARTNER_NAME">Pay by</FieldLabel>
+  </FieldLabels>
+</Translations>

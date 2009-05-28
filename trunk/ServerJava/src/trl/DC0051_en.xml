@@ -1,0 +1,10 @@
+<Translations dc="DC0051" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Project issue statuses</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+  </FieldLabels>
+</Translations>

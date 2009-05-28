@@ -1,0 +1,13 @@
+<Translations dc="DC0113" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Allocate to agent</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="AGENT_ORG_ID">To agent ID</FieldLabel>
+    <FieldLabel name="CODE">Parcel code</FieldLabel>
+    <FieldLabel name="AGENT_ORG_NAME">To agent</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Date</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_ID">Warehouse ID</FieldLabel>
+    <FieldLabel name="WAREHOUSE_ORG_NAME">Warehouse</FieldLabel>
+  </FieldLabels>
+</Translations>

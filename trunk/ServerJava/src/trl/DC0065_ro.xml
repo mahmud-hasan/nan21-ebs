@@ -1,0 +1,12 @@
+<Translations dc="DC0065" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Serii documente</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="DOCUMENT_TYPE">Tip document</FieldLabel>
+    <FieldLabel name="SERIAL">Serie</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,18 @@
+<Translations dc="DC0030" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Fields default values</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="UIDC_CODE">Datacontrol</FieldLabel>
+    <FieldLabel name="FIELD_NAME">Field name</FieldLabel>
+    <FieldLabel name="FIELD_VALUE">Initial value</FieldLabel>
+    <FieldLabel name="VALUE_TYPE">Value type</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="APPLY_TO_USER">Apply only to user</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

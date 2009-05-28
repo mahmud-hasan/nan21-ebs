@@ -1,0 +1,17 @@
+<Translations dc="DC0018" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">BP bankaccounts</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BANK_CODE">Bank</FieldLabel>
+    <FieldLabel name="IBAN">Iban</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner ID</FieldLabel>
+    <FieldLabel name="BANKAG_CODE">Bank agency</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

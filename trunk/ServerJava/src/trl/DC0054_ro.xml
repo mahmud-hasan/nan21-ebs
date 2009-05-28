@@ -1,0 +1,12 @@
+<Translations dc="DC0054" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri componente proiect</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PROJECT_ID">ID proiect</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="PROJECT_NAME">Proiect</FieldLabel>
+  </FieldLabels>
+</Translations>

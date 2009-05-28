@@ -1,0 +1,27 @@
+<Translations dc="DC0035" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Contract management</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="SUPP_BPARTNER_NAME">Supplier</FieldLabel>
+    <FieldLabel name="BPCONTR_NAME">Ref Contract</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Doc date</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="CUST_BPARTNER_ID">Customer ID</FieldLabel>
+    <FieldLabel name="CONTRTYPE_CODE">Contract type</FieldLabel>
+    <FieldLabel name="STARTDATE">Start date</FieldLabel>
+    <FieldLabel name="ENDDATE">End date</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="BPCONTR_ID">Contract ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CONTRSTAT_CODE">Contract status</FieldLabel>
+    <FieldLabel name="SUPP_BPARTNER_ID">Supplier ID</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Client</FieldLabel>
+    <FieldLabel name="CUST_BPARTNER_NAME">Customer</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

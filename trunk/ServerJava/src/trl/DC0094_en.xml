@@ -1,0 +1,17 @@
+<Translations dc="DC0094" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Accounting schema client</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accounting schema ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="IS_DEFAULT">Is default?</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+  </FieldLabels>
+</Translations>

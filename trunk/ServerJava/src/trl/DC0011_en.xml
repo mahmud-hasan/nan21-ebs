@@ -1,0 +1,16 @@
+<Translations dc="DC0011" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">UoM conversions</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="UOM_FROM">UoM from</FieldLabel>
+    <FieldLabel name="UOM_TO">UoM to</FieldLabel>
+    <FieldLabel name="CONVERSION_FACTOR">Factor</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CONVERSION_TYPE">Operator</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

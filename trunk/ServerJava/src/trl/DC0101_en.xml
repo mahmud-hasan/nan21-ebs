@@ -1,0 +1,20 @@
+<Translations dc="DC0101" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Acc schema default accounts</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="PARAM_ACCT_NAME"></FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accounting schema ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMAPARAM_ID">Parameter ID</FieldLabel>
+    <FieldLabel name="PARAM_ACCT_ID">Account ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+    <FieldLabel name="ACCSCHEMAPARAM_NAME">Parameter</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,26 @@
+<Translations dc="DC0024" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Accounting periods</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACCYEAR_CODE">Fiscal year</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="STARTDATE">Start date</FieldLabel>
+    <FieldLabel name="ENDDATE">End date</FieldLabel>
+    <FieldLabel name="CLOSED">Closed</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="PREV_PERIOD_NAME">Previous period</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="PERIODTYPE">Period type</FieldLabel>
+    <FieldLabel name="PROCESSING">Processing</FieldLabel>
+    <FieldLabel name="OPENED">Opened</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="IS_FIRST_PERIOD">Is first period?</FieldLabel>
+  </FieldLabels>
+</Translations>

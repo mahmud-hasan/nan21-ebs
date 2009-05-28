@@ -1,0 +1,10 @@
+<Translations dc="DC0052" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Tipuri incidente</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+  </FieldLabels>
+</Translations>

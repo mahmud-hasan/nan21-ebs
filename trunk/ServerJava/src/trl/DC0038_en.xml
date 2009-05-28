@@ -1,0 +1,20 @@
+<Translations dc="DC0038" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Product categories</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="PRODCATEG_ID">Prod. category ID</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Client</FieldLabel>
+    <FieldLabel name="PRODCATEG_NAME">Parent Categ.</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

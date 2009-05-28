@@ -1,0 +1,19 @@
+<Translations dc="DC0114" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Parcel events</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="PARCEL_ID">Parcel ID</FieldLabel>
+    <FieldLabel name="DEST_ORG_ID">To inventory ID</FieldLabel>
+    <FieldLabel name="DEST_ORG_NAME">To inventory</FieldLabel>
+    <FieldLabel name="EVENTTYP_ID">Event type ID</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Event date</FieldLabel>
+    <FieldLabel name="SRC_ORG_ID">From inventory ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="EVENTTYP_NAME">Event type</FieldLabel>
+    <FieldLabel name="PARCEL_CODE">Parcel code</FieldLabel>
+    <FieldLabel name="SRC_ORG_NAME">From inventory</FieldLabel>
+  </FieldLabels>
+</Translations>

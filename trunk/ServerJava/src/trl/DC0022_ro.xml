@@ -1,0 +1,21 @@
+<Translations dc="DC0022" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Elemente meniu</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="PARENT_MENU">Meniu parinte</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="MENUBAR_CODE">Grup</FieldLabel>
+    <FieldLabel name="NAME">Titlu</FieldLabel>
+    <FieldLabel name="POSITION">Pozitie</FieldLabel>
+    <FieldLabel name="MENUITEM_ID">ID meniu parinte</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="LINK">Ecran apelat</FieldLabel>
+    <FieldLabel name="TARGET">Target</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="ACTIVE">Afisat</FieldLabel>
+  </FieldLabels>
+</Translations>

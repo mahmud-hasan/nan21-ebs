@@ -1,0 +1,21 @@
+<Translations dc="DC0089" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Stocuri</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ORGINV_CODE">Gestiune</FieldLabel>
+    <FieldLabel name="STOCK_ID">ID stoc</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ORG_ID">ID organizatie</FieldLabel>
+    <FieldLabel name="ORG_NAME">Organizatie</FieldLabel>
+    <FieldLabel name="ORGINV_ID">ID gestiune</FieldLabel>
+    <FieldLabel name="STOCKLOC_ID">ID locatie</FieldLabel>
+    <FieldLabel name="STOCKLOC_CODE">Locatie</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="PRODUCT_CODE">Cod produs</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+    <FieldLabel name="QTY">Cantitate</FieldLabel>
+    <FieldLabel name="UOM">UM</FieldLabel>
+  </FieldLabels>
+</Translations>

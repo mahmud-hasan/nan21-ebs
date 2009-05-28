@@ -1,0 +1,18 @@
+<Translations dc="DC0076" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Price lists</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="CLIENT_CODE"></FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="VALID_FROM">Valid from</FieldLabel>
+    <FieldLabel name="VALID_TO">Valid to</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="COPY_FROM_LIST_IS">Copy from ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+  </FieldLabels>
+</Translations>

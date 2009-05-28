@@ -1,0 +1,20 @@
+<Translations dc="DC0085" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Organization inventory</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ORG_ID">Org. ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="ORGINVTYPE_CODE">Type</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="IS_DEFAULT">Is default?</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ORG_NAME">Organization</FieldLabel>
+  </FieldLabels>
+</Translations>

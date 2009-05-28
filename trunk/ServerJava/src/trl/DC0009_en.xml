@@ -1,0 +1,19 @@
+<Translations dc="DC0009" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Cities</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="COUNTRY_CODE">Country</FieldLabel>
+    <FieldLabel name="REGION_CODE">Region</FieldLabel>
+    <FieldLabel name="NAME">City</FieldLabel>
+    <FieldLabel name="AREA_CODE">Area</FieldLabel>
+    <FieldLabel name="POSTAL_CODE">Zip</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

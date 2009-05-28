@@ -1,0 +1,26 @@
+<Translations dc="DC0103" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Detalii tert</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Tert ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Client?</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Furnizor?</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Angajat?</FieldLabel>
+    <FieldLabel name="CUSTGRP_CODE">Clasa client</FieldLabel>
+    <FieldLabel name="CREDITCLASS_CODE">Clasa de credit</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Metoda de plata preferata</FieldLabel>
+    <FieldLabel name="PAYTERMCLASS_CODE">Clasa termen de plata</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT">Limita de credit maxim</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT_CURRENCY">Moneda limita de credit</FieldLabel>
+    <FieldLabel name="MAX_PAYMENT_TERM">Termen de plata maxim</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Tert</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,12 @@
+<Translations dc="DC0008" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Judete</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="COUNTRY_CODE">Tara</FieldLabel>
+    <FieldLabel name="ACTIVE">Utilizat</FieldLabel>
+  </FieldLabels>
+</Translations>

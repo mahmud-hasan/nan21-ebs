@@ -1,0 +1,12 @@
+<Translations dc="DC0027" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Invoice types</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="PRINT_REPORT_CODE">Print report</FieldLabel>
+  </FieldLabels>
+</Translations>

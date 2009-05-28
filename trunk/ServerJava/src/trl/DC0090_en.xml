@@ -1,0 +1,14 @@
+<Translations dc="DC0090" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Price list products</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="PRICELIST_ID">Pricelist_id</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product_id</FieldLabel>
+    <FieldLabel name="PRICELVL_ID">Pricelvl_id</FieldLabel>
+    <FieldLabel name="PRICE">Price</FieldLabel>
+    <FieldLabel name="PRICELVL_NAME">Price level</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Product</FieldLabel>
+  </FieldLabels>
+</Translations>

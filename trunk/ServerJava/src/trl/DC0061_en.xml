@@ -1,0 +1,36 @@
+<Translations dc="DC0061" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Assets</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client id</FieldLabel>
+    <FieldLabel name="CLIORG_ID">Cliorg id</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product id</FieldLabel>
+    <FieldLabel name="ASSETGRP_ID">Asset group id</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="NOTES"></FieldLabel>
+    <FieldLabel name="QUANTITY">Quantity</FieldLabel>
+    <FieldLabel name="SERIAL_NO">Serial no</FieldLabel>
+    <FieldLabel name="IS_ACTIVE">Active</FieldLabel>
+    <FieldLabel name="IS_DEPRECIATED">Depreciated</FieldLabel>
+    <FieldLabel name="IS_DISPOSED">Disposed</FieldLabel>
+    <FieldLabel name="IS_OWNED">Owned</FieldLabel>
+    <FieldLabel name="IS_INPOSESSION">In-posession</FieldLabel>
+    <FieldLabel name="LAST_MAINTENANCE_DATE">Last maintenance date</FieldLabel>
+    <FieldLabel name="NEXT_MAINTENENCE_DATE">Next maintenence date</FieldLabel>
+    <FieldLabel name="MAINTENANCE_PLAN_ID">Maintenance plan id</FieldLabel>
+    <FieldLabel name="WITH_DEPRECIATION">With depreciation</FieldLabel>
+    <FieldLabel name="DEPREC_MONTHS">Deprec. months</FieldLabel>
+    <FieldLabel name="DEPREC_BASE_VALUE">Deprec base value</FieldLabel>
+    <FieldLabel name="DEPREC_MONTHS_REMAINED">Deprec months remained</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner id</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="INUSE_BPARTNER_ID">In-use bpartner id</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ASSETGRP_NAME">Asset group</FieldLabel>
+  </FieldLabels>
+</Translations>

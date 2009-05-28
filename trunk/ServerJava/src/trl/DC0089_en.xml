@@ -1,0 +1,21 @@
+<Translations dc="DC0089" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Stocks</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ORGINV_CODE">Org inv.</FieldLabel>
+    <FieldLabel name="STOCK_ID">Stock_id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="ORG_ID">Org_id</FieldLabel>
+    <FieldLabel name="ORG_NAME">Org.</FieldLabel>
+    <FieldLabel name="ORGINV_ID">Orginv_id</FieldLabel>
+    <FieldLabel name="STOCKLOC_ID">Stockloc_id</FieldLabel>
+    <FieldLabel name="STOCKLOC_CODE">Stock loc.</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product_id</FieldLabel>
+    <FieldLabel name="PRODUCT_CODE">Prod. code</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Prod. name</FieldLabel>
+    <FieldLabel name="QTY">Quantity</FieldLabel>
+    <FieldLabel name="UOM">UoM</FieldLabel>
+  </FieldLabels>
+</Translations>

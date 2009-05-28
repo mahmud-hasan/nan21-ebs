@@ -1,0 +1,23 @@
+<Translations dc="DC0082" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Organizatii unitate</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="COSTCENTER_NAME">Centru de cost</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="COSTCENTER_ID">ID centru de cost</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="ORG_ID">ID org superioara</FieldLabel>
+    <FieldLabel name="ORG_TYPE">Tip</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner ID</FieldLabel>
+    <FieldLabel name="COSTMETHOD_CODE">Metoda evaluare</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="ACTIVE">Utilizat</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

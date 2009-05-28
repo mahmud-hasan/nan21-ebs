@@ -1,0 +1,23 @@
+<Translations dc="DC0023" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Fiscal years</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="CODE">Name</FieldLabel>
+    <FieldLabel name="STARTDATE">Start date</FieldLabel>
+    <FieldLabel name="ENDDATE">End date</FieldLabel>
+    <FieldLabel name="PREV_YEAR_CODE">Previous year</FieldLabel>
+    <FieldLabel name="NEXT_YEAR_NAME">Next year</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="CLOSED">Closed</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="OPENED">Opened</FieldLabel>
+    <FieldLabel name="IS_FIRST_YEAR">Is first year?</FieldLabel>
+  </FieldLabels>
+</Translations>

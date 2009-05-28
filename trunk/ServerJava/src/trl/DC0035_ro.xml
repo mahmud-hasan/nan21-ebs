@@ -1,0 +1,27 @@
+<Translations dc="DC0035" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Contracte client</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="SUPP_BPARTNER_NAME">Furnizor</FieldLabel>
+    <FieldLabel name="BPCONTR_NAME">Ref Contract</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr. doc.</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data doc.</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="CUST_BPARTNER_ID">ID client</FieldLabel>
+    <FieldLabel name="CONTRTYPE_CODE">Tip contract</FieldLabel>
+    <FieldLabel name="STARTDATE">De la</FieldLabel>
+    <FieldLabel name="ENDDATE">Pana la</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="BPCONTR_ID">ID contract</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CONTRSTAT_CODE">Stare</FieldLabel>
+    <FieldLabel name="SUPP_BPARTNER_ID">ID Furnizor</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Unitate</FieldLabel>
+    <FieldLabel name="CUST_BPARTNER_NAME">Beneficiar(Client)</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,35 @@
+<Translations dc="DC0014" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Business partners</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="BPARTNER_TYPE">Type</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner_id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="COPIED_FROM_BPARTNER_ID">Copied from ID</FieldLabel>
+    <FieldLabel name="TAX_NUMBER">Tax no</FieldLabel>
+    <FieldLabel name="TAX_NUMBER_TYPE">Tax no type</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="COMPANY_REG_NR">Registration no</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="PHONE">Phone</FieldLabel>
+    <FieldLabel name="EMAIL">Email</FieldLabel>
+    <FieldLabel name="FAX">Fax</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="CUSTGROUP_CODE">Custgroup_code</FieldLabel>
+    <FieldLabel name="CREDITCLASS_CODE">Creditclass_code</FieldLabel>
+    <FieldLabel name="PAYMETHOD_CODE">Paymethod_code</FieldLabel>
+    <FieldLabel name="PAYTERMCLASS_CODE">Paytermclass_code</FieldLabel>
+    <FieldLabel name="MAX_CREDIT_LIMIT">Max_credit_limit</FieldLabel>
+    <FieldLabel name="MAX_PAYMENT_TERM">Max_payment_term</FieldLabel>
+    <FieldLabel name="IS_CUSTOMER">Customer?</FieldLabel>
+    <FieldLabel name="IS_VENDOR">Vendor?</FieldLabel>
+    <FieldLabel name="IS_EMPLOYEE">Employee?</FieldLabel>
+    <FieldLabel name="IS_ONETIME">Is_onetime</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+  </FieldLabels>
+</Translations>

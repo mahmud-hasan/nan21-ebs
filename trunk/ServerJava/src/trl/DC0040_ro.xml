@@ -1,0 +1,31 @@
+<Translations dc="DC0040" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Note contabile</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr. nota contabila</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data</FieldLabel>
+    <FieldLabel name="BASEDOC_TYPE">Tip sursa</FieldLabel>
+    <FieldLabel name="BASEDOC_NO">Nr. doc. sursa</FieldLabel>
+    <FieldLabel name="BASEDOC_DATE">Data doc. sursa</FieldLabel>
+    <FieldLabel name="BASEDOC_ID">ID doc sursa</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generat</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Introdus</FieldLabel>
+    <FieldLabel name="IS_POSTED">Validat</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="POSTEDBY">Validat de</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ACCPERIOD_ID">Perioada contabila</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="POSTEDON">Validat la</FieldLabel>
+    <FieldLabel name="DB_AMOUNT">Suma DB</FieldLabel>
+    <FieldLabel name="CR_AMOUNT">Suma CR</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+  </FieldLabels>
+</Translations>

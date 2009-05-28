@@ -1,0 +1,13 @@
+<Translations dc="DC0106" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">DC0106</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOCSER_ID">Docser_id</FieldLabel>
+    <FieldLabel name="MINVAL">Range from</FieldLabel>
+    <FieldLabel name="MAXVAL">Range to</FieldLabel>
+    <FieldLabel name="IS_INSTALLED">Installed?</FieldLabel>
+    <FieldLabel name="IS_CLOSED">Closed</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,15 @@
+<Translations dc="DC0093" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Parametri sistem contabil</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="IS_ACCOUNT">Reprezinta un cont?</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,25 @@
+<Translations dc="DC0042" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Accounting document lines</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">Accounting doc. ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="DB_ACCT">Debit acct.</FieldLabel>
+    <FieldLabel name="CR_ACCT">Credit acct.</FieldLabel>
+    <FieldLabel name="DB_AMOUNT">Dr amount</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="XRATE">Exchange rate</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generated</FieldLabel>
+    <FieldLabel name="ORIG_AMOUNT">Original amount</FieldLabel>
+    <FieldLabel name="ORIG_CURRENCY">Original currency</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Accounting doc.</FieldLabel>
+    <FieldLabel name="CR_AMOUNT">Cr amount</FieldLabel>
+  </FieldLabels>
+</Translations>

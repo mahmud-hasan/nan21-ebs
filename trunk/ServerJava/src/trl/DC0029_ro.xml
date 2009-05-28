@@ -1,0 +1,40 @@
+<Translations dc="DC0029" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Plati simple</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="IS_PAYABLE">De plata</FieldLabel>
+    <FieldLabel name="IS_RECEIVABLE">De incasat</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="PAYDOCTYPE_CODE">Tip. doc</FieldLabel>
+    <FieldLabel name="DOC_NO">Nr. doc.</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data doc.</FieldLabel>
+    <FieldLabel name="BPARTNER_FROM">Platitor</FieldLabel>
+    <FieldLabel name="BPARTNER_TO">Beneficiar</FieldLabel>
+    <FieldLabel name="PAYABLE">Bun de plata</FieldLabel>
+    <FieldLabel name="RECEIVABLE">De incasat</FieldLabel>
+    <FieldLabel name="AMOUNT">Suma</FieldLabel>
+    <FieldLabel name="CURRENCY">Moneda</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Unitate</FieldLabel>
+    <FieldLabel name="BPARTNER_FROM_NAME">Platitor</FieldLabel>
+    <FieldLabel name="BPARTNER_TO_NAME">Beneficiar</FieldLabel>
+    <FieldLabel name="RINV_ID">ID doc. datorie</FieldLabel>
+    <FieldLabel name="IS_MULTI_PAYMENT">Este plata multipla</FieldLabel>
+    <FieldLabel name="RINV_DOC_NO_DATE">Doc. datorie</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Nota contabila</FieldLabel>
+    <FieldLabel name="PAYMNT_ACCT">Cont disponibil</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Introdus</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generat</FieldLabel>
+    <FieldLabel name="IS_APPROVED">Aprobat</FieldLabel>
+    <FieldLabel name="IS_POSTED">Inregistrat</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">ID nota contabila</FieldLabel>
+    <FieldLabel name="IS_PREPAYMENT">Plata avans?</FieldLabel>
+    <FieldLabel name="PREPAY_ACCT">Cont avans</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,10 @@
+<Translations dc="DC0079" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Reception doc type</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+  </FieldLabels>
+</Translations>

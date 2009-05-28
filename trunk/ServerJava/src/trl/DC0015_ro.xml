@@ -1,0 +1,32 @@
+<Translations dc="DC0015" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Adrese tert</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="COUNTRY_CODE">Tara</FieldLabel>
+    <FieldLabel name="REGION_CODE">Judet</FieldLabel>
+    <FieldLabel name="CITY">Localitate</FieldLabel>
+    <FieldLabel name="CITY_ID">ID localitate</FieldLabel>
+    <FieldLabel name="STREET">Strada</FieldLabel>
+    <FieldLabel name="STREET_ID">ID strada</FieldLabel>
+    <FieldLabel name="NO">Nr</FieldLabel>
+    <FieldLabel name="BUILDING">Bloc</FieldLabel>
+    <FieldLabel name="FLOOR">Etaj</FieldLabel>
+    <FieldLabel name="APT">Apt</FieldLabel>
+    <FieldLabel name="ADRESS_TYPE">Tip adresa</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="ENTRANCE">Scara</FieldLabel>
+    <FieldLabel name="IS_BILLING">Pentru facturare</FieldLabel>
+    <FieldLabel name="IS_DELIVERY">Pentru livrare</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="ZIP">Cod postal</FieldLabel>
+    <FieldLabel name="ADRESS">Adresa</FieldLabel>
+    <FieldLabel name="IS_DETAILED">Detaliat</FieldLabel>
+  </FieldLabels>
+</Translations>

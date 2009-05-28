@@ -1,0 +1,33 @@
+<Translations dc="DC0078" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Documente receptie</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">ID unitate</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Data</FieldLabel>
+    <FieldLabel name="FROM_BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="NOTES">Observatii</FieldLabel>
+    <FieldLabel name="DOC_TYPE">Tip doc.</FieldLabel>
+    <FieldLabel name="RINV_ID">ID factura furnizor</FieldLabel>
+    <FieldLabel name="QTY_CHECK">Verificat cantitativ</FieldLabel>
+    <FieldLabel name="QTY_CHECK_ON">Verif. cant. la</FieldLabel>
+    <FieldLabel name="QTY_CHECK_BY">Verif. cant. de</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK">Verificat calitativ</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK_ON">Verif. calit. la</FieldLabel>
+    <FieldLabel name="QUALITY_CHECK_BY">Verif. calit. de</FieldLabel>
+    <FieldLabel name="VALUE_CHECK">Verificat valoric</FieldLabel>
+    <FieldLabel name="VALUE_CHECK_ON">Verif. valoric la</FieldLabel>
+    <FieldLabel name="VALUE_CHECK_BY">Verif. valoric de</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="ORG_ID">ID organizatie</FieldLabel>
+    <FieldLabel name="ORGINV_ID">ID gestiune</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ORG_NAME">Organizatie</FieldLabel>
+    <FieldLabel name="ORGINV_NAME">Gestiune</FieldLabel>
+  </FieldLabels>
+</Translations>

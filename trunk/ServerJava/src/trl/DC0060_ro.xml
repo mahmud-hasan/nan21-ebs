@@ -1,0 +1,32 @@
+<Translations dc="DC0060" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Linii comanda</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="SORDER_ID">ID comanda</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="LINE_NR">Nr linie</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="QTY_ORDERED">Cant. ceruta</FieldLabel>
+    <FieldLabel name="QTY">Cantitate</FieldLabel>
+    <FieldLabel name="QTY_INVOICED">Cant. facturata</FieldLabel>
+    <FieldLabel name="QTY_DELIVERED">Cant. livrata</FieldLabel>
+    <FieldLabel name="QTY_RESERVED">Cant. rezervata</FieldLabel>
+    <FieldLabel name="UOM_CODE">UM</FieldLabel>
+    <FieldLabel name="PRICE">Pret</FieldLabel>
+    <FieldLabel name="DISCOUNT">Discount</FieldLabel>
+    <FieldLabel name="DISCOUNT_TYPE">Tip discount</FieldLabel>
+    <FieldLabel name="CURRENCY_CODE">Moneda</FieldLabel>
+    <FieldLabel name="NOTES"></FieldLabel>
+    <FieldLabel name="DATE_REQUESTED">Cerut pentru</FieldLabel>
+    <FieldLabel name="DATE_PROMISED">Promis pentru</FieldLabel>
+    <FieldLabel name="DATE_DELIVERED">Livrat la</FieldLabel>
+    <FieldLabel name="NET_AMOUNT">Valoare neta</FieldLabel>
+    <FieldLabel name="RAW_NET_AMOUNT">Valoare neta fara discount</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+  </FieldLabels>
+</Translations>

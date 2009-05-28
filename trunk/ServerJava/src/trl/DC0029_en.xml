@@ -1,0 +1,40 @@
+<Translations dc="DC0029" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Payments</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="IS_PAYABLE">Payable</FieldLabel>
+    <FieldLabel name="IS_RECEIVABLE">Receivable</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="PAYDOCTYPE_CODE">Payment type</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Doc date</FieldLabel>
+    <FieldLabel name="BPARTNER_FROM">Customer</FieldLabel>
+    <FieldLabel name="BPARTNER_TO">Supplier</FieldLabel>
+    <FieldLabel name="PAYABLE">Payable</FieldLabel>
+    <FieldLabel name="RECEIVABLE">Receivable</FieldLabel>
+    <FieldLabel name="AMOUNT">Amount</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Client</FieldLabel>
+    <FieldLabel name="BPARTNER_FROM_NAME">Payer</FieldLabel>
+    <FieldLabel name="BPARTNER_TO_NAME">Payment to</FieldLabel>
+    <FieldLabel name="RINV_ID">Supplier invoice ID</FieldLabel>
+    <FieldLabel name="IS_MULTI_PAYMENT">Multiple payment</FieldLabel>
+    <FieldLabel name="RINV_DOC_NO_DATE">Supplier invoice</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Accounting document</FieldLabel>
+    <FieldLabel name="PAYMNT_ACCT">Paymnt acct.</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Inserted</FieldLabel>
+    <FieldLabel name="IS_GENERATED">Generated</FieldLabel>
+    <FieldLabel name="IS_APPROVED">Approved</FieldLabel>
+    <FieldLabel name="IS_POSTED">Posted</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">Accounting doc. ID</FieldLabel>
+    <FieldLabel name="IS_PREPAYMENT">Is prepayment</FieldLabel>
+    <FieldLabel name="PREPAY_ACCT">Prepayment acct.</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,32 @@
+<Translations dc="DC0046" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Incidente proiect</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PROJECT_ID">ID proiect</FieldLabel>
+    <FieldLabel name="ACT_STARTDATE">Start real</FieldLabel>
+    <FieldLabel name="TITLE">Titlu</FieldLabel>
+    <FieldLabel name="ISSUE_TYPE_CODE">Tip</FieldLabel>
+    <FieldLabel name="SEVERITY_CODE">Gravitate</FieldLabel>
+    <FieldLabel name="AFF_CMP_TYPE_CODE">Tip cmp</FieldLabel>
+    <FieldLabel name="AFF_CMP">Componenta</FieldLabel>
+    <FieldLabel name="AFF_PROJECT_RELEASE_CODE">Versiune </FieldLabel>
+    <FieldLabel name="STATUS_CODE">Stare</FieldLabel>
+    <FieldLabel name="IS_CLOSED">Inchis</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="PRIORITY_CODE">Prioritate</FieldLabel>
+    <FieldLabel name="ASSIGNED_TO">Asignat la</FieldLabel>
+    <FieldLabel name="PLAN_STARTDATE">Start planif.</FieldLabel>
+    <FieldLabel name="PLAN_ENDDATE">Finaliz. planif.</FieldLabel>
+    <FieldLabel name="ACT_ENDDATE">Finaliz. real</FieldLabel>
+    <FieldLabel name="PROJECT_NAME">Proiect</FieldLabel>
+    <FieldLabel name="ESTIMATE_EFFORT">Efort estimat</FieldLabel>
+    <FieldLabel name="ACTUAL_EFFORT">Efort real</FieldLabel>
+    <FieldLabel name="EFFORT_UNIT">UM efort</FieldLabel>
+  </FieldLabels>
+</Translations>

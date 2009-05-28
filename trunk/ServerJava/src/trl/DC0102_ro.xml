@@ -1,0 +1,27 @@
+<Translations dc="DC0102" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Conturi tert</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Tert ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="C_ACCT_RECEIVABLE_ID">Cont creanta ID</FieldLabel>
+    <FieldLabel name="C_ACCT_PREPAY_ID">Cont avans client ID</FieldLabel>
+    <FieldLabel name="V_ACCT_PAYABLE_ID">Cont datorii ID</FieldLabel>
+    <FieldLabel name="V_ACCT_PREPAY_ID">Cont avans furnizor ID</FieldLabel>
+    <FieldLabel name="I_ACCT_PAYABLE_ID">Cont datorie catre angajat  ID</FieldLabel>
+    <FieldLabel name="I_ACCT_RECEIVABLE_ID">Cont datorie angajat ID</FieldLabel>
+    <FieldLabel name="I_ACCT_PREPAY_ID">Cont avans angajat  ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Tert</FieldLabel>
+    <FieldLabel name="C_ACCT_RECEIVABLE_NAME">Cont creanta</FieldLabel>
+    <FieldLabel name="V_ACCT_PAYABLE_NAME">Cont datorii</FieldLabel>
+  </FieldLabels>
+</Translations>

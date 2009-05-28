@@ -1,0 +1,19 @@
+<Translations dc="DC0114" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Evenimente colet</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PARCEL_ID">Colet ID</FieldLabel>
+    <FieldLabel name="DEST_ORG_ID">In gestiune ID</FieldLabel>
+    <FieldLabel name="DEST_ORG_NAME">In gestiune</FieldLabel>
+    <FieldLabel name="EVENTTYP_ID">Tip eveniment ID</FieldLabel>
+    <FieldLabel name="EVENT_DATE">Data</FieldLabel>
+    <FieldLabel name="SRC_ORG_ID">Din gestiune ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="EVENTTYP_NAME">Tip eveniment</FieldLabel>
+    <FieldLabel name="PARCEL_CODE">Cod colet</FieldLabel>
+    <FieldLabel name="SRC_ORG_NAME">Din gestiune</FieldLabel>
+  </FieldLabels>
+</Translations>

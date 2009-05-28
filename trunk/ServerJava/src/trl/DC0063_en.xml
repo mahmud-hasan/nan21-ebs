@@ -1,0 +1,22 @@
+<Translations dc="DC0063" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Purchase orders</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Doc date</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client_id</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Supplier ID</FieldLabel>
+    <FieldLabel name="BPARTNER_CONTACT_ID">Bpartner_contact_id</FieldLabel>
+    <FieldLabel name="REF_PORDER_ID">Ref_porder_id</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Total amount</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Supplier</FieldLabel>
+  </FieldLabels>
+</Translations>

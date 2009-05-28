@@ -1,0 +1,28 @@
+<Translations dc="DC0091" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Oracle sessions</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="SADDR">Saddr</FieldLabel>
+    <FieldLabel name="SID">Sid</FieldLabel>
+    <FieldLabel name="SERIAL_">Serial_</FieldLabel>
+    <FieldLabel name="USERNAME">Username</FieldLabel>
+    <FieldLabel name="STATUS">Status</FieldLabel>
+    <FieldLabel name="SERVER">Server</FieldLabel>
+    <FieldLabel name="SCHEMANAME">Schemaname</FieldLabel>
+    <FieldLabel name="OSUSER">Osuser</FieldLabel>
+    <FieldLabel name="PROCESS">Process</FieldLabel>
+    <FieldLabel name="MACHINE">Machine</FieldLabel>
+    <FieldLabel name="TERMINAL">Terminal</FieldLabel>
+    <FieldLabel name="PROGRAM">Program</FieldLabel>
+    <FieldLabel name="TYPE">Type</FieldLabel>
+    <FieldLabel name="SQL_ADDRESS">Sql_address</FieldLabel>
+    <FieldLabel name="SQL_ID">Sql_id</FieldLabel>
+    <FieldLabel name="MODULE">Module</FieldLabel>
+    <FieldLabel name="CLIENT_INFO">Client_info</FieldLabel>
+    <FieldLabel name="LOGON_TIME">Logon_time</FieldLabel>
+    <FieldLabel name="STATE">State</FieldLabel>
+    <FieldLabel name="SERVICE_NAME">Service_name</FieldLabel>
+    <FieldLabel name="SQL_TEXT">Sql_text</FieldLabel>
+  </FieldLabels>
+</Translations>

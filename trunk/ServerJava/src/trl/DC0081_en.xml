@@ -1,0 +1,13 @@
+<Translations dc="DC0081" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Business units</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">Bpartner ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="DEFAULT_CLIENT">Default?</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Linked business partner</FieldLabel>
+  </FieldLabels>
+</Translations>

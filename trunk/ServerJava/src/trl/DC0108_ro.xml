@@ -1,0 +1,11 @@
+<Translations dc="DC0108" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Confirmare livrare</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EVENT_DATE">Data</FieldLabel>
+    <FieldLabel name="CODE">Cod colet</FieldLabel>
+    <FieldLabel name="ORG">Curier livrare</FieldLabel>
+    <FieldLabel name="ORG_ID">Curier livrare ID</FieldLabel>
+  </FieldLabels>
+</Translations>

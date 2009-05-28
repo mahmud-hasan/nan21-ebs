@@ -1,0 +1,33 @@
+<Translations dc="DC0020" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Invoice lines</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ORIG_CURRENCY">Original price currency</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="IINV_ID">Inv ID</FieldLabel>
+    <FieldLabel name="LINE_NO">Line no</FieldLabel>
+    <FieldLabel name="PROD_ID">Product ID</FieldLabel>
+    <FieldLabel name="QUANTITY">Quantity</FieldLabel>
+    <FieldLabel name="QUANTITY_UNIT">Quantity unit</FieldLabel>
+    <FieldLabel name="ORIG_PRICE">Original price</FieldLabel>
+    <FieldLabel name="NET_AMOUNT">Net amount</FieldLabel>
+    <FieldLabel name="ORIG_PRICE_CURRENCY">Orig_price_currency</FieldLabel>
+    <FieldLabel name="PRICE">Unit Price</FieldLabel>
+    <FieldLabel name="CURRENCY_XRATE">Exchange rate</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="IINVITEM_ID">Invitem ID</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="TAX_RATE">Tax rate</FieldLabel>
+    <FieldLabel name="TAX_AMOUNT">Tax amount</FieldLabel>
+    <FieldLabel name="PROD_CODE">Prod. Code</FieldLabel>
+    <FieldLabel name="PROD_NAME">Prod. Name</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="SALES_ACCT">Sales acct</FieldLabel>
+    <FieldLabel name="TAX_ID">Tax ID</FieldLabel>
+    <FieldLabel name="TAX_NAME">Tax</FieldLabel>
+  </FieldLabels>
+</Translations>

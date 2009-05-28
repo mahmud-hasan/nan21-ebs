@@ -1,0 +1,18 @@
+<Translations dc="DC0013" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Strazi</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="COUNTRY_CODE">Tara</FieldLabel>
+    <FieldLabel name="REGION_CODE">Judet</FieldLabel>
+    <FieldLabel name="CITY_ID">ID localitate</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="ACTIVE">Utilizat</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CITY_NAME">Localitate</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

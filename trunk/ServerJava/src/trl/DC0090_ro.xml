@@ -1,0 +1,14 @@
+<Translations dc="DC0090" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Preturi produse</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PRICELIST_ID">ID lista pret</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">ID produs</FieldLabel>
+    <FieldLabel name="PRICELVL_ID">ID nivel pret</FieldLabel>
+    <FieldLabel name="PRICE">Pret</FieldLabel>
+    <FieldLabel name="PRICELVL_NAME">Nivel pret</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Produs</FieldLabel>
+  </FieldLabels>
+</Translations>

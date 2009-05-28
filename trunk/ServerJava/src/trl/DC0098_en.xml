@@ -1,0 +1,21 @@
+<Translations dc="DC0098" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Transports</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="PLANNED_DEP_DATE">Planned depart. on</FieldLabel>
+    <FieldLabel name="EFECTIVE_DEP_DATE">Actual dept. on</FieldLabel>
+    <FieldLabel name="PLANNED_ARRIVE_DATE">Planned arrive on</FieldLabel>
+    <FieldLabel name="EFECTIVE_ARRIVE_DATE">Actual arrive on</FieldLabel>
+    <FieldLabel name="TRANSPTYPE_CODE">Type</FieldLabel>
+    <FieldLabel name="TRANSPSTAT_CODE">Status</FieldLabel>
+    <FieldLabel name="VEHICLE_ID">Vehicle ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="VEHICLE_REGNO">Vehicle reg. no</FieldLabel>
+  </FieldLabels>
+</Translations>

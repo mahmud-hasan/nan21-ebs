@@ -1,0 +1,27 @@
+<Translations dc="DC0032" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Accounts chart</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="ACCOUNT">Account</FieldLabel>
+    <FieldLabel name="NAME">Name</FieldLabel>
+    <FieldLabel name="TYPE">Type</FieldLabel>
+    <FieldLabel name="SUMMARY">Summary</FieldLabel>
+    <FieldLabel name="PARENT_ACCOUNT">Parent account</FieldLabel>
+    <FieldLabel name="CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="ACTIVE">Active</FieldLabel>
+    <FieldLabel name="CREATEDON">Created</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="ACCJOURNAL_ID">Accjournal_id</FieldLabel>
+    <FieldLabel name="ACCJOURNAL_NAME">Journal</FieldLabel>
+    <FieldLabel name="ACCTGRP_ID">Accgrp_id</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Accschema_id</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Accounting schema</FieldLabel>
+  </FieldLabels>
+</Translations>

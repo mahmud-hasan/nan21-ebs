@@ -1,0 +1,15 @@
+<Translations dc="DC0097" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Mijloace de transport</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="VEHICLETYP_CODE">Tip</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="REG_NO">Nr inregistrare</FieldLabel>
+    <FieldLabel name="ASSET_ID">Obiect inventar ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

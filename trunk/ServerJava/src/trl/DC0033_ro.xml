@@ -1,0 +1,15 @@
+<Translations dc="DC0033" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Atribute schema contabila</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="PROPERTY_NAME">Denumire atribut</FieldLabel>
+    <FieldLabel name="PROPERTY_TYPE">Tip atribut</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Descriere</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+  </FieldLabels>
+</Translations>

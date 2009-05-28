@@ -1,0 +1,21 @@
+<Translations dc="DC0098" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Transporturi</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="PLANNED_DEP_DATE">Plecare planificata</FieldLabel>
+    <FieldLabel name="EFECTIVE_DEP_DATE">Data plecare</FieldLabel>
+    <FieldLabel name="PLANNED_ARRIVE_DATE">Sosire planificata</FieldLabel>
+    <FieldLabel name="EFECTIVE_ARRIVE_DATE">Data sosire</FieldLabel>
+    <FieldLabel name="TRANSPTYPE_CODE">Tip</FieldLabel>
+    <FieldLabel name="TRANSPSTAT_CODE">Stare</FieldLabel>
+    <FieldLabel name="VEHICLE_ID">Mijloc de transport ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="VEHICLE_REGNO">Mijloc de transport</FieldLabel>
+  </FieldLabels>
+</Translations>

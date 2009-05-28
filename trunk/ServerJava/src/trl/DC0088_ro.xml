@@ -1,0 +1,20 @@
+<Translations dc="DC0088" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">DC0088</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="ORG_ID">ID organizatie</FieldLabel>
+    <FieldLabel name="ORGINV_ID">ID inventar org.</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="DESCRIPTION">Description</FieldLabel>
+    <FieldLabel name="IS_DEFAULT">Implicit?</FieldLabel>
+    <FieldLabel name="STOCKLOC_TYPE">Tip</FieldLabel>
+    <FieldLabel name="IS_VIRTUAL">Virtual?</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+  </FieldLabels>
+</Translations>

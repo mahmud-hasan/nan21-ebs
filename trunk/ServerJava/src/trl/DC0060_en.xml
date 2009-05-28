@@ -1,0 +1,32 @@
+<Translations dc="DC0060" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Order lines</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="SORDER_ID">Order id</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="LINE_NR">Line no</FieldLabel>
+    <FieldLabel name="PRODUCT_ID">Product id</FieldLabel>
+    <FieldLabel name="QTY_ORDERED">Requested qty.</FieldLabel>
+    <FieldLabel name="QTY">Actual qty</FieldLabel>
+    <FieldLabel name="QTY_INVOICED">Invoiced qty.</FieldLabel>
+    <FieldLabel name="QTY_DELIVERED">Delivered qty.</FieldLabel>
+    <FieldLabel name="QTY_RESERVED">Reserved qty</FieldLabel>
+    <FieldLabel name="UOM_CODE">Uom</FieldLabel>
+    <FieldLabel name="PRICE">Price</FieldLabel>
+    <FieldLabel name="DISCOUNT">Discount</FieldLabel>
+    <FieldLabel name="DISCOUNT_TYPE">Discount type</FieldLabel>
+    <FieldLabel name="CURRENCY_CODE">Currency</FieldLabel>
+    <FieldLabel name="NOTES"></FieldLabel>
+    <FieldLabel name="DATE_REQUESTED">Requested for</FieldLabel>
+    <FieldLabel name="DATE_PROMISED">Promised for</FieldLabel>
+    <FieldLabel name="DATE_DELIVERED">Delivered on</FieldLabel>
+    <FieldLabel name="NET_AMOUNT">Net amount</FieldLabel>
+    <FieldLabel name="RAW_NET_AMOUNT">Raw net amount (no discount)</FieldLabel>
+    <FieldLabel name="PRODUCT_NAME">Product</FieldLabel>
+  </FieldLabels>
+</Translations>

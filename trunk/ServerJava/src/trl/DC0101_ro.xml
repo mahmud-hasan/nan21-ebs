@@ -1,0 +1,20 @@
+<Translations dc="DC0101" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Conturi implicite sistem contabil</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="PARAM_ACCT_NAME">Cont</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_ID">Sistem contabil ID</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Unitate ID</FieldLabel>
+    <FieldLabel name="ACCSCHEMAPARAM_ID">Parametru ID</FieldLabel>
+    <FieldLabel name="PARAM_ACCT_ID">Cont ID</FieldLabel>
+    <FieldLabel name="CREATEDON">Creat la</FieldLabel>
+    <FieldLabel name="CREATEDBY">Creat de</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modificat la</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modificat de</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Unitate</FieldLabel>
+    <FieldLabel name="ACCSCHEMA_NAME">Sistem contabil</FieldLabel>
+    <FieldLabel name="ACCSCHEMAPARAM_NAME">Parametru</FieldLabel>
+  </FieldLabels>
+</Translations>

@@ -1,0 +1,15 @@
+<Translations dc="DC0037" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">UI dictionary translations</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="UIDICT_ID">Dictionary id</FieldLabel>
+    <FieldLabel name="LANGUAGE_CODE">Language</FieldLabel>
+    <FieldLabel name="TRANSLATION">Translation</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="UIDC_CODE">DataControl</FieldLabel>
+    <FieldLabel name="MSG_CODE">Message Code</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+  </FieldLabels>
+</Translations>

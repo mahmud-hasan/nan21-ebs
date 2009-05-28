@@ -1,0 +1,13 @@
+<Translations dc="DC0081" lang="ro">
+  <DcProperties>
+    <DcProperty name="Title">Unitati contabile</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="NAME">Denumire</FieldLabel>
+    <FieldLabel name="BPARTNER_ID">ID tert</FieldLabel>
+    <FieldLabel name="CODE">Cod</FieldLabel>
+    <FieldLabel name="DEFAULT_CLIENT">Implicit?</FieldLabel>
+    <FieldLabel name="BPARTNER_NAME">Linked business partner</FieldLabel>
+  </FieldLabels>
+</Translations>

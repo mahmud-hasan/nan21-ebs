@@ -1,0 +1,64 @@
+<Translations dc="DC0016" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Parcel master-data</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="EXP_ZIP">Sender zip</FieldLabel>
+    <FieldLabel name="EXP_ADRESS_NOTE">Sender adress note</FieldLabel>
+    <FieldLabel name="DEST_BPARTNER_ID">Receiver ID</FieldLabel>
+    <FieldLabel name="DEST_NAME">Receiver name</FieldLabel>
+    <FieldLabel name="DEST_BPADRESS_ID">Receiver adress ID</FieldLabel>
+    <FieldLabel name="DEST_BPADRESS">Receiver adress</FieldLabel>
+    <FieldLabel name="DEST_COUNTRY">Receiver country</FieldLabel>
+    <FieldLabel name="DEST_REGION">Receiver region</FieldLabel>
+    <FieldLabel name="DEST_CITY">Receiver city</FieldLabel>
+    <FieldLabel name="DEST_CITY_ID">Receiver city ID</FieldLabel>
+    <FieldLabel name="DEST_ZIP">Receiver zip</FieldLabel>
+    <FieldLabel name="DEST_ADRESS_NOTE">Receiver adress notes</FieldLabel>
+    <FieldLabel name="PICKEDUP">Picked-up</FieldLabel>
+    <FieldLabel name="PICKUP_MODE">Pickup mode</FieldLabel>
+    <FieldLabel name="PICKUP_DATE">Pickup date</FieldLabel>
+    <FieldLabel name="PICKUP_AGENT_NAME">Pickup agent</FieldLabel>
+    <FieldLabel name="DELIVERED">Delivered</FieldLabel>
+    <FieldLabel name="DELIVERY_MODE">Delivery mode</FieldLabel>
+    <FieldLabel name="DELIVERY_DATE">Delivery date</FieldLabel>
+    <FieldLabel name="DELIVERY_AGENT_NAME">Delivery agent</FieldLabel>
+    <FieldLabel name="DELIVERED_TO_NAME">Deliv. to person</FieldLabel>
+    <FieldLabel name="DELIVERED_TO_IDENT">Deliv. to pers. ident</FieldLabel>
+    <FieldLabel name="REJECTED">Rejected</FieldLabel>
+    <FieldLabel name="REJECT_DATE">Reject date</FieldLabel>
+    <FieldLabel name="REJECT_REASON">Reject reason</FieldLabel>
+    <FieldLabel name="REJECTED_BY_NAME">Rej. by pers</FieldLabel>
+    <FieldLabel name="REJECTED_BY_IDENT">Rej. by pers ident</FieldLabel>
+    <FieldLabel name="PACKAGE_COUNT">Package count</FieldLabel>
+    <FieldLabel name="CONTENT">Content</FieldLabel>
+    <FieldLabel name="CLIENT_CODE">Client</FieldLabel>
+    <FieldLabel name="NOTES">Notes</FieldLabel>
+    <FieldLabel name="DECLARED_VALUE">Declared value</FieldLabel>
+    <FieldLabel name="INSURED_VALUE">Insured value</FieldLabel>
+    <FieldLabel name="REF_PARCEL_ID">Ref parcel ID</FieldLabel>
+    <FieldLabel name="REF_PARCEL_REFERENCE_TYPE">Ref_parcel_reference_type</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ID">ID</FieldLabel>
+    <FieldLabel name="CODE">Code</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="EXP_BPARTNER_ID">Sender ID</FieldLabel>
+    <FieldLabel name="EXP_NAME">Sender name</FieldLabel>
+    <FieldLabel name="EXP_BPADRESS_ID">Sender adress ID</FieldLabel>
+    <FieldLabel name="EXP_BPADRESS">Sender adress</FieldLabel>
+    <FieldLabel name="EXP_COUNTRY">Sender country</FieldLabel>
+    <FieldLabel name="EXP_REGION">Sender region</FieldLabel>
+    <FieldLabel name="EXP_CITY">Sender city</FieldLabel>
+    <FieldLabel name="EXP_CITY_ID">Sender city ID</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="REJECT_REASON_CODE">Reject reason type</FieldLabel>
+    <FieldLabel name="PICKUP_AGENT_ID">Pickup agent ID</FieldLabel>
+    <FieldLabel name="DELIVERY_AGENT_ID">Delivery agent ID</FieldLabel>
+    <FieldLabel name="CUSTODY_ORG_ID">In inventory ID</FieldLabel>
+    <FieldLabel name="CUSTODY_ORG_NAME">In inventory</FieldLabel>
+    <FieldLabel name="LAST_EVENT_ID"></FieldLabel>
+    <FieldLabel name="LAST_EVENT_NAME">Last event</FieldLabel>
+  </FieldLabels>
+</Translations>

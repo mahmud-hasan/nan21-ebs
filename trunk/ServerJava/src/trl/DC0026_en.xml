@@ -1,0 +1,44 @@
+<Translations dc="DC0026" lang="en">
+  <DcProperties>
+    <DcProperty name="Title">Supplier invoices</DcProperty>
+  </DcProperties>
+  <FieldLabels>
+    <FieldLabel name="DUE_DATE">Due date</FieldLabel>
+    <FieldLabel name="REGISTERED">Registered</FieldLabel>
+    <FieldLabel name="PAYABLE">Payable</FieldLabel>
+    <FieldLabel name="PAYED">Payed</FieldLabel>
+    <FieldLabel name="POSTED">Posted</FieldLabel>
+    <FieldLabel name="ACCDOC_NAME">Acc. doc</FieldLabel>
+    <FieldLabel name="MODIFIEDON">Modified on</FieldLabel>
+    <FieldLabel name="IS_INSERTED">Registered</FieldLabel>
+    <FieldLabel name="IS_PAYABLE">Payable</FieldLabel>
+    <FieldLabel name="IS_PAYED">Payed</FieldLabel>
+    <FieldLabel name="ID">Id</FieldLabel>
+    <FieldLabel name="DOC_NO">Doc no</FieldLabel>
+    <FieldLabel name="DOC_DATE">Date</FieldLabel>
+    <FieldLabel name="CLIENT_ID">Client ID</FieldLabel>
+    <FieldLabel name="DOC_TYPE">Doc type</FieldLabel>
+    <FieldLabel name="DOC_CURRENCY">Currency</FieldLabel>
+    <FieldLabel name="TOTAL_NET_AMOUNT">Net amount</FieldLabel>
+    <FieldLabel name="TOTAL_TAX_AMOUNT">Tax amount</FieldLabel>
+    <FieldLabel name="TOTAL_AMOUNT">Total amount</FieldLabel>
+    <FieldLabel name="CREATEDON">Created on</FieldLabel>
+    <FieldLabel name="CREATEDBY">Created by</FieldLabel>
+    <FieldLabel name="MODIFIEDBY">Modified by</FieldLabel>
+    <FieldLabel name="ISSUER_ID">Issuer ID</FieldLabel>
+    <FieldLabel name="RECEIVER_ID">Receiver ID</FieldLabel>
+    <FieldLabel name="CLIENT_NAME">Client</FieldLabel>
+    <FieldLabel name="ISSUER_NAME">Issuer</FieldLabel>
+    <FieldLabel name="RECEIVER_NAME">Receiver</FieldLabel>
+    <FieldLabel name="IS_POSTED">Posted</FieldLabel>
+    <FieldLabel name="ACCDOC_ID">Acc. doc id</FieldLabel>
+    <FieldLabel name="ACCT">Expense acct.</FieldLabel>
+    <FieldLabel name="POSTEDON">Posted on</FieldLabel>
+    <FieldLabel name="POSTEDBY">Posted by</FieldLabel>
+    <FieldLabel name="REF_RINVOICE_ID">Ref_rinvoice_id</FieldLabel>
+    <FieldLabel name="REF_RINVOICE_NAME">Ref. doc.</FieldLabel>
+    <FieldLabel name="NOTES"></FieldLabel>
+    <FieldLabel name="INSERTEDBY">Registered by</FieldLabel>
+    <FieldLabel name="INSERTEDON">Registered on</FieldLabel>
+  </FieldLabels>
+</Translations>
