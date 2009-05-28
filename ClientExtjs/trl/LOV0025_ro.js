@@ -1,9 +1,9 @@
 N21.DataComp.LOV0025.prototype.resourceBundle =  {
 FieldLabel:{ 
-      ACCOUNT:"Account"
-     ,CODE:"Cont"
-     ,ID:"Id"
+      CODE:"Cont"
      ,NAME:"Denumire"
+     ,ACCOUNT:"Account"
+     ,ID:"Id"
     }
   }
 
