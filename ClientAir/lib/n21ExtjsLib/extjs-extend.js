@@ -44,3 +44,30 @@ Ext.data.HttpProxy.prototype.loadResponse = function(o, success, response) {
 
 
 
+Ext.ns('Ext.ux.form');
+Ext.ux.form.BooleanCombo = Ext.extend(Ext.form.ComboBox, {
+
+   initComponent:function() {
+      Ext.apply(this, arguments);
+      Ext.ux.form.BooleanCombo.superclass.initComponent.apply(this, arguments);
+   }
+   ,onRender:function(ct) {
+      Ext.ux.form.BooleanCombo.superclass.onRender.apply(this, arguments);
+   }
+
+   ,onTriggerClick : function(){
+
+        if(this.disabled){
+            return;
+        }
+        
+        if (this.getValue() == 'Y') { this.setValue('N')}
+        else if (this.getValue() == 'N') { this.setValue('Y')}
+        this.el.focus();
+    }
+
+
+});
+
+
+
