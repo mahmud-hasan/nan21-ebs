@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0023 DC Controller: Accounting year
+ * DC0023 DC Controller: Accounting years
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0023 extends AbstractDataControl implements IDataControl {
 
@@ -19,25 +20,25 @@ public class DC0023 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
       this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
+    if (this.request.getParam("QRY_CLOSED") != null && !this.request.getParam("QRY_CLOSED").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.CLOSED like :CLOSED");
+      this.queryParams.put("CLOSED",(String)this.request.getParam("QRY_CLOSED"));
     }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE"));
     }
-    if (this.request.getParam("QRY_CLOSED") != null && !this.request.getParam("QRY_CLOSED").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.CLOSED like :CLOSED");
-      this.queryParams.put("CLOSED",(String)this.request.getParam("QRY_CLOSED"));
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_OPENED") != null && !this.request.getParam("QRY_OPENED").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -51,17 +52,17 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
+               " pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.CODE"+
-               " ,t.STARTDATE"+
-               " ,t.ENDDATE"+
-               " ,t.PREV_YEAR_CODE"+
-               " ,t.NOTES"+
-               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLOSED"+
-               " ,t.OPENED"+
+               " ,t.CODE"+
+               " ,t.ENDDATE"+
+               " ,t.ID"+
                " ,t.IS_FIRST_YEAR"+
+               " ,t.NOTES"+
+               " ,t.OPENED"+
+               " ,t.PREV_YEAR_CODE"+
+               " ,t.STARTDATE"+
            " from AC_ACC_YEAR t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -97,23 +98,23 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into AC_ACC_YEAR("+
-               "  ID"+
-               " ,CLIENT_ID"+
+               "  CLIENT_ID"+
                " ,CODE"+
-               " ,STARTDATE"+
                " ,ENDDATE"+
-               " ,PREV_YEAR_CODE"+
-               " ,NOTES"+
+               " ,ID"+
                " ,IS_FIRST_YEAR"+
+               " ,NOTES"+
+               " ,PREV_YEAR_CODE"+
+               " ,STARTDATE"+
            " ) values ( "+
-               "  :ID"+
-               " ,:CLIENT_ID"+
+               "  :CLIENT_ID"+
                " ,:CODE"+
-               " ,:STARTDATE"+
                " ,:ENDDATE"+
-               " ,:PREV_YEAR_CODE"+
-               " ,:NOTES"+
+               " ,:ID"+
                " ,:IS_FIRST_YEAR"+
+               " ,:NOTES"+
+               " ,:PREV_YEAR_CODE"+
+               " ,:STARTDATE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ACCYEAR_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -126,14 +127,14 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update AC_ACC_YEAR set "+
-               "  ID=:ID"+
-               " ,CLIENT_ID=:CLIENT_ID"+
+               "  CLIENT_ID=:CLIENT_ID"+
                " ,CODE=:CODE"+
-               " ,STARTDATE=:STARTDATE"+
                " ,ENDDATE=:ENDDATE"+
-               " ,PREV_YEAR_CODE=:PREV_YEAR_CODE"+
-               " ,NOTES=:NOTES"+
+               " ,ID=:ID"+
                " ,IS_FIRST_YEAR=:IS_FIRST_YEAR"+
+               " ,NOTES=:NOTES"+
+               " ,PREV_YEAR_CODE=:PREV_YEAR_CODE"+
+               " ,STARTDATE=:STARTDATE"+
    " where "+
      "      ID= :ID"+
    "";
@@ -160,17 +161,17 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
+                "pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.CODE"+
-               " ,t.STARTDATE"+
-               " ,t.ENDDATE"+
-               " ,t.PREV_YEAR_CODE"+
-               " ,t.NOTES"+
-                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLOSED"+
-               " ,t.OPENED"+
+               " ,t.CODE"+
+               " ,t.ENDDATE"+
+               " ,t.ID"+
                " ,t.IS_FIRST_YEAR"+
+               " ,t.NOTES"+
+               " ,t.OPENED"+
+               " ,t.PREV_YEAR_CODE"+
+               " ,t.STARTDATE"+
            " from AC_ACC_YEAR t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -182,34 +183,34 @@ private void findByPk()  throws Exception {
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
     if (pName.equals("OpenYear")) { this.callProc_OpenYear(); }
+    this.sendRecord();
 }
 
 
 private void callProc_OpenYear() throws Exception {
-
-
-  Properties inParams = new Properties();
-  Properties outParams = new Properties();
-   inParams.setProperty("p_accyear_id", "ID");
+  ProcParamDef param = null;
+  List<ProcParamDef> params= new ArrayList<ProcParamDef>();
+  param = new ProcParamDef("p_accyear_id","ID", DataType.NUMBER,true,false);
+  params.add(param);
   String sql = "BEGIN ps_acc.open_accyear(?); END;";
-  dbm.executeProcedure(sql, inParams, outParams, this.record);
+  dbm.executeProcedure(sql, params, this.record);
 
 } 
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("STARTDATE", new FieldDef("DATE"));
-	  this.fields.put("ENDDATE", new FieldDef("DATE"));
-	  this.fields.put("PREV_YEAR_CODE", new FieldDef("STRING"));
-	  this.fields.put("NOTES", new FieldDef("STRING"));
 	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("CLOSED", new FieldDef("BOOLEAN"));
-	  this.fields.put("OPENED", new FieldDef("BOOLEAN"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("ENDDATE", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("IS_FIRST_YEAR", new FieldDef("BOOLEAN"));
+	  this.fields.put("NOTES", new FieldDef("STRING"));
+	  this.fields.put("OPENED", new FieldDef("BOOLEAN"));
+	  this.fields.put("PREV_YEAR_CODE", new FieldDef("STRING"));
+	  this.fields.put("STARTDATE", new FieldDef("DATE"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
