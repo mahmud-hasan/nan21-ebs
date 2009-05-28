@@ -8,6 +8,7 @@
   //Request parameter names
 
   _n21["REQUEST_PARAM_DC"]                  = "_p_dc";
+  _n21["REQUEST_PARAM_REPORT"]              = "_p_report";
 	_n21["REQUEST_PARAM_ACTION"]              = "_p_action";
 	_n21["REQUEST_PARAM_FETCH_DATA_FORMAT"]   = "_p_fetch_format";
 	_n21["REQUEST_PARAM_EXPORT_DATA_FORMAT"]  = "_p_export_format";
@@ -37,6 +38,8 @@
 	_n21["REQUEST_PARAM_ACTION_LOGIN"]         = "login";
 	_n21["REQUEST_PARAM_ACTION_INIT_RECORD"]   = "initRecord";
 
+  _n21["REQUEST_PARAM_REP_ACTION_RUN"]   = "show";
+
   //Request parameter values: Data formats
 
   _n21["DATA_FORMAT_HTML"] = "html";
@@ -59,5 +62,4 @@
 	_n21["COLLECTION_RECORD_ID_TAG"]  = "storeRecordId";
   _n21["SESSION_TAB_ID"]            = "sessionTabId";
 
-
-
+ 
