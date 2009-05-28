@@ -283,6 +283,8 @@ N21.Base.GridView = Ext.extend(Ext.grid.GridPanel, {
 
      if (Ext.isEmpty(this.printWindow)) {
            this.printWindow = new Ext.ux.PrintWindow({params:params });
+       }  else {
+          this.printWindow.params =  params;
        }
      this.printWindow.show();
 

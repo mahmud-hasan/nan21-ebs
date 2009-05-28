@@ -131,6 +131,73 @@ function urldecode ( str ) {
 
 
 
+// *******************************************   built-ins ******************************************************************
+
+NBS_DC = function() {}
+NBS_UTL = function() {}
+
+
+  NBS_UTL.urlDecode = function( str ) {
+    if (str==undefined || str == null ) {
+       return "";
+    } else {
+      var ret = str;
+      try{
+        ret = str.replace(/\+/g, "%20");
+        ret = decodeURIComponent(ret);
+        ret = ret.toString();
+        return ret;
+      }
+      catch(e) {
+        alert('urldecode of <'+str+'> failed: '+e.message);
+        return str;
+      }
+    }
+
+  }
+
+
+
+
+  NBS_DC.clearFields = function( dc, fldNames ) {
+     var len = fldNames.length;
+      for (var i=0; i<len; i++ ) {
+         dc.setFieldValue(fldNames[i],"");
+      }
+  }
+
+
+  NBS_DC.clearFieldsExcept = function( dc, fldNames ) {
+    var len = dc.fields.keys.length;
+    for (var i=0; i<len; i++ ) {
+      if (fldNames.indexOf(dc.fields.keys[i]) < 0) {
+         try {
+           dc.setFieldValue(dc.fields.keys[i],"");
+         }catch(e) {
+            alert('Cannot clear field <'+dc.fields.keys[i]+'>. Reason: '+e.message);
+         }
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
