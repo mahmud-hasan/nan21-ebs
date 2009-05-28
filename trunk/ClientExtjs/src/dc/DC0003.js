@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0003 DataControl: UoM
+ * DC0003 DataControl: Units of measure
  */
 
   Ext.ns("N21.DataComp");
@@ -56,7 +56,17 @@
          this.columnMap.add("CODE",{ id:'CODE',header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,caseRestriction:"Upper",style:"text-transform:uppercase;",cls:"x-form-text-in-grid"})});
          this.columnMap.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Name",width:150,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
          this.columnMap.add("UOM_TYPE",{ id:'UOM_TYPE',header:this.resourceBundle.FieldLabel.UOM_TYPE||"Type",width:100,dataIndex:'UOM_TYPE',insert_allowed:true,update_allowed:true,sortable:true,editor:new N21.DataComp.LOV0004({allowBlank: false,callFromGrid:this,cls:"x-form-text-in-grid",selectOnFocus:true,displayColumn:"CODE"})});
-         this.columnMap.add("ACTIVE",{ id:'ACTIVE',header:this.resourceBundle.FieldLabel.ACTIVE||"Active",width:50,dataIndex:'ACTIVE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("ACTIVE",{ id:'ACTIVE',header:this.resourceBundle.FieldLabel.ACTIVE||"Active",width:50,dataIndex:'ACTIVE',
+           insert_allowed:true,update_allowed:true,sortable:true,
+           renderer    : function(v, meta){
+                meta.css += ' x-grid3-check-col-td';
+                return '<div onClick="alert(1);" class="x-grid3-check-col'+((v=='Y')?'-on':'')+'"></div>';
+            }
+            //, editor      : new Ext.grid.GridEditor( new Ext.ux.form.XCheckbox() )
+          // editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})
+         });
+
+         
          this.columnMap.add("CREATEDON",{ id:'CREATEDON',header:this.resourceBundle.FieldLabel.CREATEDON||"CreatedOn",width:100,dataIndex:'CREATEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});
          this.columnMap.add("CREATEDBY",{ id:'CREATEDBY',header:this.resourceBundle.FieldLabel.CREATEDBY||"CreatedBy",width:100,dataIndex:'CREATEDBY',insert_allowed:false,update_allowed:false,hidden:true,sortable:true});
          this.columnMap.add("MODIFIEDON",{ id:'MODIFIEDON',header:this.resourceBundle.FieldLabel.MODIFIEDON||"ModifiedOn",width:100,dataIndex:'MODIFIEDON',insert_allowed:false,update_allowed:false,hidden:true,sortable:true,renderer:Ext.util.Format.dateRenderer(Ext.DATE_FORMAT)});

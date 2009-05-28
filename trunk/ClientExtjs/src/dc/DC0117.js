@@ -146,7 +146,7 @@
      }
 
   ,doReceptionSuccess:function(response) {
-    this.clearAllFieldsExcept( new Array('CLIENT_ID', 'CLIENT_CODE', 'EVENT_DATE', 'WAREHOUSE_ORG_NAME', 'WAREHOUSE_ORG_ID'));
+    NBS_DC.clearFieldsExcept( new Array('CLIENT_ID', 'CLIENT_CODE', 'EVENT_DATE', 'WAREHOUSE_ORG_NAME', 'WAREHOUSE_ORG_ID'));
 this.setRecordStatus("insert");
 this.getField("CODE").focus();
    }

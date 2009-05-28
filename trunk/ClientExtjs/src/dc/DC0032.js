@@ -1,5 +1,5 @@
 /** 
- * Data Component: DC0032G, Title: Accounts
+ * Data Component: DC0032G, Title: Accounting accounts chart
  */ 
 
   Ext.ns("N21.DataComp");
@@ -107,7 +107,7 @@
   });
   Ext.reg("DC0032G", N21.DataComp.DC0032G);
 /** 
- * Data Component: DC0032F, Title: Accounts
+ * Data Component: DC0032F, Title: Accounting accounts chart
  */ 
 
   Ext.ns("N21.DataComp");
@@ -202,7 +202,7 @@
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0032
- * Title: Accounts
+ * Title: Accounting accounts chart
  */ 
 
   Ext.ns("N21.DataComp");

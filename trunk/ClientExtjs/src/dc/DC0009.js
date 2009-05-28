@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0009 DataControl: Cities def.
+ * DC0009 DataControl: Cities
  */
 
   Ext.ns("N21.DataComp");

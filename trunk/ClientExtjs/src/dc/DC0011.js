@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0011 DataControl: UoM conversions
+ * DC0011 DataControl: Unit of measure conversions
  */
 
   Ext.ns("N21.DataComp");

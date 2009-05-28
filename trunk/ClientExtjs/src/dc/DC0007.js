@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0007 DataControl: Countries def.
+ * DC0007 DataControl: Countries
  */
 
   Ext.ns("N21.DataComp");

@@ -1,5 +1,5 @@
 /** 
- * Data Component: DC0042G, Title: Accounting doc. line
+ * Data Component: DC0042G, Title: Accounting document lines
  */ 
 
   Ext.ns("N21.DataComp");
@@ -113,7 +113,7 @@
   });
   Ext.reg("DC0042G", N21.DataComp.DC0042G);
 /** 
- * Data Component: DC0042F, Title: Accounting doc. line
+ * Data Component: DC0042F, Title: Accounting document lines
  */ 
 
   Ext.ns("N21.DataComp");
@@ -192,7 +192,7 @@
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0042
- * Title: Accounting doc. line
+ * Title: Accounting document lines
  */ 
 
   Ext.ns("N21.DataComp");
