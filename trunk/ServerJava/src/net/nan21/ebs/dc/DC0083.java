@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0083 extends AbstractDataControl implements IDataControl {
 
@@ -19,10 +20,10 @@ public class DC0083 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("cc.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+      this.queryWhere.append("cc.ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
     }
     if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -34,15 +35,15 @@ private void preQuery() {
       this.queryWhere.append("cc.CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE"));
     }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("cc.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("cc.NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
-    }
-    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("cc.ACTIVE like :ACTIVE");
-      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
     }
 }
 
@@ -51,16 +52,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " cc.CREATEDON"+
-               " ,cc.CREATEDBY"+
-               " ,cc.MODIFIEDON"+
-               " ,cc.MODIFIEDBY"+
-               " ,cc.ID"+
+               " cc.ACTIVE"+
+               " ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE"+
                " ,cc.CLIENT_ID"+
                " ,cc.CODE"+
+               " ,cc.CREATEDBY"+
+               " ,cc.CREATEDON"+
+               " ,cc.ID"+
+               " ,cc.MODIFIEDBY"+
+               " ,cc.MODIFIEDON"+
                " ,cc.NAME"+
-               " ,cc.ACTIVE"+
-               " ,pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE"+
            " from COST_CENTER cc "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -72,8 +73,8 @@ public void doExport() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " cc.ID"+
-               " ,cc.CLIENT_ID"+
                ",pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE"+
+               " ,cc.CLIENT_ID"+
                " ,cc.CODE"+
                " ,cc.NAME"+
                " ,cc.ACTIVE"+
@@ -95,17 +96,17 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into COST_CENTER("+
-               "  ID"+
+               "  ACTIVE"+
                " ,CLIENT_ID"+
                " ,CODE"+
+               " ,ID"+
                " ,NAME"+
-               " ,ACTIVE"+
            " ) values ( "+
-               "  :ID"+
+               "  :ACTIVE"+
                " ,:CLIENT_ID"+
                " ,:CODE"+
+               " ,:ID"+
                " ,:NAME"+
-               " ,:ACTIVE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_COSTCENTER_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -153,16 +154,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " cc.CREATEDON"+
-               " ,cc.CREATEDBY"+
-               " ,cc.MODIFIEDON"+
-               " ,cc.MODIFIEDBY"+
-               " ,cc.ID"+
+               " cc.ACTIVE"+
+                ",pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE"+
                " ,cc.CLIENT_ID"+
                " ,cc.CODE"+
+               " ,cc.CREATEDBY"+
+               " ,cc.CREATEDON"+
+               " ,cc.ID"+
+               " ,cc.MODIFIEDBY"+
+               " ,cc.MODIFIEDON"+
                " ,cc.NAME"+
-               " ,cc.ACTIVE"+
-                ",pbo_client.get_code_by_id(cc.client_id) CLIENT_CODE"+
            " from COST_CENTER cc"+
         " where "+
      "      cc.ID= :ID"+ 
@@ -173,21 +174,22 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
 	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0094 extends AbstractDataControl implements IDataControl {
 
@@ -19,20 +20,20 @@ public class DC0094 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+    if (this.request.getParam("QRY_ACCSCHEMA_ID") != null && !this.request.getParam("QRY_ACCSCHEMA_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+      this.queryWhere.append("t.ACCSCHEMA_ID like :ACCSCHEMA_ID");
+      this.queryParams.put("ACCSCHEMA_ID",(String)this.request.getParam("QRY_ACCSCHEMA_ID"));
     }
     if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
       this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
-    if (this.request.getParam("QRY_ACCSCHEMA_ID") != null && !this.request.getParam("QRY_ACCSCHEMA_ID").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ACCSCHEMA_ID like :ACCSCHEMA_ID");
-      this.queryParams.put("ACCSCHEMA_ID",(String)this.request.getParam("QRY_ACCSCHEMA_ID"));
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
 }
 
@@ -41,16 +42,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.CLIENT_ID"+
-               " ,t.ACCSCHEMA_ID"+
-               " ,t.CREATEDON"+
-               " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.IS_DEFAULT"+
-               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " t.ACCSCHEMA_ID"+
                " ,pbo_acc.get_accschema_name_by_id(t.accschema_id) ACCSCHEMA_NAME"+
+               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.CLIENT_ID"+
+               " ,t.CREATEDBY"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
+               " ,t.IS_DEFAULT"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from AC_CLIENT_ACCSCHEMA t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -85,14 +86,14 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into AC_CLIENT_ACCSCHEMA("+
-               "  ID"+
+               "  ACCSCHEMA_ID"+
                " ,CLIENT_ID"+
-               " ,ACCSCHEMA_ID"+
+               " ,ID"+
                " ,IS_DEFAULT"+
            " ) values ( "+
-               "  :ID"+
+               "  :ACCSCHEMA_ID"+
                " ,:CLIENT_ID"+
-               " ,:ACCSCHEMA_ID"+
+               " ,:ID"+
                " ,:IS_DEFAULT"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_CLIACCSCHEMA_ID")  );
@@ -140,16 +141,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.CLIENT_ID"+
-               " ,t.ACCSCHEMA_ID"+
-               " ,t.CREATEDON"+
-               " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.IS_DEFAULT"+
-                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " t.ACCSCHEMA_ID"+
                 ",pbo_acc.get_accschema_name_by_id(t.accschema_id) ACCSCHEMA_NAME"+
+                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.CLIENT_ID"+
+               " ,t.CREATEDBY"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
+               " ,t.IS_DEFAULT"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from AC_CLIENT_ACCSCHEMA t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -160,21 +161,22 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ACCSCHEMA_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
 	  this.fields.put("ACCSCHEMA_NAME", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

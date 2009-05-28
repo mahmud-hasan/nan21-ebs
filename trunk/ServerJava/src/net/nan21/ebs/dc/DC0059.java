@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0059 extends AbstractDataControl implements IDataControl {
 
@@ -19,80 +20,80 @@ public class DC0059 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+    if (this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_DOC_NO") != null && !this.request.getParam("QRY_DOC_NO").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.DOC_NO like :DOC_NO");
-      this.queryParams.put("DOC_NO",(String)this.request.getParam("QRY_DOC_NO"));
-    }
-    if (this.request.getParam("QRY_DOC_DATE") != null && !this.request.getParam("QRY_DOC_DATE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.DOC_DATE like :DOC_DATE");
-      this.queryParams.put("DOC_DATE",(String)this.request.getParam("QRY_DOC_DATE"));
-    }
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
-    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.BPARTNER_ID like :BPARTNER_ID");
-      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
+      this.queryWhere.append("ord.BILL_BPARTNER_CONTACT_ID like :BILL_BPARTNER_CONTACT_ID");
+      this.queryParams.put("BILL_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID"));
     }
     if (this.request.getParam("QRY_BILL_BPARTNER_ID") != null && !this.request.getParam("QRY_BILL_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ord.BILL_BPARTNER_ID like :BILL_BPARTNER_ID");
       this.queryParams.put("BILL_BPARTNER_ID",(String)this.request.getParam("QRY_BILL_BPARTNER_ID"));
     }
-    if (this.request.getParam("QRY_DELIV_BPARTNER_ID") != null && !this.request.getParam("QRY_DELIV_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.DELIV_BPARTNER_ID like :DELIV_BPARTNER_ID");
-      this.queryParams.put("DELIV_BPARTNER_ID",(String)this.request.getParam("QRY_DELIV_BPARTNER_ID"));
-    }
-    if (this.request.getParam("QRY_PAY_BPARTNER_ID") != null && !this.request.getParam("QRY_PAY_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.PAY_BPARTNER_ID like :PAY_BPARTNER_ID");
-      this.queryParams.put("PAY_BPARTNER_ID",(String)this.request.getParam("QRY_PAY_BPARTNER_ID"));
-    }
     if (this.request.getParam("QRY_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_BPARTNER_CONTACT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ord.BPARTNER_CONTACT_ID like :BPARTNER_CONTACT_ID");
       this.queryParams.put("BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_BPARTNER_CONTACT_ID"));
     }
-    if (this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID").equals("")) {
+    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.BILL_BPARTNER_CONTACT_ID like :BILL_BPARTNER_CONTACT_ID");
-      this.queryParams.put("BILL_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_BILL_BPARTNER_CONTACT_ID"));
+      this.queryWhere.append("ord.BPARTNER_ID like :BPARTNER_ID");
+      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
     }
-    if (this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID").equals("")) {
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.DELIV_BPARTNER_CONTACT_ID like :DELIV_BPARTNER_CONTACT_ID");
-      this.queryParams.put("DELIV_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID"));
-    }
-    if (this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.PAY_BPARTNER_CONTACT_ID like :PAY_BPARTNER_CONTACT_ID");
-      this.queryParams.put("PAY_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID"));
-    }
-    if (this.request.getParam("QRY_REF_SORDER_ID") != null && !this.request.getParam("QRY_REF_SORDER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("ord.REF_SORDER_ID like :REF_SORDER_ID");
-      this.queryParams.put("REF_SORDER_ID",(String)this.request.getParam("QRY_REF_SORDER_ID"));
+      this.queryWhere.append("ord.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_CURRENCY") != null && !this.request.getParam("QRY_CURRENCY").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ord.CURRENCY like :CURRENCY");
       this.queryParams.put("CURRENCY",(String)this.request.getParam("QRY_CURRENCY"));
     }
+    if (this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.DELIV_BPARTNER_CONTACT_ID like :DELIV_BPARTNER_CONTACT_ID");
+      this.queryParams.put("DELIV_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_DELIV_BPARTNER_CONTACT_ID"));
+    }
+    if (this.request.getParam("QRY_DELIV_BPARTNER_ID") != null && !this.request.getParam("QRY_DELIV_BPARTNER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.DELIV_BPARTNER_ID like :DELIV_BPARTNER_ID");
+      this.queryParams.put("DELIV_BPARTNER_ID",(String)this.request.getParam("QRY_DELIV_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_DOC_DATE") != null && !this.request.getParam("QRY_DOC_DATE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.DOC_DATE like :DOC_DATE");
+      this.queryParams.put("DOC_DATE",(String)this.request.getParam("QRY_DOC_DATE"));
+    }
+    if (this.request.getParam("QRY_DOC_NO") != null && !this.request.getParam("QRY_DOC_NO").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.DOC_NO like :DOC_NO");
+      this.queryParams.put("DOC_NO",(String)this.request.getParam("QRY_DOC_NO"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
     if (this.request.getParam("QRY_PAYMETHOD_CODE") != null && !this.request.getParam("QRY_PAYMETHOD_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("ord.PAYMETHOD_CODE like :PAYMETHOD_CODE");
       this.queryParams.put("PAYMETHOD_CODE",(String)this.request.getParam("QRY_PAYMETHOD_CODE"));
+    }
+    if (this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID") != null && !this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.PAY_BPARTNER_CONTACT_ID like :PAY_BPARTNER_CONTACT_ID");
+      this.queryParams.put("PAY_BPARTNER_CONTACT_ID",(String)this.request.getParam("QRY_PAY_BPARTNER_CONTACT_ID"));
+    }
+    if (this.request.getParam("QRY_PAY_BPARTNER_ID") != null && !this.request.getParam("QRY_PAY_BPARTNER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.PAY_BPARTNER_ID like :PAY_BPARTNER_ID");
+      this.queryParams.put("PAY_BPARTNER_ID",(String)this.request.getParam("QRY_PAY_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_REF_SORDER_ID") != null && !this.request.getParam("QRY_REF_SORDER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("ord.REF_SORDER_ID like :REF_SORDER_ID");
+      this.queryParams.put("REF_SORDER_ID",(String)this.request.getParam("QRY_REF_SORDER_ID"));
     }
 }
 
@@ -101,32 +102,32 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ord.ID"+
-               " ,ord.DOC_NO"+
-               " ,ord.DOC_DATE"+
-               " ,ord.CLIENT_ID"+
-               " ,ord.CREATEDON"+
-               " ,ord.CREATEDBY"+
-               " ,ord.MODIFIEDON"+
-               " ,ord.MODIFIEDBY"+
-               " ,ord.BPARTNER_ID"+
+               " ord.BILL_BPARTNER_CONTACT_ID"+
                " ,ord.BILL_BPARTNER_ID"+
-               " ,ord.DELIV_BPARTNER_ID"+
-               " ,ord.PAY_BPARTNER_ID"+
+               " ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
                " ,ord.BPARTNER_CONTACT_ID"+
-               " ,ord.BILL_BPARTNER_CONTACT_ID"+
-               " ,ord.DELIV_BPARTNER_CONTACT_ID"+
-               " ,ord.PAY_BPARTNER_CONTACT_ID"+
-               " ,ord.REF_SORDER_ID"+
+               " ,ord.BPARTNER_ID"+
+               " ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME"+
+               " ,(select code from client where id = ord.client_id) CLIENT_CODE"+
+               " ,ord.CLIENT_ID"+
+               " ,ord.CREATEDBY"+
+               " ,ord.CREATEDON"+
                " ,ord.CURRENCY"+
+               " ,ord.DELIV_BPARTNER_CONTACT_ID"+
+               " ,ord.DELIV_BPARTNER_ID"+
+               " ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME"+
+               " ,ord.DOC_DATE"+
+               " ,ord.DOC_NO"+
+               " ,ord.ID"+
+               " ,ord.MODIFIEDBY"+
+               " ,ord.MODIFIEDON"+
                " ,ord.PAYMETHOD_CODE"+
+               " ,ord.PAY_BPARTNER_CONTACT_ID"+
+               " ,ord.PAY_BPARTNER_ID"+
+               " ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME"+
+               " ,ord.REF_SORDER_ID"+
                " ,ord.SALESREP_ID"+
                " ,ord.TOTAL_AMOUNT"+
-               " ,(select code from client where id = ord.client_id) CLIENT_CODE"+
-               " ,(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME"+
-               " ,(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
-               " ,(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME"+
-               " ,(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME"+
            " from SALES_ORDER ord "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -148,10 +149,10 @@ public void doExport() throws Exception {
                " ,ord.CREATEDBY"+
                " ,ord.MODIFIEDON"+
                " ,ord.MODIFIEDBY"+
-               ",(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
                " ,ord.BILL_BPARTNER_ID"+
-               " ,ord.DELIV_BPARTNER_ID"+
+               ",(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
                ",(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME"+
+               " ,ord.DELIV_BPARTNER_ID"+
                ",(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME"+
                " ,ord.PAY_BPARTNER_ID"+
                " ,ord.BPARTNER_CONTACT_ID"+
@@ -177,39 +178,39 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into SALES_ORDER("+
-               "  ID"+
-               " ,DOC_NO"+
-               " ,DOC_DATE"+
-               " ,CLIENT_ID"+
-               " ,BPARTNER_ID"+
+               "  BILL_BPARTNER_CONTACT_ID"+
                " ,BILL_BPARTNER_ID"+
-               " ,DELIV_BPARTNER_ID"+
-               " ,PAY_BPARTNER_ID"+
                " ,BPARTNER_CONTACT_ID"+
-               " ,BILL_BPARTNER_CONTACT_ID"+
-               " ,DELIV_BPARTNER_CONTACT_ID"+
-               " ,PAY_BPARTNER_CONTACT_ID"+
-               " ,REF_SORDER_ID"+
+               " ,BPARTNER_ID"+
+               " ,CLIENT_ID"+
                " ,CURRENCY"+
+               " ,DELIV_BPARTNER_CONTACT_ID"+
+               " ,DELIV_BPARTNER_ID"+
+               " ,DOC_DATE"+
+               " ,DOC_NO"+
+               " ,ID"+
                " ,PAYMETHOD_CODE"+
+               " ,PAY_BPARTNER_CONTACT_ID"+
+               " ,PAY_BPARTNER_ID"+
+               " ,REF_SORDER_ID"+
                " ,SALESREP_ID"+
                " ,TOTAL_AMOUNT"+
            " ) values ( "+
-               "  :ID"+
-               " ,:DOC_NO"+
-               " ,:DOC_DATE"+
-               " ,:CLIENT_ID"+
-               " ,:BPARTNER_ID"+
+               "  :BILL_BPARTNER_CONTACT_ID"+
                " ,:BILL_BPARTNER_ID"+
-               " ,:DELIV_BPARTNER_ID"+
-               " ,:PAY_BPARTNER_ID"+
                " ,:BPARTNER_CONTACT_ID"+
-               " ,:BILL_BPARTNER_CONTACT_ID"+
-               " ,:DELIV_BPARTNER_CONTACT_ID"+
-               " ,:PAY_BPARTNER_CONTACT_ID"+
-               " ,:REF_SORDER_ID"+
+               " ,:BPARTNER_ID"+
+               " ,:CLIENT_ID"+
                " ,:CURRENCY"+
+               " ,:DELIV_BPARTNER_CONTACT_ID"+
+               " ,:DELIV_BPARTNER_ID"+
+               " ,:DOC_DATE"+
+               " ,:DOC_NO"+
+               " ,:ID"+
                " ,:PAYMETHOD_CODE"+
+               " ,:PAY_BPARTNER_CONTACT_ID"+
+               " ,:PAY_BPARTNER_ID"+
+               " ,:REF_SORDER_ID"+
                " ,:SALESREP_ID"+
                " ,:TOTAL_AMOUNT"+
     ")";
@@ -224,21 +225,21 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update SALES_ORDER set "+
-               "  ID=:ID"+
-               " ,DOC_NO=:DOC_NO"+
-               " ,DOC_DATE=:DOC_DATE"+
-               " ,CLIENT_ID=:CLIENT_ID"+
-               " ,BPARTNER_ID=:BPARTNER_ID"+
+               "  BILL_BPARTNER_CONTACT_ID=:BILL_BPARTNER_CONTACT_ID"+
                " ,BILL_BPARTNER_ID=:BILL_BPARTNER_ID"+
-               " ,DELIV_BPARTNER_ID=:DELIV_BPARTNER_ID"+
-               " ,PAY_BPARTNER_ID=:PAY_BPARTNER_ID"+
                " ,BPARTNER_CONTACT_ID=:BPARTNER_CONTACT_ID"+
-               " ,BILL_BPARTNER_CONTACT_ID=:BILL_BPARTNER_CONTACT_ID"+
-               " ,DELIV_BPARTNER_CONTACT_ID=:DELIV_BPARTNER_CONTACT_ID"+
-               " ,PAY_BPARTNER_CONTACT_ID=:PAY_BPARTNER_CONTACT_ID"+
-               " ,REF_SORDER_ID=:REF_SORDER_ID"+
+               " ,BPARTNER_ID=:BPARTNER_ID"+
+               " ,CLIENT_ID=:CLIENT_ID"+
                " ,CURRENCY=:CURRENCY"+
+               " ,DELIV_BPARTNER_CONTACT_ID=:DELIV_BPARTNER_CONTACT_ID"+
+               " ,DELIV_BPARTNER_ID=:DELIV_BPARTNER_ID"+
+               " ,DOC_DATE=:DOC_DATE"+
+               " ,DOC_NO=:DOC_NO"+
+               " ,ID=:ID"+
                " ,PAYMETHOD_CODE=:PAYMETHOD_CODE"+
+               " ,PAY_BPARTNER_CONTACT_ID=:PAY_BPARTNER_CONTACT_ID"+
+               " ,PAY_BPARTNER_ID=:PAY_BPARTNER_ID"+
+               " ,REF_SORDER_ID=:REF_SORDER_ID"+
                " ,SALESREP_ID=:SALESREP_ID"+
                " ,TOTAL_AMOUNT=:TOTAL_AMOUNT"+
    " where "+
@@ -267,32 +268,32 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ord.ID"+
-               " ,ord.DOC_NO"+
-               " ,ord.DOC_DATE"+
-               " ,ord.CLIENT_ID"+
-               " ,ord.CREATEDON"+
-               " ,ord.CREATEDBY"+
-               " ,ord.MODIFIEDON"+
-               " ,ord.MODIFIEDBY"+
-               " ,ord.BPARTNER_ID"+
+               " ord.BILL_BPARTNER_CONTACT_ID"+
                " ,ord.BILL_BPARTNER_ID"+
-               " ,ord.DELIV_BPARTNER_ID"+
-               " ,ord.PAY_BPARTNER_ID"+
+                ",(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
                " ,ord.BPARTNER_CONTACT_ID"+
-               " ,ord.BILL_BPARTNER_CONTACT_ID"+
-               " ,ord.DELIV_BPARTNER_CONTACT_ID"+
-               " ,ord.PAY_BPARTNER_CONTACT_ID"+
-               " ,ord.REF_SORDER_ID"+
+               " ,ord.BPARTNER_ID"+
+                ",(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME"+
+                ",(select code from client where id = ord.client_id) CLIENT_CODE"+
+               " ,ord.CLIENT_ID"+
+               " ,ord.CREATEDBY"+
+               " ,ord.CREATEDON"+
                " ,ord.CURRENCY"+
+               " ,ord.DELIV_BPARTNER_CONTACT_ID"+
+               " ,ord.DELIV_BPARTNER_ID"+
+                ",(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME"+
+               " ,ord.DOC_DATE"+
+               " ,ord.DOC_NO"+
+               " ,ord.ID"+
+               " ,ord.MODIFIEDBY"+
+               " ,ord.MODIFIEDON"+
                " ,ord.PAYMETHOD_CODE"+
+               " ,ord.PAY_BPARTNER_CONTACT_ID"+
+               " ,ord.PAY_BPARTNER_ID"+
+                ",(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME"+
+               " ,ord.REF_SORDER_ID"+
                " ,ord.SALESREP_ID"+
                " ,ord.TOTAL_AMOUNT"+
-                ",(select code from client where id = ord.client_id) CLIENT_CODE"+
-                ",(select name from bpartner where id = ord.BPARTNER_ID) BPARTNER_NAME"+
-                ",(select name from bpartner where id = ord.BILL_BPARTNER_ID) BILL_BPARTNER_NAME"+
-                ",(select name from bpartner where id = ord.DELIV_BPARTNER_ID) DELIV_BPARTNER_NAME"+
-                ",(select name from bpartner where id = ord.PAY_BPARTNER_ID) PAY_BPARTNER_NAME"+
            " from SALES_ORDER ord"+
         " where "+
      "      ord.ID= :ID"+ 
@@ -303,37 +304,38 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("DOC_NO", new FieldDef("STRING"));
-	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("BILL_BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("DELIV_BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PAY_BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("BILL_BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("DELIV_BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PAY_BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("REF_SORDER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BILL_BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BILL_BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CURRENCY", new FieldDef("STRING"));
+	  this.fields.put("DELIV_BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("DELIV_BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("DELIV_BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("DOC_DATE", new FieldDef("DATE"));
+	  this.fields.put("DOC_NO", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("PAYMETHOD_CODE", new FieldDef("STRING"));
+	  this.fields.put("PAY_BPARTNER_CONTACT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PAY_BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PAY_BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("REF_SORDER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("SALESREP_ID", new FieldDef("NUMBER"));
 	  this.fields.put("TOTAL_AMOUNT", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
-	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
-	  this.fields.put("BILL_BPARTNER_NAME", new FieldDef("STRING"));
-	  this.fields.put("DELIV_BPARTNER_NAME", new FieldDef("STRING"));
-	  this.fields.put("PAY_BPARTNER_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

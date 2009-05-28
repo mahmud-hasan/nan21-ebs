@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0077 extends AbstractDataControl implements IDataControl {
 
@@ -24,15 +25,15 @@ private void preQuery() {
       this.queryWhere.append("av.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_PRODUCT_ID") != null && !this.request.getParam("QRY_PRODUCT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("av.PRODUCT_ID like :PRODUCT_ID");
-      this.queryParams.put("PRODUCT_ID",(String)this.request.getParam("QRY_PRODUCT_ID"));
-    }
     if (this.request.getParam("QRY_PRDATTR_ID") != null && !this.request.getParam("QRY_PRDATTR_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("av.PRDATTR_ID like :PRDATTR_ID");
       this.queryParams.put("PRDATTR_ID",(String)this.request.getParam("QRY_PRDATTR_ID"));
+    }
+    if (this.request.getParam("QRY_PRODUCT_ID") != null && !this.request.getParam("QRY_PRODUCT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("av.PRODUCT_ID like :PRODUCT_ID");
+      this.queryParams.put("PRODUCT_ID",(String)this.request.getParam("QRY_PRODUCT_ID"));
     }
 }
 
@@ -41,15 +42,15 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " av.ID"+
-               " ,av.PRODUCT_ID"+
-               " ,av.PRDATTR_ID"+
-               " ,av.ATTR_VAL"+
-               " ,av.CREATEDON"+
+               " av.ATTR_VAL"+
                " ,av.CREATEDBY"+
-               " ,av.MODIFIEDON"+
+               " ,av.CREATEDON"+
+               " ,av.ID"+
                " ,av.MODIFIEDBY"+
+               " ,av.MODIFIEDON"+
+               " ,av.PRDATTR_ID"+
                " ,pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
+               " ,av.PRODUCT_ID"+
                " ,pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME"+
            " from MM_PROD_ATTR_VAL av "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -112,15 +113,15 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " av.ID"+
-               " ,av.PRODUCT_ID"+
-               " ,av.PRDATTR_ID"+
-               " ,av.ATTR_VAL"+
-               " ,av.CREATEDON"+
+               " av.ATTR_VAL"+
                " ,av.CREATEDBY"+
-               " ,av.MODIFIEDON"+
+               " ,av.CREATEDON"+
+               " ,av.ID"+
                " ,av.MODIFIEDBY"+
+               " ,av.MODIFIEDON"+
+               " ,av.PRDATTR_ID"+
                 ",pbo_product.get_attr_name_by_id(av.PRDATTR_ID, 'N') PRDATTR_NAME"+
+               " ,av.PRODUCT_ID"+
                 ",pbo_product.get_name_by_id(av.product_id,'N') PRODUCT_NAME"+
            " from MM_PROD_ATTR_VAL av"+
         " where "+
@@ -132,20 +133,21 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRDATTR_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ATTR_VAL", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("PRDATTR_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PRDATTR_NAME", new FieldDef("STRING"));
+	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;

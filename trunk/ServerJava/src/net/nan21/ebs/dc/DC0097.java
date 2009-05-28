@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0097 extends AbstractDataControl implements IDataControl {
 
@@ -19,25 +20,25 @@ public class DC0097 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_ASSET_ID") != null && !this.request.getParam("QRY_ASSET_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ASSET_ID like :ASSET_ID");
+      this.queryParams.put("ASSET_ID",(String)this.request.getParam("QRY_ASSET_ID"));
+    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_VEHICLETYP_CODE") != null && !this.request.getParam("QRY_VEHICLETYP_CODE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.VEHICLETYP_CODE like :VEHICLETYP_CODE");
-      this.queryParams.put("VEHICLETYP_CODE",(String)this.request.getParam("QRY_VEHICLETYP_CODE"));
     }
     if (this.request.getParam("QRY_REG_NO") != null && !this.request.getParam("QRY_REG_NO").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.REG_NO like :REG_NO");
       this.queryParams.put("REG_NO",(String)this.request.getParam("QRY_REG_NO"));
     }
-    if (this.request.getParam("QRY_ASSET_ID") != null && !this.request.getParam("QRY_ASSET_ID").equals("")) {
+    if (this.request.getParam("QRY_VEHICLETYP_CODE") != null && !this.request.getParam("QRY_VEHICLETYP_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ASSET_ID like :ASSET_ID");
-      this.queryParams.put("ASSET_ID",(String)this.request.getParam("QRY_ASSET_ID"));
+      this.queryWhere.append("t.VEHICLETYP_CODE like :VEHICLETYP_CODE");
+      this.queryParams.put("VEHICLETYP_CODE",(String)this.request.getParam("QRY_VEHICLETYP_CODE"));
     }
 }
 
@@ -46,14 +47,14 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.VEHICLETYP_CODE"+
-               " ,t.REG_NO"+
-               " ,t.ASSET_ID"+
-               " ,t.CREATEDON"+
+               " t.ASSET_ID"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.REG_NO"+
+               " ,t.VEHICLETYP_CODE"+
            " from TR_VEHICLE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -86,15 +87,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into TR_VEHICLE("+
-               "  ID"+
-               " ,VEHICLETYP_CODE"+
+               "  ASSET_ID"+
+               " ,ID"+
                " ,REG_NO"+
-               " ,ASSET_ID"+
+               " ,VEHICLETYP_CODE"+
            " ) values ( "+
-               "  :ID"+
-               " ,:VEHICLETYP_CODE"+
+               "  :ASSET_ID"+
+               " ,:ID"+
                " ,:REG_NO"+
-               " ,:ASSET_ID"+
+               " ,:VEHICLETYP_CODE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_VEHICLE_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -107,10 +108,10 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update TR_VEHICLE set "+
-               "  ID=:ID"+
-               " ,VEHICLETYP_CODE=:VEHICLETYP_CODE"+
+               "  ASSET_ID=:ASSET_ID"+
+               " ,ID=:ID"+
                " ,REG_NO=:REG_NO"+
-               " ,ASSET_ID=:ASSET_ID"+
+               " ,VEHICLETYP_CODE=:VEHICLETYP_CODE"+
    " where "+
      "      ID= :ID"+
    "";
@@ -137,14 +138,14 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.VEHICLETYP_CODE"+
-               " ,t.REG_NO"+
-               " ,t.ASSET_ID"+
-               " ,t.CREATEDON"+
+               " t.ASSET_ID"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.REG_NO"+
+               " ,t.VEHICLETYP_CODE"+
            " from TR_VEHICLE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -155,19 +156,20 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("VEHICLETYP_CODE", new FieldDef("STRING"));
-	  this.fields.put("REG_NO", new FieldDef("STRING"));
 	  this.fields.put("ASSET_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("REG_NO", new FieldDef("STRING"));
+	  this.fields.put("VEHICLETYP_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

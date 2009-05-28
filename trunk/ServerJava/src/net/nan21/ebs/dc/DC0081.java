@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0081 extends AbstractDataControl implements IDataControl {
 
@@ -19,15 +20,15 @@ public class DC0081 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.BPARTNER_ID like :BPARTNER_ID");
       this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
 }
 
@@ -36,12 +37,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.NAME"+
-               " ,t.BPARTNER_ID"+
+               " t.BPARTNER_ID"+
+               " ,pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
                " ,t.CODE"+
                " ,t.DEFAULT_CLIENT"+
-               " ,pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
+               " ,t.ID"+
+               " ,t.NAME"+
            " from CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -55,8 +56,8 @@ public void doExport() throws Exception {
                " t.ID"+
                " ,t.CODE"+
                " ,t.NAME"+
-               ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
                " ,t.BPARTNER_ID"+
+               ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
                " ,t.DEFAULT_CLIENT"+
            " from CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoExport(sql);
@@ -72,17 +73,17 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into CLIENT("+
-               "  ID"+
-               " ,NAME"+
-               " ,BPARTNER_ID"+
+               "  BPARTNER_ID"+
                " ,CODE"+
                " ,DEFAULT_CLIENT"+
+               " ,ID"+
+               " ,NAME"+
            " ) values ( "+
-               "  :ID"+
-               " ,:NAME"+
-               " ,:BPARTNER_ID"+
+               "  :BPARTNER_ID"+
                " ,:CODE"+
                " ,:DEFAULT_CLIENT"+
+               " ,:ID"+
+               " ,:NAME"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_CLIENT_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -95,11 +96,11 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update CLIENT set "+
-               "  ID=:ID"+
-               " ,NAME=:NAME"+
-               " ,BPARTNER_ID=:BPARTNER_ID"+
+               "  BPARTNER_ID=:BPARTNER_ID"+
                " ,CODE=:CODE"+
                " ,DEFAULT_CLIENT=:DEFAULT_CLIENT"+
+               " ,ID=:ID"+
+               " ,NAME=:NAME"+
    " where "+
      "      ID= :ID"+
    "";
@@ -126,12 +127,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.NAME"+
-               " ,t.BPARTNER_ID"+
+               " t.BPARTNER_ID"+
+                ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
                " ,t.CODE"+
                " ,t.DEFAULT_CLIENT"+
-                ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
+               " ,t.ID"+
+               " ,t.NAME"+
            " from CLIENT t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -142,18 +143,19 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.get("CODE").setCaseRestriction("Upper");
 	  this.fields.put("DEFAULT_CLIENT", new FieldDef("BOOLEAN"));
-	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

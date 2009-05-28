@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0091 extends AbstractDataControl implements IDataControl {
 
@@ -32,27 +33,27 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.SADDR"+
-               " ,t.SID"+
-               " ,t.SERIAL_"+
-               " ,t.USERNAME"+
-               " ,t.STATUS"+
-               " ,t.SERVER"+
-               " ,t.SCHEMANAME"+
+               " t.CLIENT_INFO"+
+               " ,t.LOGON_TIME"+
+               " ,t.MACHINE"+
+               " ,t.MODULE"+
                " ,t.OSUSER"+
                " ,t.PROCESS"+
-               " ,t.MACHINE"+
-               " ,t.TERMINAL"+
                " ,t.PROGRAM"+
-               " ,t.TYPE"+
+               " ,t.SADDR"+
+               " ,t.SCHEMANAME"+
+               " ,t.SERIAL_"+
+               " ,t.SERVER"+
+               " ,t.SERVICE_NAME"+
+               " ,t.SID"+
                " ,t.SQL_ADDRESS"+
                " ,t.SQL_ID"+
-               " ,t.MODULE"+
-               " ,t.CLIENT_INFO"+
-               " ,t.LOGON_TIME"+
-               " ,t.STATE"+
-               " ,t.SERVICE_NAME"+
                " ,t.SQL_TEXT"+
+               " ,t.STATE"+
+               " ,t.STATUS"+
+               " ,t.TERMINAL"+
+               " ,t.TYPE"+
+               " ,t.USERNAME"+
            " from V_ORCL_SESSION t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -100,27 +101,27 @@ public void doDelete() throws Exception {}
 public void initNewRecord() throws Exception {}
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.SADDR"+
-               " ,t.SID"+
-               " ,t.SERIAL_"+
-               " ,t.USERNAME"+
-               " ,t.STATUS"+
-               " ,t.SERVER"+
-               " ,t.SCHEMANAME"+
+               " t.CLIENT_INFO"+
+               " ,t.LOGON_TIME"+
+               " ,t.MACHINE"+
+               " ,t.MODULE"+
                " ,t.OSUSER"+
                " ,t.PROCESS"+
-               " ,t.MACHINE"+
-               " ,t.TERMINAL"+
                " ,t.PROGRAM"+
-               " ,t.TYPE"+
+               " ,t.SADDR"+
+               " ,t.SCHEMANAME"+
+               " ,t.SERIAL_"+
+               " ,t.SERVER"+
+               " ,t.SERVICE_NAME"+
+               " ,t.SID"+
                " ,t.SQL_ADDRESS"+
                " ,t.SQL_ID"+
-               " ,t.MODULE"+
-               " ,t.CLIENT_INFO"+
-               " ,t.LOGON_TIME"+
-               " ,t.STATE"+
-               " ,t.SERVICE_NAME"+
                " ,t.SQL_TEXT"+
+               " ,t.STATE"+
+               " ,t.STATUS"+
+               " ,t.TERMINAL"+
+               " ,t.TYPE"+
+               " ,t.USERNAME"+
            " from V_ORCL_SESSION t"+
         " where "+
      "      t.SERIAL_= :SERIAL_"+ 
@@ -132,32 +133,33 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("SADDR", new FieldDef("STRING"));
-	  this.fields.put("SID", new FieldDef("STRING"));
-	  this.fields.put("SERIAL_", new FieldDef("STRING"));
-	  this.fields.put("USERNAME", new FieldDef("STRING"));
-	  this.fields.put("STATUS", new FieldDef("STRING"));
-	  this.fields.put("SERVER", new FieldDef("STRING"));
-	  this.fields.put("SCHEMANAME", new FieldDef("STRING"));
-	  this.fields.put("OSUSER", new FieldDef("STRING"));
-	  this.fields.put("PROCESS", new FieldDef("STRING"));
-	  this.fields.put("MACHINE", new FieldDef("STRING"));
-	  this.fields.put("TERMINAL", new FieldDef("STRING"));
-	  this.fields.put("PROGRAM", new FieldDef("STRING"));
-	  this.fields.put("TYPE", new FieldDef("STRING"));
-	  this.fields.put("SQL_ADDRESS", new FieldDef("STRING"));
-	  this.fields.put("SQL_ID", new FieldDef("STRING"));
-	  this.fields.put("MODULE", new FieldDef("STRING"));
 	  this.fields.put("CLIENT_INFO", new FieldDef("STRING"));
 	  this.fields.put("LOGON_TIME", new FieldDef("STRING"));
-	  this.fields.put("STATE", new FieldDef("STRING"));
+	  this.fields.put("MACHINE", new FieldDef("STRING"));
+	  this.fields.put("MODULE", new FieldDef("STRING"));
+	  this.fields.put("OSUSER", new FieldDef("STRING"));
+	  this.fields.put("PROCESS", new FieldDef("STRING"));
+	  this.fields.put("PROGRAM", new FieldDef("STRING"));
+	  this.fields.put("SADDR", new FieldDef("STRING"));
+	  this.fields.put("SCHEMANAME", new FieldDef("STRING"));
+	  this.fields.put("SERIAL_", new FieldDef("STRING"));
+	  this.fields.put("SERVER", new FieldDef("STRING"));
 	  this.fields.put("SERVICE_NAME", new FieldDef("STRING"));
+	  this.fields.put("SID", new FieldDef("STRING"));
+	  this.fields.put("SQL_ADDRESS", new FieldDef("STRING"));
+	  this.fields.put("SQL_ID", new FieldDef("STRING"));
 	  this.fields.put("SQL_TEXT", new FieldDef("STRING"));
+	  this.fields.put("STATE", new FieldDef("STRING"));
+	  this.fields.put("STATUS", new FieldDef("STRING"));
+	  this.fields.put("TERMINAL", new FieldDef("STRING"));
+	  this.fields.put("TYPE", new FieldDef("STRING"));
+	  this.fields.put("USERNAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"SERIAL_","SID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

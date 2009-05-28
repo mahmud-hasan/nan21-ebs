@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0073 extends AbstractDataControl implements IDataControl {
 
@@ -41,9 +42,9 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ag.ID"+
+               " ag.DESCRIPTION"+
+               " ,ag.ID"+
                " ,ag.NAME"+
-               " ,ag.DESCRIPTION"+
                " ,ag.PRODATTRGRP_ID"+
                " ,( select p.name from MM_PROD_ATTR_GRP p where p.id = ag.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR_GRP ag "+this.queryWhere.toString()+" "+this.queryOrderBy;
@@ -75,14 +76,14 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PROD_ATTR_GRP("+
-               "  ID"+
+               "  DESCRIPTION"+
+               " ,ID"+
                " ,NAME"+
-               " ,DESCRIPTION"+
                " ,PRODATTRGRP_ID"+
            " ) values ( "+
-               "  :ID"+
+               "  :DESCRIPTION"+
+               " ,:ID"+
                " ,:NAME"+
-               " ,:DESCRIPTION"+
                " ,:PRODATTRGRP_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_PRDATTRGRP_ID")  );
@@ -126,9 +127,9 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " ag.ID"+
+               " ag.DESCRIPTION"+
+               " ,ag.ID"+
                " ,ag.NAME"+
-               " ,ag.DESCRIPTION"+
                " ,ag.PRODATTRGRP_ID"+
                 ",( select p.name from MM_PROD_ATTR_GRP p where p.id = ag.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR_GRP ag"+
@@ -141,14 +142,15 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("PRODATTRGRP_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PRODATTRGRP_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
