@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" 
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+   xmlns:fo="http://www.w3.org/1999/XSL/Format">
+ <xsl:output method="xml" indent="yes"/>
+
+
+  <xsl:decimal-format name="Ro" decimal-separator="," grouping-separator = "."  NaN = "-" />
+   <xsl:variable name="NUMBER_FORMAT">###.###.###.###.###,##</xsl:variable>
+
+ <xsl:template match="/Report">
+
+
+  <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+   <fo:layout-master-set>
+     <fo:simple-page-master master-name="table" page-height="8.5in"
+       page-width="11in" margin-top="10mm" margin-bottom=".5in"
+       margin-left=".5in" margin-right=".5in">
+       <fo:region-body margin-top="2mm" margin-bottom="2mm"/>
+       <fo:region-before extent="2mm"/>
+       <fo:region-after extent=".5in"/>
+      </fo:simple-page-master>
+   </fo:layout-master-set>
+   <fo:page-sequence master-reference="table">
+
+
+<fo:flow flow-name="xsl-region-body">
+
+
+     <fo:table table-layout="fixed" font-size="10pt" space-before="2mm" >
+        <fo:table-body>
+          <fo:table-row>
+
+            <fo:table-cell padding="3mm" border-style="none" text-align="start" >
+              <fo:block font-weight="bold"><xsl:text font-size="12pt"  >Oras expeditor ..................................</xsl:text></fo:block>
+            </fo:table-cell >
+
+            <fo:table-cell padding="3mm">
+              <fo:block font-weight="bold"><xsl:text font-size="12pt" >Fisa nr ............ din</xsl:text><xsl:value-of select="//Report/@date"/></fo:block>
+            </fo:table-cell >
+
+            <fo:table-cell padding="3mm" border-style="none" text-align="start">
+              <fo:block ><xsl:text font-size="12pt" >Curier:</xsl:text><xsl:value-of select="//Report/Parameters/P_AGENT"/></fo:block>
+            </fo:table-cell >
+
+          </fo:table-row>
+        </fo:table-body>
+      </fo:table>
+
+
+
+
+
+
+
+       <fo:table table-layout="fixed" font-size="9pt" space-before="1mm" >
+       <fo:table-column column-width="10mm"/>
+       <fo:table-column column-width="20mm"/>
+       <fo:table-column column-width="50mm"/>
+       <fo:table-column column-width="70mm"/>
+       <fo:table-column column-width="20mm"/>
+       <fo:table-column column-width="20mm"/>
+       <fo:table-column column-width="10mm"/>
+       <fo:table-column column-width="50mm"/>
+
+        <fo:table-header font-weight="bold" text-align="start" border-style="solid" border-width="0.2mm" border-color="#000000">
+            <fo:table-row >
+             <fo:table-cell padding="2mm" >
+                <fo:block ><xsl:text> Nr </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block><xsl:text> Cod </xsl:text></fo:block>
+             </fo:table-cell>
+              <fo:table-cell padding="2mm" >
+                <fo:block  ><xsl:text> Expeditor </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block ><xsl:text> Destinatar </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block ><xsl:text> Oras transfer </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block ><xsl:text> Statie livrare </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block><xsl:text> Colete </xsl:text></fo:block>
+             </fo:table-cell>
+             <fo:table-cell padding="2mm" >
+                <fo:block ><xsl:text> Nume in clar / Semnatura </xsl:text></fo:block>
+             </fo:table-cell>
+          </fo:table-row>
+        </fo:table-header>
+
+
+
+
+        <fo:table-body >
+         <xsl:for-each select="Records/PARCEL_list/PARCEL">
+            <fo:table-row border-width=".1mm"  border-bottom-style="solid" border-color="#000000">
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="position()"/></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="CODE"/></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="EXP_NAME"/></fo:block>
+                <fo:block><xsl:value-of select="EXP_CITY"/></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="DEST_NAME"/></fo:block>
+                <fo:block>
+                  <xsl:value-of select="DEST_REGION"/><xsl:text>,</xsl:text>
+                  <xsl:value-of select="DEST_CITY"/><xsl:text>,</xsl:text>
+                  <xsl:value-of select="DEST_BPADRESS"/>
+                </fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:text></xsl:text></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="DEST_CITY"/></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:value-of select="PACKAGE_COUNT"/></fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block padding="1mm"><xsl:text></xsl:text></fo:block>
+              </fo:table-cell>
+
+            </fo:table-row>
+         </xsl:for-each>
+        </fo:table-body>
+
+
+
+       </fo:table>
+
+       
+       <fo:table table-layout="fixed" font-size="9pt" space-before="5mm">
+
+       <fo:table-column column-width="30%"/>
+       <fo:table-column column-width="30%"/>
+       <fo:table-column column-width="30%"/>
+
+       <fo:table-body >
+         <fo:table-row >
+            <fo:table-cell >
+              <fo:block padding="1mm"><xsl:text>Am predat(Gestionar depozit)</xsl:text></fo:block>
+              <fo:block padding-top="5mm"><xsl:text>..........................................</xsl:text></fo:block>
+            </fo:table-cell>
+            <fo:table-cell>
+              <fo:block padding="1mm"><xsl:text>Am primit (Sofer linie)</xsl:text></fo:block>
+              <fo:block padding-top="5mm"><xsl:text>..........................................</xsl:text></fo:block>
+            </fo:table-cell>
+            <fo:table-cell>
+              <fo:block padding="1mm"><xsl:text>Am primit(Gestionar depozit) </xsl:text></fo:block>
+              <fo:block padding-top="5mm"><xsl:text>..........................................</xsl:text></fo:block>
+            </fo:table-cell>
+           </fo:table-row>
+         </fo:table-body>
+
+       </fo:table>
+
+       <!--
+
+       <fo:block font-size="9pt" padding="2mm" text-align="start"><xsl:value-of select="NOTES"/></fo:block>
+
+       <fo:block font-size="9pt" padding="2mm" text-align="start"><xsl:text>Mathe Attila BV 130364 / CNP 1720127080013</xsl:text></fo:block>
+
+       <fo:table table-layout="fixed" font-size="9pt" border-color="#000000" >
+
+       <fo:table-column column-width="30mm"/>
+       <fo:table-column column-width="30mm"/>
+       <fo:table-column column-width="30mm"/>
+       <fo:table-column column-width="40mm"/>
+       <fo:table-column column-width="30mm"/>
+       <fo:table-column column-width="30mm"/>
+
+         <fo:table-body border-width=".1mm"  border-style="solid" >
+           <fo:table-cell border-end-width=".1mm"  border-end-style="solid" >
+            <fo:block padding-top="1mm" text-align="center"><xsl:text>Semnatura </xsl:text> </fo:block>
+            <fo:block text-align="center" padding-bottom="15mm"><xsl:text>furnizor </xsl:text> </fo:block>
+           </fo:table-cell>
+           <fo:table-cell  border-end-width=".1mm"  border-end-style="solid" >
+            <fo:block padding="1mm" text-align="center" line-height="24pt"><xsl:text>Expeditie </xsl:text></fo:block>
+            <fo:block padding="1mm" text-align="center" line-height="24pt"><xsl:text>Posta </xsl:text></fo:block>
+           </fo:table-cell>
+           <fo:table-cell  border-end-width=".1mm"  border-end-style="solid" >
+            <fo:block padding-top="1mm" text-align="center"><xsl:text>Semnatura </xsl:text> </fo:block>
+            <fo:block text-align="center"><xsl:text>primire </xsl:text> </fo:block>
+           </fo:table-cell>
+           <fo:table-cell  border-end-width=".1mm"  border-end-style="solid" >
+            <fo:block padding-top="3mm" padding-bottom="3mm" text-align="end" border-color="#000000" border-bottom-width=".1mm"  border-bottom-style="solid" ><xsl:text>Total (RON)</xsl:text></fo:block>
+            <fo:block padding-top="3mm" padding-bottom="3mm" text-align="end"><xsl:text>Total de plata cu TVA(RON)</xsl:text></fo:block>
+           </fo:table-cell>
+           <fo:table-cell  border-end-width=".1mm"  border-end-style="solid" >
+            <fo:block padding-top="3mm" padding-bottom="3mm" border-color="#000000" border-bottom-width=".1mm"  border-bottom-style="solid" text-align="end"><xsl:value-of select="format-number(TOTAL_NET_AMOUNT, $NUMBER_FORMAT,'Ro' )"/> </fo:block>
+           </fo:table-cell>
+           <fo:table-cell>
+            <fo:block padding-top="3mm" padding-bottom="3mm" border-color="#000000" border-bottom-width=".1mm"  border-bottom-style="solid" text-align="end"> <xsl:value-of select="format-number(TOTAL_TAX_AMOUNT, $NUMBER_FORMAT ,'Ro' )"/>  </fo:block>
+            <fo:block padding-top="3mm" padding-bottom="3mm"  text-align="end"> <xsl:value-of select="format-number(TOTAL_AMOUNT, $NUMBER_FORMAT, 'Ro')"/>  </fo:block>
+           </fo:table-cell>
+         </fo:table-body>
+       </fo:table>
+
+
+       -->
+      <fo:block id="last-page"/>
+      </fo:flow>
+
+   </fo:page-sequence>
+  </fo:root>
+ </xsl:template>
+</xsl:stylesheet>
