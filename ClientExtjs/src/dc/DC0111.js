@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0111 DataControl: Org attribute value
+ * DC0111 DataControl: Organization attribute value
  */
 
   Ext.ns("N21.DataComp");

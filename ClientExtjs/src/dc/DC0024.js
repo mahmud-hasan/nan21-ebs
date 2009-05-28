@@ -1,5 +1,5 @@
 /** 
- * Data Component: DC0024G, Title: Accounting period
+ * Data Component: DC0024G, Title: Accounting periods
  */ 
 
   Ext.ns("N21.DataComp");
@@ -105,7 +105,7 @@
   });
   Ext.reg("DC0024G", N21.DataComp.DC0024G);
 /** 
- * Data Component: DC0024F, Title: Accounting period
+ * Data Component: DC0024F, Title: Accounting periods
  */ 
 
   Ext.ns("N21.DataComp");
@@ -188,7 +188,7 @@
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0024
- * Title: Accounting period
+ * Title: Accounting periods
  */ 
 
   Ext.ns("N21.DataComp");

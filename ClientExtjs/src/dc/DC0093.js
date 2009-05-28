@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0093 DataControl: Accounting schema params
+ * DC0093 DataControl: Accounting schema parameters
  */
 
   Ext.ns("N21.DataComp");

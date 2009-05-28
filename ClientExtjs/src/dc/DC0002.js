@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0002 DataControl: Currencies def.
+ * DC0002 DataControl: Currencies
  */
 
   Ext.ns("N21.DataComp");

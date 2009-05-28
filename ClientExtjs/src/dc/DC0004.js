@@ -215,7 +215,7 @@
           ,dataComponentName:"DC0004F"
           ,firstFocusFieldName:"DOC_DATE"
           ,childDCs: [{name:"DC0020",relation:[{parent:"ID",child:"IINV_ID"}]}]
-          ,buttons: [{xtype:"button",scope:this,text:"Print",handler:function() {this.run_report({reportId:"PrintInvoice"},[{P_INVOICE_ID:"ID"}])}}
+          ,buttons: [{xtype:"button",scope:this,text:"Print",handler:function() {this.run_report({reportId:"REP0001"},[{P_INVOICE_ID:"ID"}])}}
                     ,{xtype:"button",scope:this,text:"Inv. items",handler:function() {this.show_window("DC0020");}}]
           ,buttonAlign:"left"
           ,toolbarConfig:"STANDARD"

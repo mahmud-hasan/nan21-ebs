@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0018 DataControl: BP bank accounts
+ * DC0018 DataControl: Business partner bank accounts
  */
 
   Ext.ns("N21.DataComp");

@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0010 DataControl: UoM types
+ * DC0010 DataControl: Unit of measure types
  */
 
   Ext.ns("N21.DataComp");
@@ -52,9 +52,15 @@
          this.columnMap.add("ID",{ id:'ID',header:this.resourceBundle.FieldLabel.ID||"Id",width:100,dataIndex:'ID',insert_allowed:true,update_allowed:true,hidden:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
          this.columnMap.add("CODE",{ id:'CODE',header:this.resourceBundle.FieldLabel.CODE||"Code",width:100,dataIndex:'CODE',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,caseRestriction:"Upper",style:"text-transform:uppercase;",cls:"x-form-text-in-grid"})});
          this.columnMap.add("NAME",{ id:'NAME',header:this.resourceBundle.FieldLabel.NAME||"Name",width:200,dataIndex:'NAME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.TextField({selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columnMap.add("IS_PERIOD",{ id:'IS_PERIOD',header:this.resourceBundle.FieldLabel.IS_PERIOD||"Period?",width:50,dataIndex:'IS_PERIOD',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columnMap.add("IS_VOLUME",{ id:'IS_VOLUME',header:this.resourceBundle.FieldLabel.IS_VOLUME||"Volume?",width:50,dataIndex:'IS_VOLUME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
-         this.columnMap.add("IS_WEIGHT",{ id:'IS_WEIGHT',header:this.resourceBundle.FieldLabel.IS_WEIGHT||"Weight?",width:50,dataIndex:'IS_WEIGHT',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.form.ComboBox({ store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+
+         this.columnMap.add("IS_PERIOD",{ id:'IS_PERIOD',
+         header:this.resourceBundle.FieldLabel.IS_PERIOD||"Period?",width:50,
+         dataIndex:'IS_PERIOD',insert_allowed:true,update_allowed:true,sortable:true,
+         editor:new Ext.ux.form.BooleanCombo({ disableKeyFilter:true, editable:false, selectOnFocus:false,  store:["N","Y"],allowBlank: false,cls:"x-form-text-in-grid"})});
+
+
+         this.columnMap.add("IS_VOLUME",{ id:'IS_VOLUME',header:this.resourceBundle.FieldLabel.IS_VOLUME||"Volume?",width:50,dataIndex:'IS_VOLUME',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.ux.form.BooleanCombo({ disableKeyFilter:true, editable:false, selectOnFocus:false,store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
+         this.columnMap.add("IS_WEIGHT",{ id:'IS_WEIGHT',header:this.resourceBundle.FieldLabel.IS_WEIGHT||"Weight?",width:50,dataIndex:'IS_WEIGHT',insert_allowed:true,update_allowed:true,sortable:true,editor:new Ext.ux.form.BooleanCombo({ disableKeyFilter:true, editable:false, selectOnFocus:false,store:["N","Y"],selectOnFocus:true,allowBlank: false,cls:"x-form-text-in-grid"})});
 
     this.colModel = new Ext.grid.ColumnModel (this.columnMap.getRange());
 

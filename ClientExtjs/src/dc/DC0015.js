@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0015 DataControl: BP adress
+ * DC0015 DataControl: Business partner addresses
  */
 
   Ext.ns("N21.DataComp");

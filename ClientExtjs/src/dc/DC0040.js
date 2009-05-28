@@ -1,5 +1,5 @@
 /** 
- * Data Component: DC0040G, Title: Accounting doc.
+ * Data Component: DC0040G, Title: Accounting documents
  */ 
 
   Ext.ns("N21.DataComp");
@@ -129,7 +129,7 @@
   });
   Ext.reg("DC0040G", N21.DataComp.DC0040G);
 /** 
- * Data Component: DC0040F, Title: Accounting doc.
+ * Data Component: DC0040F, Title: Accounting documents
  */ 
 
   Ext.ns("N21.DataComp");
@@ -241,7 +241,7 @@ this.getField("ACCPERIOD_NAME").setValue("");
 /** 
  * DataControl: Grid with Edit Form
  * Code: DC0040
- * Title: Accounting doc.
+ * Title: Accounting documents
  */ 
 
   Ext.ns("N21.DataComp");
