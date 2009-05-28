@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0037 extends AbstractDataControl implements IDataControl {
 
@@ -24,11 +25,6 @@ private void preQuery() {
       this.queryWhere.append("ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
-    if (this.request.getParam("QRY_UIDICT_ID") != null && !this.request.getParam("QRY_UIDICT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("UIDICT_ID like :UIDICT_ID");
-      this.queryParams.put("UIDICT_ID",(String)this.request.getParam("QRY_UIDICT_ID"));
-    }
     if (this.request.getParam("QRY_LANGUAGE_CODE") != null && !this.request.getParam("QRY_LANGUAGE_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("LANGUAGE_CODE like :LANGUAGE_CODE");
@@ -39,6 +35,11 @@ private void preQuery() {
       this.queryWhere.append("TRANSLATION like :TRANSLATION");
       this.queryParams.put("TRANSLATION",(String)this.request.getParam("QRY_TRANSLATION"));
     }
+    if (this.request.getParam("QRY_UIDICT_ID") != null && !this.request.getParam("QRY_UIDICT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("UIDICT_ID like :UIDICT_ID");
+      this.queryParams.put("UIDICT_ID",(String)this.request.getParam("QRY_UIDICT_ID"));
+    }
 }
 
 public void doQuery() throws Exception {
@@ -47,13 +48,13 @@ public void doQuery() throws Exception {
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
                " ID"+
-               " ,UIDICT_ID"+
                " ,LANGUAGE_CODE"+
-               " ,TRANSLATION"+
-               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
-               " ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+               " ,MODIFIEDON"+
                " ,(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
+               " ,TRANSLATION"+
+               " ,(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+               " ,UIDICT_ID"+
            " from UI_DICTIONARY_TRL  "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -116,13 +117,13 @@ public void initNewRecord() throws Exception {
 private void findByPk()  throws Exception {
     String sql = "select "+ 
                " ID"+
-               " ,UIDICT_ID"+
                " ,LANGUAGE_CODE"+
-               " ,TRANSLATION"+
-               " ,MODIFIEDON"+
                " ,MODIFIEDBY"+
-                ",(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+               " ,MODIFIEDON"+
                 ",(select msg_code from ui_dictionary where id = uidict_id) MSG_CODE"+
+               " ,TRANSLATION"+
+                ",(select uidc_code from ui_dictionary where id = uidict_id) UIDC_CODE"+
+               " ,UIDICT_ID"+
            " from UI_DICTIONARY_TRL "+
         " where "+
      "      ID= :ID"+ 
@@ -133,19 +134,20 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
 	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("UIDICT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("LANGUAGE_CODE", new FieldDef("STRING"));
-	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("UIDC_CODE", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("MSG_CODE", new FieldDef("STRING"));
+	  this.fields.put("TRANSLATION", new FieldDef("STRING"));
+	  this.fields.put("UIDC_CODE", new FieldDef("STRING"));
+	  this.fields.put("UIDICT_ID", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
