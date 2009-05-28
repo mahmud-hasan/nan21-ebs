@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0085 extends AbstractDataControl implements IDataControl {
 
@@ -19,35 +20,35 @@ public class DC0085 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
       this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
-    }
-    if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORG_ID like :ORG_ID");
-      this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
     }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE"));
     }
-    if (this.request.getParam("QRY_ORGINVTYPE_CODE") != null && !this.request.getParam("QRY_ORGINVTYPE_CODE").equals("")) {
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORGINVTYPE_CODE like :ORGINVTYPE_CODE");
-      this.queryParams.put("ORGINVTYPE_CODE",(String)this.request.getParam("QRY_ORGINVTYPE_CODE"));
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_IS_DEFAULT") != null && !this.request.getParam("QRY_IS_DEFAULT").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.IS_DEFAULT like :IS_DEFAULT");
       this.queryParams.put("IS_DEFAULT",(String)this.request.getParam("QRY_IS_DEFAULT"));
+    }
+    if (this.request.getParam("QRY_ORGINVTYPE_CODE") != null && !this.request.getParam("QRY_ORGINVTYPE_CODE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ORGINVTYPE_CODE like :ORGINVTYPE_CODE");
+      this.queryParams.put("ORGINVTYPE_CODE",(String)this.request.getParam("QRY_ORGINVTYPE_CODE"));
+    }
+    if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ORG_ID like :ORG_ID");
+      this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
     }
 }
 
@@ -56,18 +57,18 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
+               " pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.ORG_ID"+
                " ,t.CODE"+
-               " ,t.DESCRIPTION"+
-               " ,t.ORGINVTYPE_CODE"+
-               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
+               " ,t.CREATEDON"+
+               " ,t.DESCRIPTION"+
+               " ,t.ID"+
                " ,t.IS_DEFAULT"+
-               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.ORGINVTYPE_CODE"+
+               " ,t.ORG_ID"+
                " ,pbo_org.get_name_by_id(t.org_id) ORG_NAME"+
            " from MM_ORG_INV t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
@@ -106,21 +107,21 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_ORG_INV("+
-               "  ID"+
-               " ,CLIENT_ID"+
-               " ,ORG_ID"+
+               "  CLIENT_ID"+
                " ,CODE"+
                " ,DESCRIPTION"+
-               " ,ORGINVTYPE_CODE"+
+               " ,ID"+
                " ,IS_DEFAULT"+
+               " ,ORGINVTYPE_CODE"+
+               " ,ORG_ID"+
            " ) values ( "+
-               "  :ID"+
-               " ,:CLIENT_ID"+
-               " ,:ORG_ID"+
+               "  :CLIENT_ID"+
                " ,:CODE"+
                " ,:DESCRIPTION"+
-               " ,:ORGINVTYPE_CODE"+
+               " ,:ID"+
                " ,:IS_DEFAULT"+
+               " ,:ORGINVTYPE_CODE"+
+               " ,:ORG_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ORGINV_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -133,13 +134,13 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update MM_ORG_INV set "+
-               "  ID=:ID"+
-               " ,CLIENT_ID=:CLIENT_ID"+
-               " ,ORG_ID=:ORG_ID"+
+               "  CLIENT_ID=:CLIENT_ID"+
                " ,CODE=:CODE"+
                " ,DESCRIPTION=:DESCRIPTION"+
-               " ,ORGINVTYPE_CODE=:ORGINVTYPE_CODE"+
+               " ,ID=:ID"+
                " ,IS_DEFAULT=:IS_DEFAULT"+
+               " ,ORGINVTYPE_CODE=:ORGINVTYPE_CODE"+
+               " ,ORG_ID=:ORG_ID"+
    " where "+
      "      ID= :ID"+
    "";
@@ -166,18 +167,18 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
+                "pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.ORG_ID"+
                " ,t.CODE"+
-               " ,t.DESCRIPTION"+
-               " ,t.ORGINVTYPE_CODE"+
-               " ,t.CREATEDON"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
+               " ,t.CREATEDON"+
+               " ,t.DESCRIPTION"+
+               " ,t.ID"+
                " ,t.IS_DEFAULT"+
-                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.ORGINVTYPE_CODE"+
+               " ,t.ORG_ID"+
                 ",pbo_org.get_name_by_id(t.org_id) ORG_NAME"+
            " from MM_ORG_INV t"+
         " where "+
@@ -189,23 +190,24 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
-	  this.fields.put("ORGINVTYPE_CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
 	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("IS_DEFAULT", new FieldDef("BOOLEAN"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("ORGINVTYPE_CODE", new FieldDef("STRING"));
+	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ORG_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;

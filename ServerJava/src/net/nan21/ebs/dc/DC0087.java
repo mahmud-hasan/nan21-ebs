@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0087 extends AbstractDataControl implements IDataControl {
 
@@ -19,15 +20,15 @@ public class DC0087 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_CODE") != null && !this.request.getParam("QRY_CODE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CODE like :CODE");
       this.queryParams.put("CODE",(String)this.request.getParam("QRY_CODE"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
 }
 
@@ -36,12 +37,12 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.CODE"+
-               " ,t.CREATEDON"+
+               " t.CODE"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from MM_STOCK_LOC_TYPE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -72,11 +73,11 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_STOCK_LOC_TYPE("+
-               "  ID"+
-               " ,CODE"+
+               "  CODE"+
+               " ,ID"+
            " ) values ( "+
-               "  :ID"+
-               " ,:CODE"+
+               "  :CODE"+
+               " ,:ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_STOCKLOCTYP_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -121,12 +122,12 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.CODE"+
-               " ,t.CREATEDON"+
+               " t.CODE"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from MM_STOCK_LOC_TYPE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -137,17 +138,18 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

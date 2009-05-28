@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0103 extends AbstractDataControl implements IDataControl {
 
@@ -19,11 +20,6 @@ public class DC0103 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.BPARTNER_ID like :BPARTNER_ID");
@@ -33,6 +29,11 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
       this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
     }
     if (this.request.getParam("QRY_IS_CUSTOMER") != null && !this.request.getParam("QRY_IS_CUSTOMER").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -51,25 +52,25 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.BPARTNER_ID"+
+               " t.BPARTNER_ID"+
+               " ,pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
+               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.IS_CUSTOMER"+
-               " ,t.IS_VENDOR"+
-               " ,t.IS_EMPLOYEE"+
-               " ,t.CUSTGRP_CODE"+
+               " ,t.CREATEDBY"+
+               " ,t.CREATEDON"+
                " ,t.CREDITCLASS_CODE"+
-               " ,t.PAYMETHOD_CODE"+
-               " ,t.PAYTERMCLASS_CODE"+
+               " ,t.CUSTGRP_CODE"+
+               " ,t.ID"+
+               " ,t.IS_CUSTOMER"+
+               " ,t.IS_EMPLOYEE"+
+               " ,t.IS_VENDOR"+
                " ,t.MAX_CREDIT_LIMIT"+
                " ,t.MAX_CREDIT_LIMIT_CURRENCY"+
                " ,t.MAX_PAYMENT_TERM"+
-               " ,t.CREATEDON"+
-               " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
-               " ,pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
-               " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.MODIFIEDON"+
+               " ,t.PAYMETHOD_CODE"+
+               " ,t.PAYTERMCLASS_CODE"+
            " from BP_CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -114,11 +115,11 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update BP_CLIENT set "+
-               "  ID=:ID"+
+               "  CUSTGRP_CODE=:CUSTGRP_CODE"+
+               " ,ID=:ID"+
                " ,IS_CUSTOMER=:IS_CUSTOMER"+
-               " ,IS_VENDOR=:IS_VENDOR"+
                " ,IS_EMPLOYEE=:IS_EMPLOYEE"+
-               " ,CUSTGRP_CODE=:CUSTGRP_CODE"+
+               " ,IS_VENDOR=:IS_VENDOR"+
                " ,MAX_CREDIT_LIMIT=:MAX_CREDIT_LIMIT"+
                " ,MAX_PAYMENT_TERM=:MAX_PAYMENT_TERM"+
    " where "+
@@ -139,25 +140,25 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.BPARTNER_ID"+
+               " t.BPARTNER_ID"+
+                ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
+                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
                " ,t.CLIENT_ID"+
-               " ,t.IS_CUSTOMER"+
-               " ,t.IS_VENDOR"+
-               " ,t.IS_EMPLOYEE"+
-               " ,t.CUSTGRP_CODE"+
+               " ,t.CREATEDBY"+
+               " ,t.CREATEDON"+
                " ,t.CREDITCLASS_CODE"+
-               " ,t.PAYMETHOD_CODE"+
-               " ,t.PAYTERMCLASS_CODE"+
+               " ,t.CUSTGRP_CODE"+
+               " ,t.ID"+
+               " ,t.IS_CUSTOMER"+
+               " ,t.IS_EMPLOYEE"+
+               " ,t.IS_VENDOR"+
                " ,t.MAX_CREDIT_LIMIT"+
                " ,t.MAX_CREDIT_LIMIT_CURRENCY"+
                " ,t.MAX_PAYMENT_TERM"+
-               " ,t.CREATEDON"+
-               " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
-                ",pbo_bpartner.get_name_by_id(t.bpartner_id) BPARTNER_NAME"+
-                ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
+               " ,t.MODIFIEDON"+
+               " ,t.PAYMETHOD_CODE"+
+               " ,t.PAYTERMCLASS_CODE"+
            " from BP_CLIENT t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -168,30 +169,31 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
+	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
 	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("IS_CUSTOMER", new FieldDef("BOOLEAN"));
-	  this.fields.put("IS_VENDOR", new FieldDef("BOOLEAN"));
-	  this.fields.put("IS_EMPLOYEE", new FieldDef("BOOLEAN"));
-	  this.fields.put("CUSTGRP_CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CREDITCLASS_CODE", new FieldDef("STRING"));
-	  this.fields.put("PAYMETHOD_CODE", new FieldDef("STRING"));
-	  this.fields.put("PAYTERMCLASS_CODE", new FieldDef("STRING"));
+	  this.fields.put("CUSTGRP_CODE", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("IS_CUSTOMER", new FieldDef("BOOLEAN"));
+	  this.fields.put("IS_EMPLOYEE", new FieldDef("BOOLEAN"));
+	  this.fields.put("IS_VENDOR", new FieldDef("BOOLEAN"));
 	  this.fields.put("MAX_CREDIT_LIMIT", new FieldDef("NUMBER"));
 	  this.fields.put("MAX_CREDIT_LIMIT_CURRENCY", new FieldDef("STRING"));
 	  this.fields.put("MAX_PAYMENT_TERM", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("BPARTNER_NAME", new FieldDef("STRING"));
-	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("PAYMETHOD_CODE", new FieldDef("STRING"));
+	  this.fields.put("PAYTERMCLASS_CODE", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

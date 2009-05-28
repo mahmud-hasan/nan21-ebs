@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0080 extends AbstractDataControl implements IDataControl {
 
@@ -46,21 +47,21 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
+               " t.BASE_DOC_CURRENCY"+
+               " ,t.BASE_DOC_PRICE"+
+               " ,t.BASE_DOC_QTY"+
+               " ,t.ID"+
+               " ,t.INVENTORY_QTY"+
                " ,t.LINE_NO"+
                " ,t.MVMNTINDOC_ID"+
-               " ,t.PRODUCT_ID"+
-               " ,t.QTY"+
-               " ,t.BASE_DOC_QTY"+
-               " ,t.RECEIVED_QTY"+
-               " ,t.INVENTORY_QTY"+
-               " ,t.BASE_DOC_PRICE"+
-               " ,t.BASE_DOC_CURRENCY"+
                " ,t.NOTES"+
-               " ,t.UOM"+
+               " ,t.PRODUCT_ID"+
                " ,pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
-               " ,t.STOCKLOC_ID"+
+               " ,t.QTY"+
+               " ,t.RECEIVED_QTY"+
                " ,pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
+               " ,t.STOCKLOC_ID"+
+               " ,t.UOM"+
            " from MM_MOVEMENT_IN_LINE t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -100,33 +101,33 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_MOVEMENT_IN_LINE("+
-               "  ID"+
+               "  BASE_DOC_CURRENCY"+
+               " ,BASE_DOC_PRICE"+
+               " ,BASE_DOC_QTY"+
+               " ,ID"+
+               " ,INVENTORY_QTY"+
                " ,LINE_NO"+
                " ,MVMNTINDOC_ID"+
+               " ,NOTES"+
                " ,PRODUCT_ID"+
                " ,QTY"+
-               " ,BASE_DOC_QTY"+
                " ,RECEIVED_QTY"+
-               " ,INVENTORY_QTY"+
-               " ,BASE_DOC_PRICE"+
-               " ,BASE_DOC_CURRENCY"+
-               " ,NOTES"+
-               " ,UOM"+
                " ,STOCKLOC_ID"+
+               " ,UOM"+
            " ) values ( "+
-               "  :ID"+
+               "  :BASE_DOC_CURRENCY"+
+               " ,:BASE_DOC_PRICE"+
+               " ,:BASE_DOC_QTY"+
+               " ,:ID"+
+               " ,:INVENTORY_QTY"+
                " ,:LINE_NO"+
                " ,:MVMNTINDOC_ID"+
+               " ,:NOTES"+
                " ,:PRODUCT_ID"+
                " ,:QTY"+
-               " ,:BASE_DOC_QTY"+
                " ,:RECEIVED_QTY"+
-               " ,:INVENTORY_QTY"+
-               " ,:BASE_DOC_PRICE"+
-               " ,:BASE_DOC_CURRENCY"+
-               " ,:NOTES"+
-               " ,:UOM"+
                " ,:STOCKLOC_ID"+
+               " ,:UOM"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_MVMNTINLIN_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -139,19 +140,19 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update MM_MOVEMENT_IN_LINE set "+
-               "  ID=:ID"+
+               "  BASE_DOC_CURRENCY=:BASE_DOC_CURRENCY"+
+               " ,BASE_DOC_PRICE=:BASE_DOC_PRICE"+
+               " ,BASE_DOC_QTY=:BASE_DOC_QTY"+
+               " ,ID=:ID"+
+               " ,INVENTORY_QTY=:INVENTORY_QTY"+
                " ,LINE_NO=:LINE_NO"+
                " ,MVMNTINDOC_ID=:MVMNTINDOC_ID"+
+               " ,NOTES=:NOTES"+
                " ,PRODUCT_ID=:PRODUCT_ID"+
                " ,QTY=:QTY"+
-               " ,BASE_DOC_QTY=:BASE_DOC_QTY"+
                " ,RECEIVED_QTY=:RECEIVED_QTY"+
-               " ,INVENTORY_QTY=:INVENTORY_QTY"+
-               " ,BASE_DOC_PRICE=:BASE_DOC_PRICE"+
-               " ,BASE_DOC_CURRENCY=:BASE_DOC_CURRENCY"+
-               " ,NOTES=:NOTES"+
-               " ,UOM=:UOM"+
                " ,STOCKLOC_ID=:STOCKLOC_ID"+
+               " ,UOM=:UOM"+
    " where "+
      "      ID= :ID"+
    "";
@@ -178,21 +179,21 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
+               " t.BASE_DOC_CURRENCY"+
+               " ,t.BASE_DOC_PRICE"+
+               " ,t.BASE_DOC_QTY"+
+               " ,t.ID"+
+               " ,t.INVENTORY_QTY"+
                " ,t.LINE_NO"+
                " ,t.MVMNTINDOC_ID"+
-               " ,t.PRODUCT_ID"+
-               " ,t.QTY"+
-               " ,t.BASE_DOC_QTY"+
-               " ,t.RECEIVED_QTY"+
-               " ,t.INVENTORY_QTY"+
-               " ,t.BASE_DOC_PRICE"+
-               " ,t.BASE_DOC_CURRENCY"+
                " ,t.NOTES"+
-               " ,t.UOM"+
+               " ,t.PRODUCT_ID"+
                 ",pbo_product.get_name_by_id(t.product_id) PRODUCT_NAME"+
-               " ,t.STOCKLOC_ID"+
+               " ,t.QTY"+
+               " ,t.RECEIVED_QTY"+
                 ",pbo_org.get_stockloc_code_by_id(t.stockloc_id) STOCKLOC_CODE"+
+               " ,t.STOCKLOC_ID"+
+               " ,t.UOM"+
            " from MM_MOVEMENT_IN_LINE t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -203,26 +204,27 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
+	  this.fields.put("BASE_DOC_CURRENCY", new FieldDef("STRING"));
+	  this.fields.put("BASE_DOC_PRICE", new FieldDef("NUMBER"));
+	  this.fields.put("BASE_DOC_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("INVENTORY_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("LINE_NO", new FieldDef("NUMBER"));
 	  this.fields.put("MVMNTINDOC_ID", new FieldDef("NUMBER"));
-	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("QTY", new FieldDef("NUMBER"));
-	  this.fields.put("BASE_DOC_QTY", new FieldDef("NUMBER"));
-	  this.fields.put("RECEIVED_QTY", new FieldDef("NUMBER"));
-	  this.fields.put("INVENTORY_QTY", new FieldDef("NUMBER"));
-	  this.fields.put("BASE_DOC_PRICE", new FieldDef("NUMBER"));
-	  this.fields.put("BASE_DOC_CURRENCY", new FieldDef("STRING"));
 	  this.fields.put("NOTES", new FieldDef("STRING"));
-	  this.fields.put("UOM", new FieldDef("STRING"));
+	  this.fields.put("PRODUCT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("PRODUCT_NAME", new FieldDef("STRING"));
-	  this.fields.put("STOCKLOC_ID", new FieldDef("NUMBER"));
+	  this.fields.put("QTY", new FieldDef("NUMBER"));
+	  this.fields.put("RECEIVED_QTY", new FieldDef("NUMBER"));
 	  this.fields.put("STOCKLOC_CODE", new FieldDef("STRING"));
+	  this.fields.put("STOCKLOC_ID", new FieldDef("NUMBER"));
+	  this.fields.put("UOM", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

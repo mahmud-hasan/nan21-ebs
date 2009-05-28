@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0074 extends AbstractDataControl implements IDataControl {
 
@@ -19,6 +20,11 @@ public class DC0074 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_DATA_TYPE") != null && !this.request.getParam("QRY_DATA_TYPE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("a.DATA_TYPE like :DATA_TYPE");
+      this.queryParams.put("DATA_TYPE",(String)this.request.getParam("QRY_DATA_TYPE"));
+    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("a.ID like :ID");
@@ -28,11 +34,6 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("a.NAME like :NAME");
       this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
-    }
-    if (this.request.getParam("QRY_DATA_TYPE") != null && !this.request.getParam("QRY_DATA_TYPE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("a.DATA_TYPE like :DATA_TYPE");
-      this.queryParams.put("DATA_TYPE",(String)this.request.getParam("QRY_DATA_TYPE"));
     }
     if (this.request.getParam("QRY_PRODATTRGRP_ID") != null && !this.request.getParam("QRY_PRODATTRGRP_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -46,16 +47,16 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " ( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
-               " ,a.ID"+
-               " ,a.NAME"+
-               " ,a.DESCRIPTION"+
-               " ,a.DATA_TYPE"+
+               " a.CREATEDBY"+
                " ,a.CREATEDON"+
-               " ,a.CREATEDBY"+
-               " ,a.MODIFIEDON"+
+               " ,a.DATA_TYPE"+
+               " ,a.DESCRIPTION"+
+               " ,a.ID"+
                " ,a.MODIFIEDBY"+
+               " ,a.MODIFIEDON"+
+               " ,a.NAME"+
                " ,a.PRODATTRGRP_ID"+
+               " ,( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR a "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -69,8 +70,8 @@ public void doExport() throws Exception {
                " a.ID"+
                " ,a.NAME"+
                " ,a.DATA_TYPE"+
-               " ,a.PRODATTRGRP_ID"+
                ",( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
+               " ,a.PRODATTRGRP_ID"+
                " ,a.DESCRIPTION"+
                " ,a.CREATEDON"+
                " ,a.CREATEDBY"+
@@ -90,16 +91,16 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into MM_PROD_ATTR("+
-               "  ID"+
-               " ,NAME"+
+               "  DATA_TYPE"+
                " ,DESCRIPTION"+
-               " ,DATA_TYPE"+
+               " ,ID"+
+               " ,NAME"+
                " ,PRODATTRGRP_ID"+
            " ) values ( "+
-               "  :ID"+
-               " ,:NAME"+
+               "  :DATA_TYPE"+
                " ,:DESCRIPTION"+
-               " ,:DATA_TYPE"+
+               " ,:ID"+
+               " ,:NAME"+
                " ,:PRODATTRGRP_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_PRDATTR_ID")  );
@@ -148,16 +149,16 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-                "( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
-               " ,a.ID"+
-               " ,a.NAME"+
-               " ,a.DESCRIPTION"+
-               " ,a.DATA_TYPE"+
+               " a.CREATEDBY"+
                " ,a.CREATEDON"+
-               " ,a.CREATEDBY"+
-               " ,a.MODIFIEDON"+
+               " ,a.DATA_TYPE"+
+               " ,a.DESCRIPTION"+
+               " ,a.ID"+
                " ,a.MODIFIEDBY"+
+               " ,a.MODIFIEDON"+
+               " ,a.NAME"+
                " ,a.PRODATTRGRP_ID"+
+                ",( select p.name from MM_PROD_ATTR_GRP p where p.id = a.PRODATTRGRP_ID) PRODATTRGRP_NAME"+
            " from MM_PROD_ATTR a"+
         " where "+
      "      a.ID= :ID"+ 
@@ -168,21 +169,22 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("PRODATTRGRP_NAME", new FieldDef("STRING"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
-	  this.fields.put("DATA_TYPE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("DATA_TYPE", new FieldDef("STRING"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  this.fields.put("PRODATTRGRP_ID", new FieldDef("NUMBER"));
+	  this.fields.put("PRODATTRGRP_NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

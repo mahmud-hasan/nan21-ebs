@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0082 extends AbstractDataControl implements IDataControl {
 
@@ -19,6 +20,21 @@ public class DC0082 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("o.ACTIVE like :ACTIVE");
+      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
+    }
+    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("o.BPARTNER_ID like :BPARTNER_ID");
+      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
+    }
+    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("o.CLIENT_ID like :CLIENT_ID");
+      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
+    }
     if (this.request.getParam("QRY_COSTCENTER_ID") != null && !this.request.getParam("QRY_COSTCENTER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("o.COSTCENTER_ID like :COSTCENTER_ID");
@@ -28,11 +44,6 @@ private void preQuery() {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("o.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_CLIENT_ID") != null && !this.request.getParam("QRY_CLIENT_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("o.CLIENT_ID like :CLIENT_ID");
-      this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
     if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
@@ -49,16 +60,6 @@ private void preQuery() {
       this.queryWhere.append("o.ORG_TYPE like :ORG_TYPE");
       this.queryParams.put("ORG_TYPE",(String)this.request.getParam("QRY_ORG_TYPE"));
     }
-    if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("o.BPARTNER_ID like :BPARTNER_ID");
-      this.queryParams.put("BPARTNER_ID",(String)this.request.getParam("QRY_BPARTNER_ID"));
-    }
-    if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("o.ACTIVE like :ACTIVE");
-      this.queryParams.put("ACTIVE",(String)this.request.getParam("QRY_ACTIVE"));
-    }
 }
 
 public void doQuery() throws Exception {
@@ -66,22 +67,22 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " pbo_client.get_code_by_id(o.client_id) CLIENT_CODE"+
-               " ,o.COSTCENTER_ID"+
-               " ,o.ID"+
+               " o.ACTIVE"+
+               " ,o.BPARTNER_ID"+
+               " ,pbo_client.get_code_by_id(o.client_id) CLIENT_CODE"+
                " ,o.CLIENT_ID"+
+               " ,o.COSTCENTER_ID"+
+               " ,pbo_org.get_costcenter_name_by_id(o.costcenter_id) COSTCENTER_NAME"+
+               " ,o.COSTMETHOD_CODE"+
+               " ,o.CREATEDBY"+
+               " ,o.CREATEDON"+
+               " ,o.ID"+
+               " ,o.MODIFIEDBY"+
+               " ,o.MODIFIEDON"+
                " ,o.NAME"+
+               " ,o.NOTES"+
                " ,o.ORG_ID"+
                " ,o.ORG_TYPE"+
-               " ,o.BPARTNER_ID"+
-               " ,o.COSTMETHOD_CODE"+
-               " ,pbo_org.get_costcenter_name_by_id(o.costcenter_id) COSTCENTER_NAME"+
-               " ,o.NOTES"+
-               " ,o.ACTIVE"+
-               " ,o.CREATEDON"+
-               " ,o.CREATEDBY"+
-               " ,o.MODIFIEDON"+
-               " ,o.MODIFIEDBY"+
            " from ORGANIZATION o "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -122,27 +123,27 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into ORGANIZATION("+
-               "  COSTCENTER_ID"+
-               " ,ID"+
+               "  ACTIVE"+
+               " ,BPARTNER_ID"+
                " ,CLIENT_ID"+
+               " ,COSTCENTER_ID"+
+               " ,COSTMETHOD_CODE"+
+               " ,ID"+
                " ,NAME"+
+               " ,NOTES"+
                " ,ORG_ID"+
                " ,ORG_TYPE"+
-               " ,BPARTNER_ID"+
-               " ,COSTMETHOD_CODE"+
-               " ,NOTES"+
-               " ,ACTIVE"+
            " ) values ( "+
-               "  :COSTCENTER_ID"+
-               " ,:ID"+
+               "  :ACTIVE"+
+               " ,:BPARTNER_ID"+
                " ,:CLIENT_ID"+
+               " ,:COSTCENTER_ID"+
+               " ,:COSTMETHOD_CODE"+
+               " ,:ID"+
                " ,:NAME"+
+               " ,:NOTES"+
                " ,:ORG_ID"+
                " ,:ORG_TYPE"+
-               " ,:BPARTNER_ID"+
-               " ,:COSTMETHOD_CODE"+
-               " ,:NOTES"+
-               " ,:ACTIVE"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ORG_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -155,16 +156,16 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update ORGANIZATION set "+
-               "  COSTCENTER_ID=:COSTCENTER_ID"+
-               " ,ID=:ID"+
+               "  ACTIVE=:ACTIVE"+
+               " ,BPARTNER_ID=:BPARTNER_ID"+
                " ,CLIENT_ID=:CLIENT_ID"+
+               " ,COSTCENTER_ID=:COSTCENTER_ID"+
+               " ,COSTMETHOD_CODE=:COSTMETHOD_CODE"+
+               " ,ID=:ID"+
                " ,NAME=:NAME"+
+               " ,NOTES=:NOTES"+
                " ,ORG_ID=:ORG_ID"+
                " ,ORG_TYPE=:ORG_TYPE"+
-               " ,BPARTNER_ID=:BPARTNER_ID"+
-               " ,COSTMETHOD_CODE=:COSTMETHOD_CODE"+
-               " ,NOTES=:NOTES"+
-               " ,ACTIVE=:ACTIVE"+
    " where "+
      "      ID= :ID"+
    "";
@@ -191,22 +192,22 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-                "pbo_client.get_code_by_id(o.client_id) CLIENT_CODE"+
-               " ,o.COSTCENTER_ID"+
-               " ,o.ID"+
+               " o.ACTIVE"+
+               " ,o.BPARTNER_ID"+
+                ",pbo_client.get_code_by_id(o.client_id) CLIENT_CODE"+
                " ,o.CLIENT_ID"+
+               " ,o.COSTCENTER_ID"+
+                ",pbo_org.get_costcenter_name_by_id(o.costcenter_id) COSTCENTER_NAME"+
+               " ,o.COSTMETHOD_CODE"+
+               " ,o.CREATEDBY"+
+               " ,o.CREATEDON"+
+               " ,o.ID"+
+               " ,o.MODIFIEDBY"+
+               " ,o.MODIFIEDON"+
                " ,o.NAME"+
+               " ,o.NOTES"+
                " ,o.ORG_ID"+
                " ,o.ORG_TYPE"+
-               " ,o.BPARTNER_ID"+
-               " ,o.COSTMETHOD_CODE"+
-                ",pbo_org.get_costcenter_name_by_id(o.costcenter_id) COSTCENTER_NAME"+
-               " ,o.NOTES"+
-               " ,o.ACTIVE"+
-               " ,o.CREATEDON"+
-               " ,o.CREATEDBY"+
-               " ,o.MODIFIEDON"+
-               " ,o.MODIFIEDBY"+
            " from ORGANIZATION o"+
         " where "+
      "      o.ID= :ID"+ 
@@ -217,27 +218,28 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
+	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
+	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
 	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
-	  this.fields.put("COSTCENTER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
+	  this.fields.put("COSTCENTER_ID", new FieldDef("NUMBER"));
+	  this.fields.put("COSTCENTER_NAME", new FieldDef("STRING"));
+	  this.fields.put("COSTMETHOD_CODE", new FieldDef("STRING"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  this.fields.put("NAME", new FieldDef("STRING"));
+	  this.fields.put("NOTES", new FieldDef("STRING"));
 	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ORG_TYPE", new FieldDef("STRING"));
-	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("COSTMETHOD_CODE", new FieldDef("STRING"));
-	  this.fields.put("COSTCENTER_NAME", new FieldDef("STRING"));
-	  this.fields.put("NOTES", new FieldDef("STRING"));
-	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

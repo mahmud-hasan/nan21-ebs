@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0100 DC Controller: BP client list
+ * DC0100 DC Controller: Business partner client list
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0100 extends AbstractDataControl implements IDataControl {
 
@@ -19,11 +20,6 @@ public class DC0100 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
     if (this.request.getParam("QRY_BPARTNER_ID") != null && !this.request.getParam("QRY_BPARTNER_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.BPARTNER_ID like :BPARTNER_ID");
@@ -34,20 +30,25 @@ private void preQuery() {
       this.queryWhere.append("t.CLIENT_ID like :CLIENT_ID");
       this.queryParams.put("CLIENT_ID",(String)this.request.getParam("QRY_CLIENT_ID"));
     }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
     if (this.request.getParam("QRY_IS_CUSTOMER") != null && !this.request.getParam("QRY_IS_CUSTOMER").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.IS_CUSTOMER like :IS_CUSTOMER");
       this.queryParams.put("IS_CUSTOMER",(String)this.request.getParam("QRY_IS_CUSTOMER"));
     }
-    if (this.request.getParam("QRY_IS_VENDOR") != null && !this.request.getParam("QRY_IS_VENDOR").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.IS_VENDOR like :IS_VENDOR");
-      this.queryParams.put("IS_VENDOR",(String)this.request.getParam("QRY_IS_VENDOR"));
-    }
     if (this.request.getParam("QRY_IS_EMPLOYEE") != null && !this.request.getParam("QRY_IS_EMPLOYEE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.IS_EMPLOYEE like :IS_EMPLOYEE");
       this.queryParams.put("IS_EMPLOYEE",(String)this.request.getParam("QRY_IS_EMPLOYEE"));
+    }
+    if (this.request.getParam("QRY_IS_VENDOR") != null && !this.request.getParam("QRY_IS_VENDOR").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.IS_VENDOR like :IS_VENDOR");
+      this.queryParams.put("IS_VENDOR",(String)this.request.getParam("QRY_IS_VENDOR"));
     }
 }
 
@@ -56,17 +57,17 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.BPARTNER_ID"+
-               " ,t.CLIENT_ID"+
-               " ,t.IS_CUSTOMER"+
+               " t.BPARTNER_ID"+
                " ,pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CREATEDON"+
+               " ,t.CLIENT_ID"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.IS_VENDOR"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
+               " ,t.IS_CUSTOMER"+
                " ,t.IS_EMPLOYEE"+
+               " ,t.IS_VENDOR"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from BP_CLIENT t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -102,19 +103,19 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into BP_CLIENT("+
-               "  ID"+
-               " ,BPARTNER_ID"+
+               "  BPARTNER_ID"+
                " ,CLIENT_ID"+
+               " ,ID"+
                " ,IS_CUSTOMER"+
-               " ,IS_VENDOR"+
                " ,IS_EMPLOYEE"+
+               " ,IS_VENDOR"+
            " ) values ( "+
-               "  :ID"+
-               " ,:BPARTNER_ID"+
+               "  :BPARTNER_ID"+
                " ,:CLIENT_ID"+
+               " ,:ID"+
                " ,:IS_CUSTOMER"+
-               " ,:IS_VENDOR"+
                " ,:IS_EMPLOYEE"+
+               " ,:IS_VENDOR"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_BPCLIENT_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -163,17 +164,17 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.BPARTNER_ID"+
-               " ,t.CLIENT_ID"+
-               " ,t.IS_CUSTOMER"+
+               " t.BPARTNER_ID"+
                 ",pbo_client.get_code_by_id(t.client_id) CLIENT_CODE"+
-               " ,t.CREATEDON"+
+               " ,t.CLIENT_ID"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.IS_VENDOR"+
+               " ,t.CREATEDON"+
+               " ,t.ID"+
+               " ,t.IS_CUSTOMER"+
                " ,t.IS_EMPLOYEE"+
+               " ,t.IS_VENDOR"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
            " from BP_CLIENT t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -184,22 +185,23 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("BPARTNER_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
-	  this.fields.put("IS_CUSTOMER", new FieldDef("BOOLEAN"));
 	  this.fields.put("CLIENT_CODE", new FieldDef("STRING"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
-	  this.fields.put("IS_VENDOR", new FieldDef("BOOLEAN"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("IS_CUSTOMER", new FieldDef("BOOLEAN"));
 	  this.fields.put("IS_EMPLOYEE", new FieldDef("BOOLEAN"));
+	  this.fields.put("IS_VENDOR", new FieldDef("BOOLEAN"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
