@@ -192,6 +192,7 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
     *   onSuccess: callback for successfully execution
     *   onFailure: callback for execution failure
     *   setDefaultFocus: true/false, focus the default focusable field after execution completed 
+    *   action:  which action has been performed (insert, update, custom, etc )
     */
   ,commitForm: function(config) {
     if (this.getForm().isValid()) {
@@ -204,15 +205,13 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
         Ext.Msg.wait("Working...");
 
 
-        var pConfig = {};
+        var pConfig = {action: _p_action };
         Ext.apply(pConfig, config, {setDefaultFocus:true});
 
         var fnIns = function() {
           //alert('1');
           var op = (this.getForm().findField("_p_record_status").getValue() == "insert")?"insert":"update";
           this.getForm().findField("_p_record_status").setValue("");
-          this.updateRecord();
-          this.fireEvent("commitFormSuccess", this, op );
 
           for (var i=0;i<this.childDCs.length;i++) {
              if (this.childDCs[ i ].commitChildWithParent) {
@@ -323,9 +322,9 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
         baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_INIT_RECORD"];
         baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName.replace('F','');
         Ext.MessageBox.wait("Initializing new record...");
-        var pConfig = {};
+        var pConfig = {action: _n21["REQUEST_PARAM_ACTION_INIT_RECORD"] };
         Ext.apply(pConfig, config, {setDefaultFocus:true});
-        
+
         var fnIns = function() {  this.getForm().findField("_p_record_status").setValue("insert");this.updateRecord(); }
         if (!Ext.isEmpty(pConfig) && !Ext.isEmpty(pConfig.fnSuccess)) {
            pConfig.fnSuccess.createSequence(fnIns,this);
@@ -388,13 +387,13 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
       baseUrlCfg[_n21["REQUEST_PARAM_ACTION"]] = _n21["REQUEST_PARAM_ACTION_CUSTOM"]; //"call_proc";
       baseUrlCfg[_n21["REQUEST_PARAM_CUSTOM_ACTION"]] = procName;
       baseUrlCfg[_n21["REQUEST_PARAM_DC"]] =  this.dataComponentName.replace('F','');
-
+      var pConfig = {action: _n21["REQUEST_PARAM_ACTION_CUSTOM"],fnSuccess:fnSuccess, fnFailure: fnFailure };
      Ext.Ajax.request({
              params:this.getValues()
             ,method:"POST"
             ,callback:this.afterAjaxRequest
             ,scope:this
-            ,customConfig: {fnSuccess:fnSuccess, fnFailure: fnFailure}
+            ,customConfig: pConfig
             ,url:buildUrl(baseUrlCfg)
             ,timeout:600000
         });
@@ -423,6 +422,14 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
         }
       }
       if (!Ext.isEmpty(options.customConfig)  ) {
+
+        if (  !Ext.isEmpty(options.customConfig.action) ) {
+          if (options.customConfig.action == "insert" ||options.customConfig.action == "update" ) {
+
+             this.updateRecord();
+             this.fireEvent('commitFormSuccess', this, options.customConfig.action );
+          }
+        }
         if (  !Ext.isEmpty(options.customConfig.fnSuccess) ) {
            var callback =  options.customConfig.fnSuccess;
            if( typeof callback == "function" ) {
@@ -483,7 +490,8 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
          paramQS = paramQS + '' +  Ext.urlEncode( param_list[j] );
        }
      }
-    var w = window.open('http://localhost/n21eBusinessSuite/ServerPhp/testjasper.php?_p_report_id='+config.reportId+'&output=pdf&'+paramQS, config.reportId, 'width=680,height=500,menubar=yes,scrolling=yes,adress=yes');
+     
+    var w = window.open(CFG_REPORTSERVER_URL+'?'+_n21["REQUEST_PARAM_REPORT"]+'='+config.reportId+'&'+_n21["REQUEST_PARAM_ACTION"]+'='+_n21["REQUEST_PARAM_REP_ACTION_RUN"]+'&'+_n21["REQUEST_PARAM_EXPORT_DATA_FORMAT"]+'=pdf&'+paramQS, config.reportId, 'width=680,height=500,menubar=yes,scrolling=yes,adress=yes');
      w.focus;
   }
 
