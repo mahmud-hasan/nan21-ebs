@@ -104,17 +104,24 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
 
 
   ,setFieldValue: function(fieldName,newVal) {
+      this.fields.get(fieldName).setValue(newVal);
+      //this.fields.get(fieldName).fireEvent('change',this.fields.get(fieldName),newVal,oldVal);
+      //if ( this.fields.get(fieldName).xtype == 'numberfield' )
+      //  this.getField(fieldName).beforeBlur();
+      /*
       var oldVal = this.getForm().findField(fieldName).getValue();
       this.getForm().findField(fieldName).setValue(newVal);
       this.getForm().findField(fieldName).fireEvent('change',this.getForm().findField(fieldName),newVal,oldVal);
       if ( this.fields.get(fieldName).xtype == 'numberfield' )
         this.getField(fieldName).beforeBlur();
+      */
   }
 
-  
+
   
   ,getField: function(fieldName) {
-      return this.getForm().findField(fieldName);
+     // return this.getForm().findField(fieldName);
+      return this.fields.get(fieldName);
   }
 
 
@@ -407,25 +414,26 @@ N21.Base.EditForm = Ext.extend(Ext.form.FormPanel, {
 
 
   ,afterAjaxSuccess:function(response, options) {  //  options.customConfig
-     var p = Ext.util.JSON.decode(response.responseText)[_n21["RECORD_JSON_ROOT_TAG"]];
-     for (v in this.dataRecord.data) {
+      var p = Ext.util.JSON.decode(response.responseText)[_n21["RECORD_JSON_ROOT_TAG"]];
+      if (!Ext.isEmpty(this.dataRecord)) {
+         for (v in this.dataRecord.data) {
            try {
              this.getForm().findField(v).setValue(urldecode(p[v]));
            } catch(e) { }
         }
-        if (!Ext.isEmpty(options.customConfig)  ) {
-          if (  !Ext.isEmpty(options.customConfig.fnSuccess) ) {
-             var callback =  options.customConfig.fnSuccess;
-             if( typeof callback == "function" ) {
-                callback = callback.call(this, response);
-             }
+      }
+      if (!Ext.isEmpty(options.customConfig)  ) {
+        if (  !Ext.isEmpty(options.customConfig.fnSuccess) ) {
+           var callback =  options.customConfig.fnSuccess;
+           if( typeof callback == "function" ) {
+              callback = callback.call(this, response);
            }
-          if (options.customConfig.setDefaultFocus)  {
-             this.setDefaultFormFocus.defer(200, this);
-           } 
-       }
+         }
+        if (options.customConfig.setDefaultFocus)  {
+           this.setDefaultFormFocus.defer(200, this);
+         } 
+      }
       Ext.MessageBox.hide();
-
   }
 
 
