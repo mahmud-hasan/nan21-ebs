@@ -1,7 +1,7 @@
 /* N21 eBusiness Suite
  * Copyright: Nan21 Electronics srl
  * Generated content.
- * DC0111 DC Controller: Org attribute value
+ * DC0111 DC Controller: Organization attribute value
  */
 
 package net.nan21.ebs.dc;
@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0111 extends AbstractDataControl implements IDataControl {
 
@@ -19,25 +20,25 @@ public class DC0111 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
+    if (this.request.getParam("QRY_ATTR_VAL") != null && !this.request.getParam("QRY_ATTR_VAL").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ATTR_VAL like :ATTR_VAL");
+      this.queryParams.put("ATTR_VAL",(String)this.request.getParam("QRY_ATTR_VAL"));
+    }
     if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ID like :ID");
       this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ORG_ID like :ORG_ID");
-      this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
     }
     if (this.request.getParam("QRY_ORGATTR_ID") != null && !this.request.getParam("QRY_ORGATTR_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ORGATTR_ID like :ORGATTR_ID");
       this.queryParams.put("ORGATTR_ID",(String)this.request.getParam("QRY_ORGATTR_ID"));
     }
-    if (this.request.getParam("QRY_ATTR_VAL") != null && !this.request.getParam("QRY_ATTR_VAL").equals("")) {
+    if (this.request.getParam("QRY_ORG_ID") != null && !this.request.getParam("QRY_ORG_ID").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ATTR_VAL like :ATTR_VAL");
-      this.queryParams.put("ATTR_VAL",(String)this.request.getParam("QRY_ATTR_VAL"));
+      this.queryWhere.append("t.ORG_ID like :ORG_ID");
+      this.queryParams.put("ORG_ID",(String)this.request.getParam("QRY_ORG_ID"));
     }
 }
 
@@ -46,13 +47,13 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
-               " ,t.ATTR_VAL"+
-               " ,t.MODIFIEDON"+
+               " t.ATTR_VAL"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.ORGATTR_ID"+
                " ,pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
+               " ,t.ORG_ID"+
            " from ORG_ATTR_VAL t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -65,8 +66,8 @@ public void doExport() throws Exception {
     String sql = "select "+ 
                " t.ID"+
                " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
                ",pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
+               " ,t.ORGATTR_ID"+
                " ,t.ATTR_VAL"+
                " ,t.MODIFIEDON"+
                " ,t.MODIFIEDBY"+
@@ -84,15 +85,15 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into ORG_ATTR_VAL("+
-               "  ID"+
-               " ,ORG_ID"+
+               "  ATTR_VAL"+
+               " ,ID"+
                " ,ORGATTR_ID"+
-               " ,ATTR_VAL"+
+               " ,ORG_ID"+
            " ) values ( "+
-               "  :ID"+
-               " ,:ORG_ID"+
+               "  :ATTR_VAL"+
+               " ,:ID"+
                " ,:ORGATTR_ID"+
-               " ,:ATTR_VAL"+
+               " ,:ORG_ID"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_ORGATTRVAL_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -137,13 +138,13 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.ORG_ID"+
-               " ,t.ORGATTR_ID"+
-               " ,t.ATTR_VAL"+
-               " ,t.MODIFIEDON"+
+               " t.ATTR_VAL"+
+               " ,t.ID"+
                " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.ORGATTR_ID"+
                 ",pbo_org.get_orgattr_name_by_id(t.orgattr_id) ORGATTR_NAME"+
+               " ,t.ORG_ID"+
            " from ORG_ATTR_VAL t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -154,18 +155,19 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
-	  this.fields.put("ORGATTR_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ATTR_VAL", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
 	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("ORGATTR_ID", new FieldDef("NUMBER"));
 	  this.fields.put("ORGATTR_NAME", new FieldDef("STRING"));
+	  this.fields.put("ORG_ID", new FieldDef("NUMBER"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

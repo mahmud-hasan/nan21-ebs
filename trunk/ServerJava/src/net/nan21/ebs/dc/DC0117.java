@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0117 extends AbstractDataControl implements IDataControl {
 
@@ -149,23 +150,27 @@ private void postInsert()  throws Exception {
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
     if (pName.equals("doReception")) { this.callProc_doReception(); }
+    this.sendRecord();
 }
 
 
 private void callProc_doReception() throws Exception {
-
-  String p_raise = "Y"; 
-  String p_agent_id = null; 
-
-  Properties inParams = new Properties();
-  Properties outParams = new Properties();
-   inParams.setProperty("p_event_date", "EVENT_DATE");
-   inParams.setProperty("p_warehouse_id", "WAREHOUSE_ORG_ID");
-   inParams.setProperty("p_parcel_code", "CODE");
-   inParams.setProperty("p_raise", p_raise);
-   inParams.setProperty("p_agent_id", p_agent_id);
+  ProcParamDef param = null;
+  List<ProcParamDef> params= new ArrayList<ProcParamDef>();
+  param = new ProcParamDef("p_event_date","EVENT_DATE", DataType.DATE,true,false);
+  params.add(param);
+  param = new ProcParamDef("p_warehouse_id","WAREHOUSE_ORG_ID", DataType.NUMBER,true,false);
+  params.add(param);
+  param = new ProcParamDef("p_parcel_code","CODE", DataType.STRING,true,false);
+  params.add(param);
+  param = new ProcParamDef("p_raise",null, DataType.STRING,true,false);
+  param.setValue("Y"); 
+  params.add(param);
+  param = new ProcParamDef("p_agent_id",null, DataType.STRING,true,false);
+  param.setValue("null"); 
+  params.add(param);
   String sql = "BEGIN pbo_parcel.reception_new(?,?,?,?,?); END;";
-  dbm.executeProcedure(sql, inParams, outParams, this.record);
+  dbm.executeProcedure(sql, params, this.record);
 
 } 
 
@@ -176,10 +181,6 @@ private void callProc_doReception() throws Exception {
 	  this.fields.put("CLIENT_ID", new FieldDef("NUMBER"));
 	  this.fields.put("CODE", new FieldDef("STRING"));
 	  this.fields.put("CONTENT", new FieldDef("STRING"));
-	  this.fields.put("WAREHOUSE_ORG_ID", new FieldDef("NUMBER"));
-	  this.fields.get("WAREHOUSE_ORG_ID").setInDS(false);
-	  this.fields.put("WAREHOUSE_ORG_NAME", new FieldDef("STRING"));
-	  this.fields.get("WAREHOUSE_ORG_NAME").setInDS(false);
 	  this.fields.put("DECLARED_VALUE", new FieldDef("NUMBER"));
 	  this.fields.put("DEST_ADRESS_NOTE", new FieldDef("STRING"));
 	  this.fields.put("DEST_BPADRESS", new FieldDef("STRING"));
@@ -191,6 +192,8 @@ private void callProc_doReception() throws Exception {
 	  this.fields.put("DEST_NAME", new FieldDef("STRING"));
 	  this.fields.put("DEST_REGION", new FieldDef("STRING"));
 	  this.fields.put("DEST_ZIP", new FieldDef("STRING"));
+	  this.fields.put("EVENT_DATE", new FieldDef("DATE"));
+	  this.fields.get("EVENT_DATE").setInDS(false);
 	  this.fields.put("EXP_BPADRESS", new FieldDef("STRING"));
 	  this.fields.put("EXP_BPADRESS_ID", new FieldDef("NUMBER"));
 	  this.fields.put("EXP_BPARTNER_ID", new FieldDef("NUMBER"));
@@ -205,8 +208,10 @@ private void callProc_doReception() throws Exception {
 	  this.fields.put("PACKAGE_COUNT", new FieldDef("NUMBER"));
 	  this.fields.put("REF_PARCEL_ID", new FieldDef("NUMBER"));
 	  this.fields.put("REF_PARCEL_REFERENCE_TYPE", new FieldDef("STRING"));
-	  this.fields.put("EVENT_DATE", new FieldDef("DATE"));
-	  this.fields.get("EVENT_DATE").setInDS(false);
+	  this.fields.put("WAREHOUSE_ORG_ID", new FieldDef("NUMBER"));
+	  this.fields.get("WAREHOUSE_ORG_ID").setInDS(false);
+	  this.fields.put("WAREHOUSE_ORG_NAME", new FieldDef("STRING"));
+	  this.fields.get("WAREHOUSE_ORG_NAME").setInDS(false);
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};

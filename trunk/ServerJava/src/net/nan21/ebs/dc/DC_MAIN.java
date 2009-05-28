@@ -1,7 +1,6 @@
 package net.nan21.ebs.dc;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.lib.*;
+import net.nan21.lib.dc.IDataControl;
 
 
 public class DC_MAIN extends AbstractDataControl implements IDataControl {
@@ -19,7 +19,7 @@ public class DC_MAIN extends AbstractDataControl implements IDataControl {
 		super.init(request, response, session, dbm);
 	}
 
-	public void doCustomAction(String customAction) throws SQLException,
+	public void doCustomAction(String customAction) throws Exception,
 			IOException {
 		if (customAction.equals("loadMenu")) {
 			this.loadMenu(this.request.getParam("node"));
@@ -36,7 +36,7 @@ public class DC_MAIN extends AbstractDataControl implements IDataControl {
 
 	}
 
-	private void loadMenu(String node) throws SQLException, IOException {
+	private void loadMenu(String node) throws Exception {
 		SessionUser user = (SessionUser) this.session
 				.getAttribute(HttpSession.MAP_KEY_AUTH_USER);
 

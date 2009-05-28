@@ -10,6 +10,7 @@ package net.nan21.ebs.dc;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import net.nan21.lib.*;
+import net.nan21.lib.dc.*;
 
 public class DC0119 extends AbstractDataControl implements IDataControl {
 
@@ -19,26 +20,6 @@ public class DC0119 extends AbstractDataControl implements IDataControl {
   }
 
 private void preQuery() {
-    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.ID like :ID");
-      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
-    }
-    if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.NAME like :NAME");
-      this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
-    }
-    if (this.request.getParam("QRY_FILE_TYPE") != null && !this.request.getParam("QRY_FILE_TYPE").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.FILE_TYPE like :FILE_TYPE");
-      this.queryParams.put("FILE_TYPE",(String)this.request.getParam("QRY_FILE_TYPE"));
-    }
-    if (this.request.getParam("QRY_IMPSTGGRP_ID") != null && !this.request.getParam("QRY_IMPSTGGRP_ID").equals("")) {
-      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
-      this.queryWhere.append("t.IMPSTGGRP_ID like :IMPSTGGRP_ID");
-      this.queryParams.put("IMPSTGGRP_ID",(String)this.request.getParam("QRY_IMPSTGGRP_ID"));
-    }
     if (this.request.getParam("QRY_ACTIVE") != null && !this.request.getParam("QRY_ACTIVE").equals("")) {
       this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
       this.queryWhere.append("t.ACTIVE like :ACTIVE");
@@ -49,6 +30,26 @@ private void preQuery() {
       this.queryWhere.append("t.DEST_TABLE like :DEST_TABLE");
       this.queryParams.put("DEST_TABLE",(String)this.request.getParam("QRY_DEST_TABLE"));
     }
+    if (this.request.getParam("QRY_FILE_TYPE") != null && !this.request.getParam("QRY_FILE_TYPE").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.FILE_TYPE like :FILE_TYPE");
+      this.queryParams.put("FILE_TYPE",(String)this.request.getParam("QRY_FILE_TYPE"));
+    }
+    if (this.request.getParam("QRY_ID") != null && !this.request.getParam("QRY_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.ID like :ID");
+      this.queryParams.put("ID",(String)this.request.getParam("QRY_ID"));
+    }
+    if (this.request.getParam("QRY_IMPSTGGRP_ID") != null && !this.request.getParam("QRY_IMPSTGGRP_ID").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.IMPSTGGRP_ID like :IMPSTGGRP_ID");
+      this.queryParams.put("IMPSTGGRP_ID",(String)this.request.getParam("QRY_IMPSTGGRP_ID"));
+    }
+    if (this.request.getParam("QRY_NAME") != null && !this.request.getParam("QRY_NAME").equals("")) {
+      this.queryWhere.append(( this.queryWhere.length() > 0 )?" and ":"");
+      this.queryWhere.append("t.NAME like :NAME");
+      this.queryParams.put("NAME",(String)this.request.getParam("QRY_NAME"));
+    }
 }
 
 public void doQuery() throws Exception {
@@ -56,19 +57,19 @@ public void doQuery() throws Exception {
     this.preQuery();
     this.queryWhere.insert(0, (this.queryWhere.length()>0)?" where ":"");
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.NAME"+
-               " ,t.FILE_TYPE"+
-               " ,t.DESCRIPTION"+
-               " ,t.IMPSTGGRP_ID"+
-               " ,t.CREATEDON"+
+               " t.ACTIVE"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.ACTIVE"+
+               " ,t.CREATEDON"+
+               " ,t.DESCRIPTION"+
                " ,t.DEST_TABLE"+
                " ,t.FILE_LOCATION"+
-               " ,pbo_ie.get_strategy_name_by_id(t.ID) IMPSTGGRP_NAME"+
+               " ,t.FILE_TYPE"+
+               " ,t.ID"+
+               " ,t.IMPSTGGRP_ID"+
+               " ,pbo_ie.get_strategygrp_name_by_id(t.IMPSTGGRP_ID) IMPSTGGRP_NAME"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.NAME"+
            " from IE_IMP_STRATEGY t "+this.queryWhere.toString()+" "+this.queryOrderBy;
     this.writeResultDoQuery(sql);
 } 
@@ -82,7 +83,7 @@ public void doExport() throws Exception {
                " t.ID"+
                " ,t.NAME"+
                " ,t.IMPSTGGRP_ID"+
-               ",pbo_ie.get_strategy_name_by_id(t.ID) IMPSTGGRP_NAME"+
+               ",pbo_ie.get_strategygrp_name_by_id(t.IMPSTGGRP_ID) IMPSTGGRP_NAME"+
                " ,t.FILE_TYPE"+
                " ,t.DESCRIPTION"+
                " ,t.DEST_TABLE"+
@@ -106,23 +107,23 @@ public void doInsert()  throws Exception {
   this.populateRecordFromRequest(); 
   this.populateRecordWithClientSpecific();
     String sql = "insert into IE_IMP_STRATEGY("+
-               "  ID"+
-               " ,NAME"+
-               " ,FILE_TYPE"+
+               "  ACTIVE"+
                " ,DESCRIPTION"+
-               " ,IMPSTGGRP_ID"+
-               " ,ACTIVE"+
                " ,DEST_TABLE"+
                " ,FILE_LOCATION"+
+               " ,FILE_TYPE"+
+               " ,ID"+
+               " ,IMPSTGGRP_ID"+
+               " ,NAME"+
            " ) values ( "+
-               "  :ID"+
-               " ,:NAME"+
-               " ,:FILE_TYPE"+
+               "  :ACTIVE"+
                " ,:DESCRIPTION"+
-               " ,:IMPSTGGRP_ID"+
-               " ,:ACTIVE"+
                " ,:DEST_TABLE"+
                " ,:FILE_LOCATION"+
+               " ,:FILE_TYPE"+
+               " ,:ID"+
+               " ,:IMPSTGGRP_ID"+
+               " ,:NAME"+
     ")";
     this.record.put("ID",   dbm.getSequenceNextValue("SEQ_IMPSTG_ID")  );
     dbm.executeStatement(sql, this.record);
@@ -135,14 +136,14 @@ public void doUpdate() throws Exception {
     this.populateRecordFromRequest();
     this.populateRecordWithClientSpecific();
     String sql = "update IE_IMP_STRATEGY set "+
-               "  ID=:ID"+
-               " ,NAME=:NAME"+
-               " ,FILE_TYPE=:FILE_TYPE"+
+               "  ACTIVE=:ACTIVE"+
                " ,DESCRIPTION=:DESCRIPTION"+
-               " ,IMPSTGGRP_ID=:IMPSTGGRP_ID"+
-               " ,ACTIVE=:ACTIVE"+
                " ,DEST_TABLE=:DEST_TABLE"+
                " ,FILE_LOCATION=:FILE_LOCATION"+
+               " ,FILE_TYPE=:FILE_TYPE"+
+               " ,ID=:ID"+
+               " ,IMPSTGGRP_ID=:IMPSTGGRP_ID"+
+               " ,NAME=:NAME"+
    " where "+
      "      ID= :ID"+
    "";
@@ -169,19 +170,19 @@ public void initNewRecord() throws Exception {
 
 private void findByPk()  throws Exception {
     String sql = "select "+ 
-               " t.ID"+
-               " ,t.NAME"+
-               " ,t.FILE_TYPE"+
-               " ,t.DESCRIPTION"+
-               " ,t.IMPSTGGRP_ID"+
-               " ,t.CREATEDON"+
+               " t.ACTIVE"+
                " ,t.CREATEDBY"+
-               " ,t.MODIFIEDON"+
-               " ,t.MODIFIEDBY"+
-               " ,t.ACTIVE"+
+               " ,t.CREATEDON"+
+               " ,t.DESCRIPTION"+
                " ,t.DEST_TABLE"+
                " ,t.FILE_LOCATION"+
-                ",pbo_ie.get_strategy_name_by_id(t.ID) IMPSTGGRP_NAME"+
+               " ,t.FILE_TYPE"+
+               " ,t.ID"+
+               " ,t.IMPSTGGRP_ID"+
+                ",pbo_ie.get_strategygrp_name_by_id(t.IMPSTGGRP_ID) IMPSTGGRP_NAME"+
+               " ,t.MODIFIEDBY"+
+               " ,t.MODIFIEDON"+
+               " ,t.NAME"+
            " from IE_IMP_STRATEGY t"+
         " where "+
      "      t.ID= :ID"+ 
@@ -192,24 +193,25 @@ private void findByPk()  throws Exception {
 
 public void doCustomAction(String pName)  throws Exception {
     this.populateRecordFromRequest();
+    this.sendRecord();
 }
 
 
 	private void  _initFields() {
 	  this.fields = new HashMap<String, FieldDef>();
-	  this.fields.put("ID", new FieldDef("NUMBER"));
-	  this.fields.put("NAME", new FieldDef("STRING"));
-	  this.fields.put("FILE_TYPE", new FieldDef("STRING"));
-	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
-	  this.fields.put("IMPSTGGRP_ID", new FieldDef("NUMBER"));
-	  this.fields.put("CREATEDON", new FieldDef("DATE"));
-	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
-	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
-	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
 	  this.fields.put("ACTIVE", new FieldDef("BOOLEAN"));
+	  this.fields.put("CREATEDBY", new FieldDef("STRING"));
+	  this.fields.put("CREATEDON", new FieldDef("DATE"));
+	  this.fields.put("DESCRIPTION", new FieldDef("STRING"));
 	  this.fields.put("DEST_TABLE", new FieldDef("STRING"));
 	  this.fields.put("FILE_LOCATION", new FieldDef("STRING"));
+	  this.fields.put("FILE_TYPE", new FieldDef("STRING"));
+	  this.fields.put("ID", new FieldDef("NUMBER"));
+	  this.fields.put("IMPSTGGRP_ID", new FieldDef("NUMBER"));
 	  this.fields.put("IMPSTGGRP_NAME", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDBY", new FieldDef("STRING"));
+	  this.fields.put("MODIFIEDON", new FieldDef("DATE"));
+	  this.fields.put("NAME", new FieldDef("STRING"));
 	  String[] _pkFields = {"ID"};
 	  this.pkFields = _pkFields;
 	  String[] _summaryFields = {};
